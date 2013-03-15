@@ -12,7 +12,11 @@ DELETE_OUTPUT_DIRECTORY = True
 # Following items are often useful when publishing
 
 # Uncomment following line for absolute URLs in production:
-#RELATIVE_URLS = False
+RELATIVE_URLS = False
 
-#DISQUS_SITENAME = ""
-#GOOGLE_ANALYTICS = ""
+FEED_DOMAIN = SITEURL
+FEED_ALL_RSS = 'feeds/all.rss'
+
+DISQUS_SITENAME = "techagilitynerd"
+GOOGLE_ANALYTICS = "UA-1127677-3"
+

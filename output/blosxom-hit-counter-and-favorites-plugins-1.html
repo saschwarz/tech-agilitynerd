@@ -65,27 +65,19 @@ generate my Favorites page.</p>
 <h2>Hitcounter Plugin</h2>
 <p>I based the hitcounter plugin on the categories plugin written by <a class="reference external" href="http://molelog.molehill.org/">Todd
 Larason</a>. The plugin has a couple features of interest:</p>
-<ul>
-<li><p class="first">The <tt class="docutils literal">$reset\_count</tt> flag within the plugin lets you provide a starting
+<ul class="simple">
+<li>The <tt class="docutils literal">$reset\_count</tt> flag within the plugin lets you provide a starting
 count value for any page. For example to set a page's count to 10
 append &quot;?count=10&quot; to the page's URL. Disable this flag once you've
-set your counts to avoid mischevious count setting by outsiders.</p>
-</li>
-<li><p class="first">The <tt class="docutils literal">$retrieve\_only\_flavour flag</tt> within the plugin can be set to a
+set your counts to avoid mischevious count setting by outsiders.</li>
+<li>The <tt class="docutils literal">$retrieve\_only\_flavour flag</tt> within the plugin can be set to a
 flavour you want to use for retrieving counts without incrementing
-the count. Use this flavour to view the counts for URLs of interest.</p>
-</li>
-<li><p class="first">You can add filters to the <a href="#id1"><span class="problematic" id="id2">``</span></a>start()` subroutine to exclude certain
+the count. Use this flavour to view the counts for URLs of interest.</li>
+<li>You can add filters to the <cite>start()</cite> subroutine to exclude certain
 requests from updating your counters. I exclude RSS and Atom feed
-requests from my counts.</p>
-<div class="system-message" id="id1">
-<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">/Users/saschwarz/dev/tech-agilitynerd/content/blosxom-hit-counter-and-favorites-plugins-1.rst</tt>, line 36); <em><a href="#id2">backlink</a></em></p>
-<p>Inline literal start-string without end-string.</p>
-</div>
-</li>
-<li><p class="first">As of version 0.5 you can filter out loading and incrementing page
-counts for specific user agents via the <tt class="docutils literal">ignore\_agents array</tt>.</p>
-</li>
+requests from my counts.</li>
+<li>As of version 0.5 you can filter out loading and incrementing page
+counts for specific user agents via the <tt class="docutils literal">ignore\_agents array</tt>.</li>
 </ul>
 <p>The hitcounter plugin stores the <tt class="docutils literal"><span class="pre">$blosxom::path</span></tt> as the key in a hash
 whose value is the count of hits. The hash is stored in a file in the
@@ -136,22 +128,11 @@ the HTML. I then put this variable in my Favorites.txt page.</p>
   </article>
 </section>
         <section id="extras" class="body">
-                        <div class="blogroll">
-                        <h2>blogroll</h2>
-                        <ul>
-                                                    <li><a href="http://docs.notmyidea.org/alexis/pelican/">Pelican</a></li>
-                                                    <li><a href="http://python.org">Python.org</a></li>
-                                                    <li><a href="http://jinja.pocoo.org">Jinja2</a></li>
-                                                    <li><a href="#">You can modify those links in your config file</a></li>
-                                                </ul>
-                </div><!-- /.blogroll -->
                                 <div class="social">
                         <h2>social</h2>
                         <ul>
                             <li><a href="http://tech.agilitynerd.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
                             
-                                                    <li><a href="#">You can add links in your config file</a></li>
-                                                    <li><a href="#">Another social link</a></li>
                                                 </ul>
                 </div><!-- /.social -->
                 </section><!-- /#extras -->

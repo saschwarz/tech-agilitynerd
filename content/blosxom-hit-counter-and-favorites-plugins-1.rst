@@ -33,7 +33,7 @@ Larason`_. The plugin has a couple features of interest:
 -  The ``$retrieve\_only\_flavour flag`` within the plugin can be set to a
    flavour you want to use for retrieving counts without incrementing
    the count. Use this flavour to view the counts for URLs of interest.
--  You can add filters to the ``start()` subroutine to exclude certain
+-  You can add filters to the `start()` subroutine to exclude certain
    requests from updating your counters. I exclude RSS and Atom feed
    requests from my counts.
 -  As of version 0.5 you can filter out loading and incrementing page

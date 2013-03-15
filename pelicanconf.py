@@ -5,20 +5,18 @@ AUTHOR = u'Steve Schwarz'
 SITENAME = u'tech.agilitynerd.com'
 SITEURL = 'http://tech.agilitynerd.com'
 
-TIMEZONE = 'Europe/Paris'
+TIMEZONE = 'America/Chicago'
 
 DEFAULT_LANG = u'en'
 
 # Blogroll
-LINKS =  (('Pelican', 'http://docs.notmyidea.org/alexis/pelican/'),
-          ('Python.org', 'http://python.org'),
-          ('Jinja2', 'http://jinja.pocoo.org'),
-          ('You can modify those links in your config file', '#'),)
+LINKS =  ()
 
 # Social widget
-SOCIAL = (('You can add links in your config file', '#'),
-          ('Another social link', '#'),)
+SOCIAL = ()
 
 DEFAULT_PAGINATION = 5
 
 STATIC_PATHS = ['images']
+
+SUMMARY_MAX_LENGTH = 50
