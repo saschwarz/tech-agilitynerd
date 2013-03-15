@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>Those Darn Spammers Blosxom - Hit Counter and Writeback Changes</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="./theme/css/main.css" type="text/css" />
+                <link href="http://tech.agilitynerd.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="tech.agilitynerd.com Atom Feed" />
+                
+        <!--[if IE]>
+                <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+        <!--[if lte IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="./css/ie.css"/>
+                <script src="./js/IE8.js" type="text/javascript"></script><![endif]-->
+
+        <!--[if lt IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="./css/ie6.css"/><![endif]-->
+
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="./">tech.agilitynerd.com </a></h1>
+                <nav><ul>
+                                                                                                    <li ><a href="./category/about.html">about</a></li>
+                                    <li ><a href="./category/devops.html">devops</a></li>
+                                    <li ><a href="./category/misc.html">misc</a></li>
+                                    <li ><a href="./category/programming.html">programming</a></li>
+                                    <li ><a href="./category/python.html">python</a></li>
+                                    <li class="active"><a href="./category/webdev.html">webdev</a></li>
+                                </ul></nav>
+        </header><!-- /#banner -->
+        <section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="./those-darn-spammersblosxom-hit-counter-and-wr-1.html" rel="bookmark"
+           title="Permalink to Those Darn Spammers Blosxom - Hit Counter and Writeback Changes">Those Darn Spammers Blosxom - Hit Counter and Writeback Changes</a></h1>
+          </header>
+
+    <div class="entry-content">
+      <footer class="post-info">
+        <abbr class="published" title="2006-08-11T19:00:00">
+                Fri 11 August 2006
+        </abbr>
+
+                <address class="vcard author">
+                By <a class="url fn" href="./author/steve-schwarz.html">Steve Schwarz</a>
+        </address>
+        <p>In <a href="./category/webdev.html">webdev</a>. </p>
+<p>tags: <a href="./tag/blosxom.html">blosxom</a><a href="./tag/plugin.html">plugin</a><a href="./tag/spam.html">spam</a></p>
+</footer><!-- /.post-info -->      <p>Over the past year I'd noticed that comment and trackback spammers had
+been hitting the same dozen or so pages of my blog multiple times daily.
+(It is probably the same person/group who took a snapshot of the
+articles on my front page at that time and just reuses those URLs for
+all of their different domains). Last I calculated, about 50% of my
+overall website traffic is due to spammers. This constant barrage of
+hits skews my <a class="reference external" href="http://awstats.sourceforge.net">AWStats</a> statistics and, more importantly, skews the
+results on my <a class="reference external" href="http://agilitynerd.com/blog/static/Favorites.html">Favorites page</a>. So I took a little time to work on this
+problem.</p>
+<p>FWIW I'm also starting to see a lot of spam coming from &quot;blogs&quot; being
+setup on <a class="reference external" href="http://blogspot.com">BlogSpot</a> that are a single page all of whose links point to
+the real site. Some of these bogus blogs use the BlogSpot temmplate
+which contains a flag used to alert BlogSpot admins to content in
+violation of their Terms of Service. This allows anyone to report the
+bogus blog by just clicking on the flag. Other &quot;blogs&quot; just use their
+own HTML and BlogSpot support would have to be sent an email with the
+offending site's URL.</p>
+<p>So anyway, I've taken the following steps:</p>
+<ul class="simple">
+<li>Disabled trackback comments entirely using the configuration variable
+in the writeback plugin. I've never received a legitimate trackback
+ping.</li>
+<li>Modified my modified version of the writeback plugin to set a
+variable $rejected with a 1 if the comment was rejected or if
+trackback was attempted.</li>
+<li>Modified my HitCounter plugin to read the $writeback::rejected
+variable and then not increase the counter for the spammed page.</li>
+<li>I had to change the ordering of the hitcounter plugin to run after
+writeback so the variable would be set correctly when hitcounter ran.</li>
+<li>Set the $hitcounter::reset_count variable and reset the counts of
+the spammed pages back to &quot;reasonable&quot; counts.</li>
+</ul>
+<p>Another couple hours wasted messing around against spammers.</p>
+<p>I've <a class="reference external" href="/blosxom-plugin-to-block-referer-spam-1.html">previously written</a> how I've been using comment content
+blacklisting to reject comment, trackback, and referer (sic) spam. My
+current blacklist file has over 40 regular expressions containing over
+250 words and patterns. I update it whenever a spam comment slips
+through. So that is an ongoing almost daily effort. I might just have to
+go to the trouble of getting a <a class="reference external" href="http://varg.dyndns.org/psi/pub/code/misc/wbcaptcha.html">CAPTCHA</a> plugin to work.</p>
+
+    </div><!-- /.entry-content -->
+    
+  </article>
+</section>
+        <section id="extras" class="body">
+                        <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                                                    <li><a href="http://docs.notmyidea.org/alexis/pelican/">Pelican</a></li>
+                                                    <li><a href="http://python.org">Python.org</a></li>
+                                                    <li><a href="http://jinja.pocoo.org">Jinja2</a></li>
+                                                    <li><a href="#">You can modify those links in your config file</a></li>
+                                                </ul>
+                </div><!-- /.blogroll -->
+                                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="http://tech.agilitynerd.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+                            
+                                                    <li><a href="#">You can add links in your config file</a></li>
+                                                    <li><a href="#">Another social link</a></li>
+                                                </ul>
+                </div><!-- /.social -->
+                </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

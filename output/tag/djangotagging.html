@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>tech.agilitynerd.com - djangotagging</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="../theme/css/main.css" type="text/css" />
+                <link href="http://tech.agilitynerd.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="tech.agilitynerd.com Atom Feed" />
+                
+        <!--[if IE]>
+                <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+        <!--[if lte IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="../css/ie.css"/>
+                <script src="../js/IE8.js" type="text/javascript"></script><![endif]-->
+
+        <!--[if lt IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="../css/ie6.css"/><![endif]-->
+
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="../">tech.agilitynerd.com </a></h1>
+                <nav><ul>
+                                                                                                    <li ><a href="../category/about.html">about</a></li>
+                                    <li ><a href="../category/devops.html">devops</a></li>
+                                    <li ><a href="../category/misc.html">misc</a></li>
+                                    <li ><a href="../category/programming.html">programming</a></li>
+                                    <li ><a href="../category/python.html">python</a></li>
+                                    <li ><a href="../category/webdev.html">webdev</a></li>
+                                </ul></nav>
+        </header><!-- /#banner -->
+                
+            
+
+                            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="../using-django-sitemap-with-django-tagging.html">Using django-sitemap with django-tagging</a></h1> 
+                    <footer class="post-info">
+        <abbr class="published" title="2009-11-27T17:33:00">
+                Fri 27 November 2009
+        </abbr>
+
+                <address class="vcard author">
+                By <a class="url fn" href="../author/steve-schwarz.html">Steve Schwarz</a>
+        </address>
+        <p>In <a href="../category/webdev.html">webdev</a>. </p>
+<p>tags: <a href="../tag/django.html">django</a><a href="../tag/djangositemap.html">djangositemap</a><a href="../tag/djangotagging.html">djangotagging</a><a href="../tag/python.html">python</a><a href="../tag/webdevelopment.html">webdevelopment</a></p>
+</footer><!-- /.post-info --><p>I was adding <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/sitemaps/">django-sitemap</a> to <a class="reference external" href="http://googility.com/">googility.com</a> yesterday and found
+that Tags don't implement <tt class="docutils literal">get\_absolute\_url()</tt>. Which makes sense since
+the site developer would want to decide how to expose them in the URL
+space.</p>
+<p>It is also arguable that links to pages displaying the tag view already
+exist in the page for models that are already in the sitemap so they
+don't need to be put in the sitemap explicitly. For example, a page for
+an Article might be at <tt class="docutils literal"><span class="pre">/article/django-11-release</span></tt> and that page would
+contain the links to pages linked with the tags for that article e.g.
+<tt class="docutils literal">/tag/django/</tt> and <tt class="docutils literal">/tag/python/</tt></p>
+<p>But I figured having the tag pages indexed by Google would be useful. It
+also allows a different priority to be specified for the pages. So I
+made a little class that derives from <tt class="docutils literal">GenericSitemap</tt> that allows the url
+and suffix for the Tag name to be specified:</p>
+<pre class="literal-block">
+class SlugSitemap(GenericSitemap):
+&quot;&quot;&quot;Use for objects that don't implement get_absolute_url
+   but have a slug field used in creating their url&quot;&quot;&quot;
+
+def __init__(self, info_dict, priority=None, changefreq=None):
+    GenericSitemap.__init__(self, info_dict,
+                            priority=priority,
+                            changefreq=changefreq)
+    self.url = info_dict.get('url', '/')
+    self.slugfield = info_dict['slugfield']
+    self.suffix = info_dict.get('suffix', '')
+
+def location(self, obj):
+    return &quot;%s%s%s&quot; % (self.url,
+                       getattr(obj, self.slugfield),
+                       self.suffix)
+</pre>
+<p>Here's how I use it:</p>
+<pre class="literal-block">
+sitemaps = {'tag_detail': SlugSitemap({'queryset':Tag.objects,
+                                       'url':'/tag/',
+                                       'slugfield':'name',
+                                       'suffix':'/'},
+                                       changefreq='monthly',
+                                       priority='0.5'),
+}
+</pre>
+<p>The urls for tags are at /tag/<em>slugname</em>/ where /tag/ is prepended to
+tag.name and / is appended to the end</p>
+<p>This class can be used to create sitemap entries for any url
+parameterized on a single field of an instance returned by the QuerySet.</p>
+                </article>
+                                    <p class="paginator">
+        Page 1 / 1
+    </p>
+                            </aside><!-- /#featured -->
+                                                </ol><!-- /#posts-list -->
+                        </section><!-- /#content -->
+                    <section id="extras" class="body">
+                        <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                                                    <li><a href="http://docs.notmyidea.org/alexis/pelican/">Pelican</a></li>
+                                                    <li><a href="http://python.org">Python.org</a></li>
+                                                    <li><a href="http://jinja.pocoo.org">Jinja2</a></li>
+                                                    <li><a href="#">You can modify those links in your config file</a></li>
+                                                </ul>
+                </div><!-- /.blogroll -->
+                                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="http://tech.agilitynerd.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+                            
+                                                    <li><a href="#">You can add links in your config file</a></li>
+                                                    <li><a href="#">Another social link</a></li>
+                                                </ul>
+                </div><!-- /.social -->
+                </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

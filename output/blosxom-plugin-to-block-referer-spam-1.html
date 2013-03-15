@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>Blosxom Plugin to Block Referer Spam</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="./theme/css/main.css" type="text/css" />
+                <link href="http://tech.agilitynerd.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="tech.agilitynerd.com Atom Feed" />
+                
+        <!--[if IE]>
+                <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+        <!--[if lte IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="./css/ie.css"/>
+                <script src="./js/IE8.js" type="text/javascript"></script><![endif]-->
+
+        <!--[if lt IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="./css/ie6.css"/><![endif]-->
+
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="./">tech.agilitynerd.com </a></h1>
+                <nav><ul>
+                                                                                                    <li ><a href="./category/about.html">about</a></li>
+                                    <li ><a href="./category/devops.html">devops</a></li>
+                                    <li ><a href="./category/misc.html">misc</a></li>
+                                    <li ><a href="./category/programming.html">programming</a></li>
+                                    <li ><a href="./category/python.html">python</a></li>
+                                    <li class="active"><a href="./category/webdev.html">webdev</a></li>
+                                </ul></nav>
+        </header><!-- /#banner -->
+        <section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="./blosxom-plugin-to-block-referer-spam-1.html" rel="bookmark"
+           title="Permalink to Blosxom Plugin to Block Referer Spam">Blosxom Plugin to Block Referer Spam</a></h1>
+          </header>
+
+    <div class="entry-content">
+      <footer class="post-info">
+        <abbr class="published" title="2005-02-12T20:00:00">
+                Sat 12 February 2005
+        </abbr>
+
+                <address class="vcard author">
+                By <a class="url fn" href="./author/steve-schwarz.html">Steve Schwarz</a>
+        </address>
+        <p>In <a href="./category/webdev.html">webdev</a>. </p>
+<p>tags: <a href="./tag/blosxom.html">blosxom</a><a href="./tag/plugin.html">plugin</a><a href="./tag/spam.html">spam</a></p>
+</footer><!-- /.post-info -->      <div class="section" id="comment-and-referer-spam">
+<h2>Comment and Referer Spam</h2>
+<p>Like so many other bloggers who allow comments on their websites and
+blog articles, I was facing increasing <a class="reference external" href="http://en.wikipedia.org/wiki/Blog_spam">comment spam</a> as my blog got
+noticed by more spammers. The size of this problem is illustrated by
+<a class="reference external" href="http://www.google.com/search?q=%22comment+spam%22">this Google query for &quot;comment spam&quot;</a> that returned 1.5 million hits.
+For the uninitiated comment spam is like email spam for blogs; the
+spammer inserts fake comments in a blog where either the comment text
+contains from one to dozens of links to the spammer's websites. When web
+search sites &quot;spider&quot; the blog the links to the spammer's site are
+treated as &quot;endorsements&quot; of the spammer's sites and the spammer's sites
+are raised to the top of the search site's result lists.</p>
+<p>There is another growing type of blog spam called <a class="reference external" href="http://www.spywareinfo.com/articles/referer_spam/">referer spam</a> (yes
+it is <a class="reference external" href="http://dictionary.reference.com/search?q=referer">officially misspelled</a>). When a web surfer clicks on a link in a
+web page that sends them to another web page most web browsers fill in
+the URL of the referring page into the request called the HTTP_REFERER.
+Some websites and blogs capture that page link information when they are
+on the receiving end of a web request. These sites might have a section
+on each page indicating the sites that link to that page. These links
+are referer links.</p>
+<p>Referer spam uses the same mechanism as comment spam to raise the search
+sites ranking of the spammer's websites. But referer spammer's don't
+post comments; they post fake referrals to a website. The are hoping
+that the website or blog displays links of the sites that refer to them.
+So when the website is spidered the search ranking is raised.</p>
+</div>
+<div class="section" id="blosxom-plugins-addressing-spam">
+<h2>Blosxom Plugins Addressing Spam</h2>
+<p>Like so many bloggers once I started getting comment spam I was able to
+manually delete them as they occurred. But that got old fast. After some
+Googling I discovered <a class="reference external" href="http://www.lathi.net">Doug Alcorn's</a> <a class="reference external" href="http://blosxom.sourceforge.net/">Blosxom</a> <a class="reference external" href="http://www.lathi.net/twiki-bin/view/Main/BlogSpam">writeback blacklist
+plugin</a>. I had been using the original <a class="reference external" href="http://www.blosxom.com/plugins/input/writeback.htm">writeback</a> plugin. Doug's
+improvements provided enough protection (so far) with less than a dozen
+regular expressions removing all my comment spam.</p>
+<p>Referer spam started hitting me three weeks ago. What was most
+infuriating was that I don't display any links of referring sites on my
+site at all. So all these spammers were succeeding in doing was skewing
+my site statistics and using my bandwidth with their fake referer
+attacks several times a day.</p>
+<p>Of course all the referer spam site's addresses contained one or more of
+the same dozen blacklisted words I had already configured for comment
+spam. About the same time I saw <a class="reference external" href="http://jclark.org">Jason Clark</a> post his <a class="reference external" href="http://jclark.org/weblog/WebDev/Blosxom/plugins/deferer/deferer-0-1i.html">deferer
+plugin</a> to return a 301 permanent redirect for the IP address of one
+particular referer spammer who was attacking his site. I thought that by
+combining Doug's blacklisting plugin with Jason's immediate redirect
+plugin I could reduce the referer spam from my log files.</p>
+<p>This plugin hasn't removed the entries entirely from my logs, since the
+initial request is still logged with a 301 status. But it has stopped
+the subsequent downloading of images for the pages whose content is now
+not served. Now that the log contains 301 status messages for these
+requests they are ignored by my host's statistics program (<a class="reference external" href="http://awstats.sourceforge.net">Advanced Web
+Statistics - AWStats</a>).</p>
+<p>On a re-reading of Jason's blog entry for deferer he also mentions the
+idea of white and black lists for referer filtering. So I might have
+subliminally remembered his idea and implemented my refererblock plugin
+based on his idea. In any event, I fully credit Jason and Doug for
+giving me the ideas and code with which to put together my plugin.</p>
+</div>
+<div class="section" id="referer-block-plugin">
+<h2>Referer Block Plugin</h2>
+<p>The refererblock plugin's tar file can be downloaded <a class="reference external" href="http://data.agilitynerd.com/downloads/refererblock_0.1.tar">here</a>. It
+contains the refererblock plugin already named 000refererblock so that
+it runs before all other plugins (you want to discard the blacklisted
+requests before all legitimate requests). A sample blacklist.txt file is
+provided and contains some example regexs. It uses the same blacklist
+file format and file name as Doug's writeback modification (I took the
+code from his plugin with only cosmetic changes). See Doug's website for
+links to the Movable Type and other blacklists.</p>
+<p>The only configuration variable you can set is $log_blacklisted. If set
+to a full path file name the script logs the UTC date/time, referer
+string, and the page to which they were referring. You could use the
+frequency of words in the rejected referer strings to fine tune the
+content and ordering of your blacklist.txt file to match the spammers
+hitting your site. Be aware that this file isn't trimmed so you might
+want to keep an eye on its size.</p>
+<p>Lastly, the zip file contains a simple Perl script you can use to test
+the plugin. Execute it as:</p>
+<pre class="code literal-block">
+referer_test.pl http://example.com http://referer-spam.com
+where the first URL is your website and the second URL is the referer
+</pre>
+<p>to be sent in the request. This script uses <a class="reference external" href="HTTP::Request">HTTP::Request</a> to send the
+request. The script returns the status &quot;200 OK&quot; for the requested page
+if it isn't blacklisted and &quot;301 Moved Permanently&quot; if the referer is
+blacklisted.</p>
+<p>Please let me know if you use this plugin or if you have comments or
+suggestions for improving it.</p>
+</div>
+
+    </div><!-- /.entry-content -->
+    
+  </article>
+</section>
+        <section id="extras" class="body">
+                        <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                                                    <li><a href="http://docs.notmyidea.org/alexis/pelican/">Pelican</a></li>
+                                                    <li><a href="http://python.org">Python.org</a></li>
+                                                    <li><a href="http://jinja.pocoo.org">Jinja2</a></li>
+                                                    <li><a href="#">You can modify those links in your config file</a></li>
+                                                </ul>
+                </div><!-- /.blogroll -->
+                                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="http://tech.agilitynerd.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+                            
+                                                    <li><a href="#">You can add links in your config file</a></li>
+                                                    <li><a href="#">Another social link</a></li>
+                                                </ul>
+                </div><!-- /.social -->
+                </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

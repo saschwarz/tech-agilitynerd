@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>tech.agilitynerd.com - perl</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="../theme/css/main.css" type="text/css" />
+                <link href="http://tech.agilitynerd.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="tech.agilitynerd.com Atom Feed" />
+                
+        <!--[if IE]>
+                <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+        <!--[if lte IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="../css/ie.css"/>
+                <script src="../js/IE8.js" type="text/javascript"></script><![endif]-->
+
+        <!--[if lt IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="../css/ie6.css"/><![endif]-->
+
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="../">tech.agilitynerd.com </a></h1>
+                <nav><ul>
+                                                                                                    <li ><a href="../category/about.html">about</a></li>
+                                    <li ><a href="../category/devops.html">devops</a></li>
+                                    <li ><a href="../category/misc.html">misc</a></li>
+                                    <li ><a href="../category/programming.html">programming</a></li>
+                                    <li ><a href="../category/python.html">python</a></li>
+                                    <li ><a href="../category/webdev.html">webdev</a></li>
+                                </ul></nav>
+        </header><!-- /#banner -->
+                
+            
+
+                            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="../blosxom-plugin-for-generating-facebook-commen.html">Blosxom Plugin for Generating Facebook Comment xids</a></h1> 
+                    <footer class="post-info">
+        <abbr class="published" title="2010-11-23T05:00:00">
+                Tue 23 November 2010
+        </abbr>
+
+                <address class="vcard author">
+                By <a class="url fn" href="../author/steve-schwarz.html">Steve Schwarz</a>
+        </address>
+        <p>In <a href="../category/webdev.html">webdev</a>. </p>
+<p>tags: <a href="../tag/blosxom.html">blosxom</a><a href="../tag/comments.html">comments</a><a href="../tag/facebook.html">facebook</a><a href="../tag/perl.html">perl</a></p>
+</footer><!-- /.post-info --><p>I've been using <a class="reference external" href="http://www.blosxom.com/">Blosxom</a> to power my dog agility blog for over 6
+years. In the past year or so I've enabled <a class="reference external" href="http://developers.facebook.com/docs/reference/plugins/comments">Facebook comments</a> in
+addition to my site's own comment plugin. I ran into a problem using
+Facebook's comments: if the user enters a comment on a page and the URL
+has any additional URL parameters then the comment is only associated
+with the page when accessed with those parameters, others hitting the
+page w/o parameters won't see the comments.</p>
+<p>This behavior is <a class="reference external" href="http://developers.facebook.com/docs/reference/fbml/comments_%28XFBML%29">documented by Facebook</a> when the <tt class="docutils literal">xid</tt> attribute
+isn't set in <tt class="docutils literal">fb:comments</tt> HTML element. I didn't think I'd encounter this
+situation since my blog post URLs don't contain any parameters. However,
+when people link to one of my articles within Facebook, Facebook appends
+various parameters to the base URL.</p>
+<p>The solution is to specify an <tt class="docutils literal">xid</tt> attribute in the <tt class="docutils literal">fb:comments</tt> element
+containing the URL encoded URL of the page (Facebook's default <tt class="docutils literal">xid</tt>).
+This causes existing comments to show up and causes comments created
+when the page is loaded with URL parameters to use the same encoded URL.</p>
+<p>So I created a simple Blosxom plugin to perform the encoding so the
+encoded URL can be placed in the story.html template:</p>
+<pre class="code perl literal-block">
+<span class="c1"># Blosxom Plugin: urlencode -*- perl -*-</span>
+<span class="c1"># Author: Steve Schwarz &lt;http://agilitynerd.com/&gt;</span>
+<span class="c1"># 2010-NOV-22    0.1 initial version.package urlencode;</span>
+<span class="c1"># puts the urlencoded string of the URL for this page</span>
+<span class="c1"># into $urlencode::url without any params# use this in fb.comments xid to give the same xid</span>
+<span class="c1"># even when query params are provided</span>
+<span class="c1"># -------------------</span>
+<span class="k">use</span> <span class="n">CGI</span> <span class="sx">qw/:standard/</span><span class="p">;</span>
+<span class="k">use</span> <span class="n"></span><span class="nn">URI::</span><span class="n">Escape</span><span class="p">;</span>
+
+<span class="k">sub </span><span class="nf">start</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nv">$url</span> <span class="o">=</span> <span class="s">''</span><span class="p">;</span>
+
+<span class="k">sub </span><span class="nf">story</span> <span class="p">{</span>
+    <span class="k">my</span> <span class="p">(</span><span class="nv">$pkg</span><span class="p">,</span> <span class="nv">$path</span><span class="p">,</span> <span class="nv">$filename</span><span class="p">,</span> <span class="nv">$story_ref</span><span class="p">,</span> <span class="nv">$title_ref</span><span class="p">,</span> <span class="nv">$body_ref</span><span class="p">)</span> <span class="o">=</span> <span class="nv">&#64;_</span><span class="p">;</span>
+    <span class="nv">$</span><span class="nn">urlencode::</span><span class="nv">url</span> <span class="o">=</span> <span class="n">uri_escape</span><span class="p">(</span><span class="s">&quot;$blosxom::url/${blosxom::path_info}&quot;</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="mi">1</span><span class="p">;</span>
+</pre>
+<p>Then it is used in the story template:</p>
+<pre class="literal-block">
+&lt;fb:comments width=&quot;550&quot; numposts=&quot;5&quot; xid=&quot;$urlencode::url&quot;&gt;&lt;/fb:comments&gt;
+</pre>
+<p>Now my readers won't have to worry that their comments won't show up.</p>
+                </article>
+                            </aside><!-- /#featured -->
+                            <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+                                                
+
+                 
+                        <li><article class="hentry">    
+                <header>
+                    <h1><a href="../blosxom-hitcounter-favorites-and-lastread-plugins-for-mongodb.html" rel="bookmark"
+                           title="Permalink to Blosxom hitcounter, favorites and lastread plugins for MongoDB">Blosxom hitcounter, favorites and lastread plugins for MongoDB</a></h1>
+                </header>
+                
+                <div class="entry-content">
+                <footer class="post-info">
+        <abbr class="published" title="2010-05-17T10:48:00">
+                Mon 17 May 2010
+        </abbr>
+
+                <address class="vcard author">
+                By <a class="url fn" href="../author/steve-schwarz.html">Steve Schwarz</a>
+        </address>
+        <p>In <a href="../category/webdev.html">webdev</a>. </p>
+<p>tags: <a href="../tag/blosxom.html">blosxom</a><a href="../tag/mongodb.html">mongodb</a><a href="../tag/perl.html">perl</a><a href="../tag/webdevelopment.html">webdevelopment</a></p>
+</footer><!-- /.post-info -->                <p>When I wrote my plugins for tracking the visits to each page
+(<tt class="docutils literal">hitcounter</tt>), presenting the counts by popularity (<tt class="docutils literal">favorites</tt>), and
+displaying the most recently read posts (<tt class="docutils literal">lastread</tt>) I used Perl's
+<tt class="docutils literal">Storable</tt> module as a simple way to serialize the data structure to and
+from disk. At the time I ...</p>
+                <a class="readmore" href="../blosxom-hitcounter-favorites-and-lastread-plugins-for-mongodb.html">read more</a>
+                                </div><!-- /.entry-content -->
+            </article></li>
+                            
+
+                 
+                        <li><article class="hentry">    
+                <header>
+                    <h1><a href="../agilitynerd-blosxom-plugins-1.html" rel="bookmark"
+                           title="Permalink to AgilityNerd Blosxom Plugins">AgilityNerd Blosxom Plugins</a></h1>
+                </header>
+                
+                <div class="entry-content">
+                <footer class="post-info">
+        <abbr class="published" title="2004-08-10T19:00:00">
+                Tue 10 August 2004
+        </abbr>
+
+                <address class="vcard author">
+                By <a class="url fn" href="../author/steve-schwarz.html">Steve Schwarz</a>
+        </address>
+        <p>In <a href="../category/webdev.html">webdev</a>. </p>
+<p>tags: <a href="../tag/blosxom.html">blosxom</a><a href="../tag/perl.html">perl</a><a href="../tag/plugin.html">plugin</a></p>
+</footer><!-- /.post-info -->                <div class="section" id="updated-20-jun-08-for-addition-of-storytitle">
+<h2>Updated 20-Jun-08 for addition of storytitle</h2>
+<p>I'm really impressed with the <a class="reference external" href="http://blosxom.sourceforge.net/">Blosxom</a> <a class="reference external" href="http://blosxom.com/documentation/users/plugins.html">plugin</a> mechanism. <a class="reference external" href="http://www.raelity.org/">Rael
+Dornfest</a>, author of Blosxom, put hooks at strategic points in the page
+generation process. At each hook point the main script iterates all the
+plugins present in the plugin directory. Plugins that implement the ...</p></div>
+                <a class="readmore" href="../agilitynerd-blosxom-plugins-1.html">read more</a>
+                                </div><!-- /.entry-content -->
+            </article></li>
+                            </ol><!-- /#posts-list -->
+                            <p class="paginator">
+        Page 1 / 1
+    </p>
+                        </section><!-- /#content -->
+                    <section id="extras" class="body">
+                        <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                                                    <li><a href="http://docs.notmyidea.org/alexis/pelican/">Pelican</a></li>
+                                                    <li><a href="http://python.org">Python.org</a></li>
+                                                    <li><a href="http://jinja.pocoo.org">Jinja2</a></li>
+                                                    <li><a href="#">You can modify those links in your config file</a></li>
+                                                </ul>
+                </div><!-- /.blogroll -->
+                                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="http://tech.agilitynerd.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+                            
+                                                    <li><a href="#">You can add links in your config file</a></li>
+                                                    <li><a href="#">Another social link</a></li>
+                                                </ul>
+                </div><!-- /.social -->
+                </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

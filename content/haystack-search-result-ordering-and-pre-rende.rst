@@ -1,0 +1,151 @@
+Haystack Search Result Ordering and Pre-Rendering Results
+#########################################################
+:date: 2010-08-10 03:41
+:author: Steve Schwarz
+:category: webdev
+:tags: django, haystack, search, whoosh
+:slug: haystack-search-result-ordering-and-pre-rende
+
+I use `Haystack`_ and the Python `Whoosh`_ project to provide search
+over ~3400 articles in my `Googility.com`_ database. I had originally
+implemented the search in the "simplest way that works". I was making
+some other enhancement to Googility and noticed the search result page
+had two undesirable  behaviors:
+
+#. The ordering of results was basically random for all matching
+   articles. For the domain of magazine article search having a bias
+   toward the most recent publications would be more desirable.
+#. Looking at the django-debug-toolbar output each element in the search
+   results was hitting the database twice (once for the Article instance
+   and again for its corresponding Periodical). So a single result page
+   was making as many as 60 database selects.
+
+Haystack provides mechanisms to help with both of these issues.
+
+Imposing an Order on the SearchQuerySet
+
+Haystack models search using an API based on Django's QuerySet. The
+only thing to remember is it performs its queries over the Haystack
+SearchIndex subclass(es) you create instead of over the Django ORM. So
+you define a SearchIndex subclass that contains the data from the
+application's model overwhich you'd like to search. You can also define
+additional fields that can be used to modify the results of the query.
+Here is my magazine Article search index:
+
+.. code:: python
+
+  from haystack.sites import site
+  from haystack import indexes
+  from periodicals.models import Article
+
+  class ArticleIndex(indexes.SearchIndex):
+      text = indexes.CharField(document=True, use_template=True)
+      pub_date = indexes.DateTimeField(model_attr='issue__pub_date')
+
+  site.register(Article, ArticleIndex)``
+
+The text field contains the "document" over which the search engine
+(Whoosh) will actually perform the search. I'm using the template
+feature that allows me to use Django templates to format the data
+presented to the search engine.
+
+I added the pub\_date field to the index to allow the matching search
+results to be ordered by the pub\_date field. The 'issue\_\_pub\_date'
+syntax mirrors the Django QuerySet syntax and means extract the
+"pub\_date" attribute of the Article's "issue" attribute (it joins
+Article to Publication and get's the Publication's published date).
+
+Then the urls.py is modified to change the SearchQuerySet passed to
+the default haystacksearch view to order by the ArticleIndex's pub\_date
+attribute:
+
+.. code:: python
+
+  from haystack.views import SearchView
+  from haystack.query import SearchQuerySet
+
+  # query results with most recent publication date first
+  sqs = SearchQuerySet().order_by('-pub_date')
+  urlpatterns = patterns('',
+                         url(r'^search/',
+                             SearchView(
+                                 load_all=False,
+                                 searchqueryset=sqs,
+                                 ),
+                             name='haystack_search',
+                             ),<snip>``
+
+Pre-Rendering Result HTML
+
+Since I have only a few thousand records I decided to follow the
+`Haystack Best Practices for Not Hitting the Database`_. This solution
+trades space in the Whoosh index files by generating the HTML that will
+be displayed when each article matches along with the data used by
+Whoosh to match articles to search keywords. The changes were pretty
+simple. In the ArticleIndex:
+
+.. code:: python
+
+  from haystack.sites import site
+  from haystack import indexes
+  from periodicals.models import Article
+
+  class ArticleIndex(indexes.SearchIndex):
+      text = indexes.CharField(document=True, use_template=True)
+      pub_date = indexes.DateTimeField(model_attr='issue__pub_date')
+      # pregenerate the search result HTML for an Article
+      # this avoids any database hits when results are processed
+      # at the cost of storing all the data in the Haystack index
+      result_text = indexes.CharField(indexed=False, use_template=True)site.register(Article, ArticleIndex)``
+
+The use\_template keyword requires you to create a Django template file
+that is used during index creation to build the HTML that will be
+displayed. The only peculiarity I found was figuring out where the
+template should live. On my system it was at
+templates/search/indexes/periodicals/article\_result\_text.txt. I
+understand the periodicals/article\_result\_text part but I haven't
+looked into where the search/indexes is generated from. I imagine a
+reverse() to find the url for the view and "indexes" is appended to
+that...
+
+The final change is the template used to display the search results.
+In order to not hit the database the object list generated by the
+haystack SearchView is placed into the context used by the template and
+only the result\_text attribute should be accessed:
+
+.. code:: xml
+
+  {% if page.object_list %}
+  <div class="search-results-title">Results <b>{{page.start_index}}</b>  - <b>{{page.end_index}}</b> for <b>{{query}}</b></div>    
+  <div class="search-results-list">    
+  {% for result in page.object_list %}      
+    {{result.result_text|safe}}    
+  {% endfor %}    
+  <div class="pagination">
+      <span class="step-links">
+        {% if page.has_previous %}
+            previous
+        {% endif %}
+        <span class="current">
+            Page {{ page.number }} of {{ page.paginator.num_pages }}
+        </span>
+        {% if page.has_next %}
+            next
+        {% endif %}
+      </span>
+    </div></div>{% else %}<h2>No matching articles found.</h2>
+  {% endif %}
+
+The actual result is placed in the template via
+{{result.result\_text\|safe}} the safe filter is required since the HTML
+doesn't need to be escaped again - it was escaped by Django when it was
+placed into the SearchIndex.
+
+So now my search results are in reverse chronological order and they
+render using only 3 database queries and at least 10x faster than
+before.
+
+.. _Haystack: http://haystacksearch.org/
+.. _Whoosh: http://whoosh.ca/
+.. _Googility.com: http://googility.com
+.. _Haystack Best Practices for Not Hitting the Database: http://docs.haystacksearch.org/dev/best_practices.html#avoid-hitting-the-database

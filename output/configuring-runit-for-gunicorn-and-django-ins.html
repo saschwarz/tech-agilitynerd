@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>Configuring Runit for Gunicorn and Django Installed in a Virtualenv on Ubuntu</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="./theme/css/main.css" type="text/css" />
+                <link href="http://tech.agilitynerd.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="tech.agilitynerd.com Atom Feed" />
+                
+        <!--[if IE]>
+                <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+        <!--[if lte IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="./css/ie.css"/>
+                <script src="./js/IE8.js" type="text/javascript"></script><![endif]-->
+
+        <!--[if lt IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="./css/ie6.css"/><![endif]-->
+
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="./">tech.agilitynerd.com </a></h1>
+                <nav><ul>
+                                                                                                    <li ><a href="./category/about.html">about</a></li>
+                                    <li ><a href="./category/devops.html">devops</a></li>
+                                    <li ><a href="./category/misc.html">misc</a></li>
+                                    <li ><a href="./category/programming.html">programming</a></li>
+                                    <li class="active"><a href="./category/python.html">python</a></li>
+                                    <li ><a href="./category/webdev.html">webdev</a></li>
+                                </ul></nav>
+        </header><!-- /#banner -->
+        <section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="./configuring-runit-for-gunicorn-and-django-ins.html" rel="bookmark"
+           title="Permalink to Configuring Runit for Gunicorn and Django Installed in a Virtualenv on Ubuntu">Configuring Runit for Gunicorn and Django Installed in a Virtualenv on Ubuntu</a></h1>
+          </header>
+
+    <div class="entry-content">
+      <footer class="post-info">
+        <abbr class="published" title="2010-09-08T03:08:00">
+                Wed 08 September 2010
+        </abbr>
+
+                <address class="vcard author">
+                By <a class="url fn" href="./author/steve-schwarz.html">Steve Schwarz</a>
+        </address>
+        <p>In <a href="./category/python.html">python</a>. </p>
+<p>tags: <a href="./tag/apache.html">apache</a><a href="./tag/django.html">django</a><a href="./tag/gunicorn.html">gunicorn</a><a href="./tag/runit.html">runit</a><a href="./tag/ubuntu.html">ubuntu</a><a href="./tag/virtualenv.html">virtualenv</a></p>
+</footer><!-- /.post-info -->      <p>I couldn't find any documentation that covered all the pieces for
+configuring my latest Django site so I hope this helps someone else out.</p>
+<p>I had used mod_wsgi under Apache for my other Django sites. But now I'm
+using different python versions for the sites (until if/when I update
+the older sites) and I wasn't getting the correct versions of some
+python libraries (even though virtualenv apeared to be putting the
+appropriate python packages at the start of the sys.path). So I decided
+to configure Apache to ProxyPass to <a class="reference external" href="http://gunicorn.org/">Gunicorn</a>so I could run my
+Django app in its virtualenv without it getting any other python
+modules.</p>
+<div class="section" id="installing-gunicorn">
+<h2>Installing Gunicorn</h2>
+<p>I installed Gunicorn into the virtualenv for my application, which
+simplifies using gunicorn from the command line. Assuming
+<tt class="docutils literal">/home/user/virtualenvs/myapp</tt> is the location of the virtualenv:</p>
+<pre class="code literal-block">
+$ source /home/user/virtualenvs/myapp/bin/activate
+$ pip install gunicorn
+
+# or
+$ easy_install gunicorn
+</pre>
+<p>This copies gunicorn_django to the /home/user/virtualenvs/myapp/bin
+directory. Test gunicorn with your app, assuming your Django app is
+located at /home/user/source/myapp, as follows:</p>
+<pre class="code literal-block">
+$ source /home/user/virtualenvs/myapp/bin/activate
+(myapp)$ cd /home/user/source/myapp
+(myapp)$ gunicorn_django
+</pre>
+<p>Gunicorn starts myapp using the <tt class="docutils literal">settings.py</tt> file in the current
+directory on 127.0.0.1:8000. Ctrl-C to stop the process.</p>
+</div>
+<div class="section" id="installing-runit-on-ubuntu">
+<h2>Installing Runit on Ubuntu</h2>
+<p>There are two <a class="reference external" href="http://smarden.org/runit/index.html">runit</a> packages. You want the one that only runs
+services you add to it:</p>
+<pre class="code literal-block">
+$ sudo apt-get install runit
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+Suggested packages:
+&nbsp; runit-run socklog-run
+The following NEW packages will be installed:
+&nbsp; runit0 upgraded, 1 newly installed, 0 to remove and 0 not upgraded.
+Need to get 0B/113kB of archives.After this operation, 537kB of additional disk space will be used.
+Selecting previously deselected package runit.
+(Reading database ... 209845 files and directories currently installed.)
+Unpacking runit (from .../runit_2.0.0-1ubuntu2_i386.deb) ...
+Processing triggers for man-db ...
+Setting up runit (2.0.0-1ubuntu2) ...
+runsvdir (start) waiting
+runsvdir (start) startingrunsvdir (start) pre-start
+runsvdir (start) spawned, process 9575
+runsvdir (start) post-start, (main) process 9575
+runsvdir (start) running, process 9575
+</pre>
+<p>You'll want to create a directory for the application and a run script
+in <tt class="docutils literal">/etc/service:</tt></p>
+<pre class="code literal-block">
+$ sudo mkdir /etc/service/myapp
+$ sudo vi /etc/service/myapp/run
+# enter the run script I'll show below
+$ sudo chmod +x /etc/service/myapp/run
+# stop runit from trying to run gunicorn until we are ready
+$ sudo sv stop myappok: down: myapp: 0s, normally up
+</pre>
+<p>The example run script checked into Gunicorn had some syntax errors
+and wasn't quite what I wanted. Here's my version:</p>
+<pre class="code literal-block">
+#!/bin/sh
+GUNICORN=/home/user/virtualenvs/myapp/bin/gunicorn_django
+ROOT=/home/user/source/myapp
+PID=/var/run/myapp.pid
+
+if [ -f $PID ]
+&nbsp;&nbsp;&nbsp; then rm $PID
+fi
+
+cd $ROOT
+exec $GUNICORN -c $ROOT/gunicorn.conf.py --pid=$PID
+</pre>
+<p>You can create a <a class="reference external" href="http://gunicorn.org/configure.html">configuration file for gunicorn</a>to use or just
+create an empty file for now:</p>
+<pre class="code literal-block">
+$ touch /home/user/source/myapp/gunicorn.conf.py
+</pre>
+<p>If you have multiple appserver you'll need to run gunicorn on
+different ports, you can put the configuration in the gunicorn.conf.py
+file:</p>
+<pre class="literal-block">
+bind = &quot;127.0.0.1:8111&quot;
+</pre>
+</div>
+<div class="section" id="putting-it-together">
+<h2>Putting it Together</h2>
+<p>Now you can test that the run script works when run as root:</p>
+<pre class="literal-block">
+$ sudo /etc/service/myapp/run
+</pre>
+<p>Gunicorn should start and start the appserver. If it fails you can
+debug the script via:</p>
+<pre class="literal-block">
+$ sudo bash -x /etc/service/myapp/run
+</pre>
+<p>Tell runit to start and keep gunicorn running:</p>
+<pre class="literal-block">
+$ sudo sv start myapp
+ok: run: myapp: (pid 7540) 0s
+$ sudo sv status myapp
+run: myapp: (pid 7543) 1s
+</pre>
+</div>
+
+    </div><!-- /.entry-content -->
+    
+  </article>
+</section>
+        <section id="extras" class="body">
+                        <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                                                    <li><a href="http://docs.notmyidea.org/alexis/pelican/">Pelican</a></li>
+                                                    <li><a href="http://python.org">Python.org</a></li>
+                                                    <li><a href="http://jinja.pocoo.org">Jinja2</a></li>
+                                                    <li><a href="#">You can modify those links in your config file</a></li>
+                                                </ul>
+                </div><!-- /.blogroll -->
+                                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="http://tech.agilitynerd.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+                            
+                                                    <li><a href="#">You can add links in your config file</a></li>
+                                                    <li><a href="#">Another social link</a></li>
+                                                </ul>
+                </div><!-- /.social -->
+                </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>tech.agilitynerd.com - devops</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="../theme/css/main.css" type="text/css" />
+                <link href="http://tech.agilitynerd.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="tech.agilitynerd.com Atom Feed" />
+                
+        <!--[if IE]>
+                <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+        <!--[if lte IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="../css/ie.css"/>
+                <script src="../js/IE8.js" type="text/javascript"></script><![endif]-->
+
+        <!--[if lt IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="../css/ie6.css"/><![endif]-->
+
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="../">tech.agilitynerd.com </a></h1>
+                <nav><ul>
+                                                                                                    <li ><a href="../category/about.html">about</a></li>
+                                    <li class="active"><a href="../category/devops.html">devops</a></li>
+                                    <li ><a href="../category/misc.html">misc</a></li>
+                                    <li ><a href="../category/programming.html">programming</a></li>
+                                    <li ><a href="../category/python.html">python</a></li>
+                                    <li ><a href="../category/webdev.html">webdev</a></li>
+                                </ul></nav>
+        </header><!-- /#banner -->
+                
+            
+
+                            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="../notes-on-configuring-postfix-on-ubuntu-gutsy-1.html">Notes on Configuring Postfix on Ubuntu Gutsy to Send Email via Google Apps</a></h1> 
+                    <footer class="post-info">
+        <abbr class="published" title="2008-01-05T23:53:00">
+                Sat 05 January 2008
+        </abbr>
+
+                <address class="vcard author">
+                By <a class="url fn" href="../author/steve-schwarz.html">Steve Schwarz</a>
+        </address>
+        <p>In <a href="../category/devops.html">devops</a>. </p>
+<p>tags: <a href="../tag/postfix.html">postfix</a><a href="../tag/slicehost.html">slicehost</a><a href="../tag/ubuntu.html">ubuntu</a></p>
+</footer><!-- /.post-info --><p>Here are some notes I took on configuring my <a class="reference external" href="http://www.slicehost.com/">Slicehost</a> Ubuntu Gutsy
+installation to use Postfix to send emails via Google Apps. I am far
+from an expert on postfix configuration but maybe these notes will be
+helpful to others needing this configuration.</p>
+<p>These sites contain the key information:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://behindmyscreen.newsvine.com/_news/2006/12/31/501615-configuringubuntu-postfix-and-gmail-in-101-easy-steps">Behind My Screen - Configuring[Ubuntu] Postfix and Gmail in 10+1
+Easy Steps</a></li>
+<li><a class="reference external" href="http://prantran.blogspot.com/2007/01/getting-postfix-to-work-on-ubuntu-with.html">The Prancing Tarantula - Getting Postfix to work on Ubuntu with
+Gmail</a></li>
+<li><a class="reference external" href="http://souptonuts.sourceforge.net/postfix_tutorial.html">Mike Chirico - Gmail on Home Linux Box using Postfix and Fetchmail</a></li>
+</ul>
+<p>I basically followed the Behind My Screen tutorial (read the comments
+too) with the updates from The Prancing Tarantula and the following
+changes.</p>
+<p>My Ubuntu server install didn't have the Thawte certificates installed
+by default so I installed them:</p>
+<pre class="literal-block">
+sudo aptitude install ca-certificates
+</pre>
+<p>Then you can append that file to your /etc/postfix/cacert.pem If you
+&quot;sudo su&quot; before doing the append to the file you won't get messed up by
+the shell:</p>
+<pre class="literal-block">
+$ sudo su
+# cat /etc/ssl/certs/Thawte\_Premium\_Server\_CA.pem &gt;&gt;
+/etc/postfix/cacert.pem
+</pre>
+<p>Since I have Google Apps setup for my domain I don't just want to relay
+email as &quot;<a class="reference external" href="mailto:user&#64;gmail.com">user&#64;gmail.com</a>&quot;, I want the email to be sent as though it
+came from my domain (&quot;<a class="reference external" href="mailto:me&#64;agilitynerd.com">me&#64;agilitynerd.com</a>&quot;). This requires some simple
+changes to the config files.</p>
+<p>In my transport file I have:</p>
+<pre class="literal-block">
+agilitynerd.com smtp:[smtp.gmail.com]:587
+</pre>
+<p>In my generic file I have:</p>
+<pre class="literal-block">
+demo&#64;myservername.agilitynerd.com me&#64;agilitynerd.com
+</pre>
+<p>Where &quot;demo&quot; is the login name and &quot;myservername&quot; is my slicename. In my
+sasl_passwd file I have:</p>
+<pre class="literal-block">
+[smtp.gmail.com]:587 me&#64;agilitynerd.com:me\_gmail\_account\_password
+</pre>
+<p>After restarting postix you can test sending email from your server:</p>
+<pre class="literal-block">
+$ sudo aptitude install mailx
+$ mailx -s &quot;test email&quot; someotheraccount&#64;gmail.com &lt;
+~/sometestfile\_to\_send
+</pre>
+<p>Check your logfiles for errors/warnings:</p>
+<pre class="literal-block">
+sudo tail /var/log/mail.\*
+</pre>
+<p>I hope these notes might help folks &quot;get over the hump&quot; if they are
+setting up the same configuration.</p>
+                </article>
+                            </aside><!-- /#featured -->
+                            <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+                                                
+
+                 
+                        <li><article class="hentry">    
+                <header>
+                    <h1><a href="../backup-your-data-lately-1.html" rel="bookmark"
+                           title="Permalink to Backup Your Data Lately?">Backup Your Data Lately?</a></h1>
+                </header>
+                
+                <div class="entry-content">
+                <footer class="post-info">
+        <abbr class="published" title="2004-08-20T19:00:00">
+                Fri 20 August 2004
+        </abbr>
+
+                <address class="vcard author">
+                By <a class="url fn" href="../author/steve-schwarz.html">Steve Schwarz</a>
+        </address>
+        <p>In <a href="../category/devops.html">devops</a>. </p>
+<p>tags: <a href="../tag/sysadmin.html">sysadmin</a></p>
+</footer><!-- /.post-info -->                <p>A few weeks ago I bought a <a class="reference external" href="http://www.ximeta.com/products/network_drives/netdisk/index.php">Ximeta NetDisk</a> 120 GB external hard drive
+to back up the data on my home computers. There are a number of vendors
+making hard drives that support USB connections; this model is unique in
+that it also supports direct ethernet connections. Unlike more ...</p>
+                <a class="readmore" href="../backup-your-data-lately-1.html">read more</a>
+                                </div><!-- /.entry-content -->
+            </article></li>
+                            </ol><!-- /#posts-list -->
+                            <p class="paginator">
+        Page 1 / 1
+    </p>
+                        </section><!-- /#content -->
+                    <section id="extras" class="body">
+                        <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                                                    <li><a href="http://docs.notmyidea.org/alexis/pelican/">Pelican</a></li>
+                                                    <li><a href="http://python.org">Python.org</a></li>
+                                                    <li><a href="http://jinja.pocoo.org">Jinja2</a></li>
+                                                    <li><a href="#">You can modify those links in your config file</a></li>
+                                                </ul>
+                </div><!-- /.blogroll -->
+                                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="http://tech.agilitynerd.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+                            
+                                                    <li><a href="#">You can add links in your config file</a></li>
+                                                    <li><a href="#">Another social link</a></li>
+                                                </ul>
+                </div><!-- /.social -->
+                </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

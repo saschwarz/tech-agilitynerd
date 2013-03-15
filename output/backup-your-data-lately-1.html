@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>Backup Your Data Lately?</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="./theme/css/main.css" type="text/css" />
+                <link href="http://tech.agilitynerd.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="tech.agilitynerd.com Atom Feed" />
+                
+        <!--[if IE]>
+                <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+        <!--[if lte IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="./css/ie.css"/>
+                <script src="./js/IE8.js" type="text/javascript"></script><![endif]-->
+
+        <!--[if lt IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="./css/ie6.css"/><![endif]-->
+
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="./">tech.agilitynerd.com </a></h1>
+                <nav><ul>
+                                                                                                    <li ><a href="./category/about.html">about</a></li>
+                                    <li class="active"><a href="./category/devops.html">devops</a></li>
+                                    <li ><a href="./category/misc.html">misc</a></li>
+                                    <li ><a href="./category/programming.html">programming</a></li>
+                                    <li ><a href="./category/python.html">python</a></li>
+                                    <li ><a href="./category/webdev.html">webdev</a></li>
+                                </ul></nav>
+        </header><!-- /#banner -->
+        <section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="./backup-your-data-lately-1.html" rel="bookmark"
+           title="Permalink to Backup Your Data Lately?">Backup Your Data Lately?</a></h1>
+          </header>
+
+    <div class="entry-content">
+      <footer class="post-info">
+        <abbr class="published" title="2004-08-20T19:00:00">
+                Fri 20 August 2004
+        </abbr>
+
+                <address class="vcard author">
+                By <a class="url fn" href="./author/steve-schwarz.html">Steve Schwarz</a>
+        </address>
+        <p>In <a href="./category/devops.html">devops</a>. </p>
+<p>tags: <a href="./tag/sysadmin.html">sysadmin</a></p>
+</footer><!-- /.post-info -->      <p>A few weeks ago I bought a <a class="reference external" href="http://www.ximeta.com/products/network_drives/netdisk/index.php">Ximeta NetDisk</a> 120 GB external hard drive
+to back up the data on my home computers. There are a number of vendors
+making hard drives that support USB connections; this model is unique in
+that it also supports direct ethernet connections. Unlike more expensive
+Network Attached Storage devices (more than $ 1000) this unit only cost
+a little more than the hard drive itself; about $ 150. The only downside
+is that it uses it's own proprietary network protocol which requires
+installation of a driver on any computers using the drive.</p>
+<p>My goal was to put this drive on my network switch and back up data from
+my XP, WinME, RedHat 8.0, and Win95 machines. It turns out this was a
+little trickier than I expected. So I spent the better part of the
+morning on a cool, grey Chicago day making this all work.</p>
+<p>The disk comes formatted for NTFS but in order for it to be shared on
+the older Windows platforms and my Linux machine it needs to be
+reformatted to use a FAT32 file system. Windows XP doesn't support
+formatting drives for FAT32 so I had to install the Ximeta driver
+software on my WinME machine and install the NetDisk on my network.</p>
+<p>Running fdisk and reformatting the hard drive is the only &quot;scary&quot; aspect
+of the installation. Choosing the wrong drive or partition would be a
+<em>bad</em> thing. This <a class="reference external" href="http://www.ximeta.com/support/guides/netdisk/ndas/98seme/05.php">document</a> gives a good step by step description.</p>
+<p>I was skeptical that running fdisk over the network would work
+correctly, but it did. At this point I was able to view the drive on
+both my WinME and XP systems and copy data to the drive as if it was
+locally connected.</p>
+<p>I was pretty sure making the drive work for Linux would be difficult.
+Unfortunately, the PDF documents from the Ximeta website are unreadable
+as they require installing the Korean Acrobat extensions... thankfully
+Google has its &quot;View has HTML&quot; facility which let me read the RedHat
+instructions. The docs on the install CDROM are viewable (but don't
+include the RedHat docs).</p>
+<p>I'll spare you all the trial and error but after downloading the <a class="reference external" href="http://www.ximeta.com/support/downloads/red_hat_8/index.php">driver
+RPM</a> from the website and installing it I couldn't configure and
+connect to the drive on the network. It could be that ports required for
+their protocol aren't opened on my Linux machine, but Ximeta doesn't
+give any information on what ports are used by their driver. The admin
+tool gives some cryptic error messages that Googling and the docs didn't
+explain (the docs recommend reinstalling the drivers for any errors...).
+I ended up connecting the drive directly via USB and was able to mount
+the drive and backup my user and system accounts to the disk.</p>
+<p>So it looks like my goal of leaving the drive on the network and copying
+to it from any computer will only work for Windows machines. But at
+least I have a mechanism for backing up all my machines, that is easy
+enough that I'll use it all the time. My next step is looking into
+configuring <a class="reference external" href="http://rsync.samba.org">rsync</a> or a similar mechanism to only backup the changed
+files to the NetDisk.</p>
+<p>In summary, I'd recommend this drive for anyone who is using Windows XP;
+it is plug and play for that operating system. If you are computer savvy
+you can make this hard drive play with other systems too.</p>
+<p>However you do it, <strong>backup your computer!</strong></p>
+
+    </div><!-- /.entry-content -->
+    
+  </article>
+</section>
+        <section id="extras" class="body">
+                        <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                                                    <li><a href="http://docs.notmyidea.org/alexis/pelican/">Pelican</a></li>
+                                                    <li><a href="http://python.org">Python.org</a></li>
+                                                    <li><a href="http://jinja.pocoo.org">Jinja2</a></li>
+                                                    <li><a href="#">You can modify those links in your config file</a></li>
+                                                </ul>
+                </div><!-- /.blogroll -->
+                                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="http://tech.agilitynerd.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+                            
+                                                    <li><a href="#">You can add links in your config file</a></li>
+                                                    <li><a href="#">Another social link</a></li>
+                                                </ul>
+                </div><!-- /.social -->
+                </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

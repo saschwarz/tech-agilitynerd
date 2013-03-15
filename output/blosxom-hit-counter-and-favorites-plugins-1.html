@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>Blosxom - Hit Counter and Favorites Plugins</title>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="./theme/css/main.css" type="text/css" />
+                <link href="http://tech.agilitynerd.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="tech.agilitynerd.com Atom Feed" />
+                
+        <!--[if IE]>
+                <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+        <!--[if lte IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="./css/ie.css"/>
+                <script src="./js/IE8.js" type="text/javascript"></script><![endif]-->
+
+        <!--[if lt IE 7]>
+                <link rel="stylesheet" type="text/css" media="all" href="./css/ie6.css"/><![endif]-->
+
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="./">tech.agilitynerd.com </a></h1>
+                <nav><ul>
+                                                                                                    <li ><a href="./category/about.html">about</a></li>
+                                    <li ><a href="./category/devops.html">devops</a></li>
+                                    <li ><a href="./category/misc.html">misc</a></li>
+                                    <li ><a href="./category/programming.html">programming</a></li>
+                                    <li ><a href="./category/python.html">python</a></li>
+                                    <li class="active"><a href="./category/webdev.html">webdev</a></li>
+                                </ul></nav>
+        </header><!-- /#banner -->
+        <section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="./blosxom-hit-counter-and-favorites-plugins-1.html" rel="bookmark"
+           title="Permalink to Blosxom - Hit Counter and Favorites Plugins">Blosxom - Hit Counter and Favorites Plugins</a></h1>
+          </header>
+
+    <div class="entry-content">
+      <footer class="post-info">
+        <abbr class="published" title="2007-12-29T23:16:00">
+                Sat 29 December 2007
+        </abbr>
+
+                <address class="vcard author">
+                By <a class="url fn" href="./author/steve-schwarz.html">Steve Schwarz</a>
+        </address>
+        <p>In <a href="./category/webdev.html">webdev</a>. </p>
+<p>tags: <a href="./tag/blosxom.html">blosxom</a><a href="./tag/plugin.html">plugin</a></p>
+</footer><!-- /.post-info -->      <p>I added a <a class="reference external" href="http://agilitynerd.com/static/Favorites.html">Favorites page</a> to the side menu of my AgilityNerd site.
+Since then I've been updating it manually about once a month based on
+the AWStats reports from my web hosting provider (HostMagix). This task
+is unnecessarily complicated because AWStats keeps page counts
+independently for each URL, which includes the <a class="reference external" href="http://blosxom.sourceforge.net/">Blosxom</a> flavour
+(filename extension). For my purposes I don't want to distinguish
+between say HitCounterFavorites.html and HitCounterFavorites.htm</p>
+<p>So I decided to write a plugin to track the hits per page and &quot;lump&quot;
+together counts independently from the file extension. This plugin
+allows me to display the hit count of visitors for each page on each
+page. I wrote a second plugin to use the hit count data to automatically
+generate my Favorites page.</p>
+<div class="section" id="hitcounter-plugin">
+<h2>Hitcounter Plugin</h2>
+<p>I based the hitcounter plugin on the categories plugin written by <a class="reference external" href="http://molelog.molehill.org/">Todd
+Larason</a>. The plugin has a couple features of interest:</p>
+<ul>
+<li><p class="first">The <tt class="docutils literal">$reset\_count</tt> flag within the plugin lets you provide a starting
+count value for any page. For example to set a page's count to 10
+append &quot;?count=10&quot; to the page's URL. Disable this flag once you've
+set your counts to avoid mischevious count setting by outsiders.</p>
+</li>
+<li><p class="first">The <tt class="docutils literal">$retrieve\_only\_flavour flag</tt> within the plugin can be set to a
+flavour you want to use for retrieving counts without incrementing
+the count. Use this flavour to view the counts for URLs of interest.</p>
+</li>
+<li><p class="first">You can add filters to the <a href="#id1"><span class="problematic" id="id2">``</span></a>start()` subroutine to exclude certain
+requests from updating your counters. I exclude RSS and Atom feed
+requests from my counts.</p>
+<div class="system-message" id="id1">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">/Users/saschwarz/dev/tech-agilitynerd/content/blosxom-hit-counter-and-favorites-plugins-1.rst</tt>, line 36); <em><a href="#id2">backlink</a></em></p>
+<p>Inline literal start-string without end-string.</p>
+</div>
+</li>
+<li><p class="first">As of version 0.5 you can filter out loading and incrementing page
+counts for specific user agents via the <tt class="docutils literal">ignore\_agents array</tt>.</p>
+</li>
+</ul>
+<p>The hitcounter plugin stores the <tt class="docutils literal"><span class="pre">$blosxom::path</span></tt> as the key in a hash
+whose value is the count of hits. The hash is stored in a file in the
+data directory. The same hash is used for the entire site. As each page
+is &quot;hit&quot; the value is incremented and stored in the <tt class="docutils literal"><span class="pre">$hitcounter::count</span></tt>
+variable. I put this variable in the footer of my pages.</p>
+</div>
+<div class="section" id="favorites-plugin">
+<h2>Favorites Plugin</h2>
+<p>My favorites plugin uses the data file containing the hash of paths and
+counts as its input. This plugin generates an HTML unordered list of the
+most visited URLs with the following configuration options:</p>
+<ul class="simple">
+<li>The <tt class="docutils literal">$num\_entries</tt> variable controls how many URLs are listed.</li>
+<li>The <tt class="docutils literal">$include\_counts</tt> variable controls if directories will be
+included in the list of entries.</li>
+<li>The <tt class="docutils literal">$include\_counts</tt> variable controls whether or not the number of
+counts is appended to each list entry.</li>
+<li>The <tt class="docutils literal">$anchor\_format variable</tt> controls if the full path or only the
+filename is displayed in the list entry.</li>
+<li>The <tt class="docutils literal">$anchor\_link</tt> variable controls whether or not the entry is
+wrapped in an anchor &lt;a&gt;.</li>
+<li>The <tt class="docutils literal">$excludes</tt> variable controls which pages are excluded from
+consideration. I exclude the main URL for my site from showing up in
+the list.</li>
+<li>The <tt class="docutils literal">$groups</tt> array holds regexps that will generate separate unordered
+lists grouping together pages matching each regexp of <tt class="docutils literal">$num\_entries</tt>
+list elements. See the configuration section for an example. I use
+this feature for my Favorites page to group pages for agility and
+tech categories into separate lists.</li>
+<li>The <tt class="docutils literal">$url\_flavour</tt> variable lets you specify the flavour to use for
+anchors to non-category URLs. It defaults to to
+<tt class="docutils literal"><span class="pre">$$blosxom::default\_flavour</span></tt>.</li>
+<li>You can add filters to the <tt class="docutils literal">start()</tt> subroutine to exclude certain
+requests from doing the work to generate the HTML. For example, I
+only run this plugin for my Favorites page.</li>
+</ul>
+<p>When this plugin runs the <tt class="docutils literal"><span class="pre">$favorites::count</span></tt> variable is populated with
+the HTML. I then put this variable in my Favorites.txt page.</p>
+<p>Download version 0.5 of the hitcounter plugin <a class="reference external" href="http://data.agilitynerd.com/downloads/hitcounter">here</a>.</p>
+<p>Download version 0.1 of the favorites plugin
+<a class="reference external" href="http://data.agilitynerd.com/downloads/favorites">here</a>.</p>
+<p>Comments/bug reports are welcome.</p>
+</div>
+
+    </div><!-- /.entry-content -->
+    
+  </article>
+</section>
+        <section id="extras" class="body">
+                        <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                                                    <li><a href="http://docs.notmyidea.org/alexis/pelican/">Pelican</a></li>
+                                                    <li><a href="http://python.org">Python.org</a></li>
+                                                    <li><a href="http://jinja.pocoo.org">Jinja2</a></li>
+                                                    <li><a href="#">You can modify those links in your config file</a></li>
+                                                </ul>
+                </div><!-- /.blogroll -->
+                                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="http://tech.agilitynerd.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+                            
+                                                    <li><a href="#">You can add links in your config file</a></li>
+                                                    <li><a href="#">Another social link</a></li>
+                                                </ul>
+                </div><!-- /.social -->
+                </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>
