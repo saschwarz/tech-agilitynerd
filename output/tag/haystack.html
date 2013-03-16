@@ -1,198 +1,122 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-        <title>tech.agilitynerd.com - haystack</title>
-        <meta charset="utf-8" />
-        <link rel="stylesheet" href="../theme/css/main.css" type="text/css" />
-                <link href="http://tech.agilitynerd.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="tech.agilitynerd.com Atom Feed" />
-                
-        <!--[if IE]>
-                <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-
-        <!--[if lte IE 7]>
-                <link rel="stylesheet" type="text/css" media="all" href="../css/ie.css"/>
-                <script src="../js/IE8.js" type="text/javascript"></script><![endif]-->
-
-        <!--[if lt IE 7]>
-                <link rel="stylesheet" type="text/css" media="all" href="../css/ie6.css"/><![endif]-->
-
-</head>
-
-<body id="index" class="home">
-        <header id="banner" class="body">
-                <h1><a href="../">tech.agilitynerd.com </a></h1>
-                <nav><ul>
-                                                                                                    <li ><a href="../category/about.html">about</a></li>
-                                    <li ><a href="../category/devops.html">devops</a></li>
-                                    <li ><a href="../category/misc.html">misc</a></li>
-                                    <li ><a href="../category/programming.html">programming</a></li>
-                                    <li ><a href="../category/python.html">python</a></li>
-                                    <li ><a href="../category/webdev.html">webdev</a></li>
-                                </ul></nav>
-        </header><!-- /#banner -->
-                
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <title>tech.agilitynerd.com</title>
+    <meta name="description" content="">
+    <meta name="author" content="Steve Schwarz">
+        
+    <!-- Le styles -->
+    <link href="../theme/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+      padding-top: 60px;
+      padding-bottom: 40px;
+      }
+      .sidebar-nav {
+      padding: 9px 0;
+      }
+    </style>
+    <link href="../theme/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="../theme/local.css" rel="stylesheet">
+    <link href="../theme/pygments.css" rel="stylesheet">
+          </head>
+  <body>
+<!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
             
-
-                            <aside id="featured" class="body">
-                <article>
-                    <h1 class="entry-title"><a href="../haystack-search-result-ordering-and-pre-rende.html">Haystack Search Result Ordering and Pre-Rendering Results</a></h1> 
-                    <footer class="post-info">
-        <abbr class="published" title="2010-08-10T03:41:00">
-                Tue 10 August 2010
-        </abbr>
-
-                <address class="vcard author">
-                By <a class="url fn" href="../author/steve-schwarz.html">Steve Schwarz</a>
-        </address>
-        <p>In <a href="../category/webdev.html">webdev</a>. </p>
-<p>tags: <a href="../tag/django.html">django</a><a href="../tag/haystack.html">haystack</a><a href="../tag/search.html">search</a><a href="../tag/whoosh.html">whoosh</a></p>
-</footer><!-- /.post-info --><p>I use <a class="reference external" href="http://haystacksearch.org/">Haystack</a> and the Python <a class="reference external" href="http://whoosh.ca/">Whoosh</a> project to provide search
+    <div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container-fluid">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+      </a>
+      <a class="brand" href="../index.html">tech.agilitynerd.com</a>
+      <div class="nav-collapse collapse">
+	<ul class="nav">
+	  	  	  	  	  	  <li ><a href="../category/devops.html">devops</a></li>
+	  	  <li ><a href="../category/misc.html">misc</a></li>
+	  	  <li ><a href="../category/programming.html">programming</a></li>
+	  	  <li ><a href="../category/python.html">python</a></li>
+	  	  <li ><a href="../category/webdev.html">webdev</a></li>
+	  	</ul>
+	<p class="navbar-text pull-right">
+	  <a class="navbar-link" href="../archives.html">[archives]</a>
+	  <a class="navbar-link" href="../tags.html">[tags]</a>
+	</p>
+      </div><!--/.nav-collapse -->
+    </div>
+  </div>
+</div>
+    <div class="container-fluid">
+      <div class="row-fluid">
+	<div class="span1">&nbsp;</div>
+	<div class="span10">
+	  <div class="row-fluid">
+            <div class="span9">
+	      	      <div class="page-header">
+		<h1>tech.agilitynerd.com <small>haystack</small></h1>
+	      </div>
+	      	      
+<div class='article'>
+  <h2><a href="../haystack-search-result-ordering-and-pre-rende.html">Haystack Search Result Ordering and Pre-Rendering Results</a></h2>
+  <div class="well small"><a class="more" href="../haystack-search-result-ordering-and-pre-rende.html">On 10 Aug 2010 at 0341</a>
+by <a class="url fn" href="../author/steve-schwarz.html">Steve Schwarz</a> in <a href="../category/webdev.html">webdev</a>
+ | <a href="../haystack-search-result-ordering-and-pre-rende.html#disqus_thread">Comments</a></div>
+  <div class="summary"><p>I use <a class="reference external" href="http://haystacksearch.org/">Haystack</a> and the Python <a class="reference external" href="http://whoosh.ca/">Whoosh</a> project to provide search
 over ~3400 articles in my <a class="reference external" href="http://googility.com">Googility.com</a> database. I had originally
 implemented the search in the &quot;simplest way that works&quot;. I was making
 some other enhancement to Googility and noticed the search result page
 had two undesirable&nbsp; behaviors:</p>
 <ol class="arabic simple">
-<li>The ordering of results was basically random for all matching
-articles. For the domain of magazine article search having a bias
-toward the most recent publications would be more desirable.</li>
-<li>Looking at the django-debug-toolbar output each element in the search
-results was hitting the database twice (once for the Article instance
-and again for its corresponding Periodical). So a single result page
-was making as many as 60 database selects.</li>
-</ol>
-<p>Haystack provides mechanisms to help with both of these issues.</p>
-<p>Imposing an Order on the SearchQuerySet</p>
-<p>Haystack models search using an API based on Django's QuerySet. The
-only thing to remember is it performs its queries over the Haystack
-SearchIndex subclass(es) you create instead of over the Django ORM. So
-you define a SearchIndex subclass that contains the data from the
-application's model overwhich you'd like to search. You can also define
-additional fields that can be used to modify the results of the query.
-Here is my magazine Article search index:</p>
-<pre class="code python literal-block">
-<span class="kn">from</span> <span class="nn">haystack.sites</span> <span class="kn">import</span> <span class="n">site</span>
-<span class="kn">from</span> <span class="nn">haystack</span> <span class="kn">import</span> <span class="n">indexes</span>
-<span class="kn">from</span> <span class="nn">periodicals.models</span> <span class="kn">import</span> <span class="n">Article</span>
+<li>The ...</li></ol></div>
+  <div class="tags">Tagged as: <a href="../tag/django.html">django</a> <a href="../tag/haystack.html">haystack</a> <a href="../tag/search.html">search</a> <a href="../tag/whoosh.html">whoosh</a> </div></div>
 
-<span class="k">class</span> <span class="nc">ArticleIndex</span><span class="p">(</span><span class="n">indexes</span><span class="o">.</span><span class="n">SearchIndex</span><span class="p">):</span>
-    <span class="n">text</span> <span class="o">=</span> <span class="n">indexes</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">document</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">use_template</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-    <span class="n">pub_date</span> <span class="o">=</span> <span class="n">indexes</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">model_attr</span><span class="o">=</span><span class="s">'issue__pub_date'</span><span class="p">)</span>
 
-<span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Article</span><span class="p">,</span> <span class="n">ArticleIndex</span><span class="p">)</span><span class="sb">``</span>
-</pre>
-<p>The text field contains the &quot;document&quot; over which the search engine
-(Whoosh) will actually perform the search. I'm using the template
-feature that allows me to use Django templates to format the data
-presented to the search engine.</p>
-<p>I added the pub_date field to the index to allow the matching search
-results to be ordered by the pub_date field. The 'issue__pub_date'
-syntax mirrors the Django QuerySet syntax and means extract the
-&quot;pub_date&quot; attribute of the Article's &quot;issue&quot; attribute (it joins
-Article to Publication and get's the Publication's published date).</p>
-<p>Then the urls.py is modified to change the SearchQuerySet passed to
-the default haystacksearch view to order by the ArticleIndex's pub_date
-attribute:</p>
-<pre class="code python literal-block">
-<span class="kn">from</span> <span class="nn">haystack.views</span> <span class="kn">import</span> <span class="n">SearchView</span>
-<span class="kn">from</span> <span class="nn">haystack.query</span> <span class="kn">import</span> <span class="n">SearchQuerySet</span>
+            </div><!--/span-->
 
-<span class="c"># query results with most recent publication date first</span>
-<span class="n">sqs</span> <span class="o">=</span> <span class="n">SearchQuerySet</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">'-pub_date'</span><span class="p">)</span>
-<span class="n">urlpatterns</span> <span class="o">=</span> <span class="n">patterns</span><span class="p">(</span><span class="s">''</span><span class="p">,</span>
-                       <span class="n">url</span><span class="p">(</span><span class="s">r'^search/'</span><span class="p">,</span>
-                           <span class="n">SearchView</span><span class="p">(</span>
-                               <span class="n">load_all</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-                               <span class="n">searchqueryset</span><span class="o">=</span><span class="n">sqs</span><span class="p">,</span>
-                               <span class="p">),</span>
-                           <span class="n">name</span><span class="o">=</span><span class="s">'haystack_search'</span><span class="p">,</span>
-                           <span class="p">),</span><span class="o">&lt;</span><span class="n">snip</span><span class="o">&gt;</span><span class="sb">``</span>
-</pre>
-<p>Pre-Rendering Result HTML</p>
-<p>Since I have only a few thousand records I decided to follow the
-<a class="reference external" href="http://docs.haystacksearch.org/dev/best_practices.html#avoid-hitting-the-database">Haystack Best Practices for Not Hitting the Database</a>. This solution
-trades space in the Whoosh index files by generating the HTML that will
-be displayed when each article matches along with the data used by
-Whoosh to match articles to search keywords. The changes were pretty
-simple. In the ArticleIndex:</p>
-<pre class="code python literal-block">
-<span class="kn">from</span> <span class="nn">haystack.sites</span> <span class="kn">import</span> <span class="n">site</span>
-<span class="kn">from</span> <span class="nn">haystack</span> <span class="kn">import</span> <span class="n">indexes</span>
-<span class="kn">from</span> <span class="nn">periodicals.models</span> <span class="kn">import</span> <span class="n">Article</span>
+	    <div class="span3">
+	      
+<img src=""/>
+<h4>About</h4>
+<div>
+  <p class="about">I'm Steve Schwarz a software developer in the Chicago area. <a href="/pages/about.html">more</a></p>
+</div>
+<div class="well sidebar-nav">
+    <ul class="nav nav-list">
+    <li class="nav-header">Blogroll</li>
+        <li><a href="http://agilitynerd.com/blog/">agilitynerd.com</a></li>
+        <li><a href="http://agilitycourses.com/">agilitycourses.com</a></li>
+        <li><a href="http://googility.com/">googility.com</a></li>
+      </ul>
+      <ul class="nav nav-list social">
+    <li class="nav-header">Elsewhere</li>
+        <li><a href="http://www.linkedin.com/profile/view?id=10135443">Linked in</a></li>
+        <li><a href="https://github.com/saschwarz">GitHub</a></li>
+      </ul>
+  </div><!--/.well -->
+            </div><!--/span-->
 
-<span class="k">class</span> <span class="nc">ArticleIndex</span><span class="p">(</span><span class="n">indexes</span><span class="o">.</span><span class="n">SearchIndex</span><span class="p">):</span>
-    <span class="n">text</span> <span class="o">=</span> <span class="n">indexes</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">document</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">use_template</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-    <span class="n">pub_date</span> <span class="o">=</span> <span class="n">indexes</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">model_attr</span><span class="o">=</span><span class="s">'issue__pub_date'</span><span class="p">)</span>
-    <span class="c"># pregenerate the search result HTML for an Article</span>
-    <span class="c"># this avoids any database hits when results are processed</span>
-    <span class="c"># at the cost of storing all the data in the Haystack index</span>
-    <span class="n">result_text</span> <span class="o">=</span> <span class="n">indexes</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">indexed</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">use_template</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Article</span><span class="p">,</span> <span class="n">ArticleIndex</span><span class="p">)</span><span class="sb">``</span>
-</pre>
-<p>The use_template keyword requires you to create a Django template file
-that is used during index creation to build the HTML that will be
-displayed. The only peculiarity I found was figuring out where the
-template should live. On my system it was at
-templates/search/indexes/periodicals/article_result_text.txt. I
-understand the periodicals/article_result_text part but I haven't
-looked into where the search/indexes is generated from. I imagine a
-reverse() to find the url for the view and &quot;indexes&quot; is appended to
-that...</p>
-<p>The final change is the template used to display the search results.
-In order to not hit the database the object list generated by the
-haystack SearchView is placed into the context used by the template and
-only the result_text attribute should be accessed:</p>
-<pre class="code xml literal-block">
-{% if page.object_list %}
-<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;search-results-title&quot;</span><span class="nt">&gt;</span>Results <span class="nt">&lt;b&gt;</span>{{page.start_index}}<span class="nt">&lt;/b&gt;</span>  - <span class="nt">&lt;b&gt;</span>{{page.end_index}}<span class="nt">&lt;/b&gt;</span> for <span class="nt">&lt;b&gt;</span>{{query}}<span class="nt">&lt;/b&gt;&lt;/div&gt;</span>
-<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;search-results-list&quot;</span><span class="nt">&gt;</span>
-{% for result in page.object_list %}
-  {{result.result_text|safe}}
-{% endfor %}
-<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;pagination&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;step-links&quot;</span><span class="nt">&gt;</span>
-      {% if page.has_previous %}
-          previous
-      {% endif %}
-      <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;current&quot;</span><span class="nt">&gt;</span>
-          Page {{ page.number }} of {{ page.paginator.num_pages }}
-      <span class="nt">&lt;/span&gt;</span>
-      {% if page.has_next %}
-          next
-      {% endif %}
-    <span class="nt">&lt;/span&gt;</span>
-  <span class="nt">&lt;/div&gt;&lt;/div&gt;</span>{% else %}<span class="nt">&lt;h2&gt;</span>No matching articles found.<span class="nt">&lt;/h2&gt;</span>
-{% endif %}
-</pre>
-<p>The actual result is placed in the template via
-{{result.result_text|safe}} the safe filter is required since the HTML
-doesn't need to be escaped again - it was escaped by Django when it was
-placed into the SearchIndex.</p>
-<p>So now my search results are in reverse chronological order and they
-render using only 3 database queries and at least 10x faster than
-before.</p>
-                </article>
-                                    <p class="paginator">
-        Page 1 / 1
-    </p>
-                            </aside><!-- /#featured -->
-                                                </ol><!-- /#posts-list -->
-                        </section><!-- /#content -->
-                    <section id="extras" class="body">
-                                <div class="social">
-                        <h2>social</h2>
-                        <ul>
-                            <li><a href="http://tech.agilitynerd.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
-                            
-                                                </ul>
-                </div><!-- /.social -->
-                </section><!-- /#extras -->
+	  </div>
+	</div>
+      </div><!--/row-->
 
-        <footer id="contentinfo" class="body">
-                <address id="about" class="vcard body">
-                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
-                </address><!-- /#about -->
+      <hr>
 
-                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
-        </footer><!-- /#contentinfo -->
+      <footer>
+        <p>Powered by <a href="http://alexis.notmyidea.org/pelican/">Pelican</a></p>
+	<p>&copy; Steve Schwarz 2013</p>
+      </footer>
 
-</body>
+    </div><!--/.fluid-container-->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="../theme/js/jquery-1.7.2.min.js"><\/script>')</script>
+      <script src="../theme/bootstrap/js/bootstrap.min.js"></script>
+      <script src="../theme/js/modernizr-2.5.3-respond-1.1.0.min.js"></script>
+
+  </body>
 </html>

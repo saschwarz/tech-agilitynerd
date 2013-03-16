@@ -1,200 +1,164 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-        <title>tech.agilitynerd.com - plugin</title>
-        <meta charset="utf-8" />
-        <link rel="stylesheet" href="../theme/css/main.css" type="text/css" />
-                <link href="http://tech.agilitynerd.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="tech.agilitynerd.com Atom Feed" />
-                
-        <!--[if IE]>
-                <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-
-        <!--[if lte IE 7]>
-                <link rel="stylesheet" type="text/css" media="all" href="../css/ie.css"/>
-                <script src="../js/IE8.js" type="text/javascript"></script><![endif]-->
-
-        <!--[if lt IE 7]>
-                <link rel="stylesheet" type="text/css" media="all" href="../css/ie6.css"/><![endif]-->
-
-</head>
-
-<body id="index" class="home">
-        <header id="banner" class="body">
-                <h1><a href="../">tech.agilitynerd.com </a></h1>
-                <nav><ul>
-                                                                                                    <li ><a href="../category/about.html">about</a></li>
-                                    <li ><a href="../category/devops.html">devops</a></li>
-                                    <li ><a href="../category/misc.html">misc</a></li>
-                                    <li ><a href="../category/programming.html">programming</a></li>
-                                    <li ><a href="../category/python.html">python</a></li>
-                                    <li ><a href="../category/webdev.html">webdev</a></li>
-                                </ul></nav>
-        </header><!-- /#banner -->
-                
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <title>tech.agilitynerd.com</title>
+    <meta name="description" content="">
+    <meta name="author" content="Steve Schwarz">
+        
+    <!-- Le styles -->
+    <link href="../theme/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+      padding-top: 60px;
+      padding-bottom: 40px;
+      }
+      .sidebar-nav {
+      padding: 9px 0;
+      }
+    </style>
+    <link href="../theme/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="../theme/local.css" rel="stylesheet">
+    <link href="../theme/pygments.css" rel="stylesheet">
+          </head>
+  <body>
+<!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
             
+    <div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container-fluid">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+      </a>
+      <a class="brand" href="../index.html">tech.agilitynerd.com</a>
+      <div class="nav-collapse collapse">
+	<ul class="nav">
+	  	  	  	  	  	  <li ><a href="../category/devops.html">devops</a></li>
+	  	  <li ><a href="../category/misc.html">misc</a></li>
+	  	  <li ><a href="../category/programming.html">programming</a></li>
+	  	  <li ><a href="../category/python.html">python</a></li>
+	  	  <li ><a href="../category/webdev.html">webdev</a></li>
+	  	</ul>
+	<p class="navbar-text pull-right">
+	  <a class="navbar-link" href="../archives.html">[archives]</a>
+	  <a class="navbar-link" href="../tags.html">[tags]</a>
+	</p>
+      </div><!--/.nav-collapse -->
+    </div>
+  </div>
+</div>
+    <div class="container-fluid">
+      <div class="row-fluid">
+	<div class="span1">&nbsp;</div>
+	<div class="span10">
+	  <div class="row-fluid">
+            <div class="span9">
+	      	      <div class="page-header">
+		<h1>tech.agilitynerd.com <small>plugin</small></h1>
+	      </div>
+	      	      
+<div class='article'>
+  <h2><a href="../refererblock-version-02-1.html">Refererblock Version 0.2</a></h2>
+  <div class="well small"><a class="more" href="../refererblock-version-02-1.html">On 29 Dec 2007 at 2316</a>
+by <a class="url fn" href="../author/steve-schwarz.html">Steve Schwarz</a> in <a href="../category/webdev.html">webdev</a>
+ | <a href="../refererblock-version-02-1.html#disqus_thread">Comments</a></div>
+  <div class="summary"><p>I came up with two improvements to the first release of my <a class="reference external" href="http://agilitynerd.posterous.com/blosxom-plugin-to-block-referer-spam-1">refererblock
+plugin</a>:</p>
+<ul class="simple">
+<li>If the referer string matches the site's URL it passed immediately
+and isn't checked against the blacklist.</li>
+<li>The blacklist.txt file was being read even if the referer string was
+empty. Now it is ...</li></ul></div>
+  <div class="tags">Tagged as: <a href="../tag/blosxom.html">blosxom</a> <a href="../tag/plugin.html">plugin</a> <a href="../tag/referrer.html">referrer</a> <a href="../tag/spam.html">spam</a> </div></div>
+<div class='article'>
+  <h2><a href="../those-darn-spammersblosxom-hit-counter-and-wr-1.html">Those Darn Spammers Blosxom - Hit Counter and Writeback Changes</a></h2>
+  <div class="well small"><a class="more" href="../those-darn-spammersblosxom-hit-counter-and-wr-1.html">On 11 Aug 2006 at 1900</a>
+by <a class="url fn" href="../author/steve-schwarz.html">Steve Schwarz</a> in <a href="../category/webdev.html">webdev</a>
+ | <a href="../those-darn-spammersblosxom-hit-counter-and-wr-1.html#disqus_thread">Comments</a></div>
+  <div class="summary"><p>Over the past year I'd noticed that comment and trackback spammers had
+been hitting the same dozen or so pages of my blog multiple times daily.
+(It is probably the same person/group who took a snapshot of the
+articles on my front page at that time and just ...</p></div>
+  <div class="tags">Tagged as: <a href="../tag/blosxom.html">blosxom</a> <a href="../tag/plugin.html">plugin</a> <a href="../tag/spam.html">spam</a> </div></div>
+<div class='article'>
+  <h2><a href="../blosxom-plugin-to-block-referer-spam-1.html">Blosxom Plugin to Block Referer Spam</a></h2>
+  <div class="well small"><a class="more" href="../blosxom-plugin-to-block-referer-spam-1.html">On 12 Feb 2005 at 2000</a>
+by <a class="url fn" href="../author/steve-schwarz.html">Steve Schwarz</a> in <a href="../category/webdev.html">webdev</a>
+ | <a href="../blosxom-plugin-to-block-referer-spam-1.html#disqus_thread">Comments</a></div>
+  <div class="summary"><div class="section" id="comment-and-referer-spam">
+<h2>Comment and Referer Spam</h2>
+<p>Like so many other bloggers who allow comments on their websites and
+blog articles, I was facing increasing <a class="reference external" href="http://en.wikipedia.org/wiki/Blog_spam">comment spam</a> as my blog got
+noticed by more spammers. The size of this problem is illustrated by
+<a class="reference external" href="http://www.google.com/search?q=%22comment+spam%22">this Google query for &quot;comment spam&quot;</a> that returned 1.5 ...</p></div></div>
+  <div class="tags">Tagged as: <a href="../tag/blosxom.html">blosxom</a> <a href="../tag/plugin.html">plugin</a> <a href="../tag/spam.html">spam</a> </div></div>
+<div class='article'>
+  <h2><a href="../agilitynerd-blosxom-plugins-1.html">AgilityNerd Blosxom Plugins</a></h2>
+  <div class="well small"><a class="more" href="../agilitynerd-blosxom-plugins-1.html">On 10 Aug 2004 at 1900</a>
+by <a class="url fn" href="../author/steve-schwarz.html">Steve Schwarz</a> in <a href="../category/webdev.html">webdev</a>
+ | <a href="../agilitynerd-blosxom-plugins-1.html#disqus_thread">Comments</a></div>
+  <div class="summary"><div class="section" id="updated-20-jun-08-for-addition-of-storytitle">
+<h2>Updated 20-Jun-08 for addition of storytitle</h2>
+<p>I'm really impressed with the <a class="reference external" href="http://blosxom.sourceforge.net/">Blosxom</a> <a class="reference external" href="http://blosxom.com/documentation/users/plugins.html">plugin</a> mechanism. <a class="reference external" href="http://www.raelity.org/">Rael
+Dornfest</a>, author of Blosxom, put hooks at strategic points in the page
+generation process. At each hook point the main script iterates all the
+plugins present in the plugin directory. Plugins that implement the ...</p></div></div>
+  <div class="tags">Tagged as: <a href="../tag/blosxom.html">blosxom</a> <a href="../tag/perl.html">perl</a> <a href="../tag/plugin.html">plugin</a> </div></div>
 
-                 
-                            <section id="content" class="body">
-                    <ol id="posts-list" class="hfeed" start="4">
-                        <li><article class="hentry">    
-                <header>
-                    <h1><a href="../blosxom-hit-counter-and-favorites-plugins-1.html" rel="bookmark"
-                           title="Permalink to Blosxom - Hit Counter and Favorites Plugins">Blosxom - Hit Counter and Favorites Plugins</a></h1>
-                </header>
-                
-                <div class="entry-content">
-                <footer class="post-info">
-        <abbr class="published" title="2007-12-29T23:16:00">
-                Sat 29 December 2007
-        </abbr>
+<div class="pagination">
+<ul>
+					<li class="prev"><a href="../tag/plugin.html">&larr; Previous</a></li>
+				<li class=""><a href="../tag/plugin.html">1</a></li>
+			<li class="active"><a href="../tag/plugin2.html">2</a></li>
+				<li class="next disabled"><a href="#">&rarr; Next</a></li>
+	</ul>
+</div>
 
-                <address class="vcard author">
-                By <a class="url fn" href="../author/steve-schwarz.html">Steve Schwarz</a>
-        </address>
-        <p>In <a href="../category/webdev.html">webdev</a>. </p>
-<p>tags: <a href="../tag/blosxom.html">blosxom</a><a href="../tag/plugin.html">plugin</a></p>
-</footer><!-- /.post-info -->                <p>I added a <a class="reference external" href="http://agilitynerd.com/static/Favorites.html">Favorites page</a> to the side menu of my AgilityNerd site.
-Since then I've been updating it manually about once a month based on
-the AWStats reports from my web hosting provider (HostMagix). This task
-is unnecessarily complicated because AWStats keeps page counts
-independently for each URL ...</p>
-                <a class="readmore" href="../blosxom-hit-counter-and-favorites-plugins-1.html">read more</a>
-                                </div><!-- /.entry-content -->
-            </article></li>
-                            
+            </div><!--/span-->
 
-                 
-                        <li><article class="hentry">    
-                <header>
-                    <h1><a href="../blosxom-plugins-lastcommented-and-lastread-1.html" rel="bookmark"
-                           title="Permalink to Blosxom Plugins: lastcommented and lastread">Blosxom Plugins: lastcommented and lastread</a></h1>
-                </header>
-                
-                <div class="entry-content">
-                <footer class="post-info">
-        <abbr class="published" title="2007-12-29T23:16:00">
-                Sat 29 December 2007
-        </abbr>
+	    <div class="span3">
+	      
+<img src=""/>
+<h4>About</h4>
+<div>
+  <p class="about">I'm Steve Schwarz a software developer in the Chicago area. <a href="/pages/about.html">more</a></p>
+</div>
+<div class="well sidebar-nav">
+    <ul class="nav nav-list">
+    <li class="nav-header">Blogroll</li>
+        <li><a href="http://agilitynerd.com/blog/">agilitynerd.com</a></li>
+        <li><a href="http://agilitycourses.com/">agilitycourses.com</a></li>
+        <li><a href="http://googility.com/">googility.com</a></li>
+      </ul>
+      <ul class="nav nav-list social">
+    <li class="nav-header">Elsewhere</li>
+        <li><a href="http://www.linkedin.com/profile/view?id=10135443">Linked in</a></li>
+        <li><a href="https://github.com/saschwarz">GitHub</a></li>
+      </ul>
+  </div><!--/.well -->
+            </div><!--/span-->
 
-                <address class="vcard author">
-                By <a class="url fn" href="../author/steve-schwarz.html">Steve Schwarz</a>
-        </address>
-        <p>In <a href="../category/webdev.html">webdev</a>. </p>
-<p>tags: <a href="../tag/blosxom.html">blosxom</a><a href="../tag/plugin.html">plugin</a></p>
-</footer><!-- /.post-info -->                <p>In preparation for an overhaul of my website I wrote two new <a class="reference external" href="http://blosxom.sourceforge.net/">Blosxom</a>
-plugins. The lastread plugin allows me to create a list of links to the
-last <em>n</em> articles that were viewed by readers. The lastcommented plugin
-allows me to create a list of links to the last <em>n ...</em></p>
-                <a class="readmore" href="../blosxom-plugins-lastcommented-and-lastread-1.html">read more</a>
-                                </div><!-- /.entry-content -->
-            </article></li>
-                            
+	  </div>
+	</div>
+      </div><!--/row-->
 
-                 
-                        <li><article class="hentry">    
-                <header>
-                    <h1><a href="../blosxom-removing-the-unknown-flavour-error-1.html" rel="bookmark"
-                           title="Permalink to Blosxom - Removing the Unknown Flavour Error">Blosxom - Removing the Unknown Flavour Error</a></h1>
-                </header>
-                
-                <div class="entry-content">
-                <footer class="post-info">
-        <abbr class="published" title="2007-12-29T23:16:00">
-                Sat 29 December 2007
-        </abbr>
+      <hr>
 
-                <address class="vcard author">
-                By <a class="url fn" href="../author/steve-schwarz.html">Steve Schwarz</a>
-        </address>
-        <p>In <a href="../category/webdev.html">webdev</a>. </p>
-<p>tags: <a href="../tag/blosxom.html">blosxom</a><a href="../tag/plugin.html">plugin</a></p>
-</footer><!-- /.post-info -->                <p>After my <a class="reference external" href="/blosxom-plugin-to-block-referer-spam-1.html">recent Referer Spam attacks</a> I've been checking my logs and
-<a class="reference external" href="http://awstats.sourceforge.net">AWStats</a> reports daily. I noticed that occasionally I'd get people
-requesting pages with incorrect suffixes. i.e. foo.ht or bar.|id|
-(some of these are probably spammers too). A &quot;feature&quot; of <a class="reference external" href="http://blosxom.sourceforge.net/">Blosxom</a> is
-that it ...</p>
-                <a class="readmore" href="../blosxom-removing-the-unknown-flavour-error-1.html">read more</a>
-                                </div><!-- /.entry-content -->
-            </article></li>
-                            
+      <footer>
+        <p>Powered by <a href="http://alexis.notmyidea.org/pelican/">Pelican</a></p>
+	<p>&copy; Steve Schwarz 2013</p>
+      </footer>
 
-                 
-                        <li><article class="hentry">    
-                <header>
-                    <h1><a href="../directing-search-engines-to-blosxom-content-p-1.html" rel="bookmark"
-                           title="Permalink to Directing Search Engines to Blosxom Content Pages">Directing Search Engines to Blosxom Content Pages</a></h1>
-                </header>
-                
-                <div class="entry-content">
-                <footer class="post-info">
-        <abbr class="published" title="2007-12-29T23:16:00">
-                Sat 29 December 2007
-        </abbr>
+    </div><!--/.fluid-container-->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="../theme/js/jquery-1.7.2.min.js"><\/script>')</script>
+      <script src="../theme/bootstrap/js/bootstrap.min.js"></script>
+      <script src="../theme/js/modernizr-2.5.3-respond-1.1.0.min.js"></script>
 
-                <address class="vcard author">
-                By <a class="url fn" href="../author/steve-schwarz.html">Steve Schwarz</a>
-        </address>
-        <p>In <a href="../category/webdev.html">webdev</a>. </p>
-<p>tags: <a href="../tag/blosxom.html">blosxom</a><a href="../tag/plugin.html">plugin</a></p>
-</footer><!-- /.post-info -->                <p>I've noticed that folks who come to my site by querying through a search
-engine often end up on my main page and the article they are searching
-for has already rolled off the front page. This is because the search
-engine robots tend to choose the index pages ...</p>
-                <a class="readmore" href="../directing-search-engines-to-blosxom-content-p-1.html">read more</a>
-                                </div><!-- /.entry-content -->
-            </article></li>
-                            
-
-                 
-                        <li><article class="hentry">    
-                <header>
-                    <h1><a href="../modifications-to-blosxom-entriescache-pluginh-1.html" rel="bookmark"
-                           title="Permalink to Modifications to Blosxom entriescache PluginHandles Articles With Future meta-creation_date">Modifications to Blosxom entriescache PluginHandles Articles With Future meta-creation_date</a></h1>
-                </header>
-                
-                <div class="entry-content">
-                <footer class="post-info">
-        <abbr class="published" title="2007-12-29T23:16:00">
-                Sat 29 December 2007
-        </abbr>
-
-                <address class="vcard author">
-                By <a class="url fn" href="../author/steve-schwarz.html">Steve Schwarz</a>
-        </address>
-        <p>In <a href="../category/webdev.html">webdev</a>. </p>
-<p>tags: <a href="../tag/blosxom.html">blosxom</a><a href="../tag/plugin.html">plugin</a></p>
-</footer><!-- /.post-info -->                <p><a class="reference external" href="http://fletcher.freeshell.org">Fletcher Penney</a> created the original <a class="reference external" href="http://fletcher.freeshell.org/computers/web/blosxom/entries_cache/">entriescache</a> <a class="reference external" href="http://blosxom.sourceforge.net/">Blosxom</a>
-plugin. It is designed to cache all the articles and their creation
-dates in a Blosxom blog to avoid the overhead of scanning the file
-system for new/modified files. He merged the meta plugin functionality
-into the plugin to allow authors to ...</p>
-                <a class="readmore" href="../modifications-to-blosxom-entriescache-pluginh-1.html">read more</a>
-                                </div><!-- /.entry-content -->
-            </article></li>
-                            </ol><!-- /#posts-list -->
-                            <p class="paginator">
-                        <a href="../tag/plugin.html">&laquo;</a>
-                Page 2 / 3
-            <a href="../tag/plugin3.html">&raquo;</a>
-    </p>
-                        </section><!-- /#content -->
-                    <section id="extras" class="body">
-                                <div class="social">
-                        <h2>social</h2>
-                        <ul>
-                            <li><a href="http://tech.agilitynerd.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
-                            
-                                                </ul>
-                </div><!-- /.social -->
-                </section><!-- /#extras -->
-
-        <footer id="contentinfo" class="body">
-                <address id="about" class="vcard body">
-                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
-                </address><!-- /#about -->
-
-                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
-        </footer><!-- /#contentinfo -->
-
-</body>
+  </body>
 </html>

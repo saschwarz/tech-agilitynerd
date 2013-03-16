@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd.com</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://tech.agilitynerd.com/feeds/webdev.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2013-01-21T02:00:00-06:00</updated><entry><title>Google Analytics for JQuery Mobile With Internal and AJAX Pages</title><link href="http://tech.agilitynerd.com/google-analytics-for-jquery-mobile-withwithou.html" rel="alternate"></link><updated>2013-01-21T02:00:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2013-01-21:google-analytics-for-jquery-mobile-withwithou.html</id><summary type="html">&lt;p&gt;I added google analytics to my &lt;a class="reference external" href="http://agilitycourses.com"&gt;agilitycourses.com&lt;/a&gt;&amp;nbsp;website and was
+<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd.com</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://feeds.feedburner.com/feeds/webdev.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2013-01-21T02:00:00-06:00</updated><entry><title>Google Analytics for JQuery Mobile With Internal and AJAX Pages</title><link href="http://tech.agilitynerd.com/google-analytics-for-jquery-mobile-withwithou.html" rel="alternate"></link><updated>2013-01-21T02:00:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2013-01-21:google-analytics-for-jquery-mobile-withwithou.html</id><summary type="html">&lt;p&gt;I added google analytics to my &lt;a class="reference external" href="http://agilitycourses.com"&gt;agilitycourses.com&lt;/a&gt;&amp;nbsp;website and was
 having problems getting the mobile version of the site to log analytics
 data after the first page. Google found this very helpful blog
 post:&amp;nbsp;&lt;a class="reference external" href="http://www.jongales.com/blog/2011/01/10/google-analytics-and-jquery-mobile/"&gt;Using Google Analytics with jQuery Mobile&lt;/a&gt;&amp;nbsp;and it got me very
@@ -1479,7 +1479,7 @@ RewriteRule .\*.(jpg\|jpeg\|gif\|png\|bmp)$ /images/nodirectlink.g [L,NC]
 &lt;div class="p_embed p_image_embed"&gt;&lt;p&gt;&lt;img alt="image0" src="http://data.agilitynerd.com/images/nodirectlink.g" /&gt;&lt;/p&gt;
 &lt;/div&gt;&lt;p&gt;Don't use the same filename suffix as one of the real image filenames
 you use or you'll loop the rewrite engine.&lt;/p&gt;
-&lt;p&gt;I had forgotten about images direct linked by [[RSS]] feed readers that
+&lt;p&gt;I had forgotten about images direct linked by RSS feed readers that
 access the root. Rather than rewrite those requests I moved my Rewrite
 rules into the .htaccess file in the images directory. I also decided to
 not send the image after all, I'll just fail the request. There is no
@@ -1495,7 +1495,7 @@ RewriteRule .\*.(jpg\|jpeg\|gif\|png\|bmp)$ - [F]
 &lt;/pre&gt;
 &lt;p&gt;I took this opportunity to modify some of my very first articles and
 move their images into the /images directory. Those images were being
-served by the [[Blosxom]] binary plugin back when I thought it was a
+served by the Blosxom binary plugin back when I thought it was a
 good idea. Now I won't pay any extra processing cost for those images.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="section" id="conclusion"&gt;
@@ -1864,7 +1864,7 @@ printed media.&lt;/p&gt;
 &lt;p&gt;Any CSS book covers the basics of changing the display,
 position, margins, and padding along with the use of separate style
 sheets forprint and screen media. But I ran into problems with printing
-mysite's pages with the [[Mozilla]]/[[NN Netscape]] browsers. Only
+mysite's pages with the Mozilla/Netscape browsers. Only
 the first page of my main div would print. Alittle Googling turned up
 this excellent &lt;a class="reference external" href="http://www.alistapart.com/articles/goingtoprint/"&gt;article&lt;/a&gt; on &lt;a class="reference external" href="http://www.alistapart.com"&gt;A ListApart&lt;/a&gt;. ALA is a great resource for
 web developers.&lt;/p&gt;
@@ -1969,7 +1969,7 @@ the script&lt;/a&gt; to have paths resolve correctly.&lt;/p&gt;
 &lt;p&gt;&lt;a class="reference external" href="http://www.blosxom.com/plugins/general/redirect.htm"&gt;redirect&lt;/a&gt; - Unmodified version of this plugin. I had to use it when I
 moved a directory within my tree so search engine and email list links
 would redirect correctly.&lt;/p&gt;
-&lt;p&gt;[[refererblock refererblock]] - A blacklist driven plugin to permanently
+&lt;p&gt;&lt;a class="reference external" href="/refererblock-version-02-1.html"&gt;refererblock&lt;/a&gt; - A blacklist driven plugin to permanently
 redirect referer spam. The redirect probably has little effect on the
 receipt of referer spam but the 301 redirect code keeps the spammer's
 sites out of my site statistics.&lt;/p&gt;
@@ -1995,13 +1995,12 @@ meta-creation_date: to be offset correctly to my timezone; which is
 different from the web server's timezone.&lt;/p&gt;
 &lt;p&gt;I no longer use timezone since I can set the timezone on my
 Slicehost server.&lt;/p&gt;
-&lt;p&gt;[[DefaultFlavourPlugin defaultflavour]] - Provides the user with the
+&lt;p&gt;&lt;a class="reference external" href="/blosxom-default-flavour-plugin-fixes-unknown-1.html"&gt;defaultflavour&lt;/a&gt; - Provides the user with the
 default Blosxom flavoured feed when an unknown flavour is requested.
 This keeps the user from getting the Unknown Flavour error across the
 top of the page.&lt;/p&gt;
 &lt;p&gt;&lt;a class="reference external" href="http://varg.dyndns.org/psi/pub/code/misc/wbcaptcha.html"&gt;wbcaptcha&lt;/a&gt; - Provides an ASCII image via &lt;a class="reference external" href="http://www.figlet.org"&gt;FIGlet&lt;/a&gt; when visitors enter
-comments to stop spam bots from saturating my blog comments. [[wbcaptcha
-See this article for my modifications]] to this plugin.&lt;/p&gt;
+comments to stop spam bots from saturating my blog comments. See this article for &lt;a class="reference external" href="/comment-spam-and-wbcaptcha-plugin-enhancement-1.html"&gt;my modifications&lt;/a&gt; to this plugin.&lt;/p&gt;
 &lt;p&gt;&lt;a class="reference external" href="http://www.blosxom.com/plugins/text/wikiwordish.htm"&gt;wikiwordish&lt;/a&gt; - Provides WikiWord-like linking to Wiki articles, local
 article file names and modified to replace WikiWords with HTML &amp;lt;a&amp;gt;
 links. This plugin saves me from having to enter links to common sites

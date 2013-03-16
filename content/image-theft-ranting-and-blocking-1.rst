@@ -102,7 +102,7 @@ Redirected Image
 Don't use the same filename suffix as one of the real image filenames
 you use or you'll loop the rewrite engine.
 
-I had forgotten about images direct linked by [[RSS]] feed readers that
+I had forgotten about images direct linked by RSS feed readers that
 access the root. Rather than rewrite those requests I moved my Rewrite
 rules into the .htaccess file in the images directory. I also decided to
 not send the image after all, I'll just fail the request. There is no
@@ -118,7 +118,7 @@ my final solution::
 
 I took this opportunity to modify some of my very first articles and
 move their images into the /images directory. Those images were being
-served by the [[Blosxom]] binary plugin back when I thought it was a
+served by the Blosxom binary plugin back when I thought it was a
 good idea. Now I won't pay any extra processing cost for those images.
 
 Conclusion

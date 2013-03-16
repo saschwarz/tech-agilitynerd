@@ -126,7 +126,7 @@ the script`_ to have paths resolve correctly.
 moved a directory within my tree so search engine and email list links
 would redirect correctly.
 
-[[refererblock refererblock]] - A blacklist driven plugin to permanently
+`refererblock`_ - A blacklist driven plugin to permanently
 redirect referer spam. The redirect probably has little effect on the
 receipt of referer spam but the 301 redirect code keeps the spammer's
 sites out of my site statistics.
@@ -160,14 +160,13 @@ different from the web server's timezone.
 I no longer use timezone since I can set the timezone on my
 Slicehost server.
 
-[[DefaultFlavourPlugin defaultflavour]] - Provides the user with the
+`defaultflavour`_ - Provides the user with the
 default Blosxom flavoured feed when an unknown flavour is requested.
 This keeps the user from getting the Unknown Flavour error across the
 top of the page.
 
 `wbcaptcha`_ - Provides an ASCII image via `FIGlet`_ when visitors enter
-comments to stop spam bots from saturating my blog comments. [[wbcaptcha
-See this article for my modifications]] to this plugin.
+comments to stop spam bots from saturating my blog comments. See this article for `my modifications`_ to this plugin.
 
 `wikiwordish`_ - Provides WikiWord-like linking to Wiki articles, local
 article file names and modified to replace WikiWords with HTML <a>
@@ -251,3 +250,6 @@ them named as follows:
 .. _hitcounter: /blosxom-hit-counter-and-favorites-plugins-1.html
 .. _lastcommented: /blosxom-plugins-lastcommented-and-lastread-1.html
 .. _lastread: /blosxom-plugins-lastcommented-and-lastread-1.html
+.. _refererblock: /refererblock-version-02-1.html
+.. _defaultflavour: /blosxom-default-flavour-plugin-fixes-unknown-1.html
+.. _my modifications: /comment-spam-and-wbcaptcha-plugin-enhancement-1.html

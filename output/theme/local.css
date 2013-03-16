@@ -1,0 +1,87 @@
+body { padding-top: 60px; }
+div.article { padding-top: 20px; }
+div.article h2 { padding-bottom: 10px; }
+
+div.highlight pre {
+  background-color: #fefbf3;
+  margin: 0 0 10px;
+}
+
+.well.small {
+	padding: 6px 6px 4px;
+}
+
+.btn.xsmall {
+  padding: 1px 3px 1px;
+  font-size: 11px;
+}
+
+.summary * { display: inline; }
+.summary pre { display: none; }
+
+.social a[href*='atom.xml']:before {content: url('./images/icons/rss.png'); margin-right: 2px; vertical-align: -3px;}
+.social a[href*='bitbucket.org']:before {content: url('./images/icons/bitbucket.png'); margin-right: 2px; vertical-align: -3px;}
+.social a[href*='delicious.com']:before {content: url('./images/icons/delicious.png'); margin-right: 2px; vertical-align: -3px;}
+.social a[href*='digg.com']:before {content: url('./images/icons/digg.png'); margin-right: 2px; vertical-align: -3px;}
+.social a[href*='facebook.com']:before {content: url('./images/icons/facebook.png'); margin-right: 2px; vertical-align: -3px;}
+.social a[href*='github.com']:before {content: url('./images/icons/github.png'); margin-right: 2px; vertical-align: -3px;}
+.social a[href*='google.com/reader']:before {content: url('./images/icons/reader.png'); margin-right: 2px; vertical-align: -3px;}
+.social a[href*='linkedin.com']:before {content: url('./images/icons/linkedin.png'); margin-right: 2px; vertical-align: -3px;}
+.social a[href*='rss.xml']:before {content: url('./images/icons/rss.png'); margin-right: 2px; vertical-align: -3px;}
+.social a[href*='stackoverflow.com']:before {content: url('./images/icons/stackoverflow.png'); margin-right: 2px; vertical-align: -3px;}
+.social a[href*='twitter.com']:before {content: url('./images/icons/twitter.png'); margin-right: 2px; vertical-align: -3px;}
+
+.tag-cloud {text-align:justify;}
+.tag-cloud li {display: inline; margin:0.8em; line-height:1.5em;}
+
+.tag-0 {font-size: 0.8em;}
+.tag-1 {font-size: 1.0em;}
+.tag-2 {font-size: 1.2em;}
+.tag-3 {font-size: 1.4em;}
+
+.page-header {margin: 20px 0 0}
+
+body {
+    font-size: 1.2em;
+    line-height: 1.6em;
+}
+.article li {
+    line-height: 1.6em;
+}
+.well, .nav-header {
+    font-size: 0.8em;
+}
+
+.navbar .nav, .navbar-text {
+    padding-top: 5px;
+}
+
+h1 {
+    font-size: 1.7em;
+}
+
+h2 {
+    font-size: 1.5em;
+}
+
+h3 {
+    font-size: 1.3em;
+}
+.small {
+    font-size: 0.8em;
+}
+.tags {
+    font-size: 0.8em;
+}
+
+a { 
+    color: rgb(23, 135, 190);
+}
+
+footer, .about {
+    font-size: 0.9em;
+}
+
+.pagination {
+    text-align: center;
+}

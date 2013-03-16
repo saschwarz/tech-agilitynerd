@@ -14,7 +14,7 @@ printed media.
 Any CSS book covers the basics of changing the display,
 position, margins, and padding along with the use of separate style
 sheets forprint and screen media. But I ran into problems with printing
-mysite's pages with the [[Mozilla]]/[[NN Netscape]] browsers. Only
+mysite's pages with the Mozilla/Netscape browsers. Only
 the first page of my main div would print. Alittle Googling turned up
 this excellent `article`_ on `A ListApart`_. ALA is a great resource for
 web developers.
