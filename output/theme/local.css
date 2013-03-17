@@ -34,9 +34,54 @@ div.highlight pre {
 .tag-cloud {text-align:justify;}
 .tag-cloud li {display: inline; margin:0.8em; line-height:1.5em;}
 
-.tag-0 {font-size: 1.0em;}
-.tag-1 {font-size: 1.2em;}
-.tag-2 {font-size: 1.4em;}
-.tag-3 {font-size: 1.6em;}
+.tag-0 {font-size: 0.8em;}
+.tag-1 {font-size: 1.0em;}
+.tag-2 {font-size: 1.2em;}
+.tag-3 {font-size: 1.4em;}
 
 .page-header {margin: 20px 0 0}
+
+body {
+    font-size: 1.2em;
+    line-height: 1.6em;
+}
+.article li {
+    line-height: 1.6em;
+}
+.well, .nav-header {
+    font-size: 0.8em;
+}
+
+.navbar .nav, .navbar-text {
+    padding-top: 5px;
+}
+
+h1 {
+    font-size: 1.7em;
+}
+
+h2 {
+    font-size: 1.5em;
+}
+
+h3 {
+    font-size: 1.3em;
+}
+.small {
+    font-size: 0.8em;
+}
+.tags {
+    font-size: 0.8em;
+}
+
+a { 
+    color: rgb(23, 135, 190);
+}
+
+footer, .about {
+    font-size: 0.9em;
+}
+
+.pagination {
+    text-align: center;
+}

@@ -11,7 +11,7 @@
         <link href="http://feeds.feedburner.com/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd.com Atom Feed" />
         
     <!-- Le styles -->
-    <link href="http://tech.agilitynerd.com/theme/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./theme/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
       body {
       padding-top: 60px;
@@ -21,29 +21,10 @@
       padding: 9px 0;
       }
     </style>
-    <link href="http://tech.agilitynerd.com/theme/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
-    <link href="http://tech.agilitynerd.com/theme/local.css" rel="stylesheet">
-    <link href="http://tech.agilitynerd.com/theme/pygments.css" rel="stylesheet">
-    <script>var _gaq=[['_setAccount','UA-1127677-3'],['_trackPageview']];(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.src='//www.google-analytics.com/ga.js';s.parentNode.insertBefore(g,s)}(document,'script'))</script>
-    <script type="text/javascript">
-  var disqus_shortname = "techagilitynerd"; // required: replace example with your forum shortname
-  var disqus_developer = 1;
-  
-    var disqus_identifier = "embedding-json-within-generated-html.html";
-  (function() {
-  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-  dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
-  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-  })();
-  
-  (function () {
-  var s = document.createElement('script'); s.async = true;
-  s.type = 'text/javascript';
-  s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
-  (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
-  }());
-</script>
-  </head>
+    <link href="./theme/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="./theme/local.css" rel="stylesheet">
+    <link href="./theme/pygments.css" rel="stylesheet">
+          </head>
   <body>
 <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
             
@@ -55,18 +36,18 @@
 	<span class="icon-bar"></span>
 	<span class="icon-bar"></span>
       </a>
-      <a class="brand" href="http://tech.agilitynerd.com/index.html">tech.agilitynerd.com</a>
+      <a class="brand" href="./index.html">tech.agilitynerd.com</a>
       <div class="nav-collapse collapse">
 	<ul class="nav">
-	  	  	  	  	  	  <li ><a href="http://tech.agilitynerd.com/category/devops.html">devops</a></li>
-	  	  <li ><a href="http://tech.agilitynerd.com/category/misc.html">misc</a></li>
-	  	  <li ><a href="http://tech.agilitynerd.com/category/programming.html">programming</a></li>
-	  	  <li ><a href="http://tech.agilitynerd.com/category/python.html">python</a></li>
-	  	  <li class="active"><a href="http://tech.agilitynerd.com/category/webdev.html">webdev</a></li>
+	  	  	  	  	  	  <li ><a href="./category/devops.html">devops</a></li>
+	  	  <li ><a href="./category/misc.html">misc</a></li>
+	  	  <li ><a href="./category/programming.html">programming</a></li>
+	  	  <li ><a href="./category/python.html">python</a></li>
+	  	  <li class="active"><a href="./category/webdev.html">webdev</a></li>
 	  	</ul>
 	<p class="navbar-text pull-right">
-	  <a class="navbar-link" href="http://tech.agilitynerd.com/archives.html">[archives]</a>
-	  <a class="navbar-link" href="http://tech.agilitynerd.com/tags.html">[tags]</a>
+	  <a class="navbar-link" href="./archives.html">[archives]</a>
+	  <a class="navbar-link" href="./tags.html">[tags]</a>
 	</p>
       </div><!--/.nav-collapse -->
     </div>
@@ -80,9 +61,9 @@
             <div class="span9">
 	      	      <div class='article'>
   <div class="page-header"><h1>Embedding JSON Within Generated HTML</h1></div>
-  <div class="well small"><a class="more" href="http://tech.agilitynerd.com/embedding-json-within-generated-html.html">On 08 Jul 2010 at 2103</a>
-by <a class="url fn" href="http://tech.agilitynerd.com/author/steve-schwarz.html">Steve Schwarz</a> in <a href="http://tech.agilitynerd.com/category/webdev.html">webdev</a>
- | <a href="http://tech.agilitynerd.com/embedding-json-within-generated-html.html#disqus_thread">Comments</a></div>
+  <div class="well small"><a class="more" href="./embedding-json-within-generated-html.html">On 08 Jul 2010 at 2103</a>
+by <a class="url fn" href="./author/steve-schwarz.html">Steve Schwarz</a> in <a href="./category/webdev.html">webdev</a>
+ | <a href="./embedding-json-within-generated-html.html#disqus_thread">Comments</a></div>
   <div><p>Ran into an interesting problem at work this past week that had a simple
 and pleasing resolution. We have an in house developed JavaScript grid
 on some of our pages and when users entered some text strings we'd
@@ -165,12 +146,6 @@ request from the page to the server, but for now this simplifies the
 markup and handles all types of user input and HTML encoded characters
 correctly.</p>
 </div>
-    <div>
-    <h2>Comments</h2>
-            <div id="disqus_thread"></div>
-    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-          </div>
   </div>	
             </div><!--/span-->
 
@@ -209,9 +184,9 @@ correctly.</p>
 
     </div><!--/.fluid-container-->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="http://tech.agilitynerd.com/theme/js/jquery-1.7.2.min.js"><\/script>')</script>
-      <script src="http://tech.agilitynerd.com/theme/bootstrap/js/bootstrap.min.js"></script>
-      <script src="http://tech.agilitynerd.com/theme/js/modernizr-2.5.3-respond-1.1.0.min.js"></script>
+    <script>window.jQuery || document.write('<script src="./theme/js/jquery-1.7.2.min.js"><\/script>')</script>
+      <script src="./theme/bootstrap/js/bootstrap.min.js"></script>
+      <script src="./theme/js/modernizr-2.5.3-respond-1.1.0.min.js"></script>
 
   </body>
 </html>

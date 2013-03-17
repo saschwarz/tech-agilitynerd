@@ -6,8 +6,8 @@ Feed2JS - Adding AgilityNerd Headlines to Your Website
 :tags: syndication
 :slug: feed2js-adding-agilitynerd-headlines-to-your-1
 
-Updated 16-Aug-2006 to reflect Feed2JS's move to http://feed2js.org
--------------------------------------------------------------------
+
+**Updated 16-Aug-2006 to reflect Feed2JS's move to http://feed2js.org**
 
 I never thought anyone would want me to `syndicate`_ my blog and put
 links to my latest articles on their website. But Marj Kibby in

@@ -6,8 +6,6 @@ Blosxom Plugin to Block Referer Spam
 :tags: blosxom, plugin, spam
 :slug: blosxom-plugin-to-block-referer-spam-1
 
-Comment and Referer Spam
-------------------------
 
 Like so many other bloggers who allow comments on their websites and
 blog articles, I was facing increasing `comment spam`_ as my blog got
