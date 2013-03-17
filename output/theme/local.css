@@ -30,3 +30,13 @@ div.highlight pre {
 .social a[href*='rss.xml']:before {content: url('./images/icons/rss.png'); margin-right: 2px; vertical-align: -3px;}
 .social a[href*='stackoverflow.com']:before {content: url('./images/icons/stackoverflow.png'); margin-right: 2px; vertical-align: -3px;}
 .social a[href*='twitter.com']:before {content: url('./images/icons/twitter.png'); margin-right: 2px; vertical-align: -3px;}
+
+.tag-cloud {text-align:justify;}
+.tag-cloud li {display: inline; margin:0.8em; line-height:1.5em;}
+
+.tag-0 {font-size: 1.0em;}
+.tag-1 {font-size: 1.2em;}
+.tag-2 {font-size: 1.4em;}
+.tag-3 {font-size: 1.6em;}
+
+.page-header {margin: 20px 0 0}
