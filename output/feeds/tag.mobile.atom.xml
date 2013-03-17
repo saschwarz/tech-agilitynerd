@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd.com</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://tech.agilitynerd.com/feeds/tag.mobile.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2010-10-05T14:34:00-05:00</updated><entry><title>Mobile Web Site Redirects in Django</title><link href="http://tech.agilitynerd.com/conditional-mobile-web-site-redirect-in-djang.html" rel="alternate"></link><updated>2010-10-05T14:34:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-10-05:conditional-mobile-web-site-redirect-in-djang.html</id><summary type="html">&lt;p&gt;For the mobile version of agilitycourses.com I wanted to follow the
+approach Google appears to be using on some of its sites:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;If the user views agilitycourses.com from a desktop browser they
+should see the standard/desktop version of the site.&lt;/li&gt;
+&lt;li&gt;If the user views agilitycourses.com from a mobile browser they
+should be redirected to a mobile domain (m.agilitycourses.com).&lt;/li&gt;
+&lt;li&gt;The mobile version of the website includes a link to the standard
+version.&lt;/li&gt;
+&lt;li&gt;If the mobile user chooses the standard website they should &amp;quot;stick&amp;quot;
+on that site and not be redirected to the mobile site.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I wanted to run two different websites but share templates and have the
+templates and css change for the mobile site. That meant that I'd need
+to set a variable(s) in the request to use to generate the appropriate
+HTML. So I found the simplest mobile device detector &lt;a class="reference external" href="http://code.google.com/p/minidetector/"&gt;minidetector&lt;/a&gt; and
+initially used that. I later found &lt;a class="reference external" href="http://github.com/shelfworthy/minidetector"&gt;Chris Drackett's fork&lt;/a&gt; has a number
+of useful enhancements and switched to it.&lt;/p&gt;
+&lt;p&gt;But minidetector didn't provide the ability to redirect to another site.
+I found &lt;a class="reference external" href="http://www.packtpub.com/article/multiple-templates-in-django"&gt;Scott Newman's article&lt;/a&gt; on using multiple templates which had
+a section on performing the redirect and storing the user's selection in
+the session. So I forked Chris' minidetector and modified it to include
+the redirect and session storage. At the same time I decided to store
+all the minidetector variables into the session and add them, via
+middleware, to the request so the raw request wouldn't have to be parsed
+each time. My fork is &lt;a class="reference external" href="http://github.com/saschwarz/minidetector"&gt;available here&lt;/a&gt; with details on the new
+configuration options.&lt;/p&gt;
+&lt;p&gt;I'm using two domains so I can track analytics for the mobile and
+non-mobile sites separately and allow users to bookmark the desired
+site's pages. I use Google Analytics (via django-google-analytics) and
+Awstats for analytics.&lt;/p&gt;
+&lt;p&gt;Since I'm using two separate domain and sharing everything else I'm
+using a setup similar to the one described by &lt;a class="reference external" href="http://www.nerdydork.com/mobile-app-on-subdomain-with-django.html"&gt;Dustin Davis&lt;/a&gt;. I have a
+settings.py file and a mobile_settings.py that only overrides the
+features I need:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+from settings import *
+SITE_ID = 2
+CACHE_MIDDLEWARE_KEY_PREFIX = &amp;quot;m.ac-&amp;quot;
+&lt;/pre&gt;
+&lt;p&gt;I use a different memcached key prefix so the cached pages for the
+mobile site don't clash with those for the desktop site.&lt;/p&gt;
+&lt;p&gt;I setup m.agilitycourses on my server using the same &lt;a class="reference external" href="http://tech.agilitynerd.com/configuring-runit-for-gunicorn-and-django-ins"&gt;Gunicorn setup I
+used for agilitycourses.com&lt;/a&gt; with the only changes being specifying the
+&lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;--bind&lt;/span&gt; address/port&lt;/tt&gt; and the name of the mobile settings file:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+#!/bin/sh
+GUNICORN=/home/user/virtualenvs/myapp/bin/gunicorn_django
+ROOT=/home/user/source/myapp
+PID=/var/run/myapp.pid
+if [ -f $PID ]
+&amp;nbsp;&amp;nbsp;&amp;nbsp; then rm $PID fi
+cd $ROOT
+exec $GUNICORN --bind 127.0.0.1:8001 -c $ROOT/gunicorn.conf.py --pid=$PID $ROOT/mobile_settings.py
+&lt;/pre&gt;
+&lt;p&gt;If my templates/content start to diverge more significantly between the
+mobile and desktop sites I may set the TEMPLATE_DIRS differently in the
+mobile_settings file. Or I can move to Dustin's approach and create a
+new application containing the urls.py and views.py specific to my
+mobile deployment. I would think diverging further would call for a
+refactoring of the common functionality to its own application which
+could be imported into separate code branches for each domain.&lt;/p&gt;
+</summary><category term="django"></category><category term="gunicorn"></category><category term="minidetector"></category><category term="mobile"></category></entry><entry><title>Debug Site for Website Redirects By Referer String</title><link href="http://tech.agilitynerd.com/debug-tool-for-mobile-website-selection-by-re.html" rel="alternate"></link><updated>2010-09-29T18:42:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-09-29:debug-tool-for-mobile-website-selection-by-re.html</id><summary type="html">&lt;p&gt;I'm adding an &amp;quot;m&amp;quot; subdomain to agilitycourses.com to provide a better
+mobile browsing experience. I'm using the referrer string in Django
+middleware (currently using &lt;a class="reference external" href="http://code.google.com/p/minidetector/"&gt;minidetector&lt;/a&gt;) to detect whether the
+client is mobile and redirect them to the mobile site. Since it is
+likely that some folks will/won't get appropriately redirected I was
+looking for an easy way for them to tell me when they were incorrectly
+redirected. I'd need to know their referer string.&lt;/p&gt;
+&lt;p&gt;A little googling turned up a nice one purpose website:
+&lt;a class="reference external" href="http://www.whatismyreferrer.com/"&gt;www.whatismyreferrer.com/&lt;/a&gt;&lt;/p&gt;
+</summary><category term="django"></category><category term="mobile"></category><category term="referrer"></category><category term="webdevelopment"></category></entry></feed>

@@ -6,8 +6,7 @@ AgilityNerd Blosxom Plugins
 :tags: blosxom, perl, plugin
 :slug: agilitynerd-blosxom-plugins-1
 
-Updated 20-Jun-08 for addition of storytitle
---------------------------------------------
+**Updated 20-Jun-08 for addition of storytitle**
 
 I'm really impressed with the `Blosxom`_ `plugin`_ mechanism. `Rael
 Dornfest`_, author of Blosxom, put hooks at strategic points in the page

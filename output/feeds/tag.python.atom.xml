@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd.com</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://tech.agilitynerd.com/feeds/tag.python.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2012-05-12T23:57:00-05:00</updated><entry><title>My Favorite ORM and Python Anti-Patterns</title><link href="http://tech.agilitynerd.com/my-favorite-orm-anti-pattern.html" rel="alternate"></link><updated>2012-05-12T23:57:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2012-05-12:my-favorite-orm-anti-pattern.html</id><summary type="html">&lt;p&gt;At work I was looking at improving the performance of one of our slower
+web pages. It can be rewarding to find a little piece of code that can
+be easily optimized. This time there were several functions that were
+adding 10+ sec to the page in worst case. It wasn't a problem for most
+clients, but when clients with who are related to many other clients hit
+the page they'd experience terrible performance. Here's pseudo code for
+the combination of anti-patterns that caused the problem:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+# Projects have users and users are in different organizations
+# (project can contain multiple organization's users)
+activeOrganizationProjectUsers = [x for x in project.users
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; if x.active and x.organization == organization]
+if activeOrganizationProjectUsers:
+&amp;nbsp;&amp;nbsp;&amp;nbsp; # do something *NOT* using activeOrganizationProjectUsers
+&lt;/pre&gt;
+&lt;p&gt;There are two main problems with this code:&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;It ignores the fact the project, users, and organization are backed
+by an ORM&lt;/li&gt;
+&lt;li&gt;The list comprehension is being used to find all matching elements
+when only a single element is needed.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="section" id="ignoring-the-orm"&gt;
+&lt;h2&gt;Ignoring the ORM&lt;/h2&gt;
+&lt;p&gt;The code above wouldn't be too bad if these were just lists of objects
+in memory. But being objects that are instantiated by an ORM a number of
+database queries will be issued. In this particular case (w/o eager
+loading across user to the organization table) the following queries
+where executed:&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;Join project to user and get all users for the project's id&lt;/li&gt;
+&lt;li&gt;For each user load their organization (one by one) if the user is
+active&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;So in the case where there were hundreds of users on a project there
+were hundreds of queries executed and hundreds of User and Organization
+instances were instantiated. Depending on the size of the objects (and
+the ORM's behavior) it can take &amp;quot;real time&amp;quot; to fetch and instantiate all
+these large objects.&lt;/p&gt;
+&lt;p&gt;This code base has this kind of code sprinkled through out it. At one
+time during it's development the developers were encouraged to treat ORM
+backed objects as though they were Plain Old Python Objects (POPOs). The
+developer wouldn't necessarily see the performance degradation using
+small data sets either. This is one of the reasons why I like to tail
+the database log (or use &lt;a class="reference external" href="http://github.com/robhudson/django-debug-toolbar"&gt;django-debug-toolbar&lt;/a&gt; if I''m using Django)
+to see the queries go by.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="using-list-comprehensions-when-a-single-value-is-needed"&gt;
+&lt;h2&gt;Using List Comprehensions When a Single Value is Needed&lt;/h2&gt;
+&lt;p&gt;To make this situation worse, the activeOrganizationProjectUsers list
+wasn't actually used. This is a combination of a Python anti-pattern and
+the ORM anti-pattern. What was required was to determine if a single
+active organization user existed.&lt;/p&gt;
+&lt;p&gt;I believe the original developer(s) used the list comprehension solution
+in a combination of ignorance and syntactic sugar. They didn't want to
+write a new function to do the query and put it in the User class so
+they used the existing class's API. The syntactic sugar was using the
+list comprehension to get more values than the one that was needed. If
+this wasn't a (potentially) expensive ORM backed operation the original
+code could have been:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+activeOrganizationProjectUsers = False
+for x in project.users:
+&amp;nbsp;&amp;nbsp;&amp;nbsp; if x.active and x.organization == organization:
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; activeOrganizationProjectUsers = True
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; break
+if activeOrganizationProjectUsers:
+&amp;nbsp;&amp;nbsp;&amp;nbsp; # do something
+&lt;/pre&gt;
+&lt;p&gt;But this solution could still query all possible user/organization
+combinations. The other question would be: which set is larger the
+organization users or the project users? It is likely looping over the
+organization's users looking for active ones would be more efficient
+anyway.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="remember-the-underlying-representation"&gt;
+&lt;h2&gt;Remember the Underlying Representation&lt;/h2&gt;
+&lt;p&gt;When performance matters remembering the objects are ORM backed is
+important. So in this case a single query was all that was required
+(SqlObject pseudo syntax):&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+activeOrganizationProjectUsers = Users.selectBy(project=project,
+                     &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; active=True,
+                     &amp;nbsp;&amp;nbsp;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; organization=organization).count() &amp;gt; 0
+&lt;/pre&gt;
+&lt;p&gt;If abstracting out the ORM's methods is important this new function
+could be added to the appropriate class as a method. In my case making a
+change to use a query resulted in cutting the page load time by two
+orders of magnitude.&lt;/p&gt;
+&lt;/div&gt;
+</summary><category term="antipattern"></category><category term="development"></category><category term="orm"></category><category term="python"></category></entry><entry><title>Python dict.get's Default Value is Always Evaluated</title><link href="http://tech.agilitynerd.com/python-dictgets-default-value-is-always-evalu.html" rel="alternate"></link><updated>2011-04-05T17:16:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2011-04-05:python-dictgets-default-value-is-always-evalu.html</id><summary type="html">&lt;p&gt;This is a gotcha I ran across in some production code that is obvious in
+retrospect.&amp;nbsp;I was profiling the code to find places where we were
+calling &lt;tt class="docutils literal"&gt;an_expensive_database_function&lt;/tt&gt; and came across code like
+this:&lt;/p&gt;
+&lt;pre class="code python literal-block"&gt;
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;doit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+     &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;kwargs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;'key'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;an_expensive_database_function&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;The original author probably assumed that if 'key' was present in the
+&lt;tt class="docutils literal"&gt;kwargs&lt;/tt&gt; dictionary &lt;tt class="docutils literal"&gt;an_expensive_database_function&lt;/tt&gt; wouldn't be called;
+that it would be short circuited in the same manner as Boolean
+expressions. But since get is a function the arguments are always
+evaluated on the way into the function. So in this case even if the
+value of &lt;tt class="docutils literal"&gt;an_expensive_database_function&lt;/tt&gt; was already present in the
+&lt;tt class="docutils literal"&gt;kwargs&lt;/tt&gt; dictionary the database function would be called again.&lt;/p&gt;
+&lt;p&gt;Here is a &amp;quot;look before you leap&amp;quot; solution:&lt;/p&gt;
+&lt;pre class="code python literal-block"&gt;
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;doit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;kwargs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;'key'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+         &lt;span class="c"&gt;# assuming default value None isn't a valid value&lt;/span&gt;
+         &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;an_expensive_database_function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="sb"&gt;``&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;Here is the &amp;quot;easier to ask forgiveness than permission&amp;quot; solution:&lt;/p&gt;
+&lt;pre class="code python literal-block"&gt;
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;doit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;try&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;'key'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+    &lt;span class="k"&gt;except&lt;/span&gt; &lt;span class="ne"&gt;KeyError&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;an_expensive_database_function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="sb"&gt;``&lt;/span&gt;
+&lt;/pre&gt;
+</summary><category term="python"></category></entry><entry><title>Obtain Short URLs and QR-Codes for Django Apps</title><link href="http://tech.agilitynerd.com/obtain-short-urls-and-their-qr-codes-for-djan.html" rel="alternate"></link><updated>2010-10-22T04:00:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-10-22:obtain-short-urls-and-their-qr-codes-for-djan.html</id><summary type="html">&lt;p&gt;Lately I've been interested in improving the interaction of my
+&lt;a class="reference external" href="http://agilitycourses.com"&gt;agilitycourses&lt;/a&gt; website for mobile users. One such improvement is to add
+&lt;a class="reference external" href="http://en.wikipedia.org/wiki/QR_Code"&gt;QR Codes&lt;/a&gt; (aka 2D barcodes) representing the page URLs to the printed
+representations of pages served as PDFs.&lt;/p&gt;
+&lt;p&gt;I found that developers have reverse engineered the &amp;quot;api&amp;quot; of the
+&lt;a class="reference external" href="http://goo.gl"&gt;goo.gl&lt;/a&gt; URL shortening web site. In my brief testing it is very fast.
+What makes that service extra useful is by adding &amp;quot;.qr&amp;quot; to a shortened
+URL it returns a PNG image of the QR Code for the shortened URL. That
+made it perfect for providing both short text and QR Code URL
+representations for my printed documents.&lt;/p&gt;
+&lt;p&gt;I threw together a few functions and put them in a module to make it
+easy to shorten a long URL, obtain the QR Code PNG and store it using
+&lt;a class="reference external" href="http://docs.djangoproject.com/en/dev/topics/files/"&gt;Django's Storage functionality&lt;/a&gt;:&lt;/p&gt;
+&lt;pre class="code python literal-block"&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;osimport&lt;/span&gt; &lt;span class="nn"&gt;urllib&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.utils&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;simplejson&lt;/span&gt;
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;googl_shorten_url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;long_url&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;
+    Returns goo.gl shortened url for the provided long_url.
+    Code taken from: http://djangosnippets.org/snippets/2220/
+    Parameters:
+    - `long_url`: the url to supply to goo.gl to be shortened.
+    &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;params&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;urllib&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;urlencode&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;&lt;span class="s"&gt;'security_token'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;'url'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;long_url&lt;/span&gt;&lt;span class="p"&gt;})&lt;/span&gt;
+    &lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;urllib&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;urlopen&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;'http://goo.gl/api/shorten'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;params&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;simplejson&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;loads&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;read&lt;/span&gt;&lt;span class="p"&gt;())[&lt;/span&gt;&lt;span class="s"&gt;'short_url'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;googl_qrcode&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;googl_url&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;
+    Return file containing qr code image file for the given goo.gl url.
+    Parameters:
+    - `googl_url`: url from which to obtain the qr code.
+    &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;urllib&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;urlopen&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;googl_url&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="s"&gt;'.qr'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;get_url_qr_code_image&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;long_url&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;storage&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;storage_image_file_path&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;''&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;
+    Return goo.gl shortened url and storage name of qr code corresponding to
+    the shortened url for the supplied full url. Contacts goo.gl to shorten
+    the supplied long url then downloads and stores the qr code image file
+    in the storage instance using the file path and the shortened url name
+    as the storage name.
+    Parameters:
+    - `long_url`: the url to shorten.
+    - `storage': a Django storage instance into which to store the qr code
+    image.
+    - `storage_image_file_path`: file system path to prepend to shortened
+    url. This path must exist prior to calling this function.
+    &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+    &lt;span class="k"&gt;try&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="n"&gt;googl_url&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;googl_shorten_url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;long_url&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;qr_file_name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;googl_url&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;split&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;'/'&lt;/span&gt;&lt;span class="p"&gt;)[&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="s"&gt;'.qr'&lt;/span&gt;
+        &lt;span class="n"&gt;qr_code_name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;storage_image_file_path&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;qr_file_name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="ow"&gt;not&lt;/span&gt; &lt;span class="n"&gt;storage&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;exists&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;qr_code_name&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+            &lt;span class="n"&gt;qr_buffer&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;storage&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;qr_code_name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;'wb'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+            &lt;span class="n"&gt;qr_buffer&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;write&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;googl_qrcode&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;googl_url&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;read&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
+            &lt;span class="n"&gt;qr_buffer&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;close&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+    &lt;span class="k"&gt;except&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="n"&gt;googl_url&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;
+        &lt;span class="n"&gt;qr_code_name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;googl_url&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;qr_code_name&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;Yes, it has a nasty bare try/except. For my uses this is optional
+functionality so I never want a failure to stop the main functionality
+of the views that use it. Add exception handling appropriate for your
+needs.&lt;/p&gt;
+&lt;p&gt;The main entry point is &lt;tt class="docutils literal"&gt;get_url_qr_code_image()&lt;/tt&gt;. Here is an example
+of its use (assuming you save the code in googl.py):&lt;/p&gt;
+&lt;pre class="code python literal-block"&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;googl&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.core.files.storage&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;default_storage&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;short_url&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;qr_code_storage_name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;googl&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_url_qr_code_image&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;'http://google.com'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;default_storage&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;short_urlu&lt;/span&gt;&lt;span class="s"&gt;'http://goo.gl/mR2d'&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;qr_code_storage_nameu&lt;/span&gt;&lt;span class="s"&gt;'mR2d.qr'&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;default_storage&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;qr_code_storage_name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="s"&gt;u'/home/dev/agilitycourses/static/mR2d.qr'&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;default_storage&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;qr_code_storage_name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="s"&gt;u'mR2d.qr'&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;Hope you find this useful.&lt;/p&gt;
+</summary><category term="django"></category><category term="googl"></category><category term="python"></category><category term="qrcode"></category></entry><entry><title>Adding pyrsvg to a virtualenv created with --no-site-packages</title><link href="http://tech.agilitynerd.com/adding-rsvg-to-a-virtualenv-created-with-no-s.html" rel="alternate"></link><updated>2010-10-12T03:02:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-10-12:adding-rsvg-to-a-virtualenv-created-with-no-s.html</id><summary type="html">&lt;p&gt;I set up my development and deployment environments on Ubuntu with
+&lt;a class="reference external" href="http://pypi.python.org/pypi/virtualenv"&gt;virtualenv&lt;/a&gt;with the &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;--no-site-packages&lt;/span&gt;&lt;/tt&gt; option to isolate them from
+packages in the system installation. My application uses &lt;a class="reference external" href="http://cairographics.org/pyrsvg/"&gt;pyrsvg&lt;/a&gt;and
+it is installed by default as a system package. Consequently I had to
+link the shared libraries it installs (w/in gtk) into my virtualenv.&lt;/p&gt;
+&lt;p&gt;Here are the links I created (workon and cdsitepackages are
+&lt;a class="reference external" href="http://www.doughellmann.com/projects/virtualenvwrapper/"&gt;virtualenvwrapper&lt;/a&gt;shell aliases):&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+$ workon project
+$ cdsitepackages
+$ ln -s /var/lib/python-support/python2.6/gtk-2.0/rsvg.so .
+$ ln -s /var/lib/python-support/python2.6/gtk-2.0/gobject .
+$ ln -s /var/lib/python-support/python2.6/gtk-2.0/glib .
+&lt;/pre&gt;
+</summary><category term="python"></category><category term="rsvg"></category><category term="virtualenv"></category></entry><entry><title>Confidently Refactoring Django URLs, Views, and Templates</title><link href="http://tech.agilitynerd.com/confidently-refactoring-django-urls-views-and.html" rel="alternate"></link><updated>2010-08-22T05:12:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-08-22:confidently-refactoring-django-urls-views-and.html</id><summary type="html">&lt;p&gt;&lt;a class="reference external" href="http://googility.com/"&gt;Googility.com&lt;/a&gt;is my first Django website and under the covers the
+oldest code looked like it. I had originally written it with the sole
+intent of allowing people to enter dog agility businesses and websites
+into a database that I could use to create a Dog Agility &lt;a class="reference external" href="http://www.google.com/cse/"&gt;Google Custom
+Search Engine&lt;/a&gt;. The primary mistake I made was making the &amp;quot;project&amp;quot; (in
+Django speak) effectively equivalent to the primary application. In
+other words I didn't divide the major features of the site into
+standalone applications (which would allow them to be more easily
+reused, extended and tested).&lt;/p&gt;
+&lt;p&gt;As I continued to work on it I learned more about organizing Django
+projects. When I added the periodical search to the website I created it
+as a standalone application. I recently split out my
+&lt;a class="reference external" href="http://github.com/saschwarz/django-stw"&gt;django-shrinktheweb&lt;/a&gt; application from the main code base.&lt;/p&gt;
+&lt;p&gt;The Custom Search Engine (CSE) functionality is a worthwhile application
+that I'm planning on releasing as its own reusable application. I had
+already created an application directory called &amp;quot;cse&amp;quot; into which I had
+placed my models, views, urls, and tests specific to the CSE
+functionality. But I wanted to make the following changes:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Move CSE templates into a cse template subdirectory&lt;/li&gt;
+&lt;li&gt;Name the templates to match the views that use them&lt;/li&gt;
+&lt;li&gt;Name the urls in the urls.py prefixed with the application name
+(&amp;quot;cse_&amp;quot;)&lt;/li&gt;
+&lt;li&gt;Covert all reverse() calls in the views and url template tags to use
+the named urls&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Those are enough changes that I was concerned that I might miss
+something that would fail either in the view code or in rendering of the
+templates.&lt;/p&gt;
+&lt;p&gt;The Django test client makes it easy to test the forward and reverse url
+matching, calling the view and rendering the template. It is kind of a
+coarse grained test but the changes I was making were perfect for this
+tool. Given a urls.py:&lt;/p&gt;
+&lt;pre class="code python literal-block"&gt;
+&lt;span class="n"&gt;urlpatterns&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;patterns&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;'cse.views'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                    &lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;r'^site/view/(?P&amp;lt;id&amp;gt;d+)/$'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;'view'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'cse_view'&lt;/span&gt;&lt;span class="p"&gt;),)&lt;/span&gt;&lt;span class="sb"&gt;``&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;and a view:&lt;/p&gt;
+&lt;pre class="code python literal-block"&gt;
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;view&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;request&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;template&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'cse/view.html'&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;Display an end user read only view of the site information&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;site&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;get_object_or_404&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Annotation&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;pk&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nb"&gt;id&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;render_to_response&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;template&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                          &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s"&gt;'site'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;site&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                           &lt;span class="s"&gt;'labels'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;get_labels_for&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;site&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;cap&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+                           &lt;span class="p"&gt;},&lt;/span&gt;
+                          &lt;span class="n"&gt;context_instance&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;RequestContext&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;request&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;&lt;span class="sb"&gt;``&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;I then wrote a test class to create the required test instances and
+tests for each url to verify that the url can be found by name (via
+reverse()), the url maps to a view, the view invokes the desired
+template(s), and the {% url %} calls within the template can all be
+resolved:&lt;/p&gt;
+&lt;pre class="code python literal-block"&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.test&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;TestCase&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.test.client&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Client&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.conf&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;settings&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.core.urlresolvers&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;reverse&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;cse.models&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Label&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Annotation&lt;/span&gt;
+
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;ViewsTestCase&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;TestCase&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;setUp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;client&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Client&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ROOT_URLCONF&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ROOT_URLCONF&lt;/span&gt;
+        &lt;span class="c"&gt;# can provide a custom urls.py for testing so the tests can be run when&lt;/span&gt;
+        &lt;span class="c"&gt;# the application is incorporated into another project&lt;/span&gt;
+        &lt;span class="c"&gt;# settings.ROOT_URLCONF = 'cse.tests.cse_test_urls'&lt;/span&gt;
+        &lt;span class="c"&gt;# override the template context processors if there are special ones in place&lt;/span&gt;
+        &lt;span class="c"&gt;# that either you want to test or want to avoid&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;TEMPLATE_CONTEXT_PROCESSORS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;TEMPLATE_CONTEXT_PROCESSORS&lt;/span&gt;
+        &lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;TEMPLATE_CONTEXT_PROCESSORS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;()&lt;/span&gt;
+        &lt;span class="c"&gt;# Create some instances on which we can invoke views&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;label&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Label&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'name'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;description&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'description'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;label&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;save&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;annotation&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Annotation&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;comment&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'Site Name'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;original_url&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'http://example.com/'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;annotation&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;save&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;annotation&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;labels&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;add&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;label&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;annotation&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;save&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;tearDown&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="c"&gt;# put settings back so the next tests aren't effected&lt;/span&gt;
+        &lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ROOT_URLCONF&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ROOT_URLCONF&lt;/span&gt;
+        &lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;TEMPLATE_CONTEXT_PROCESSORS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;TEMPLATE_CONTEXT_PROCESSORS&lt;/span&gt;
+
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;test_view&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;response&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;client&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;reverse&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;'cse_view'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;kwargs&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;id&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;annotation&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="p"&gt;}))&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;assertEquals&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;200&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;response&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;status_code&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;assertTemplateUsed&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;response&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;'cse/view.html'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;The normal unittest asserts are available in the tests. I'm using one of
+the &lt;a class="reference external" href="http://docs.djangoproject.com/en/dev/topics/testing/#assertions"&gt;special asserts provided by the Django test Client&lt;/a&gt; to verify that
+the template I expected was used. All the templates used (due to
+template inheritance) are collected by the client and can also be
+verified.&lt;/p&gt;
+&lt;p&gt;I used these tests in a TDD-ish manner, I wrote the test for a view, ran
+the tests and kept resolving errors in the templates as I made the
+changes in my bullet list. It made a tedious job simple and gave me good
+confidence that I'd found all the renamed urls, views, and templates.&lt;/p&gt;
+</summary><category term="django"></category><category term="googility"></category><category term="python"></category><category term="tdd"></category><category term="testing"></category></entry><entry><title>Initial Release of django-stw</title><link href="http://tech.agilitynerd.com/initial-release-of-django-stw.html" rel="alternate"></link><updated>2010-07-11T15:47:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-07-11:initial-release-of-django-stw.html</id><summary type="html">&lt;p&gt;I have been using the free website thumbnail service from &lt;a class="reference external" href="http://www.shrinktheweb.com?a=988"&gt;Shrink The
+Web&lt;/a&gt; on my dog agility search website &lt;a class="reference external" href="http://googility.com"&gt;Googility&lt;/a&gt; since I launched it.
+It is quick and easy to use and it adds a lot to the look of the pages.&lt;/p&gt;
+&lt;p&gt;I had created a simple &lt;a class="reference external" href="http://djangoproject.com/"&gt;Django&lt;/a&gt; template tag for inserting the little
+snippet of HTML needed by their service.&lt;/p&gt;
+&lt;p&gt;Recently they asked me to add support for their advanced features to my
+template tag. I used this opportunity to convert my templatetag to a
+Django application. This mostly makes it a lot easier to install but it
+also let me to bundle tests and an example template with the template
+tag.&lt;/p&gt;
+&lt;p&gt;I kept the existing &lt;tt class="docutils literal"&gt;shrinkthewebimage&lt;/tt&gt; template tag and added a new
+tag called &lt;tt class="docutils literal"&gt;stwimage&lt;/tt&gt; to enable the new features.&lt;/p&gt;
+&lt;p&gt;I'm hosting the example page included in the package &lt;a class="reference external" href="http://googility.com/django-stw/"&gt;here&lt;/a&gt; so you can
+see how the template tags work.&lt;/p&gt;
+&lt;p&gt;I've hosted the &lt;a class="reference external" href="http://github.com/saschwarz/django-stw"&gt;project source on github&lt;/a&gt; and uploaded the &lt;a class="reference external" href="http://pypi.python.org/pypi/django-stw/"&gt;initial
+release to the CheeseShop&lt;/a&gt; for easy installation.&lt;/p&gt;
+</summary><category term="django"></category><category term="github"></category><category term="googility"></category><category term="pypi"></category><category term="python"></category><category term="shrinktheweb"></category><category term="webdevelopment"></category></entry><entry><title>Embedding JSON Within Generated HTML</title><link href="http://tech.agilitynerd.com/embedding-json-within-generated-html.html" rel="alternate"></link><updated>2010-07-08T21:03:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-07-08:embedding-json-within-generated-html.html</id><summary type="html">&lt;p&gt;Ran into an interesting problem at work this past week that had a simple
+and pleasing resolution. We have an in house developed JavaScript grid
+on some of our pages and when users entered some text strings we'd
+generate invalid &lt;a class="reference external" href="http://www.json.org/js.html"&gt;JSON&lt;/a&gt; payloads that would give the user an error
+page. If they entered strings that looked like an HTML Entity i.e. &amp;amp;#13
+which (with the addition of a trailing ; ) is a non-visible HTML
+character (carriage return) the text wasn't displayed in the widget. To
+further complicate things some of the content displayed in the grid is
+HTML which is inserted into the grid as is and can contain escaped HTML
+characters.&lt;/p&gt;
+&lt;p&gt;The grid gets its content as a JSON payload from within a hidden div in
+the HTML which is generated via a template mechanism. Heres a portion of
+the template where &amp;lt;%= and %&amp;gt; stringifying of the value of the Python
+variable(s)/code they surround:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+&amp;lt;div style=&amp;quot;display:none;&amp;quot; id=&amp;quot;grid-init-args-&amp;lt;%= count %&amp;gt;&amp;quot;&amp;gt;
+  &amp;lt;textarea&amp;gt;
+  &amp;lt;!-- this is the JSON payload loaded via the grid JavaScript --&amp;gt;
+  &amp;lt;%= [ columnsIndex, indexColumns, columns, rowBuffer, footerRows, formulas] %&amp;gt;
+  &amp;lt;/textarea&amp;gt;
+&amp;lt;/div&amp;gt;
+&lt;/pre&gt;
+&lt;p&gt;This approach has a number of problems:&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;By using the template mechanism to create the JSON payload this
+template was relying on the similarity of the string representation
+of Python objects to JSON. After some testing I found the following
+scenarios: If a string contained a single quote character the string
+representation was a double quoted string around the text and the
+single quote; a valid JSON string. If the string contained a double
+quote character the string representation was a single quoted string
+around the text and the double quote; &lt;a class="reference external" href="http://www.bennadel.com/blog/388-People-Please-Stop-Using-Single-Quotes-.htm"&gt;an invalid JSON string&lt;/a&gt;. If
+the string contained both a single and a double quote the string
+representation would be a single quoted string containing a slash
+escaped single quote and the double quote; an invalid JSON string.
+Depending on the browser (of course) the JSON string would fail to
+parse correctly when the double quote was encountered within the
+single quoted string.&lt;/li&gt;
+&lt;li&gt;The JSON payload had to be HTML encoded (converting &amp;lt;, &amp;gt;, &amp;quot;, and &amp;amp;)
+since it was parsed by the browser as HTML.&lt;/li&gt;
+&lt;li&gt;The HTML encoding would encode or double encode HTML to be inserted
+directly into the grid's DOM.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The variation in single/double quoting was an easy fix, I changed to
+&lt;a class="reference external" href="http://pypi.python.org/pypi/simplejson/"&gt;simplejson&lt;/a&gt;.dumps() which correctly double quotes key/values in dicts
+and escapes embedded double quotes (single quotes don't need to be
+escaped). I didn't time it but with the C extension it may be faster
+than the template engine for our larger datasets.&lt;/p&gt;
+&lt;p&gt;I played around with (not) encoding various portions of the payload and
+then it hit me that I should change the grid to get its payload from a
+non HTML element so that only HTML destined for insertion into the DOM
+would be HTML encoded (which is as you'd expect for normal HTML
+handling). I started changing the payload to be stored in JavaScript
+generated in the template but didn't like the impact the change would
+have on all the existing templates. So I started Googling and found &lt;a class="reference external" href="http://www.bennadel.com/blog/1603-jQuery-And-Script-Tags-As-Data-Containers.htm"&gt;Ben
+Nadel's blog post on using script tags as data containers&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;So here's my solution:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+&amp;lt;div style=&amp;quot;display:none;&amp;quot; id=&amp;quot;grid-init-args-&amp;lt;%= count %&amp;gt;&amp;quot;&amp;gt;
+&amp;lt;script type=&amp;quot;application/json&amp;quot;&amp;gt;
+&amp;lt;%= simplejson.dumps([ columnsIndex, indexColumns, columns, rowBuffer, footerRows, formulas]) %&amp;gt;
+&amp;lt;/script&amp;gt;
+&amp;lt;/div&amp;gt;
+&lt;/pre&gt;
+&lt;p&gt;There were two changes:&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;Used &lt;tt class="docutils literal"&gt;simplejson.dumps&lt;/tt&gt; to correctly double quote and escape double
+quotes within the variables in the payload.&lt;/li&gt;
+&lt;li&gt;Change the textarea to a script element.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;By converting to a script tag within the hidden div the HTML parser no
+longer parsed the content of the JSON payload. so the JSON payload only
+needed to HTML encode HTML elements that were being inserted into the
+DOM created by the grid.&lt;/p&gt;
+&lt;p&gt;This change also meant I was able to delete the unnecessary HTML
+encoding of non-HTML JSON payload data. Got to love solutions that
+involve deleting code.&lt;/p&gt;
+&lt;p&gt;Ultimately, we'll convert to loading the JSON payload as a separate AJAX
+request from the page to the server, but for now this simplifies the
+markup and handles all types of user input and HTML encoded characters
+correctly.&lt;/p&gt;
+</summary><category term="html"></category><category term="javascript"></category><category term="json"></category><category term="python"></category><category term="webdevelopment"></category></entry><entry><title>Django Shrink The Web Template Tag Updated</title><link href="http://tech.agilitynerd.com/django-shrink-the-web-template-tag-updated.html" rel="alternate"></link><updated>2010-07-01T23:00:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-07-01:django-shrink-the-web-template-tag-updated.html</id><summary type="html">&lt;p&gt;I recently updated my &lt;a class="reference external" href="http://djangoproject.com/"&gt;Django&lt;/a&gt; template tag for simplifying the use of
+&lt;a class="reference external" href="http://www.shrinktheweb.com/"&gt;Shrink The Web&lt;/a&gt; images. They recently announced a CDN based
+distribution of images and they took the opportunity to modify their
+API.&lt;/p&gt;
+&lt;p&gt;The updated template tag &lt;a class="reference external" href="http://djangosnippets.org/snippets/1744/"&gt;is on django snippets&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The STW folks have asked be to extend my template tag with support for
+&lt;a class="reference external" href="http://www.shrinktheweb.com/content/shrinktheweb-pagepix-documentation.html"&gt;their PRO features&lt;/a&gt;. With luck I'll make that available sometime this
+weekend.&lt;/p&gt;
+</summary><category term="django"></category><category term="python"></category><category term="shrinktheweb"></category><category term="webdevelopment"></category></entry><entry><title>Using django-sitemap with django-tagging</title><link href="http://tech.agilitynerd.com/using-django-sitemap-with-django-tagging.html" rel="alternate"></link><updated>2009-11-27T17:33:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2009-11-27:using-django-sitemap-with-django-tagging.html</id><summary type="html">&lt;p&gt;I was adding &lt;a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/sitemaps/"&gt;django-sitemap&lt;/a&gt; to &lt;a class="reference external" href="http://googility.com/"&gt;googility.com&lt;/a&gt; yesterday and found
+that Tags don't implement &lt;tt class="docutils literal"&gt;get\_absolute\_url()&lt;/tt&gt;. Which makes sense since
+the site developer would want to decide how to expose them in the URL
+space.&lt;/p&gt;
+&lt;p&gt;It is also arguable that links to pages displaying the tag view already
+exist in the page for models that are already in the sitemap so they
+don't need to be put in the sitemap explicitly. For example, a page for
+an Article might be at &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;/article/django-11-release&lt;/span&gt;&lt;/tt&gt; and that page would
+contain the links to pages linked with the tags for that article e.g.
+&lt;tt class="docutils literal"&gt;/tag/django/&lt;/tt&gt; and &lt;tt class="docutils literal"&gt;/tag/python/&lt;/tt&gt;&lt;/p&gt;
+&lt;p&gt;But I figured having the tag pages indexed by Google would be useful. It
+also allows a different priority to be specified for the pages. So I
+made a little class that derives from &lt;tt class="docutils literal"&gt;GenericSitemap&lt;/tt&gt; that allows the url
+and suffix for the Tag name to be specified:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+class SlugSitemap(GenericSitemap):
+&amp;quot;&amp;quot;&amp;quot;Use for objects that don't implement get_absolute_url
+   but have a slug field used in creating their url&amp;quot;&amp;quot;&amp;quot;
+
+def __init__(self, info_dict, priority=None, changefreq=None):
+    GenericSitemap.__init__(self, info_dict,
+                            priority=priority,
+                            changefreq=changefreq)
+    self.url = info_dict.get('url', '/')
+    self.slugfield = info_dict['slugfield']
+    self.suffix = info_dict.get('suffix', '')
+
+def location(self, obj):
+    return &amp;quot;%s%s%s&amp;quot; % (self.url,
+                       getattr(obj, self.slugfield),
+                       self.suffix)
+&lt;/pre&gt;
+&lt;p&gt;Here's how I use it:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+sitemaps = {'tag_detail': SlugSitemap({'queryset':Tag.objects,
+                                       'url':'/tag/',
+                                       'slugfield':'name',
+                                       'suffix':'/'},
+                                       changefreq='monthly',
+                                       priority='0.5'),
+}
+&lt;/pre&gt;
+&lt;p&gt;The urls for tags are at /tag/&lt;em&gt;slugname&lt;/em&gt;/ where /tag/ is prepended to
+tag.name and / is appended to the end&lt;/p&gt;
+&lt;p&gt;This class can be used to create sitemap entries for any url
+parameterized on a single field of an instance returned by the QuerySet.&lt;/p&gt;
+</summary><category term="django"></category><category term="djangositemap"></category><category term="djangotagging"></category><category term="python"></category><category term="webdevelopment"></category></entry></feed>

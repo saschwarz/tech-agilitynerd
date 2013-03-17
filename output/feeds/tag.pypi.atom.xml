@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd.com</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://tech.agilitynerd.com/feeds/tag.pypi.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2010-07-11T15:47:00-05:00</updated><entry><title>Initial Release of django-stw</title><link href="http://tech.agilitynerd.com/initial-release-of-django-stw.html" rel="alternate"></link><updated>2010-07-11T15:47:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-07-11:initial-release-of-django-stw.html</id><summary type="html">&lt;p&gt;I have been using the free website thumbnail service from &lt;a class="reference external" href="http://www.shrinktheweb.com?a=988"&gt;Shrink The
+Web&lt;/a&gt; on my dog agility search website &lt;a class="reference external" href="http://googility.com"&gt;Googility&lt;/a&gt; since I launched it.
+It is quick and easy to use and it adds a lot to the look of the pages.&lt;/p&gt;
+&lt;p&gt;I had created a simple &lt;a class="reference external" href="http://djangoproject.com/"&gt;Django&lt;/a&gt; template tag for inserting the little
+snippet of HTML needed by their service.&lt;/p&gt;
+&lt;p&gt;Recently they asked me to add support for their advanced features to my
+template tag. I used this opportunity to convert my templatetag to a
+Django application. This mostly makes it a lot easier to install but it
+also let me to bundle tests and an example template with the template
+tag.&lt;/p&gt;
+&lt;p&gt;I kept the existing &lt;tt class="docutils literal"&gt;shrinkthewebimage&lt;/tt&gt; template tag and added a new
+tag called &lt;tt class="docutils literal"&gt;stwimage&lt;/tt&gt; to enable the new features.&lt;/p&gt;
+&lt;p&gt;I'm hosting the example page included in the package &lt;a class="reference external" href="http://googility.com/django-stw/"&gt;here&lt;/a&gt; so you can
+see how the template tags work.&lt;/p&gt;
+&lt;p&gt;I've hosted the &lt;a class="reference external" href="http://github.com/saschwarz/django-stw"&gt;project source on github&lt;/a&gt; and uploaded the &lt;a class="reference external" href="http://pypi.python.org/pypi/django-stw/"&gt;initial
+release to the CheeseShop&lt;/a&gt; for easy installation.&lt;/p&gt;
+</summary><category term="django"></category><category term="github"></category><category term="googility"></category><category term="pypi"></category><category term="python"></category><category term="shrinktheweb"></category><category term="webdevelopment"></category></entry></feed>

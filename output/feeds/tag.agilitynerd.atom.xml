@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd.com</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://tech.agilitynerd.com/feeds/tag.agilitynerd.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2008-06-20T22:03:00-05:00</updated><entry><title>Improving Site Navigation - Add Titles to Blosxom Pages With storytitle</title><link href="http://tech.agilitynerd.com/improving-site-navigation-add-titles-to-blosx-1.html" rel="alternate"></link><updated>2008-06-20T22:03:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2008-06-20:improving-site-navigation-add-titles-to-blosx-1.html</id><summary type="html">&lt;p&gt;I've always wanted my &lt;a class="reference external" href="http://agilitynerd.com/blog/"&gt;AgilityNerd&lt;/a&gt; blog to serve as a reference for
+interesting dog agility subjects. Consequently, I'm interested in making
+it as easy as possible for readers to locate, explore, and learn more
+about the sport. So improving navigation is a strong interest to me.&lt;/p&gt;
+&lt;p&gt;I have been reading &lt;a class="reference external" href="http://www.amazon.com/Designing-Web-Navigation-Optimizing-Experience/dp/0596528108?t=agili-20"&gt;Designing Web Navigation by James Kalbach&lt;/a&gt;. In the
+section discussing Browser Mechanisms Kalbach discusses the back and
+forward buttons and the Session History drop down. The session history
+is usually a menu that drops down from the back button (or near it). It
+lists the pages the user has visited in reverse order showing their page
+titles. Kalbach states: &amp;quot;Session history is a good reason to supply
+meaningful browser titles&amp;quot;. That reminded me that for my blog the
+session history has always just displayed &amp;quot;AgilityNerd&amp;quot; for each page
+visited on my site. I was leaving out a valuable aid to my readers who
+use the session history to find where they had been previously.&lt;/p&gt;
+&lt;p&gt;Another benefit of setting the title in pages is in tracking site
+statistics. It had always bothered me that GoogleAnalytics never showed
+statistics for my pages by page title.&lt;/p&gt;
+&lt;p&gt;So these two things finally moved me to take some action. I had been
+thinking about writing a &lt;a class="reference external" href="http://blosxom.sourceforge.net/"&gt;Blosxom&lt;/a&gt; plugin to set the title element in
+the HTML head section but I've always been too busy. Luckily I didn't
+have to.&lt;/p&gt;
+&lt;p&gt;I found out about the storytitle plugin from Nick Leverton's
+&lt;a class="reference external" href="http://www.leverton.org/blosxom"&gt;Serendipity&lt;/a&gt; blog. He had made some changes and released &lt;a class="reference external" href="http://www.leverton.org/blosxom/Software/Projects/Blosxom/storytitle.html"&gt;version 0.7
+of the plugin&lt;/a&gt;. It was trivial to setup, I just followed the directions
+in the plugin and had this site and agilitynerd.com/blog working within
+minutes.&lt;/p&gt;
+&lt;p&gt;So if you are a Blosxom user just grab this plugin. Otherwise, take the
+time to set your page title sections so you can help your readers and
+help analyzing your own site's statistics&lt;/p&gt;
+</summary><category term="agilitynerd"></category><category term="blosxom"></category><category term="googleanalytics"></category></entry></feed>

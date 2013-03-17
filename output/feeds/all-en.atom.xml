@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd.com</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://feeds.feedburner.com/feeds/all-en.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2013-01-21T02:00:00-06:00</updated><entry><title>Google Analytics for JQuery Mobile With Internal and AJAX Pages</title><link href="http://tech.agilitynerd.com/google-analytics-for-jquery-mobile-withwithou.html" rel="alternate"></link><updated>2013-01-21T02:00:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2013-01-21:google-analytics-for-jquery-mobile-withwithou.html</id><summary type="html">&lt;p&gt;I added google analytics to my &lt;a class="reference external" href="http://agilitycourses.com"&gt;agilitycourses.com&lt;/a&gt;&amp;nbsp;website and was
+<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd.com</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://tech.agilitynerd.com/feeds/all-en.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2013-01-21T02:00:00-06:00</updated><entry><title>Google Analytics for JQuery Mobile With Internal and AJAX Pages</title><link href="http://tech.agilitynerd.com/google-analytics-for-jquery-mobile-withwithou.html" rel="alternate"></link><updated>2013-01-21T02:00:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2013-01-21:google-analytics-for-jquery-mobile-withwithou.html</id><summary type="html">&lt;p&gt;I added google analytics to my &lt;a class="reference external" href="http://agilitycourses.com"&gt;agilitycourses.com&lt;/a&gt;&amp;nbsp;website and was
 having problems getting the mobile version of the site to log analytics
 data after the first page. Google found this very helpful blog
 post:&amp;nbsp;&lt;a class="reference external" href="http://www.jongales.com/blog/2011/01/10/google-analytics-and-jquery-mobile/"&gt;Using Google Analytics with jQuery Mobile&lt;/a&gt;&amp;nbsp;and it got me very
@@ -2334,8 +2334,7 @@ additional properties as well as reseting properties that existin the
 screen media file. Otherwise the definitions for the screen will be used.
 I had to set some div's position properties to static to get them back
 into the document flow.&lt;/p&gt;
-</summary></entry><entry><title>AgilityNerd Blosxom Plugins</title><link href="http://tech.agilitynerd.com/agilitynerd-blosxom-plugins-1.html" rel="alternate"></link><updated>2004-08-10T19:00:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2004-08-10:agilitynerd-blosxom-plugins-1.html</id><summary type="html">&lt;div class="section" id="updated-20-jun-08-for-addition-of-storytitle"&gt;
-&lt;h2&gt;Updated 20-Jun-08 for addition of storytitle&lt;/h2&gt;
+</summary></entry><entry><title>AgilityNerd Blosxom Plugins</title><link href="http://tech.agilitynerd.com/agilitynerd-blosxom-plugins-1.html" rel="alternate"></link><updated>2004-08-10T19:00:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2004-08-10:agilitynerd-blosxom-plugins-1.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Updated 20-Jun-08 for addition of storytitle&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;I'm really impressed with the &lt;a class="reference external" href="http://blosxom.sourceforge.net/"&gt;Blosxom&lt;/a&gt; &lt;a class="reference external" href="http://blosxom.com/documentation/users/plugins.html"&gt;plugin&lt;/a&gt; mechanism. &lt;a class="reference external" href="http://www.raelity.org/"&gt;Rael
 Dornfest&lt;/a&gt;, author of Blosxom, put hooks at strategic points in the page
 generation process. At each hook point the main script iterates all the
@@ -2504,5 +2503,4 @@ them named as follows:&lt;/p&gt;
 &lt;li&gt;02recentwritebacks&lt;/li&gt;
 &lt;li&gt;50interpolate_fancy&lt;/li&gt;
 &lt;/ul&gt;
-&lt;/div&gt;
 </summary><category term="blosxom"></category><category term="perl"></category><category term="plugin"></category></entry></feed>

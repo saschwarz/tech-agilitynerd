@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd.com</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://tech.agilitynerd.com/feeds/tag.posterous.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2012-05-12T23:57:00-05:00</updated><entry><title>Create Posterous Posts from Google Forms</title><link href="http://tech.agilitynerd.com/create-posterous-posts-from-google-forms.html" rel="alternate"></link><updated>2012-05-12T23:57:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2012-05-12:create-posterous-posts-from-google-forms.html</id><summary type="html">&lt;p&gt;I've been organizing dog agility bloggers for&amp;nbsp;&lt;a class="reference external" href="http://dog-agility-blog-events.posterous.com/"&gt;Dog Agility Blog Action
+Days&lt;/a&gt;&amp;nbsp;and wanted to automate updating our group's blog when each
+blogger posted their article on the event/action days. For past events I
+had the bloggers email me with the information and manually created each
+entry in the blog.&lt;/p&gt;
+&lt;p&gt;Since &lt;a class="reference external" href="http://posterous.com"&gt;posterous&lt;/a&gt; supports posting via email I knew I could create a
+form on one of my web servers and have the page format the data so
+posterous could turn it into a post. Here are the details for formatting
+emails for posterous: &lt;a class="reference external" href="http://howdoi.posterous.com/how-to-get-the-most-out-of-posting-by-email"&gt;how to get the most out of posting by email&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Instead I stumbled upon an article on using Google Forms to send emails
+via the Google infrastructure:&amp;nbsp;&lt;a class="reference external" href="http://www.labnol.org/internet/google-docs-email-form/20884/"&gt;Get Form Data from Google Docs in an
+Email Message [Video Tutorial]&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;So all I had to do was create a form for my bloggers to fill out and
+then have the script run by their submission format and send an email to
+posterous to post.&lt;/p&gt;
+&lt;p&gt;Here's my modified version of the form script:&lt;/p&gt;
+&lt;pre class="code javascript literal-block"&gt;
+&lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nx"&gt;sendFormByEmail&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;e&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="c1"&gt;// create a draft post - posterous will send you an email
+&lt;/span&gt;  &lt;span class="c1"&gt;// when the draft is created.  var email = &amp;quot;draft&amp;#64;YOURBLOGNAMEHERE.posterous.com&amp;quot;;
+&lt;/span&gt;  &lt;span class="c1"&gt;// e.namedValues is a dictionary where the keys
+&lt;/span&gt;  &lt;span class="c1"&gt;// are the names of your form's questions. So you can pick
+&lt;/span&gt;  &lt;span class="c1"&gt;// them out and combine them as you wish.
+&lt;/span&gt;  &lt;span class="c1"&gt;//
+&lt;/span&gt;  &lt;span class="c1"&gt;// My form contained five questions:
+&lt;/span&gt;  &lt;span class="c1"&gt;// 1. 'Title of your blog as you want it to appear'
+&lt;/span&gt;  &lt;span class="c1"&gt;// 2. 'The URL of your blog as you type it in your browser'
+&lt;/span&gt;  &lt;span class="c1"&gt;// 3. 'Title of your article'
+&lt;/span&gt;  &lt;span class="c1"&gt;// 4. 'The URL of your article copied from your browser'
+&lt;/span&gt;  &lt;span class="c1"&gt;// 5. 'Short description/teaser about your article'
+&lt;/span&gt;  &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;v&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;e&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;namedValues&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;subject&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;v&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'Title of your article'&lt;/span&gt;&lt;span class="p"&gt;].&lt;/span&gt;&lt;span class="nx"&gt;toString&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="nx"&gt;subject&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;((tag: attitude))&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// add tags as you wish
+&lt;/span&gt;  &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;message&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;'&amp;lt;a href=&amp;quot;'&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="nx"&gt;v&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'The URL of your blog as you type it in your browser'&lt;/span&gt;&lt;span class="p"&gt;].&lt;/span&gt;&lt;span class="nx"&gt;toString&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="s1"&gt;'&amp;quot;&amp;gt;'&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="nx"&gt;message&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="nx"&gt;v&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'Title of your blog as you want it to appear'&lt;/span&gt;&lt;span class="p"&gt;].&lt;/span&gt;&lt;span class="nx"&gt;toString&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="nx"&gt;message&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="s1"&gt;'&amp;lt;/a &amp;gt; wrote:'&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="nx"&gt;message&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;nn&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="nx"&gt;message&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="nx"&gt;v&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'Short description/teaser about your article'&lt;/span&gt;&lt;span class="p"&gt;].&lt;/span&gt;&lt;span class="nx"&gt;toString&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="nx"&gt;message&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="s1"&gt;'&amp;lt; a href=&amp;quot;'&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="nx"&gt;v&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'The URL of your article copied from your browser'&lt;/span&gt;&lt;span class="p"&gt;].&lt;/span&gt;&lt;span class="nx"&gt;toString&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="nx"&gt;message&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="s1"&gt;'&amp;quot;&amp;gt; Read the full article &amp;lt; /a &amp;gt;nn'&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="nx"&gt;message&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;n#end&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// so your email signature won't cause a problem
+&lt;/span&gt;  &lt;span class="c1"&gt;// This is the MailApp service of Google Apps Script
+&lt;/span&gt;  &lt;span class="c1"&gt;// that sends the email. You can also use GmailApp here.
+&lt;/span&gt;  &lt;span class="nx"&gt;MailApp&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;sendEmail&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;email&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;subject&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;message&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="c1"&gt;// Watch the following video for details   // http://youtu.be/z6klwUxRwQI
+&lt;/span&gt;  &lt;span class="c1"&gt;// By Amit Agarwal - www.labnol.org
+&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;In the script you can see how I've accessed the form fields by the full
+name and woven them into an email with links embedded - just have to
+watch the use of double quotes within single quotes. Which produces blog
+entries similar &lt;a class="reference external" href="http://dogagilityblogevents.wordpress.com/if-i-knew-then-proactive-handling"&gt;to this one I created manually&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;So now I can just send the link to the Google form to participants and
+they'll create drafts that I can tweak and/or just submit. It took
+longer to write this post than it took to modify and test the script!&lt;/p&gt;
+</summary><category term="email"></category><category term="google"></category><category term="posterous"></category></entry></feed>

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd.com</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://tech.agilitynerd.com/feeds/tag.css.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2010-07-25T16:36:00-05:00</updated><entry><title>Firediff: track and save CSS edits in Firebug</title><link href="http://tech.agilitynerd.com/firediff-track-and-save-css-edits-in-firebug.html" rel="alternate"></link><updated>2010-07-25T16:36:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-07-25:firediff-track-and-save-css-edits-in-firebug.html</id><summary type="html">&lt;p&gt;When I'm making fiddly changes to a web page I like to tweak the CSS
+using the Firefox Firebug plugin. It has the advantage of letting you
+try changes quickly and see the effect. The downside has always been
+that you had to then change the source CSS file to include your changes.
+Which increases the risk that you forget to include a change.&lt;/p&gt;
+&lt;p&gt;I was thinking about that recently when I changed the color scheme on my
+AgilityNerd blog and went searching for a way to at least identify the
+changes. Turns out there is a nice plugin that provides exactly that
+functionality. The &lt;a class="reference external" href="https://addons.mozilla.org/en-US/firefox/addon/13179/"&gt;Firediff plugin&lt;/a&gt; not only tracks changes to the CSS
+it also allows you to save those changes for overwriting or diff'ing
+into you CSS file(s).&lt;/p&gt;
+&lt;p&gt;Like other firebug related extensions you need to enable this feature
+per page by clicking on the arrow next to the new Changes tab.&lt;/p&gt;
+&lt;p&gt;Here is a screenshot of the plugin in action:&lt;/p&gt;
+&lt;div class="thumbnail"&gt;&lt;p&gt;&lt;img alt="Firediff" src="/static/images/2010/07/12587332-firediff.png" /&gt;&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;You can see I've changed the line-height attribute - it shows the
+previous and final values. A right mouse menu lets you save those
+changes to a file or revert them.&lt;/p&gt;
+&lt;p&gt;Another feature that can be configured in the Changes menu is whether to
+track changes made by other JavaScript to the page. This is an
+interesting feature if you were wondering how a JQuery or other
+JavaScript modified the page for a given effect.&lt;/p&gt;
+&lt;p&gt;This is a great plugin that I'll continue to use regularly.&lt;/p&gt;
+</summary><category term="css"></category><category term="firefoxaddon"></category><category term="webdevelopment"></category></entry><entry><title>Multiple YouTube Videos per page using VideoLightBox</title><link href="http://tech.agilitynerd.com/multiple-youtube-videos-per-page-using-videol.html" rel="alternate"></link><updated>2010-06-04T22:58:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-06-04:multiple-youtube-videos-per-page-using-videol.html</id><summary type="html">&lt;p&gt;I decided to stop displaying the default &lt;a class="reference external" href="http://youtube.com"&gt;YouTube&lt;/a&gt; video players within
+posts on my &lt;a class="reference external" href="http://agilitynerd.com/"&gt;AgilityNerd blog&lt;/a&gt; and I started looking for a light boxed
+player. Their were two main reasons. The smallest video playback window
+provided by YouTube for HD videos is too wide for my two column layout
+and now that I'm posting more videos the load time of the page is
+delayed by the communication with all the off site webservers; serving
+the YouTube static image of the video will be much faster/lighter
+weight.&lt;/p&gt;
+&lt;p&gt;I looked around and really liked the lightbox containing the default
+YouTube player provided by &lt;a class="reference external" href="http://videolightbox.com"&gt;VideoLightBox&lt;/a&gt; and started playing around
+with their demo. VideoLightBox (VLB) has an interesting approach. You
+download an application (PC or Mac), configure how you want your
+video(s) to look and it generates a directory of files on your local
+disk (or uploads files to your website via FTP) along with an index.html
+file from which you copy the code to put in the &amp;lt;head&amp;gt; and &amp;lt;body&amp;gt; of
+your web page. For YouTube it also downloads a static image for each
+selected video which is used as the image link within the HTML page.
+Straight forward and works well.&lt;/p&gt;
+&lt;p&gt;For my purposes there was a problem with their approach, its locates the
+image used to launch the light box using an element id. This assumes a
+single video or gallery of videos per web page. On my blog's main page
+or the category pages there will be multiple videos (possibly multiple
+videos within a single post). I figured a little bit of CSS and JQuery
+hacking would solve the problem and it did.&lt;/p&gt;
+&lt;p&gt;I decided to modify their HTML/CSS/JS to use a CSS class instead of an
+element id to allow for multiple videos per page. At first I just
+modified the generated files. Then I saw that VLB has template files in
+their installation. So I started modifying the templates to output the
+new code. Two hours later I bailed. Using &lt;a class="reference external" href="http://technet.microsoft.com/en-us/sysinternals/bb896645.aspx"&gt;procmon&lt;/a&gt; it looks like the
+client app reads the template files but then doesn't actually use the
+files to generate the output files(?). I was only able to modify one of
+the three template files that needed to change and have it effect the
+generated files.&lt;/p&gt;
+&lt;p&gt;I'm going to provide my edits to the VLB developers in case they are
+interested.&lt;/p&gt;
+&lt;p&gt;So the solution is to edit one of the template files and then edit two
+of the generated files; not ideal but once you put the generated files
+on your webserver you'll probably not touch them unless you are changing
+CSS styles. The modifications aren't hard but you need to be careful and
+typos will definitely break things. You should backup the VLB directory
+before your start or be prepared to uninstall and reinstall from their
+installation program.&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;Navigate to the VideoLightBox directory (i.e. C:Program Files
+(x86)VideoLightBox)&lt;/li&gt;
+&lt;li&gt;Change the permissions on the templates subdirectory to give your
+user full access to overwrite the files&lt;/li&gt;
+&lt;li&gt;For each directory in the templates subdirectory open the
+videolightbox.js file in an programming editor (a keyboard macro
+makes this trivial):&lt;ol class="arabic"&gt;
+&lt;li&gt;Globally replace $(&amp;quot;#videogallery a[rel]&amp;quot;) with
+$(&amp;quot;.videogallery a[rel]&amp;quot;).each(function(idx){$(this)&lt;/li&gt;
+&lt;li&gt;Go to the end of the line and add });&lt;/li&gt;
+&lt;li&gt;Save the file&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Then generate the output files using the VLB executable for one or more
+videos, saving the results to your local file system&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;Navigate to the output directory&lt;/li&gt;
+&lt;li&gt;Open the index.html file in an programming editor&lt;ol class="arabic"&gt;
+&lt;li&gt;Globally replace #videogallery with .videogallery&lt;/li&gt;
+&lt;li&gt;Globally replace id=&amp;quot;videogallery&amp;quot; with class=&amp;quot;videogallery&amp;quot;&lt;/li&gt;
+&lt;li&gt;Save the file&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;In the engine/css subdirectory open the videolightbox.css file in an
+programming editor&lt;ol class="arabic"&gt;
+&lt;li&gt;Globally replace #videogallery with .videogallery&lt;/li&gt;
+&lt;li&gt;Save the file&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Then you can copy the files just as specified by the VLB installation
+instructions.&lt;/p&gt;
+&lt;p&gt;The other change I'll be making for my deployment is to rename the video
+images. They are named 0.png, 1.png, etc. I'm going to put them all in a
+directory on my resource webserver so I'll rename the files and their
+references in the code copied from the index.html to use the YouTube
+video id.&lt;/p&gt;
+&lt;p&gt;I'll be changing my existing web posts over to this new scheme over
+time...&lt;/p&gt;
+</summary><category term="css"></category><category term="html"></category><category term="javascript"></category><category term="jquery"></category><category term="video"></category><category term="visuallightbox"></category><category term="webdevelopment"></category><category term="youtube"></category></entry><entry><title>Centering DIVs in CSS</title><link href="http://tech.agilitynerd.com/centering-divs-in-css-1.html" rel="alternate"></link><updated>2004-08-15T00:00:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2004-08-15:centering-divs-in-css-1.html</id><summary type="html">&lt;p&gt;I took a look at this site on an 800x600 resolution monitor and didn't
+like how the original layout looked. Having the menu box on the left hand
+side with a &lt;tt class="docutils literal"&gt;20px&lt;/tt&gt; margin to the left used up too much screen space. So I
+decided to move the menu box to the right of the main body of the page.&lt;/p&gt;
+&lt;p&gt;I could have hard-coded the box position; but decided that I wanted
+to have the main body remain centered regardless of browser size.
+That would complicate the positioning of the menu box (which is it's
+own div not contained with the main page). Once again &lt;a class="reference external" href="http://www.alistapart.com"&gt;A List Apart&lt;/a&gt; had
+a good &lt;a class="reference external" href="http://www.alistapart.com/articles/journey/"&gt;article&lt;/a&gt;describing how they got their CSS centering to work.&lt;/p&gt;
+&lt;p&gt;The ALA article had links to these two pages describing the methods
+I used: &lt;a class="reference external" href="http://bluerobot.com/web/css/center1.html"&gt;Auto Width Margins&lt;/a&gt;and &lt;a class="reference external" href="http://bluerobot.com/web/css/center2.html"&gt;NegativeMargins&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The AgilityNerd site has two main divs: #page for the main body
+and#sidebar for the box containing the menu. I used the Auto Width
+Margins method to center the main body:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+#page { font-size: 13px; background: white; border: 1px solid black;
+top: 0px; width: 640px; margin: 0px auto; margin-bottom: 50px;
+text-align: left;}
+&lt;/pre&gt;
+&lt;p&gt;The two lines of interest are &lt;tt class="docutils literal"&gt;margin: 0px auto;` and &lt;span class="pre"&gt;``text-align:&lt;/span&gt; left;&lt;/tt&gt;.
+Thelater is required because I used the IE 5.x workaround of
+specifying &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;text-align:&lt;/span&gt; center;&lt;/tt&gt; in the body element.&lt;/p&gt;
+&lt;p&gt;So now that the main body of the site was centered, I wanted the menu to
+be floating off to the right of the main body. The Negative
+Margins method let me horizontally center the divand also offset it
+horizontally by any amount. I offset it by half the(fixed) width of the
+main body plus a little space. The additionalspace keeps IE 5.x
+browser's miscalculation of sizes from causing theborders to not meet
+correctly:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+#sidebar { background: white; font-size: 12px; position: fixed;
+width: 140px; height: auto; top: 70px; left: 50%; margin-left:
+330px; text-align: center; border: 1px solid black; }
+&lt;/pre&gt;
+&lt;p&gt;Unlike the article, I used &lt;tt class="docutils literal"&gt;position: fixed&lt;/tt&gt; instead of absolute. This
+allows the menubox to float in place during scrolling (but only for CSS
+compliant browsers like: Mozilla/Netscape).&lt;/p&gt;
+</summary><category term="css"></category><category term="webdevelopment"></category></entry></feed>

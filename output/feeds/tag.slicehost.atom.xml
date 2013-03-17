@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd.com</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://tech.agilitynerd.com/feeds/tag.slicehost.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2008-01-05T23:53:00-06:00</updated><entry><title>Notes on Configuring Postfix on Ubuntu Gutsy to Send Email via Google Apps</title><link href="http://tech.agilitynerd.com/notes-on-configuring-postfix-on-ubuntu-gutsy-1.html" rel="alternate"></link><updated>2008-01-05T23:53:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2008-01-05:notes-on-configuring-postfix-on-ubuntu-gutsy-1.html</id><summary type="html">&lt;p&gt;Here are some notes I took on configuring my &lt;a class="reference external" href="http://www.slicehost.com/"&gt;Slicehost&lt;/a&gt; Ubuntu Gutsy
+installation to use Postfix to send emails via Google Apps. I am far
+from an expert on postfix configuration but maybe these notes will be
+helpful to others needing this configuration.&lt;/p&gt;
+&lt;p&gt;These sites contain the key information:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://behindmyscreen.newsvine.com/_news/2006/12/31/501615-configuringubuntu-postfix-and-gmail-in-101-easy-steps"&gt;Behind My Screen - Configuring[Ubuntu] Postfix and Gmail in 10+1
+Easy Steps&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://prantran.blogspot.com/2007/01/getting-postfix-to-work-on-ubuntu-with.html"&gt;The Prancing Tarantula - Getting Postfix to work on Ubuntu with
+Gmail&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://souptonuts.sourceforge.net/postfix_tutorial.html"&gt;Mike Chirico - Gmail on Home Linux Box using Postfix and Fetchmail&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I basically followed the Behind My Screen tutorial (read the comments
+too) with the updates from The Prancing Tarantula and the following
+changes.&lt;/p&gt;
+&lt;p&gt;My Ubuntu server install didn't have the Thawte certificates installed
+by default so I installed them:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+sudo aptitude install ca-certificates
+&lt;/pre&gt;
+&lt;p&gt;Then you can append that file to your /etc/postfix/cacert.pem If you
+&amp;quot;sudo su&amp;quot; before doing the append to the file you won't get messed up by
+the shell:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+$ sudo su
+# cat /etc/ssl/certs/Thawte\_Premium\_Server\_CA.pem &amp;gt;&amp;gt;
+/etc/postfix/cacert.pem
+&lt;/pre&gt;
+&lt;p&gt;Since I have Google Apps setup for my domain I don't just want to relay
+email as &amp;quot;&lt;a class="reference external" href="mailto:user&amp;#64;gmail.com"&gt;user&amp;#64;gmail.com&lt;/a&gt;&amp;quot;, I want the email to be sent as though it
+came from my domain (&amp;quot;&lt;a class="reference external" href="mailto:me&amp;#64;agilitynerd.com"&gt;me&amp;#64;agilitynerd.com&lt;/a&gt;&amp;quot;). This requires some simple
+changes to the config files.&lt;/p&gt;
+&lt;p&gt;In my transport file I have:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+agilitynerd.com smtp:[smtp.gmail.com]:587
+&lt;/pre&gt;
+&lt;p&gt;In my generic file I have:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+demo&amp;#64;myservername.agilitynerd.com me&amp;#64;agilitynerd.com
+&lt;/pre&gt;
+&lt;p&gt;Where &amp;quot;demo&amp;quot; is the login name and &amp;quot;myservername&amp;quot; is my slicename. In my
+sasl_passwd file I have:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+[smtp.gmail.com]:587 me&amp;#64;agilitynerd.com:me\_gmail\_account\_password
+&lt;/pre&gt;
+&lt;p&gt;After restarting postix you can test sending email from your server:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+$ sudo aptitude install mailx
+$ mailx -s &amp;quot;test email&amp;quot; someotheraccount&amp;#64;gmail.com &amp;lt;
+~/sometestfile\_to\_send
+&lt;/pre&gt;
+&lt;p&gt;Check your logfiles for errors/warnings:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+sudo tail /var/log/mail.\*
+&lt;/pre&gt;
+&lt;p&gt;I hope these notes might help folks &amp;quot;get over the hump&amp;quot; if they are
+setting up the same configuration.&lt;/p&gt;
+</summary><category term="postfix"></category><category term="slicehost"></category><category term="ubuntu"></category></entry></feed>
