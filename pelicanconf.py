@@ -37,4 +37,6 @@ COPYRIGHT_DATE = "2013"
 #TEMPLATE_PAGES = {"/Users/saschwarz/dev/tech-agilitynerd/content/about.html": "/Users/saschwarz/dev/tech-agilitynerd/output/about.html",                  }
 
 FEED_DOMAIN = "http://feeds.feedburner.com"
-FEED_ALL_RSS = 'feeds/all.rss'
+#FEED_ALL_RSS = 'feeds/all.rss' # input to feedburner
+FEED_ALL_ATOM = 'TechAgilityNerd' # output from feedburner
+
