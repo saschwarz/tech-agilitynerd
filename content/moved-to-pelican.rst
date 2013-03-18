@@ -22,7 +22,7 @@ Then posterous announced `it is closing on April 30 <http://blog.posterous.com/t
 
 I use Disqus for comments on my other sites so that meant I could go with a statically generated site. Also since I primarily code in Python I wanted a platform to which I could contribute. I came across `Pelican <http://blog.getpelican.com/>`_ and it fit the bill nicely.
 
-I exported the posterous posts, imported them through a temporary wordpress.com site and re-exported them in wordpress format. After a quick bug fix to the pelican wordpress importer I was able to generate reStructured Text files for each post. After a few days of editing the embeded source code in the content files and fixing long broken links, I had the blog running and not looking bad at all.
+I exported the posterous posts, imported them through a temporary wordpress.com site using their posterous importer and finally re-exported them in wordpress format. After a quick bug fix to the pelican wordpress importer I had reStructured Text files for each post. After a few days of editing the embeded source code in the content files and fixing long broken links, I had the blog running and not looking bad at all.
 
 I wanted a Twitter Boostrap based responsive layout and I found `azizmb's pelican-bootstrap-responsive-them <https://github.com/azizmb/pelican-bootstrap-responsive-theme>`_ which had a very pleasing layout. I tweaked it to have category and tag feeds and some other enhancements to get what you see today. I will see if Aziz is interested in pulling any of my changes back.
 
