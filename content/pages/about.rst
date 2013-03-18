@@ -12,6 +12,8 @@ This Website
 
 Started in 2004 as a locally hosted flat file web site using a Perl CGI script (Blosxom). Then migrated to posterous.com. Currently flat files authored in reStructured Text and statically generated using `Pelican`_. Comments via Disqus and search by Google Custom Search Engine.
 
+The `content of the blog <https://github.com/saschwarz/tech-agilitynerd>`_ and my `edits to the theme <https://github.com/saschwarz/pelican-bootstrap-responsive-theme>`_ are available on GitHub.
+
 My Other Web Sites and Projects
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
