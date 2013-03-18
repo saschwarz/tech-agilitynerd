@@ -85,3 +85,12 @@ footer, .about {
 .pagination {
     text-align: center;
 }
+
+.search {
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.author {
+    margin-top: 110px;
+}

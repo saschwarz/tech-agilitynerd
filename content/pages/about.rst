@@ -5,17 +5,15 @@ About
 :status: hidden
 :slug: about
 
-I'm Steve Schwarz a software developer in the Chicago area.
-
-- email: steve at agilitynerd dot com
+Steve Schwarz: steve at agilitynerd dot com
 
 This Website
 @@@@@@@@@@@@
 
-Started in 2004 as a flat file website using a Perl cgi script (Blosxom). Then migrated to posterous.com and finally migrated to reStructured Text and statically generated using `Pelican`_. Comments via disqus.
+Started in 2004 as a locally hosted flat file web site using a Perl CGI script (Blosxom). Then migrated to posterous.com. Currently flat files authored in reStructured Text and statically generated using `Pelican`_. Comments via Disqus and search by Google Custom Search Engine.
 
-My Other Websites and Projects
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+My Other Web Sites and Projects
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 - The first/longest running dog agility blog: `AgilityNerd <http://agilitynerd.com>`_
 

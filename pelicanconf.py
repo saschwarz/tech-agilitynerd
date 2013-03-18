@@ -30,7 +30,7 @@ THEME = './themes/pelican-bootstrap-responsive-theme'
 
 SUMMARY_MAX_LENGTH = 50
 
-AUTHOR_ABOUT = """<p class="about">I'm Steve Schwarz a software developer in the Chicago area. <a href="/pages/about.html">more</a></p>"""
+AUTHOR_ABOUT = """<p class="about">I'm Steve Schwarz a Chicago software developer and dog agility enthusiast. <a href="/pages/about.html">more</a></p>"""
 
 COPYRIGHT_DATE = "2013"
 
@@ -43,3 +43,5 @@ CATEGORY_FEED_ATOM = 'feeds/%s.atom.xml'
 #CATEGORY_FEED_RSS = 'feeds/%s.rss.xml'
 TAG_FEED_ATOM = 'feeds/tag.%s.atom.xml'
 #TAG_FEED_RSS = 'feeds/tag.%s.rss.xml'
+
+GOOGLE_SEARCH = '001042720131993941673:rqdekl8sewe'
