@@ -3,7 +3,7 @@ Moved To Pelican
 :date: 2013-03-17 12:00
 :author: Steve Schwarz
 :category: webdev
-:tags: posterous, pelican, blosxom
+:tags: posterous, pelican, blosxom, bootstrap
 :slug: moved-to-pelican
 
 Way back in 2004, when the content in this blog was a category in the main `AglityNerd blog <http://agilitynerd.com>`_, I used the Perl `Blosxom <http://blosxom.sourceforge.net/>`_ application to serve the blog. When my dog agility readers complained/were confused by the sprinkling of tech postings I split off tech.agilitynerd in another Blosxom instance. 
@@ -24,6 +24,6 @@ I use Disqus for comments on my other sites so that meant I could go with a stat
 
 I exported the posterous posts, imported them through a temporary wordpress.com site using their posterous importer and finally re-exported them in wordpress format. After a quick bug fix to the pelican wordpress importer I had reStructured Text files for each post. After a few days of editing the embeded source code in the content files and fixing long broken links, I had the blog running and not looking bad at all.
 
-I wanted a Twitter Boostrap based responsive layout and I found `azizmb's pelican-bootstrap-responsive-them <https://github.com/azizmb/pelican-bootstrap-responsive-theme>`_ which had a very pleasing layout. I tweaked it to have category and tag feeds and some other enhancements to get what you see today. I will see if Aziz is interested in pulling any of my changes back.
+I wanted a Twitter Bootstrap based responsive layout and I found `azizmb's pelican-bootstrap-responsive-them <https://github.com/azizmb/pelican-bootstrap-responsive-theme>`_ which had a very pleasing layout. I tweaked it to have category and tag feeds and some other enhancements to get what you see today. I will see if Aziz is interested in pulling any of my changes back.
 
 So far I like using Pelican and I've made the `content of the blog <https://github.com/saschwarz/tech-agilitynerd>`_ and my `edits to the theme <https://github.com/saschwarz/pelican-bootstrap-responsive-theme>`_ available on github in case anyone is interested.

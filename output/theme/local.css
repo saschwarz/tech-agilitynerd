@@ -94,3 +94,16 @@ footer, .about {
 .author {
     margin-top: 110px;
 }
+/* fix up nav on mobile */
+@media (max-width: 767px) {
+    .navbar-fixed-top, .navbar-fixed-bottom {
+        margin-right: 0px;
+        margin-left: 0px;
+    }
+}
+@media (max-width: 979px) {
+    /* remove extra top space at small sizes */
+    .navbar-fixed-top {
+        position: absolute;
+    }
+}

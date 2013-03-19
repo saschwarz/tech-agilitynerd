@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*- #
 
 AUTHOR = u'Steve Schwarz'
-SITENAME = u'tech.agilitynerd.com'
+SITENAME = u'tech.agilitynerd'
 SITESUBTITLE = u'scratching that itch'
 SITEURL = 'http://tech.agilitynerd.com'
 
