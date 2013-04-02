@@ -44,4 +44,5 @@ CATEGORY_FEED_ATOM = 'feeds/%s.atom.xml'
 TAG_FEED_ATOM = 'feeds/tag.%s.atom.xml'
 #TAG_FEED_RSS = 'feeds/tag.%s.rss.xml'
 
-GOOGLE_SEARCH = '001042720131993941673:rqdekl8sewe'
+# GOOGLE_SEARCH = '001042720131993941673:rqdekl8sewe'
+GOOGLE_SEARCH = '001042720131993941673:szhtogqckem'
