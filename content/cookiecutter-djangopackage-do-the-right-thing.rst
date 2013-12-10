@@ -1,6 +1,6 @@
 cookiecutter-djangopackage - Do the Right Thing
 ###############################################
-:date: 2013-12-09 20:02
+:date: 2013-12-09 23:02
 :author: Steve Schwarz
 :category: webdev
 :tags: python, django, googility, development, testing, travis, rtd, pypi, tox, virtualenv, webdevelopment, github
@@ -34,4 +34,4 @@ So take look at my nearly released ``django-periodicals`` application to see how
 
 .. rubric: Footnotes
 
-.. [#] I did submit a `pull request <https://github.com/pydanny/cookiecutter-djangopackage/pull/13>`_ and found another resolved issue with application names that don't match their imported package name. (i.e. ``django-periodicals`` is the application name and ``periodicals`` is the package that is imported).
+.. [#] I submitted a very minor `pull request <https://github.com/pydanny/cookiecutter-djangopackage/pull/13>`_ and found a related issue with application names that don't match their imported package name. (i.e. ``django-periodicals`` is the application name and ``periodicals`` is the package that is imported).
