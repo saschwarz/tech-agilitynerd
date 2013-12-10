@@ -14,7 +14,7 @@ In preparation for upgrading and enhancing `Googility.com <http://googility.com>
 
 * Continuous Integration running on each check-in via `Travis CI <https://travis-ci.org/>`_.
 
-* Documentation on `Read the Docs (RTD) <https://readthedocs.org/>`_.
+* Documentation in Sphinx on `Read the Docs (RTD) <https://readthedocs.org/>`_.
 
 * Packaging/versioning compatible with `PyPi <https://pypi.python.org/pypi>`_.
 
@@ -24,9 +24,9 @@ I had started researching each aspect and was getting a little frustrated that t
 
 Yes there are other similar projects, and Django provides ``startproject`` and ``startapp`` commands that can take template arguments. But since I've never used Travis, RTD or tox I really wanted to leverage more experienced developers' knowledge so I could set them up in a "smart" way. 
 
-That's what I liked about ``cookiecutter-djangopackage`` it came with sane defaults that worked out of the box [#]_ and did smart stuff like wiring the version from the package's ``__init__.py`` in to the documentation and ``setup.py``. The ``requirements.txt`` used by ``pip`` is also wired in to ``tox`` and the ``runtests.py`` test runner. 
+That's what I liked about ``cookiecutter-djangopackage`` it came with sane defaults that worked out of the box [#]_ and did smart stuff like wiring the version from the package's ``__init__.py`` in to the documentation and ``setup.py``. The ``requirements.txt`` used by ``pip`` is wired in to ``tox`` and the ``README.rst`` is used in the ``setup.py`` and included in the Spinx docs.
 
-And there are other integrations that make it easy to release a professional Django application. In fact that's my long winded point - it makes it hard to not do the right thing! I might not have taken the time to figure out one or more new support technologies, but ``cookiecutter-djangopackage`` made it easy for me to focus on writing code, tests and documentation. 
+And there are other integrations that make it easy to release a professional Django application. In fact that's my long winded point - it makes it hard to not do the right thing! I might have skipped using one or more of these support technologies, but ``cookiecutter-djangopackage`` made it easy for me to use them and focus on writing code, tests and documentation. 
 
 So that is what I want to stress: with ``cookiecutter-djangopackage`` you *can* create a packaged application, whose code is tested on multiple python/Django versions, tested for installation, installable via PyPi and nicely documented without much additional effort.
 
