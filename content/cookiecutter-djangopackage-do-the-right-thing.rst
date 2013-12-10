@@ -3,7 +3,7 @@ cookiecutter-djangopackage - Do the Right Thing
 :date: 2013-12-09 20:02
 :author: Steve Schwarz
 :category: webdev
-:tags: python, django, googility, development, testing, travis, rtd, pypi, tox, virtualenv, webdevelopment, github, 
+:tags: python, django, googility, development, testing, travis, rtd, pypi, tox, virtualenv, webdevelopment, github
 :slug: cookiecutter-django-do-the-right-thing
 
 In preparation for upgrading and enhancing `Googility.com <http://googility.com>`_ I've started breaking out reusable applications, upgrading them, and open sourcing the code on GitHub. I wanted to follow development best practices and create high quality applications including these features:
