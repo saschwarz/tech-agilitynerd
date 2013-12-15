@@ -78,6 +78,21 @@
 	      </div>
 	      	      
 <div class='article'>
+  <h2><a href="http://tech.agilitynerd.com/python-dictgets-default-value-is-always-evalu.html">Python dict.get's Default Value is Always Evaluated</a></h2>
+  <div class="well small"><a class="more" href="http://tech.agilitynerd.com/python-dictgets-default-value-is-always-evalu.html">On 05 Apr 2011 at 1716</a>
+by <a class="url fn" href="http://tech.agilitynerd.com/author/steve-schwarz.html">Steve Schwarz</a> in <a href="http://tech.agilitynerd.com/category/programming.html">programming</a>
+ | <a href="http://tech.agilitynerd.com/python-dictgets-default-value-is-always-evalu.html#disqus_thread">Comments</a></div>
+  <div class="summary"><p>This is a gotcha I ran across in some production code that is obvious in
+retrospect.&nbsp;I was profiling the code to find places where we were
+calling <tt class="docutils literal">an_expensive_database_function</tt> and came across code like
+this:</p>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">doit</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+     <span class="n">value</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'key'</span><span class="p">,</span> <span class="n">an_expensive_database_function</span><span class="p">())</span>
+</pre>
+<p>The original author probably assumed that ...</p></div>
+  <div class="tags">Tagged as: <a href="http://tech.agilitynerd.com/tag/python.html">python</a> </div></div>
+<div class='article'>
   <h2><a href="http://tech.agilitynerd.com/recaptcha-in-django-1.html">reCAPTCHA in Django</a></h2>
   <div class="well small"><a class="more" href="http://tech.agilitynerd.com/recaptcha-in-django-1.html">On 23 Dec 2008 at 2204</a>
 by <a class="url fn" href="http://tech.agilitynerd.com/author/steve-schwarz.html">Steve Schwarz</a> in <a href="http://tech.agilitynerd.com/category/webdev.html">webdev</a>
@@ -177,16 +192,6 @@ looking websites.</p>
 <ul class="simple">
 <li>Select an ...</li></ul></div>
   <div class="tags">Tagged as: <a href="http://tech.agilitynerd.com/tag/sitedesign.html">sitedesign</a> </div></div>
-<div class='article'>
-  <h2><a href="http://tech.agilitynerd.com/yellowgrass-web-based-issue-tracking.html">YellowGrass - Web Based Issue Tracking</a></h2>
-  <div class="well small"><a class="more" href="http://tech.agilitynerd.com/yellowgrass-web-based-issue-tracking.html">On 07 Jun 2011 at 1224</a>
-by <a class="url fn" href="http://tech.agilitynerd.com/author/steve-schwarz.html">Steve Schwarz</a> in <a href="http://tech.agilitynerd.com/category/webdev.html">webdev</a>
- | <a href="http://tech.agilitynerd.com/yellowgrass-web-based-issue-tracking.html#disqus_thread">Comments</a></div>
-  <div class="summary"><p>I was doing some reading on <a class="reference external" href="http://www.mobl-lang.org/">mobl</a>&nbsp;and saw&nbsp;that they&nbsp;are using a free
-web based service called <a class="reference external" href="http://yellowgrass.org/features">YellowGrass</a>&nbsp;for issue tracking. It has some
-nice features and seems easy to use.&nbsp;Everything is tag based.&nbsp;I think
-I'll try to use it for tracking enhancements to <a class="reference external" href="http://agilitycourses.com">agilitycourses ...</a></p></div>
-  <div class="tags">Tagged as: <a href="http://tech.agilitynerd.com/tag/development.html">development</a> <a href="http://tech.agilitynerd.com/tag/issuetracking.html">issuetracking</a> </div></div>
 
 <div class="pagination">
 <ul>
@@ -197,7 +202,8 @@ I'll try to use it for tracking enhancements to <a class="reference external" hr
 			<li class=""><a href="http://tech.agilitynerd.com/author/steve-schwarz4.html">4</a></li>
 			<li class=""><a href="http://tech.agilitynerd.com/author/steve-schwarz5.html">5</a></li>
 			<li class="active"><a href="http://tech.agilitynerd.com/author/steve-schwarz6.html">6</a></li>
-				<li class="next disabled"><a href="#">&rarr; Next</a></li>
+			<li class=""><a href="http://tech.agilitynerd.com/author/steve-schwarz7.html">7</a></li>
+				<li class="next"><a href="http://tech.agilitynerd.com/author/steve-schwarz7.html">Next &rarr;</a></li>
 	</ul>
 </div>
 
