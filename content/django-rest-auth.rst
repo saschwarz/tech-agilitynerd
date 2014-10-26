@@ -1,4 +1,4 @@
-Django REST Registration with django-rest-auth and django-all-auth
+Django REST Registration with django-rest-auth and django-allauth
 ==================================================================
 :date: 2014-10-26 03:02
 :author: Steve Schwarz
