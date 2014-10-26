@@ -150,7 +150,8 @@ $ sudo vi /etc/service/myapp/run
 # enter the run script I'll show below
 $ sudo chmod +x /etc/service/myapp/run
 # stop runit from trying to run gunicorn until we are ready
-$ sudo sv stop myappok: down: myapp: 0s, normally up
+$ sudo sv stop myapp
+ok: down: myapp: 0s, normally up
 </pre>
 <p>The example run script checked into Gunicorn had some syntax errors
 and wasn't quite what I wanted. Here's my version:</p>
@@ -253,7 +254,7 @@ run: myapp: (pid 7543) 1s
 
       <footer>
         <p>Powered by <a href="http://blog.getpelican.com/">Pelican</a></p>
-	<p>&copy; Steve Schwarz 2013</p>
+	<p>&copy; Steve Schwarz 2014</p>
       </footer>
 
     </div><!--/.fluid-container-->

@@ -1,4 +1,12 @@
 body { padding-top: 60px; }
+
+li p.first {
+    line-height: 20px;
+}
+li p {
+    line-height: 26px;
+}
+
 div.article { padding-top: 20px; }
 div.article h2 { padding-bottom: 10px; }
 
@@ -74,7 +82,7 @@ h3 {
     font-size: 0.8em;
 }
 
-a { 
+a {
     color: rgb(23, 135, 190);
 }
 

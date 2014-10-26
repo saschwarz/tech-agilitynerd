@@ -3,7 +3,7 @@ Integrated Coverage Analysis with Coveralls
 :date: 2013-12-15 17:00
 :author: Steve Schwarz
 :category: webdev
-:tags: coverage, webdevelopment, github, django
+:tags: coverage, webdevelopment, github, django, testing, travis, python
 :slug: coverage-analysis-with-coveralls
 :description: Coveralls made it so simple to add coverage testing to my Travis-CI configuration for django-periodicals. I found that it pushed me to take coverage testing all the way.
 

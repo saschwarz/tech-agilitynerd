@@ -84,7 +84,8 @@ in ``/etc/service:``
   # enter the run script I'll show below
   $ sudo chmod +x /etc/service/myapp/run
   # stop runit from trying to run gunicorn until we are ready
-  $ sudo sv stop myappok: down: myapp: 0s, normally up
+  $ sudo sv stop myapp
+  ok: down: myapp: 0s, normally up
 
 The example run script checked into Gunicorn had some syntax errors
 and wasn't quite what I wanted. Here's my version:
