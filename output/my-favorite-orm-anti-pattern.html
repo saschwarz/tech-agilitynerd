@@ -112,7 +112,7 @@ when only a single element is needed.</li>
 in memory. But being objects that are instantiated by an ORM a number of
 database queries will be issued. In this particular case (w/o eager
 loading across user to the organization table) the following queries
-where executed:</p>
+were executed:</p>
 <ol class="arabic simple">
 <li>Join project to user and get all users for the project's id</li>
 <li>For each user load their organization (one by one) if the user is
@@ -128,7 +128,7 @@ time during it's development the developers were encouraged to treat ORM
 backed objects as though they were Plain Old Python Objects (POPOs). The
 developer wouldn't necessarily see the performance degradation using
 small data sets either. This is one of the reasons why I like to tail
-the database log (or use <a class="reference external" href="http://github.com/robhudson/django-debug-toolbar">django-debug-toolbar</a> if I''m using Django)
+the database log (or use <a class="reference external" href="http://github.com/robhudson/django-debug-toolbar">django-debug-toolbar</a> if I'm using Django)
 to see the queries go by.</p>
 </div>
 <div class="section" id="using-list-comprehensions-when-a-single-value-is-needed">
@@ -229,7 +229,7 @@ orders of magnitude.</p>
 
       <footer>
         <p>Powered by <a href="http://blog.getpelican.com/">Pelican</a></p>
-	<p>&copy; Steve Schwarz 2014</p>
+	<p>&copy; Steve Schwarz 2015</p>
       </footer>
 
     </div><!--/.fluid-container-->

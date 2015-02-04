@@ -15,9 +15,9 @@ clients, but when clients with who are related to many other clients hit
 the page they'd experience terrible performance. Here's pseudo code for
 the combination of anti-patterns that caused the problem::
 
-  # Projects have users and users are in different organizations 
+  # Projects have users and users are in different organizations
   # (project can contain multiple organization's users)
-  activeOrganizationProjectUsers = [x for x in project.users 
+  activeOrganizationProjectUsers = [x for x in project.users
           if x.active and x.organization == organization]
   if activeOrganizationProjectUsers:
       # do something *NOT* using activeOrganizationProjectUsers
@@ -36,7 +36,7 @@ The code above wouldn't be too bad if these were just lists of objects
 in memory. But being objects that are instantiated by an ORM a number of
 database queries will be issued. In this particular case (w/o eager
 loading across user to the organization table) the following queries
-where executed:
+were executed:
 
 #. Join project to user and get all users for the project's id
 #. For each user load their organization (one by one) if the user is
@@ -53,7 +53,7 @@ time during it's development the developers were encouraged to treat ORM
 backed objects as though they were Plain Old Python Objects (POPOs). The
 developer wouldn't necessarily see the performance degradation using
 small data sets either. This is one of the reasons why I like to tail
-the database log (or use `django-debug-toolbar`_ if I''m using Django)
+the database log (or use `django-debug-toolbar`_ if I'm using Django)
 to see the queries go by.
 
 Using List Comprehensions When a Single Value is Needed

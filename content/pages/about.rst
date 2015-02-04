@@ -19,19 +19,19 @@ My Other Web Sites and Projects
 
 - The first/longest running dog agility blog: `AgilityNerd <http://agilitynerd.com>`_
 
-  Perl, Python, mongodb, Blueprint, JavaScript, jQuery, Disqus, AddThis
+  Perl, Python, mongodb, Bootstrap, JavaScript, jQuery, Disqus, AddThis
 
 - Dog agility community search: `Googility <http://googility.com>`_
 
-  Python, django, haystack, whoosh, google custom search, google mapping API, jQuery, JavaScript
+  Python, Django, Haystack, Whoosh, google custom search, google mapping API, jQuery, JavaScript
 
 - Dog agility course generators: `agilitycourses.com <http://agilitycourses.com>`_
 
-  Python, django, jQuery Mobile, backbone.js, ReportLab (PDF generation), Rosetta (internationalization), SVG, Compass, Susy, jQuery, JavaScript, Disqus, AddThis
+  Python, Django, Bootstrap, Bootcards, ReportLab (PDF generation), Rosetta (internationalization), SVG, Compass, Susy, jQuery, JavaScript, Disqus, AddThis
 
 - Dog agility store: `AgilityNerd Store <http://store.agilitynerd.com>`_
 
-  Zencart/zazzle
+  Zencart/Zazzle
 
 - Organize quarterly Dog Agility Blogger Action Days/Events and maintain `group blog <http://dogagilityblogevents.wordpress.com/>`_
 

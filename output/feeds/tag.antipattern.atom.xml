@@ -27,7 +27,7 @@ when only a single element is needed.&lt;/li&gt;
 in memory. But being objects that are instantiated by an ORM a number of
 database queries will be issued. In this particular case (w/o eager
 loading across user to the organization table) the following queries
-where executed:&lt;/p&gt;
+were executed:&lt;/p&gt;
 &lt;ol class="arabic simple"&gt;
 &lt;li&gt;Join project to user and get all users for the project's id&lt;/li&gt;
 &lt;li&gt;For each user load their organization (one by one) if the user is
@@ -43,7 +43,7 @@ time during it's development the developers were encouraged to treat ORM
 backed objects as though they were Plain Old Python Objects (POPOs). The
 developer wouldn't necessarily see the performance degradation using
 small data sets either. This is one of the reasons why I like to tail
-the database log (or use &lt;a class="reference external" href="http://github.com/robhudson/django-debug-toolbar"&gt;django-debug-toolbar&lt;/a&gt; if I''m using Django)
+the database log (or use &lt;a class="reference external" href="http://github.com/robhudson/django-debug-toolbar"&gt;django-debug-toolbar&lt;/a&gt; if I'm using Django)
 to see the queries go by.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="section" id="using-list-comprehensions-when-a-single-value-is-needed"&gt;

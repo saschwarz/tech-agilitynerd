@@ -6,7 +6,7 @@ Django REST Registration with django-rest-auth and django-allauth
 :tags: python, REST, API, agilitycourses, django, django-rest-framework, django-allauth, django-rest-auth, mobile
 :slug: django-rest-registration-with-django-rest-auth
 
-I'm creating a mobile app for my `agilitycourses website <http://agilitycourses.com>`_ and I'm using `django-rest-api <http://www.django-rest-framework.org/>`_ to provide a REST API for use by the client application. In order to provide authentication and registration I'm using `django-allauth <http://django-allauth.readthedocs.org/en/latest/>`_. Lastly I use `django-rest-auth <https://github.com/Tivix/django-rest-auth/>`_ to provide REST resources for authentication and registration.
+I'm creating a mobile app for my `agilitycourses website <http://agilitycourses.com>`_ and I'm using `django-rest-framework <http://www.django-rest-framework.org/>`_ to provide a REST API for use by the client application. In order to provide authentication and registration I'm using `django-allauth <http://django-allauth.readthedocs.org/en/latest/>`_. Lastly I use `django-rest-auth <https://github.com/Tivix/django-rest-auth/>`_ to provide REST resources for authentication and registration.
 
 I implemented and tested ``django-rest-framework`` and then added in ``django-allauth``. But when I went to integrate ``django-rest-auth`` POSTing to the ``/rest-auth/registration/`` resource was generating a traceback::
 
