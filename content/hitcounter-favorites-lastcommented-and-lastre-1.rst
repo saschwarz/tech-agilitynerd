@@ -13,7 +13,7 @@ nstore(). So when my old webhost had some problem causing long page load
 times (and many simultaneous requests) I ended up having my favorites
 data file written as zero sized.
 
-So I changed to Storable::lock\_retrieve() and Storable::lock\_nstore()
+So I changed to Storable::lock_retrieve() and Storable::lock_nstore()
 for all four plugins. The new versions are here:
 
 -  `favorites`_

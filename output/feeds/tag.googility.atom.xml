@@ -42,8 +42,7 @@ functionality. But I wanted to make the following changes:&lt;/p&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;Move CSE templates into a cse template subdirectory&lt;/li&gt;
 &lt;li&gt;Name the templates to match the views that use them&lt;/li&gt;
-&lt;li&gt;Name the urls in the urls.py prefixed with the application name
-(&amp;quot;cse_&amp;quot;)&lt;/li&gt;
+&lt;li&gt;Name the urls in the urls.py prefixed with the application name (&amp;quot;cse_&amp;quot;)&lt;/li&gt;
 &lt;li&gt;Covert all reverse() calls in the views and url template tags to use
 the named urls&lt;/li&gt;
 &lt;/ul&gt;

@@ -21,7 +21,7 @@ previous and next links.
 
 So I decided to modify Jason's plugin to provide this feature. If you
 take a look at the bottom of my `AgilityNerd`_ home page page with more
-than $blosxom::num\_entries entries and scroll to the bottom) you'll see
+than $blosxom::num_entries entries and scroll to the bottom) you'll see
 grey dots, arrows, and page numbers each linking to a page of articles.
 
 You can download the modified plugin `here`_. The prolog of the file

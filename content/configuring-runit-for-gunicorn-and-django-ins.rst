@@ -9,12 +9,12 @@ Configuring Runit for Gunicorn and Django Installed in a Virtualenv on Ubuntu
 I couldn't find any documentation that covered all the pieces for
 configuring my latest Django site so I hope this helps someone else out.
 
-I had used mod\_wsgi under Apache for my other Django sites. But now I'm
+I had used ``mod_wsgi`` under Apache for my other Django sites. But now I'm
 using different python versions for the sites (until if/when I update
 the older sites) and I wasn't getting the correct versions of some
 python libraries (even though virtualenv apeared to be putting the
 appropriate python packages at the start of the sys.path). So I decided
-to configure Apache to ProxyPass to `Gunicorn`_\ so I could run my
+to configure Apache to ProxyPass to `Gunicorn`_ so I could run my
 Django app in its virtualenv without it getting any other python
 modules.
 
@@ -29,13 +29,13 @@ simplifies using gunicorn from the command line. Assuming
 
   $ source /home/user/virtualenvs/myapp/bin/activate
   $ pip install gunicorn
-  
+
   # or
   $ easy_install gunicorn
 
-This copies gunicorn\_django to the /home/user/virtualenvs/myapp/bin
+This copies ``gunicorn_django`` to the ``/home/user/virtualenvs/myapp/bin``
 directory. Test gunicorn with your app, assuming your Django app is
-located at /home/user/source/myapp, as follows:
+located at ``/home/user/source/myapp``, as follows:
 
 .. code::
 
@@ -44,7 +44,7 @@ located at /home/user/source/myapp, as follows:
   (myapp)$ gunicorn_django
 
 Gunicorn starts myapp using the ``settings.py`` file in the current
-directory on 127.0.0.1:8000. Ctrl-C to stop the process.
+directory on ``127.0.0.1:8000``. Ctrl-C to stop the process.
 
 Installing Runit on Ubuntu
 @@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -96,15 +96,15 @@ and wasn't quite what I wanted. Here's my version:
   GUNICORN=/home/user/virtualenvs/myapp/bin/gunicorn_django
   ROOT=/home/user/source/myapp
   PID=/var/run/myapp.pid
-  
-  if [ -f $PID ] 
-      then rm $PID 
+
+  if [ -f $PID ]
+      then rm $PID
   fi
 
   cd $ROOT
   exec $GUNICORN -c $ROOT/gunicorn.conf.py --pid=$PID
 
-You can create a `configuration file for gunicorn`_\ to use or just
+You can create a `configuration file for gunicorn`_ to use or just
 create an empty file for now:
 
 .. code::
@@ -113,7 +113,7 @@ create an empty file for now:
 
 If you have multiple appserver you'll need to run gunicorn on
 different ports, you can put the configuration in the gunicorn.conf.py
-file:: 
+file::
 
   bind = "127.0.0.1:8111"
 
@@ -134,7 +134,7 @@ Tell runit to start and keep gunicorn running::
   $ sudo sv start myapp
   ok: run: myapp: (pid 7540) 0s
   $ sudo sv status myapp
-  run: myapp: (pid 7543) 1s
+  run: myapp: (pid 7540) 1s
 
 .. _Gunicorn: http://gunicorn.org/
 .. _runit: http://smarden.org/runit/index.html

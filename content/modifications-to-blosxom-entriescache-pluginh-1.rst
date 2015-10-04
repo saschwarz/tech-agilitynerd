@@ -16,7 +16,7 @@ hosting provider to another without having your article dates get
 reset).
 
 Unfortunately, articles posted to a Blosxom blog with
-meta-creation\_date's in the future would be displayed immediately. I
+meta-creation_date's in the future would be displayed immediately. I
 had wanted to modify Blosxom to allow me post articles with future
 creation dates and have them hidden until that date. After a `request
 for this functionality on the Blosxom email list`_, I looked into the

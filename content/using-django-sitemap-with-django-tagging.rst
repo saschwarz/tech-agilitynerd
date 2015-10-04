@@ -7,7 +7,7 @@ Using django-sitemap with django-tagging
 :slug: using-django-sitemap-with-django-tagging
 
 I was adding `django-sitemap`_ to `googility.com`_ yesterday and found
-that Tags don't implement ``get\_absolute\_url()``. Which makes sense since
+that Tags don't implement ``get_absolute_url()``. Which makes sense since
 the site developer would want to decide how to expose them in the URL
 space.
 
@@ -24,11 +24,11 @@ made a little class that derives from ``GenericSitemap`` that allows the url
 and suffix for the Tag name to be specified::
 
     class SlugSitemap(GenericSitemap):
-    """Use for objects that don't implement get_absolute_url 
-       but have a slug field used in creating their url"""     
+    """Use for objects that don't implement get_absolute_url
+       but have a slug field used in creating their url"""
 
     def __init__(self, info_dict, priority=None, changefreq=None):
-        GenericSitemap.__init__(self, info_dict, 
+        GenericSitemap.__init__(self, info_dict,
                                 priority=priority,
                                 changefreq=changefreq)
         self.url = info_dict.get('url', '/')

@@ -28,13 +28,13 @@ articles.
 If you are a Blosxom blogger and would like my modifications you can
 download my modified version `here`_. Unzip it and put it in your plugin
 directory. By default it should work the same as Todd's original
-version. A new configuration variable $show\_all\_of\_stories\_until can
+version. A new configuration variable $show_all_of_stories_until can
 be set to the number of stories on each index page that you'd like to
 show in full.
 
 So I've modified most of my posts to include the seemore label and
 increased the number of articles shown on each index page to
-$blosxom::num\_entries. I like this new site configuration; let me know
+$blosxom::num_entries. I like this new site configuration; let me know
 if you do too.
 
 .. _Blosxom: http://blosxom.sourceforge.net/

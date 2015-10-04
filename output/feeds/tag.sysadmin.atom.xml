@@ -66,8 +66,8 @@ where you don't have control over the webserver this may be required.&lt;/p&gt;
 .htaccess file on my server:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
 RewriteEngine on
-RewriteCond %{HTTP\_REFERER} !^$
-RewriteCond %{HTTP\_REFERER} !^http://(www.)?agilitynerd.com/.\* [NC]
+RewriteCond %{HTTP_REFERER} !^$
+RewriteCond %{HTTP_REFERER} !^http://(www.)?agilitynerd.com/.\* [NC]
 RewriteRule .\*.(jpg\|jpeg\|gif\|png\|bmp)$ /images/nodirectlink.g [L,NC]
 &lt;/pre&gt;
 &lt;p&gt;I then created an image called nodirectlink.g shown below.&lt;/p&gt;
@@ -87,8 +87,8 @@ Guide&lt;/a&gt; describes this in the Blocked Inline-Images section. So here is
 my final solution:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
 RewriteEngine on
-RewriteCond %{HTTP\_REFERER} !^$
-RewriteCond %{HTTP\_REFERER} !^http://(www.)?agilitynerd.com/.\*$ [NC]
+RewriteCond %{HTTP_REFERER} !^$
+RewriteCond %{HTTP_REFERER} !^http://(www.)?agilitynerd.com/.\*$ [NC]
 RewriteRule .\*.(jpg\|jpeg\|gif\|png\|bmp)$ - [F]
 &lt;/pre&gt;
 &lt;p&gt;I took this opportunity to modify some of my very first articles and

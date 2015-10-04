@@ -20,7 +20,7 @@ I found that `Jason Clark`_ had run into this problem with his
 `Blosxom`_ blog and resolved it by using the following meta element on
 his index pages: <meta name="robots" content="noindex,follow" >. `His
 post describes`_ how he conditionally includes these robot meta tags
-through his head flavour files (using the interpolate\_fancy plugin and
+through his head flavour files (using the interpolate_fancy plugin and
 his storystate plugin) only on his index pages and not on other pages.
 
 For my site it is even easier. I use separate head.index pages to style

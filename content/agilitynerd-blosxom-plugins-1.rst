@@ -37,7 +37,7 @@ of each article.
 `binary`_ - Used to supply images from the directory in which an article
 exists. Modified to use LWP::MediaTypes since MIME::Types isn't
 installed on this web server. I also commented out the interpolate()
-function and added it to the one in interpolate\_fancy to make this
+function and added it to the one in interpolate_fancy to make this
 plugin coexist with interpolate fancy.
 
 I no longer use binary because it is faster to just have Apache serve
@@ -62,10 +62,10 @@ breadcrumbs plugin for that feature.
 
 `config`_ - Allows any Perl variable to be set differently in any
 category/directory. I use this to change the sort order for my
-`glossary`_ page to be alphabetical order by changing the sort\_order
+`glossary`_ page to be alphabetical order by changing the sort_order
 plugin's sorder variable.
 
-`entries\_cache`_ - Speeds up processing of the site by caching the
+`entries_cache`_ - Speeds up processing of the site by caching the
 article index to avoid scanning directories until a configured amount of
 time has elapsed. Also caches article creation time to allow for editing
 of articles without changing their timestamps.
@@ -87,7 +87,7 @@ feeds.
 
 `headlines`_ - Used to determine all the entries in my `glossary`_
 category and create links in alphabetical order. Requires
-interpolate\_fancy.
+interpolate_fancy.
 
 `hide`_ - Excludes directories of articles from the index views (like
 the agilitynerd.com main page) but still allows them to be searched by
@@ -98,7 +98,7 @@ number of visitors displayed in the footer for each page on my site.
 These hit counts per page are used by my favorites plugin to generate my
 `Favorites page`_.
 
-`interpolate\_fancy`_ - Used to remove the space allocated for the
+`interpolate_fancy`_ - Used to remove the space allocated for the
 results of find and the breadcrumbs plugin when their variables aren't
 defined. I think I'll use this more in the future to dynamically change
 the page format.
@@ -113,7 +113,7 @@ each page of the site.
 
 `moreentries`_ - Creates the "Previous" and "Next" links at the bottom
 of each index or search page when there are more than
-``$blosxom::num\_entries`` entries. I've modified this plugin as I described
+``$blosxom::num_entries`` entries. I've modified this plugin as I described
 `here`_.
 
 `postheadprefoot`_ - Allows each category/directory to have unique text
@@ -142,7 +142,7 @@ Furthe
 
 r modified to always create a link to my html flavoured pages.
 
-`sort\_order`_ - Allows sorting by date, directory names, or file name.
+`sort_order`_ - Allows sorting by date, directory names, or file name.
 I modified it to not read the URI parameters and just use a
 configuration variable. Then I used the config plugin to change the sort
 order for my `glossary`_ page to sort by file name instead of in reverse
@@ -153,7 +153,7 @@ title of the article or the name of the category. I use it
 to aid in navigation and site statistics]].
 
 `timezone`_ - Adjusts timestamps automatically created or entered using
-meta-creation\_date: to be offset correctly to my timezone; which is
+meta-creation_date: to be offset correctly to my timezone; which is
 different from the web server's timezone.
 
 I no longer use timezone since I can set the timezone on my
@@ -185,7 +185,7 @@ them named as follows:
 -  001redirect
 -  002defaultflavour
 -  005wikiwordish
--  007google\_highlight
+-  007google_highlight
 -  008wbcaptcha
 -  01atomfeed
 -  01breadcrumbs
@@ -203,14 +203,14 @@ them named as follows:
 -  01postheadprefoot
 -  01rss10
 -  01seemore
--  01sort\_order
+-  01sort_order
 -  01storytitle
 -  01writeback
 -  02hitcounter
 -  02lastcommented
 -  02lastread
 -  02recentwritebacks
--  50interpolate\_fancy
+-  50interpolate_fancy
 
 .. _Blosxom: http://blosxom.sourceforge.net/
 .. _plugin: http://blosxom.com/documentation/users/plugins.html
@@ -222,14 +222,14 @@ them named as follows:
 .. _categories: http://www.blosxom.com/plugins/category/categories.htm
 .. _config: http://www.blosxom.com/plugins/general/config.htm
 .. _glossary: http://agilitynerd.com/blog/agility/glossary/
-.. _entries\_cache: http://www.blosxom.com/plugins/indexing/entries_cache.htm
+.. _entries_cache: http://www.blosxom.com/plugins/indexing/entries_cache.htm
 .. _Favorites page: http://agilitynerd.com/blog/static/Favorites.html
 .. _file: http://www.blosxom.com/plugins/include/file.htm
 .. _find: http://www.blosxom.com/plugins/search/find.htm
 .. _foreshortened: http://www.blosxom.com/plugins/text/foreshortened.htm
 .. _headlines: http://www.blosxom.com/plugins/display/headlines.htm
 .. _hide: http://www.blosxom.com/plugins/files/hide.htm
-.. _interpolate\_fancy: http://www.blosxom.com/plugins/interpolate/interpolate_fancy.htm
+.. _interpolate_fancy: http://www.blosxom.com/plugins/interpolate/interpolate_fancy.htm
 .. _moreentries: http://www.blosxom.com/plugins/display/moreentries.htm
 .. _here: /minor-additional-mods-to-blosxom-moreenties-p-1.html
 .. _postheadprefoot: http://www.blosxom.com/plugins/display/postheadprefoot.htm
@@ -238,7 +238,7 @@ them named as follows:
 .. _rss10: http://www.blosxom.com/plugins/syndication/rss10.htm
 .. _seemore: http://www.blosxom.com/plugins/display/seemore.htm
 .. _modified: /see-more-added-to-article-display-on-index-pa-1.html
-.. _sort\_order: http://blosxom.ookee.com/blosxom/plugins/v2/sort_order-v0i85
+.. _sort_order: http://blosxom.ookee.com/blosxom/plugins/v2/sort_order-v0i85
 .. _storytitle: http://www.leverton.org/blosxom/Software/Projects/Blosxom/storytitle.html
 .. _timezone: http://www.blosxom.com/plugins/date/timezone2.htm
 .. _wbcaptcha: http://varg.dyndns.org/psi/pub/code/misc/wbcaptcha.html

@@ -24,7 +24,7 @@ sudo aptitude install ca-certificates
 the shell:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
 $ sudo su
-# cat /etc/ssl/certs/Thawte\_Premium\_Server\_CA.pem &amp;gt;&amp;gt;
+# cat /etc/ssl/certs/Thawte_Premium_Server_CA.pem &amp;gt;&amp;gt;
 /etc/postfix/cacert.pem
 &lt;/pre&gt;
 &lt;p&gt;Since I have Google Apps setup for my domain I don't just want to relay
@@ -42,13 +42,13 @@ demo&amp;#64;myservername.agilitynerd.com me&amp;#64;agilitynerd.com
 &lt;p&gt;Where &amp;quot;demo&amp;quot; is the login name and &amp;quot;myservername&amp;quot; is my slicename. In my
 sasl_passwd file I have:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
-[smtp.gmail.com]:587 me&amp;#64;agilitynerd.com:me\_gmail\_account\_password
+[smtp.gmail.com]:587 me&amp;#64;agilitynerd.com:me_gmail_account_password
 &lt;/pre&gt;
 &lt;p&gt;After restarting postix you can test sending email from your server:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
 $ sudo aptitude install mailx
 $ mailx -s &amp;quot;test email&amp;quot; someotheraccount&amp;#64;gmail.com &amp;lt;
-~/sometestfile\_to\_send
+~/sometestfile_to_send
 &lt;/pre&gt;
 &lt;p&gt;Check your logfiles for errors/warnings:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;

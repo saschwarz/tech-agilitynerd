@@ -42,7 +42,7 @@ Awstats for analytics.
 
 Since I'm using two separate domain and sharing everything else I'm
 using a setup similar to the one described by `Dustin Davis`_. I have a
-settings.py file and a mobile\_settings.py that only overrides the
+settings.py file and a mobile_settings.py that only overrides the
 features I need::
 
   from settings import *
@@ -60,14 +60,14 @@ used for agilitycourses.com`_ with the only changes being specifying the
   GUNICORN=/home/user/virtualenvs/myapp/bin/gunicorn_django
   ROOT=/home/user/source/myapp
   PID=/var/run/myapp.pid
-  if [ -f $PID ] 
+  if [ -f $PID ]
       then rm $PID fi
   cd $ROOT
   exec $GUNICORN --bind 127.0.0.1:8001 -c $ROOT/gunicorn.conf.py --pid=$PID $ROOT/mobile_settings.py
 
 If my templates/content start to diverge more significantly between the
-mobile and desktop sites I may set the TEMPLATE\_DIRS differently in the
-mobile\_settings file. Or I can move to Dustin's approach and create a
+mobile and desktop sites I may set the TEMPLATE_DIRS differently in the
+mobile_settings file. Or I can move to Dustin's approach and create a
 new application containing the urls.py and views.py specific to my
 mobile deployment. I would think diverging further would call for a
 refactoring of the common functionality to its own application which

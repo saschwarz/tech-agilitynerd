@@ -37,7 +37,7 @@ So anyway, I've taken the following steps:
    variable and then not increase the counter for the spammed page.
 -  I had to change the ordering of the hitcounter plugin to run after
    writeback so the variable would be set correctly when hitcounter ran.
--  Set the $hitcounter::reset\_count variable and reset the counts of
+-  Set the $hitcounter::reset_count variable and reset the counts of
    the spammed pages back to "reasonable" counts.
 
 Another couple hours wasted messing around against spammers.

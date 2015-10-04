@@ -56,14 +56,14 @@ direct linking`_ or `blocking hotlinking`_ will turn them all up. The
 most useful solutions include:
 
   -  Rename the direct linked images
-  
+
     This mean updating all posts one your site to match the new name.
     But if you only have a few images and/or posts to them you can do this on a per direct link basis.
-    
+
   - Randomly generate image file names that change over time
-  
+
     This is usually used for photo galleries where there is no text referring to each image.
-    
+
   - Serve images through a script
 
     This script would reject requests for images based on information in
@@ -79,8 +79,8 @@ Based on this `altlab.com article`_ I originally added these rules to my
 .htaccess file on my server::
 
    RewriteEngine on
-   RewriteCond %{HTTP\_REFERER} !^$
-   RewriteCond %{HTTP\_REFERER} !^http://(www.)?agilitynerd.com/.\* [NC]
+   RewriteCond %{HTTP_REFERER} !^$
+   RewriteCond %{HTTP_REFERER} !^http://(www.)?agilitynerd.com/.\* [NC]
    RewriteRule .\*.(jpg\|jpeg\|gif\|png\|bmp)$ /images/nodirectlink.g [L,NC]
 
 I then created an image called nodirectlink.g shown below.
@@ -112,8 +112,8 @@ Guide`_ describes this in the Blocked Inline-Images section. So here is
 my final solution::
 
   RewriteEngine on
-  RewriteCond %{HTTP\_REFERER} !^$
-  RewriteCond %{HTTP\_REFERER} !^http://(www.)?agilitynerd.com/.\*$ [NC]
+  RewriteCond %{HTTP_REFERER} !^$
+  RewriteCond %{HTTP_REFERER} !^http://(www.)?agilitynerd.com/.\*$ [NC]
   RewriteRule .\*.(jpg\|jpeg\|gif\|png\|bmp)$ - [F]
 
 I took this opportunity to modify some of my very first articles and

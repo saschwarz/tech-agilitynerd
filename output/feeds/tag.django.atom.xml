@@ -255,12 +255,12 @@ redirected. I'd need to know their referer string.&lt;/p&gt;
 &lt;a class="reference external" href="http://www.whatismyreferrer.com/"&gt;www.whatismyreferrer.com/&lt;/a&gt;&lt;/p&gt;
 </summary><category term="django"></category><category term="mobile"></category><category term="referrer"></category><category term="webdevelopment"></category></entry><entry><title>Configuring Runit for Gunicorn and Django Installed in a Virtualenv on Ubuntu</title><link href="http://tech.agilitynerd.com/configuring-runit-for-gunicorn-and-django-ins.html" rel="alternate"></link><updated>2010-09-08T03:08:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-09-08:configuring-runit-for-gunicorn-and-django-ins.html</id><summary type="html">&lt;p&gt;I couldn't find any documentation that covered all the pieces for
 configuring my latest Django site so I hope this helps someone else out.&lt;/p&gt;
-&lt;p&gt;I had used mod_wsgi under Apache for my other Django sites. But now I'm
+&lt;p&gt;I had used &lt;tt class="docutils literal"&gt;mod_wsgi&lt;/tt&gt; under Apache for my other Django sites. But now I'm
 using different python versions for the sites (until if/when I update
 the older sites) and I wasn't getting the correct versions of some
 python libraries (even though virtualenv apeared to be putting the
 appropriate python packages at the start of the sys.path). So I decided
-to configure Apache to ProxyPass to &lt;a class="reference external" href="http://gunicorn.org/"&gt;Gunicorn&lt;/a&gt;so I could run my
+to configure Apache to ProxyPass to &lt;a class="reference external" href="http://gunicorn.org/"&gt;Gunicorn&lt;/a&gt; so I could run my
 Django app in its virtualenv without it getting any other python
 modules.&lt;/p&gt;
 &lt;div class="section" id="installing-gunicorn"&gt;
@@ -275,16 +275,16 @@ $ pip install gunicorn
 # or
 $ easy_install gunicorn
 &lt;/pre&gt;
-&lt;p&gt;This copies gunicorn_django to the /home/user/virtualenvs/myapp/bin
+&lt;p&gt;This copies &lt;tt class="docutils literal"&gt;gunicorn_django&lt;/tt&gt; to the &lt;tt class="docutils literal"&gt;/home/user/virtualenvs/myapp/bin&lt;/tt&gt;
 directory. Test gunicorn with your app, assuming your Django app is
-located at /home/user/source/myapp, as follows:&lt;/p&gt;
+located at &lt;tt class="docutils literal"&gt;/home/user/source/myapp&lt;/tt&gt;, as follows:&lt;/p&gt;
 &lt;pre class="code literal-block"&gt;
 $ source /home/user/virtualenvs/myapp/bin/activate
 (myapp)$ cd /home/user/source/myapp
 (myapp)$ gunicorn_django
 &lt;/pre&gt;
 &lt;p&gt;Gunicorn starts myapp using the &lt;tt class="docutils literal"&gt;settings.py&lt;/tt&gt; file in the current
-directory on 127.0.0.1:8000. Ctrl-C to stop the process.&lt;/p&gt;
+directory on &lt;tt class="docutils literal"&gt;127.0.0.1:8000&lt;/tt&gt;. Ctrl-C to stop the process.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="section" id="installing-runit-on-ubuntu"&gt;
 &lt;h2&gt;Installing Runit on Ubuntu&lt;/h2&gt;
@@ -337,7 +337,7 @@ fi
 cd $ROOT
 exec $GUNICORN -c $ROOT/gunicorn.conf.py --pid=$PID
 &lt;/pre&gt;
-&lt;p&gt;You can create a &lt;a class="reference external" href="http://gunicorn.org/configure.html"&gt;configuration file for gunicorn&lt;/a&gt;to use or just
+&lt;p&gt;You can create a &lt;a class="reference external" href="http://gunicorn.org/configure.html"&gt;configuration file for gunicorn&lt;/a&gt; to use or just
 create an empty file for now:&lt;/p&gt;
 &lt;pre class="code literal-block"&gt;
 $ touch /home/user/source/myapp/gunicorn.conf.py
@@ -365,7 +365,7 @@ $ sudo bash -x /etc/service/myapp/run
 $ sudo sv start myapp
 ok: run: myapp: (pid 7540) 0s
 $ sudo sv status myapp
-run: myapp: (pid 7543) 1s
+run: myapp: (pid 7540) 1s
 &lt;/pre&gt;
 &lt;/div&gt;
 </summary><category term="apache"></category><category term="django"></category><category term="gunicorn"></category><category term="runit"></category><category term="ubuntu"></category><category term="virtualenv"></category></entry><entry><title>Confidently Refactoring Django URLs, Views, and Templates</title><link href="http://tech.agilitynerd.com/confidently-refactoring-django-urls-views-and.html" rel="alternate"></link><updated>2010-08-22T05:12:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-08-22:confidently-refactoring-django-urls-views-and.html</id><summary type="html">&lt;p&gt;&lt;a class="reference external" href="http://googility.com/"&gt;Googility.com&lt;/a&gt;is my first Django website and under the covers the
@@ -389,8 +389,7 @@ functionality. But I wanted to make the following changes:&lt;/p&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;Move CSE templates into a cse template subdirectory&lt;/li&gt;
 &lt;li&gt;Name the templates to match the views that use them&lt;/li&gt;
-&lt;li&gt;Name the urls in the urls.py prefixed with the application name
-(&amp;quot;cse_&amp;quot;)&lt;/li&gt;
+&lt;li&gt;Name the urls in the urls.py prefixed with the application name (&amp;quot;cse_&amp;quot;)&lt;/li&gt;
 &lt;li&gt;Covert all reverse() calls in the views and url template tags to use
 the named urls&lt;/li&gt;
 &lt;/ul&gt;
@@ -644,7 +643,7 @@ API.&lt;/p&gt;
 &lt;a class="reference external" href="http://www.shrinktheweb.com/content/shrinktheweb-pagepix-documentation.html"&gt;their PRO features&lt;/a&gt;. With luck I'll make that available sometime this
 weekend.&lt;/p&gt;
 </summary><category term="django"></category><category term="python"></category><category term="shrinktheweb"></category><category term="webdevelopment"></category></entry><entry><title>Using django-sitemap with django-tagging</title><link href="http://tech.agilitynerd.com/using-django-sitemap-with-django-tagging.html" rel="alternate"></link><updated>2009-11-27T17:33:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2009-11-27:using-django-sitemap-with-django-tagging.html</id><summary type="html">&lt;p&gt;I was adding &lt;a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/sitemaps/"&gt;django-sitemap&lt;/a&gt; to &lt;a class="reference external" href="http://googility.com/"&gt;googility.com&lt;/a&gt; yesterday and found
-that Tags don't implement &lt;tt class="docutils literal"&gt;get\_absolute\_url()&lt;/tt&gt;. Which makes sense since
+that Tags don't implement &lt;tt class="docutils literal"&gt;get_absolute_url()&lt;/tt&gt;. Which makes sense since
 the site developer would want to decide how to expose them in the URL
 space.&lt;/p&gt;
 &lt;p&gt;It is also arguable that links to pages displaying the tag view already

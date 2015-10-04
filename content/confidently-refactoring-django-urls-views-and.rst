@@ -29,8 +29,7 @@ functionality. But I wanted to make the following changes:
 
 -  Move CSE templates into a cse template subdirectory
 -  Name the templates to match the views that use them
--  Name the urls in the urls.py prefixed with the application name
-   ("cse\_")
+-  Name the urls in the urls.py prefixed with the application name ("cse\_")
 -  Covert all reverse() calls in the views and url template tags to use
    the named urls
 
@@ -98,7 +97,7 @@ resolved:
           # put settings back so the next tests aren't effected
           settings.ROOT_URLCONF = self.ROOT_URLCONF
           settings.TEMPLATE_CONTEXT_PROCESSORS = self.TEMPLATE_CONTEXT_PROCESSORS
-  
+
       def test_view(self):
           response = self.client.get(reverse('cse_view', kwargs={"id":self.annotation.id}))
           self.assertEquals(200, response.status_code)

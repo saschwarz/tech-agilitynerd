@@ -7,13 +7,13 @@ Adding pyrsvg to a virtualenv created with --no-site-packages
 :slug: adding-rsvg-to-a-virtualenv-created-with-no-s
 
 I set up my development and deployment environments on Ubuntu with
-`virtualenv`_\ with the ``--no-site-packages`` option to isolate them from
-packages in the system installation. My application uses `pyrsvg`_\ and
+`virtualenv`_ with the ``--no-site-packages`` option to isolate them from
+packages in the system installation. My application uses `pyrsvg`_ and
 it is installed by default as a system package. Consequently I had to
 link the shared libraries it installs (w/in gtk) into my virtualenv.
 
 Here are the links I created (workon and cdsitepackages are
-`virtualenvwrapper`_\ shell aliases)::
+`virtualenvwrapper`_ shell aliases)::
 
   $ workon project
   $ cdsitepackages

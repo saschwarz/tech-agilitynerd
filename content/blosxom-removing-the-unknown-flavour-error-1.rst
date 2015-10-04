@@ -19,13 +19,13 @@ displayed on the top of the page::
 
 Of course removing the suffix from the URL doesn't usually work; the
 client is served with an empty (but flavoured) page. So I though a
-better solution would be to have Blosxom serve my default\_flavour
+better solution would be to have Blosxom serve my default_flavour
 whenever the flavour couldn't be identified. A little Googling later
 turned up `this Blosxom mod by James Vasille`_. James explicitly loads a
 flavour file named "default" whenever the requested flavour can't be
 found.
 
-For my site it is more appropriate to serve the $default\_flavour when
+For my site it is more appropriate to serve the $default_flavour when
 the requested flavour can't be found. That way I didn't have copy/create
 head.default, foot.default, etc files. So my code change is almost the
 same as James'::
@@ -35,7 +35,7 @@ same as James'::
     do {
       return join '', <$fh> if $fh->open("< $datadir/$path/$chunk.$flavour");
     } while ($path =~ s/(/*[^/]*)$// and $1);
-    # Begin added code    
+    # Begin added code
     do {
       return join '', <$fh> if $fh->open("< $datadir/$path/$chunk.$default_flavour");
     } while ($path =~ s/(/*[^/]*)$// and $1);

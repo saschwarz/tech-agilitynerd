@@ -271,12 +271,12 @@ of its use (assuming you save the code in googl.py):&lt;/p&gt;
 &lt;/pre&gt;
 &lt;p&gt;Hope you find this useful.&lt;/p&gt;
 </summary><category term="django"></category><category term="googl"></category><category term="python"></category><category term="qrcode"></category></entry><entry><title>Adding pyrsvg to a virtualenv created with --no-site-packages</title><link href="http://tech.agilitynerd.com/adding-rsvg-to-a-virtualenv-created-with-no-s.html" rel="alternate"></link><updated>2010-10-12T03:02:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-10-12:adding-rsvg-to-a-virtualenv-created-with-no-s.html</id><summary type="html">&lt;p&gt;I set up my development and deployment environments on Ubuntu with
-&lt;a class="reference external" href="http://pypi.python.org/pypi/virtualenv"&gt;virtualenv&lt;/a&gt;with the &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;--no-site-packages&lt;/span&gt;&lt;/tt&gt; option to isolate them from
-packages in the system installation. My application uses &lt;a class="reference external" href="http://cairographics.org/pyrsvg/"&gt;pyrsvg&lt;/a&gt;and
+&lt;a class="reference external" href="http://pypi.python.org/pypi/virtualenv"&gt;virtualenv&lt;/a&gt; with the &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;--no-site-packages&lt;/span&gt;&lt;/tt&gt; option to isolate them from
+packages in the system installation. My application uses &lt;a class="reference external" href="http://cairographics.org/pyrsvg/"&gt;pyrsvg&lt;/a&gt; and
 it is installed by default as a system package. Consequently I had to
 link the shared libraries it installs (w/in gtk) into my virtualenv.&lt;/p&gt;
 &lt;p&gt;Here are the links I created (workon and cdsitepackages are
-&lt;a class="reference external" href="http://www.doughellmann.com/projects/virtualenvwrapper/"&gt;virtualenvwrapper&lt;/a&gt;shell aliases):&lt;/p&gt;
+&lt;a class="reference external" href="http://www.doughellmann.com/projects/virtualenvwrapper/"&gt;virtualenvwrapper&lt;/a&gt; shell aliases):&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
 $ workon project
 $ cdsitepackages
@@ -305,8 +305,7 @@ functionality. But I wanted to make the following changes:&lt;/p&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;Move CSE templates into a cse template subdirectory&lt;/li&gt;
 &lt;li&gt;Name the templates to match the views that use them&lt;/li&gt;
-&lt;li&gt;Name the urls in the urls.py prefixed with the application name
-(&amp;quot;cse_&amp;quot;)&lt;/li&gt;
+&lt;li&gt;Name the urls in the urls.py prefixed with the application name (&amp;quot;cse_&amp;quot;)&lt;/li&gt;
 &lt;li&gt;Covert all reverse() calls in the views and url template tags to use
 the named urls&lt;/li&gt;
 &lt;/ul&gt;
@@ -488,7 +487,7 @@ API.&lt;/p&gt;
 &lt;a class="reference external" href="http://www.shrinktheweb.com/content/shrinktheweb-pagepix-documentation.html"&gt;their PRO features&lt;/a&gt;. With luck I'll make that available sometime this
 weekend.&lt;/p&gt;
 </summary><category term="django"></category><category term="python"></category><category term="shrinktheweb"></category><category term="webdevelopment"></category></entry><entry><title>Using django-sitemap with django-tagging</title><link href="http://tech.agilitynerd.com/using-django-sitemap-with-django-tagging.html" rel="alternate"></link><updated>2009-11-27T17:33:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2009-11-27:using-django-sitemap-with-django-tagging.html</id><summary type="html">&lt;p&gt;I was adding &lt;a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/sitemaps/"&gt;django-sitemap&lt;/a&gt; to &lt;a class="reference external" href="http://googility.com/"&gt;googility.com&lt;/a&gt; yesterday and found
-that Tags don't implement &lt;tt class="docutils literal"&gt;get\_absolute\_url()&lt;/tt&gt;. Which makes sense since
+that Tags don't implement &lt;tt class="docutils literal"&gt;get_absolute_url()&lt;/tt&gt;. Which makes sense since
 the site developer would want to decide how to expose them in the URL
 space.&lt;/p&gt;
 &lt;p&gt;It is also arguable that links to pages displaying the tag view already

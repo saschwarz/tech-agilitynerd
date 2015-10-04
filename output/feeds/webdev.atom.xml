@@ -422,8 +422,7 @@ functionality. But I wanted to make the following changes:&lt;/p&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;Move CSE templates into a cse template subdirectory&lt;/li&gt;
 &lt;li&gt;Name the templates to match the views that use them&lt;/li&gt;
-&lt;li&gt;Name the urls in the urls.py prefixed with the application name
-(&amp;quot;cse_&amp;quot;)&lt;/li&gt;
+&lt;li&gt;Name the urls in the urls.py prefixed with the application name (&amp;quot;cse_&amp;quot;)&lt;/li&gt;
 &lt;li&gt;Covert all reverse() calls in the views and url template tags to use
 the named urls&lt;/li&gt;
 &lt;/ul&gt;
@@ -875,7 +874,7 @@ plugin can be configured to automatically import existing count data
 from the hitcounter plugin's Storable. So conversion to the new plugins
 just requires updating the template's variables to the new plugin names.&lt;/p&gt;
 </summary><category term="blosxom"></category><category term="mongodb"></category><category term="perl"></category><category term="webdevelopment"></category></entry><entry><title>Using django-sitemap with django-tagging</title><link href="http://tech.agilitynerd.com/using-django-sitemap-with-django-tagging.html" rel="alternate"></link><updated>2009-11-27T17:33:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2009-11-27:using-django-sitemap-with-django-tagging.html</id><summary type="html">&lt;p&gt;I was adding &lt;a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/sitemaps/"&gt;django-sitemap&lt;/a&gt; to &lt;a class="reference external" href="http://googility.com/"&gt;googility.com&lt;/a&gt; yesterday and found
-that Tags don't implement &lt;tt class="docutils literal"&gt;get\_absolute\_url()&lt;/tt&gt;. Which makes sense since
+that Tags don't implement &lt;tt class="docutils literal"&gt;get_absolute_url()&lt;/tt&gt;. Which makes sense since
 the site developer would want to decide how to expose them in the URL
 space.&lt;/p&gt;
 &lt;p&gt;It is also arguable that links to pages displaying the tag view already
@@ -1293,18 +1292,18 @@ generate my Favorites page.&lt;/p&gt;
 &lt;p&gt;I based the hitcounter plugin on the categories plugin written by &lt;a class="reference external" href="http://molelog.molehill.org/"&gt;Todd
 Larason&lt;/a&gt;. The plugin has a couple features of interest:&lt;/p&gt;
 &lt;ul class="simple"&gt;
-&lt;li&gt;The &lt;tt class="docutils literal"&gt;$reset\_count&lt;/tt&gt; flag within the plugin lets you provide a starting
+&lt;li&gt;The &lt;tt class="docutils literal"&gt;$reset_count&lt;/tt&gt; flag within the plugin lets you provide a starting
 count value for any page. For example to set a page's count to 10
 append &amp;quot;?count=10&amp;quot; to the page's URL. Disable this flag once you've
 set your counts to avoid mischevious count setting by outsiders.&lt;/li&gt;
-&lt;li&gt;The &lt;tt class="docutils literal"&gt;$retrieve\_only\_flavour flag&lt;/tt&gt; within the plugin can be set to a
+&lt;li&gt;The &lt;tt class="docutils literal"&gt;$retrieve_only_flavour flag&lt;/tt&gt; within the plugin can be set to a
 flavour you want to use for retrieving counts without incrementing
 the count. Use this flavour to view the counts for URLs of interest.&lt;/li&gt;
 &lt;li&gt;You can add filters to the &lt;cite&gt;start()&lt;/cite&gt; subroutine to exclude certain
 requests from updating your counters. I exclude RSS and Atom feed
 requests from my counts.&lt;/li&gt;
 &lt;li&gt;As of version 0.5 you can filter out loading and incrementing page
-counts for specific user agents via the &lt;tt class="docutils literal"&gt;ignore\_agents array&lt;/tt&gt;.&lt;/li&gt;
+counts for specific user agents via the &lt;tt class="docutils literal"&gt;ignore_agents array&lt;/tt&gt;.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;The hitcounter plugin stores the &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;$blosxom::path&lt;/span&gt;&lt;/tt&gt; as the key in a hash
 whose value is the count of hits. The hash is stored in a file in the
@@ -1318,26 +1317,26 @@ variable. I put this variable in the footer of my pages.&lt;/p&gt;
 counts as its input. This plugin generates an HTML unordered list of the
 most visited URLs with the following configuration options:&lt;/p&gt;
 &lt;ul class="simple"&gt;
-&lt;li&gt;The &lt;tt class="docutils literal"&gt;$num\_entries&lt;/tt&gt; variable controls how many URLs are listed.&lt;/li&gt;
-&lt;li&gt;The &lt;tt class="docutils literal"&gt;$include\_counts&lt;/tt&gt; variable controls if directories will be
+&lt;li&gt;The &lt;tt class="docutils literal"&gt;$num_entries&lt;/tt&gt; variable controls how many URLs are listed.&lt;/li&gt;
+&lt;li&gt;The &lt;tt class="docutils literal"&gt;$include_counts&lt;/tt&gt; variable controls if directories will be
 included in the list of entries.&lt;/li&gt;
-&lt;li&gt;The &lt;tt class="docutils literal"&gt;$include\_counts&lt;/tt&gt; variable controls whether or not the number of
+&lt;li&gt;The &lt;tt class="docutils literal"&gt;$include_counts&lt;/tt&gt; variable controls whether or not the number of
 counts is appended to each list entry.&lt;/li&gt;
-&lt;li&gt;The &lt;tt class="docutils literal"&gt;$anchor\_format variable&lt;/tt&gt; controls if the full path or only the
+&lt;li&gt;The &lt;tt class="docutils literal"&gt;$anchor_format variable&lt;/tt&gt; controls if the full path or only the
 filename is displayed in the list entry.&lt;/li&gt;
-&lt;li&gt;The &lt;tt class="docutils literal"&gt;$anchor\_link&lt;/tt&gt; variable controls whether or not the entry is
+&lt;li&gt;The &lt;tt class="docutils literal"&gt;$anchor_link&lt;/tt&gt; variable controls whether or not the entry is
 wrapped in an anchor &amp;lt;a&amp;gt;.&lt;/li&gt;
 &lt;li&gt;The &lt;tt class="docutils literal"&gt;$excludes&lt;/tt&gt; variable controls which pages are excluded from
 consideration. I exclude the main URL for my site from showing up in
 the list.&lt;/li&gt;
 &lt;li&gt;The &lt;tt class="docutils literal"&gt;$groups&lt;/tt&gt; array holds regexps that will generate separate unordered
-lists grouping together pages matching each regexp of &lt;tt class="docutils literal"&gt;$num\_entries&lt;/tt&gt;
+lists grouping together pages matching each regexp of &lt;tt class="docutils literal"&gt;$num_entries&lt;/tt&gt;
 list elements. See the configuration section for an example. I use
 this feature for my Favorites page to group pages for agility and
 tech categories into separate lists.&lt;/li&gt;
-&lt;li&gt;The &lt;tt class="docutils literal"&gt;$url\_flavour&lt;/tt&gt; variable lets you specify the flavour to use for
+&lt;li&gt;The &lt;tt class="docutils literal"&gt;$url_flavour&lt;/tt&gt; variable lets you specify the flavour to use for
 anchors to non-category URLs. It defaults to to
-&lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;$$blosxom::default\_flavour&lt;/span&gt;&lt;/tt&gt;.&lt;/li&gt;
+&lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;$$blosxom::default_flavour&lt;/span&gt;&lt;/tt&gt;.&lt;/li&gt;
 &lt;li&gt;You can add filters to the &lt;tt class="docutils literal"&gt;start()&lt;/tt&gt; subroutine to exclude certain
 requests from doing the work to generate the HTML. For example, I
 only run this plugin for my Favorites page.&lt;/li&gt;
@@ -1550,8 +1549,8 @@ where you don't have control over the webserver this may be required.&lt;/p&gt;
 .htaccess file on my server:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
 RewriteEngine on
-RewriteCond %{HTTP\_REFERER} !^$
-RewriteCond %{HTTP\_REFERER} !^http://(www.)?agilitynerd.com/.\* [NC]
+RewriteCond %{HTTP_REFERER} !^$
+RewriteCond %{HTTP_REFERER} !^http://(www.)?agilitynerd.com/.\* [NC]
 RewriteRule .\*.(jpg\|jpeg\|gif\|png\|bmp)$ /images/nodirectlink.g [L,NC]
 &lt;/pre&gt;
 &lt;p&gt;I then created an image called nodirectlink.g shown below.&lt;/p&gt;
@@ -1571,8 +1570,8 @@ Guide&lt;/a&gt; describes this in the Blocked Inline-Images section. So here is
 my final solution:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
 RewriteEngine on
-RewriteCond %{HTTP\_REFERER} !^$
-RewriteCond %{HTTP\_REFERER} !^http://(www.)?agilitynerd.com/.\*$ [NC]
+RewriteCond %{HTTP_REFERER} !^$
+RewriteCond %{HTTP_REFERER} !^http://(www.)?agilitynerd.com/.\*$ [NC]
 RewriteRule .\*.(jpg\|jpeg\|gif\|png\|bmp)$ - [F]
 &lt;/pre&gt;
 &lt;p&gt;I took this opportunity to modify some of my very first articles and
@@ -2038,7 +2037,7 @@ the list of the last 10 articles that were read shown in the side bar on
 each page of the site.&lt;/p&gt;
 &lt;p&gt;&lt;a class="reference external" href="http://www.blosxom.com/plugins/display/moreentries.htm"&gt;moreentries&lt;/a&gt; - Creates the &amp;quot;Previous&amp;quot; and &amp;quot;Next&amp;quot; links at the bottom
 of each index or search page when there are more than
-&lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;$blosxom::num\_entries&lt;/span&gt;&lt;/tt&gt; entries. I've modified this plugin as I described
+&lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;$blosxom::num_entries&lt;/span&gt;&lt;/tt&gt; entries. I've modified this plugin as I described
 &lt;a class="reference external" href="/minor-additional-mods-to-blosxom-moreenties-p-1.html"&gt;here&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;a class="reference external" href="http://www.blosxom.com/plugins/display/postheadprefoot.htm"&gt;postheadprefoot&lt;/a&gt; - Allows each category/directory to have unique text
 inserted after the header and/or before the footer. I use this on my

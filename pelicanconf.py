@@ -19,6 +19,7 @@ LINKS =  (('agilitynerd.com', 'http://agilitynerd.com/blog/'),
 # Social widget
 SOCIAL = (('Linked in', 'http://www.linkedin.com/profile/view?id=10135443'),
           ('GitHub', 'https://github.com/saschwarz'),
+          ('Twitter', 'https://twitter.com/steveaschwarz'),
           )
 
 

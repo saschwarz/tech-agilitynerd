@@ -157,7 +157,7 @@ the list of the last 10 articles that were read shown in the side bar on
 each page of the site.&lt;/p&gt;
 &lt;p&gt;&lt;a class="reference external" href="http://www.blosxom.com/plugins/display/moreentries.htm"&gt;moreentries&lt;/a&gt; - Creates the &amp;quot;Previous&amp;quot; and &amp;quot;Next&amp;quot; links at the bottom
 of each index or search page when there are more than
-&lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;$blosxom::num\_entries&lt;/span&gt;&lt;/tt&gt; entries. I've modified this plugin as I described
+&lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;$blosxom::num_entries&lt;/span&gt;&lt;/tt&gt; entries. I've modified this plugin as I described
 &lt;a class="reference external" href="/minor-additional-mods-to-blosxom-moreenties-p-1.html"&gt;here&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;&lt;a class="reference external" href="http://www.blosxom.com/plugins/display/postheadprefoot.htm"&gt;postheadprefoot&lt;/a&gt; - Allows each category/directory to have unique text
 inserted after the header and/or before the footer. I use this on my

@@ -20,7 +20,7 @@ I've made the following enhancements:
 -  Changed my `AgilityGlossary`_ page to have a preface with an
    alphabetical listing ofdefinitions. I ended up using three new
    Blosxom plugins to make thiswork: `config`_,\ `postheadprefoot`_\ and
-   `sort\_order`_.
+   `sort_order`_.
 
 For other Blosxom users I've updated my `site pluginspage`_ with the
 details.
@@ -34,5 +34,5 @@ easily around the sight.
 .. _AgilityGlossary: http://agilitynerd.com/blog/agility/handling/glossary
 .. _config: http://www.blosxom.com/plugins/general/config.htm
 .. _postheadprefoot: http://www.blosxom.com/plugins/display/postheadprefoot.htm
-.. _sort\_order: http://blosxom.ookee.com/blosxom/plugins/v2/sort_order-v0i85
+.. _sort_order: http://blosxom.ookee.com/blosxom/plugins/v2/sort_order-v0i85
 .. _site pluginspage: http://tech.agilitynerd.com/site_plugins.html

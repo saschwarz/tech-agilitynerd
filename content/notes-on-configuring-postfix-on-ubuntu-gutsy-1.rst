@@ -33,7 +33,7 @@ Then you can append that file to your /etc/postfix/cacert.pem If you
 the shell::
 
     $ sudo su
-    # cat /etc/ssl/certs/Thawte\_Premium\_Server\_CA.pem >>
+    # cat /etc/ssl/certs/Thawte_Premium_Server_CA.pem >>
     /etc/postfix/cacert.pem
 
 Since I have Google Apps setup for my domain I don't just want to relay
@@ -50,15 +50,15 @@ In my generic file I have::
     demo@myservername.agilitynerd.com me@agilitynerd.com
 
 Where "demo" is the login name and "myservername" is my slicename. In my
-sasl\_passwd file I have::
+sasl_passwd file I have::
 
-    [smtp.gmail.com]:587 me@agilitynerd.com:me\_gmail\_account\_password
+    [smtp.gmail.com]:587 me@agilitynerd.com:me_gmail_account_password
 
 After restarting postix you can test sending email from your server::
 
     $ sudo aptitude install mailx
     $ mailx -s "test email" someotheraccount@gmail.com <
-    ~/sometestfile\_to\_send
+    ~/sometestfile_to_send
 
 Check your logfiles for errors/warnings::
 

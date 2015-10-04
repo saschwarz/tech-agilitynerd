@@ -365,7 +365,7 @@ plugin can be configured to automatically import existing count data
 from the hitcounter plugin's Storable. So conversion to the new plugins
 just requires updating the template's variables to the new plugin names.&lt;/p&gt;
 </summary><category term="blosxom"></category><category term="mongodb"></category><category term="perl"></category><category term="webdevelopment"></category></entry><entry><title>Using django-sitemap with django-tagging</title><link href="http://tech.agilitynerd.com/using-django-sitemap-with-django-tagging.html" rel="alternate"></link><updated>2009-11-27T17:33:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2009-11-27:using-django-sitemap-with-django-tagging.html</id><summary type="html">&lt;p&gt;I was adding &lt;a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/sitemaps/"&gt;django-sitemap&lt;/a&gt; to &lt;a class="reference external" href="http://googility.com/"&gt;googility.com&lt;/a&gt; yesterday and found
-that Tags don't implement &lt;tt class="docutils literal"&gt;get\_absolute\_url()&lt;/tt&gt;. Which makes sense since
+that Tags don't implement &lt;tt class="docutils literal"&gt;get_absolute_url()&lt;/tt&gt;. Which makes sense since
 the site developer would want to decide how to expose them in the URL
 space.&lt;/p&gt;
 &lt;p&gt;It is also arguable that links to pages displaying the tag view already

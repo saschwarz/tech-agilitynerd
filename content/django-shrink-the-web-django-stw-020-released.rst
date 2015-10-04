@@ -35,7 +35,7 @@ Common changes:
 -  Template tags now throw exceptions in their constructors instead of
    in the render function so configuration errors are visible during
    development.
--  django-stw defines a key 'lang' for the SHRINK\_THE\_WEB dictionary
+-  django-stw defines a key 'lang' for the SHRINK_THE_WEB dictionary
    that can be passed along as a default to the preview tag. Alternately
    a 'lang' keyword can be supplied in each template tag invocation.
    django-stw defaults it to 'en'. This functionality is not yet

@@ -38,7 +38,7 @@ searchers. Some of my pages have already been reindexed:
 
    <div class="p_embed p_image_embed">
 
-|Google\_description\_after|
+|Google_description_after|
 
 .. raw:: html
 

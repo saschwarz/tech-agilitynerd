@@ -21,7 +21,7 @@ are raised to the top of the search site's result lists.
 There is another growing type of blog spam called `referer spam`_ (yes
 it is `officially misspelled`_). When a web surfer clicks on a link in a
 web page that sends them to another web page most web browsers fill in
-the URL of the referring page into the request called the HTTP\_REFERER.
+the URL of the referring page into the request called the HTTP_REFERER.
 Some websites and blogs capture that page link information when they are
 on the receiving end of a web request. These sites might have a section
 on each page indicating the sites that link to that page. These links
@@ -82,7 +82,7 @@ file format and file name as Doug's writeback modification (I took the
 code from his plugin with only cosmetic changes). See Doug's website for
 links to the Movable Type and other blacklists.
 
-The only configuration variable you can set is $log\_blacklisted. If set
+The only configuration variable you can set is $log_blacklisted. If set
 to a full path file name the script logs the UTC date/time, referer
 string, and the page to which they were referring. You could use the
 frequency of words in the rejected referer strings to fine tune the
@@ -93,7 +93,7 @@ want to keep an eye on its size.
 Lastly, the zip file contains a simple Perl script you can use to test
 the plugin. Execute it as:
 
-.. code:: 
+.. code::
 
   referer_test.pl http://example.com http://referer-spam.com
   where the first URL is your website and the second URL is the referer
