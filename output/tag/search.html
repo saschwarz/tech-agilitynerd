@@ -14,7 +14,7 @@
             
         <link href="http://tech.agilitynerd.com/feeds/tag.search.atom.xml" type="application/atom+xml" rel="alternate" title="tech.agilitynerd search tag Atom Feed" />
             <!-- Le styles -->
-    <link href="../theme/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://tech.agilitynerd.com/theme/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
       body {
       padding-top: 60px;
@@ -24,10 +24,23 @@
       padding: 9px 0;
       }
     </style>
-    <link href="../theme/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
-    <link href="../theme/local.css" rel="stylesheet">
-    <link href="../theme/pygments.css" rel="stylesheet">
-          </head>
+    <link href="http://tech.agilitynerd.com/theme/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="http://tech.agilitynerd.com/theme/local.css" rel="stylesheet">
+    <link href="http://tech.agilitynerd.com/theme/pygments.css" rel="stylesheet">
+    <script>var _gaq=[['_setAccount','UA-1127677-3'],['_trackPageview']];(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.src='//www.google-analytics.com/ga.js';s.parentNode.insertBefore(g,s)}(document,'script'))</script>
+    <script type="text/javascript">
+  var disqus_shortname = "techagilitynerd"; // required: replace example with your forum shortname
+  var disqus_developer = 1;
+  
+  
+  (function () {
+  var s = document.createElement('script'); s.async = true;
+  s.type = 'text/javascript';
+  s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+  }());
+</script>
+  </head>
   <body>
 <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
             
@@ -39,18 +52,18 @@
 	<span class="icon-bar"></span>
 	<span class="icon-bar"></span>
       </a>
-      <a class="brand" href="../index.html">tech.agilitynerd</a>
+      <a class="brand" href="http://tech.agilitynerd.com/index.html">tech.agilitynerd</a>
       <div class="nav-collapse collapse">
 	<ul class="nav">
-	  	  	  	  	  	  <li ><a href="../category/devops.html">devops</a></li>
-	  	  <li ><a href="../category/misc.html">misc</a></li>
-	  	  <li ><a href="../category/programming.html">programming</a></li>
-	  	  <li ><a href="../category/python.html">python</a></li>
-	  	  <li ><a href="../category/webdev.html">webdev</a></li>
+	  	  	  	  	  	  <li ><a href="http://tech.agilitynerd.com/category/devops.html">devops</a></li>
+	  	  <li ><a href="http://tech.agilitynerd.com/category/misc.html">misc</a></li>
+	  	  <li ><a href="http://tech.agilitynerd.com/category/programming.html">programming</a></li>
+	  	  <li ><a href="http://tech.agilitynerd.com/category/python.html">python</a></li>
+	  	  <li ><a href="http://tech.agilitynerd.com/category/webdev.html">webdev</a></li>
 	  	</ul>
 	<p class="navbar-text pull-right">
-	  <a class="navbar-link" href="../archives.html">[archives]</a>
-	  <a class="navbar-link" href="../tags.html">[tags]</a>
+	  <a class="navbar-link" href="http://tech.agilitynerd.com/archives.html">[archives]</a>
+	  <a class="navbar-link" href="http://tech.agilitynerd.com/tags.html">[tags]</a>
 	</p>
       </div><!--/.nav-collapse -->
     </div>
@@ -67,10 +80,10 @@
 	      </div>
 	      	      
 <div class='article'>
-  <h2><a href="../haystack-search-result-ordering-and-pre-rende.html">Haystack Search Result Ordering and Pre-Rendering Results</a></h2>
-  <div class="well small"><a class="more" href="../haystack-search-result-ordering-and-pre-rende.html">On 10 Aug 2010 at 0341</a>
-by <a class="url fn" href="../author/steve-schwarz.html">Steve Schwarz</a> in <a href="../category/webdev.html">webdev</a>
- | <a href="../haystack-search-result-ordering-and-pre-rende.html#disqus_thread">Comments</a></div>
+  <h2><a href="http://tech.agilitynerd.com/haystack-search-result-ordering-and-pre-rende.html">Haystack Search Result Ordering and Pre-Rendering Results</a></h2>
+  <div class="well small"><a class="more" href="http://tech.agilitynerd.com/haystack-search-result-ordering-and-pre-rende.html">On 10 Aug 2010 at 0341</a>
+by <a class="url fn" href="http://tech.agilitynerd.com/author/steve-schwarz.html">Steve Schwarz</a> in <a href="http://tech.agilitynerd.com/category/webdev.html">webdev</a>
+ | <a href="http://tech.agilitynerd.com/haystack-search-result-ordering-and-pre-rende.html#disqus_thread">Comments</a></div>
   <div class="summary"><p>I use <a class="reference external" href="http://haystacksearch.org/">Haystack</a> and the Python <a class="reference external" href="http://whoosh.ca/">Whoosh</a> project to provide search
 over ~3400 articles in my <a class="reference external" href="http://googility.com">Googility.com</a> database. I had originally
 implemented the search in the &quot;simplest way that works&quot;. I was making
@@ -78,19 +91,19 @@ some other enhancement to Googility and noticed the search result page
 had two undesirable&nbsp; behaviors:</p>
 <ol class="arabic simple">
 <li>The ...</li></ol></div>
-  <div class="tags">Tagged as: <a href="../tag/django.html">django</a> <a href="../tag/haystack.html">haystack</a> <a href="../tag/search.html">search</a> <a href="../tag/whoosh.html">whoosh</a> </div></div>
+  <div class="tags">Tagged as: <a href="http://tech.agilitynerd.com/tag/django.html">django</a> <a href="http://tech.agilitynerd.com/tag/haystack.html">haystack</a> <a href="http://tech.agilitynerd.com/tag/search.html">search</a> <a href="http://tech.agilitynerd.com/tag/whoosh.html">whoosh</a> </div></div>
 <div class='article'>
-  <h2><a href="../improving-google-ads-and-google-search-descri.html">Improving Google Ads and Google Search Descriptions</a></h2>
-  <div class="well small"><a class="more" href="../improving-google-ads-and-google-search-descri.html">On 03 Aug 2010 at 0146</a>
-by <a class="url fn" href="../author/steve-schwarz.html">Steve Schwarz</a> in <a href="../category/webdev.html">webdev</a>
- | <a href="../improving-google-ads-and-google-search-descri.html#disqus_thread">Comments</a></div>
+  <h2><a href="http://tech.agilitynerd.com/improving-google-ads-and-google-search-descri.html">Improving Google Ads and Google Search Descriptions</a></h2>
+  <div class="well small"><a class="more" href="http://tech.agilitynerd.com/improving-google-ads-and-google-search-descri.html">On 03 Aug 2010 at 0146</a>
+by <a class="url fn" href="http://tech.agilitynerd.com/author/steve-schwarz.html">Steve Schwarz</a> in <a href="http://tech.agilitynerd.com/category/webdev.html">webdev</a>
+ | <a href="http://tech.agilitynerd.com/improving-google-ads-and-google-search-descri.html#disqus_thread">Comments</a></div>
   <div class="summary"><p>I was looking at the google search results for my <a class="reference external" href="http://googility.com/">Googility web site</a>
 and noticed that the descriptions shown underneath the title often
 contained text from my navigation links instead of content from the body
 of the page:</p>
 <div class="thumbnail"><p><img alt="Google_description" src="/static/images/2010/08/13127405-google_description.jpg" /></p>
 </div><p>I did some searching and found the Google Webmaster blog post about ...</p></div>
-  <div class="tags">Tagged as: <a href="../tag/adsense.html">adsense</a> <a href="../tag/django.html">django</a> <a href="../tag/google.html">google</a> <a href="../tag/search.html">search</a> <a href="../tag/webdevelopment.html">webdevelopment</a> </div></div>
+  <div class="tags">Tagged as: <a href="http://tech.agilitynerd.com/tag/adsense.html">adsense</a> <a href="http://tech.agilitynerd.com/tag/django.html">django</a> <a href="http://tech.agilitynerd.com/tag/google.html">google</a> <a href="http://tech.agilitynerd.com/tag/search.html">search</a> <a href="http://tech.agilitynerd.com/tag/webdevelopment.html">webdevelopment</a> </div></div>
 
 
             </div><!--/span-->
@@ -146,9 +159,9 @@ of the page:</p>
 
     </div><!--/.fluid-container-->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="../theme/js/jquery-1.7.2.min.js"><\/script>')</script>
-      <script src="../theme/bootstrap/js/bootstrap.min.js"></script>
-      <script src="../theme/js/modernizr-2.5.3-respond-1.1.0.min.js"></script>
+    <script>window.jQuery || document.write('<script src="http://tech.agilitynerd.com/theme/js/jquery-1.7.2.min.js"><\/script>')</script>
+      <script src="http://tech.agilitynerd.com/theme/bootstrap/js/bootstrap.min.js"></script>
+      <script src="http://tech.agilitynerd.com/theme/js/modernizr-2.5.3-respond-1.1.0.min.js"></script>
 
   </body>
 </html>
