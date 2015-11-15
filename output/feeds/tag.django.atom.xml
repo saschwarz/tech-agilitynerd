@@ -1,5 +1,239 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://tech.agilitynerd.com/feeds/tag.django.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2014-10-26T03:02:00-05:00</updated><entry><title>Django REST Registration with django-rest-auth and django-allauth</title><link href="http://tech.agilitynerd.com/django-rest-registration-with-django-rest-auth.html" rel="alternate"></link><updated>2014-10-26T03:02:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2014-10-26:django-rest-registration-with-django-rest-auth.html</id><summary type="html">&lt;p&gt;I'm creating a mobile app for my &lt;a class="reference external" href="http://agilitycourses.com"&gt;agilitycourses website&lt;/a&gt; and I'm using &lt;a class="reference external" href="http://www.django-rest-framework.org/"&gt;django-rest-framework&lt;/a&gt; to provide a REST API for use by the client application. In order to provide authentication and registration I'm using &lt;a class="reference external" href="http://django-allauth.readthedocs.org/en/latest/"&gt;django-allauth&lt;/a&gt;. Lastly I use &lt;a class="reference external" href="https://github.com/Tivix/django-rest-auth/"&gt;django-rest-auth&lt;/a&gt; to provide REST resources for authentication and registration.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://tech.agilitynerd.com/feeds/tag.django.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2015-11-15T23:02:00-06:00</updated><entry><title>Django Migrating Models from an Abstract Base Class to a Concrete Base Class</title><link href="http://tech.agilitynerd.com/django-migrate-abstract-concrete-base-class.html" rel="alternate"></link><updated>2015-11-15T23:02:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2015-11-15:django-migrate-abstract-concrete-base-class.html</id><summary type="html">&lt;p&gt;On my &lt;a class="reference external" href="http://agilitycourses.com"&gt;agilitycourses.com&lt;/a&gt; I had been modeling three types of dog agility courses using an abstract base class &lt;tt class="docutils literal"&gt;Course&lt;/tt&gt; with three child classes: &lt;tt class="docutils literal"&gt;Box&lt;/tt&gt;, &lt;tt class="docutils literal"&gt;StarBox&lt;/tt&gt;, and &lt;tt class="docutils literal"&gt;DoubleBox&lt;/tt&gt;. This created three tables in the database prepended with the &lt;a class="reference external" href="http://djangoproject.com"&gt;Django&lt;/a&gt; application name &lt;tt class="docutils literal"&gt;box&lt;/tt&gt;: &lt;tt class="docutils literal"&gt;box_box&lt;/tt&gt;, &lt;tt class="docutils literal"&gt;box_starbox&lt;/tt&gt;, and &lt;tt class="docutils literal"&gt;box_doublebox&lt;/tt&gt;. I needed to add a relationship to all three classes from a new table and, rather than creating three separate tables relating to each child table, I decided to convert the &lt;tt class="docutils literal"&gt;Course&lt;/tt&gt; class to a concreate class/table and relate the new class/table to it instead of each child class. For my purposes the extra join to the child class won't impact performance significantly (if it does I'd move the identity of the type of subclass into a column in the parent &lt;tt class="docutils literal"&gt;Course&lt;/tt&gt; table and deleting the child tables/models).&lt;/p&gt;
+&lt;p&gt;I didn't find any examples of this migration on line so I thought I write down my notes in case they are useful to others.&lt;/p&gt;
+&lt;p&gt;This ends up being a schema migration to put columns in place for inserting data into the parent table, a data migration to populate that table and the new many-to-many table, and then another schema migration to remove the temporary columns.&lt;/p&gt;
+&lt;p&gt;After playing around with a few approaches I found it was easiest to put temporary join ids on the parent class that I could use during the migration and then remove them when I was done. I added these fields to the parent:&lt;/p&gt;
+&lt;pre class="code python literal-block"&gt;
+&lt;span class="n"&gt;subclass&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;models&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;IntegerField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;default&lt;/span&gt;&lt;span class="o"&gt;=-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;subclassid&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;models&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;IntegerField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;default&lt;/span&gt;&lt;span class="o"&gt;=-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;and removed the &lt;tt class="docutils literal"&gt;abstract = True&lt;/tt&gt; Meta class attribute from &lt;tt class="docutils literal"&gt;Course&lt;/tt&gt;.&lt;/p&gt;
+&lt;p&gt;I struggled for a while when I found I couldn't control the &lt;tt class="docutils literal"&gt;OneToOneField&lt;/tt&gt; Django automatically creates from the child classes to the parent. I then saw this &lt;a class="reference external" href="http://stackoverflow.com/a/32997081/457935"&gt;SO answer&lt;/a&gt; which gave the correct null/blank settings that you'll see I use below.&lt;/p&gt;
+&lt;div class="section" id="backup-your-database"&gt;
+&lt;h2&gt;Backup Your Database&lt;/h2&gt;
+&lt;p&gt;It took me a few attempts to get this right so backups are wise...&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="first-schema-migration"&gt;
+&lt;h2&gt;First Schema Migration&lt;/h2&gt;
+&lt;p&gt;Now that the models are prepared I created the first database migration adding a default of &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;-1&lt;/span&gt;&lt;/tt&gt; for the foreign key from the existing child tables to their new concrete parent (which I'll remove manually):&lt;/p&gt;
+&lt;pre class="code bash literal-block"&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;python ./manage.py makemigrations box --settings&lt;span class="o"&gt;=&lt;/span&gt;dev_settings
+You are trying to add a non-nullable field &lt;span class="s1"&gt;'course_ptr'&lt;/span&gt; to box without a default; we can&lt;span class="s1"&gt;'t do that (the database needs something to populate existing rows).
+Please select a fix:
+ 1) Provide a one-off default now (will be set on all existing rows)
+ 2) Quit, and let me add a default in models.py
+Select an option: 1
+Please enter the default value now, as valid Python
+The datetime and django.utils.timezone modules are available, so you can do e.g. timezone.now()
+&amp;gt;&amp;gt;&amp;gt; -1
+You are trying to add a non-nullable field '&lt;/span&gt;course_ptr&lt;span class="s1"&gt;' to doublebox without a default; we can'&lt;/span&gt;t &lt;span class="k"&gt;do &lt;/span&gt;that &lt;span class="o"&gt;(&lt;/span&gt;the database needs something to populate existing rows&lt;span class="o"&gt;)&lt;/span&gt;.
+Please &lt;span class="k"&gt;select &lt;/span&gt;a fix:
+ 1&lt;span class="o"&gt;)&lt;/span&gt; Provide a one-off default now &lt;span class="o"&gt;(&lt;/span&gt;will be &lt;span class="nb"&gt;set &lt;/span&gt;on all existing rows&lt;span class="o"&gt;)&lt;/span&gt;
+ 2&lt;span class="o"&gt;)&lt;/span&gt; Quit, and &lt;span class="nb"&gt;let &lt;/span&gt;me add a default in models.py
+Select an option: 1
+Please enter the default value now, as valid Python
+The datetime and django.utils.timezone modules are available, so you can &lt;span class="k"&gt;do &lt;/span&gt;e.g. timezone.now&lt;span class="o"&gt;()&lt;/span&gt;
+&amp;gt;&amp;gt;&amp;gt; -1
+You are trying to add a non-nullable field &lt;span class="s1"&gt;'course_ptr'&lt;/span&gt; to starbox without a default; we can&lt;span class="s1"&gt;'t do that (the database needs something to populate existing rows).
+Please select a fix:
+ 1) Provide a one-off default now (will be set on all existing rows)
+ 2) Quit, and let me add a default in models.py
+Select an option: 1
+Please enter the default value now, as valid Python
+The datetime and django.utils.timezone modules are available, so you can do e.g. timezone.now()
+&amp;gt;&amp;gt;&amp;gt; -1
+Migrations for '&lt;/span&gt;box&lt;span class="err"&gt;'&lt;/span&gt;:
+  0004_auto_20151114_1255.py:
+    - Create model Course
+    - Remove field created from box
+    - Remove field generator from box
+    - Remove field id from box
+    - Remove field sequence from box
+    - Remove field short_url from box
+    - Remove field skills from box
+    - Remove field created from doublebox
+    - Remove field generator from doublebox
+    - Remove field id from doublebox
+    - Remove field sequence from doublebox
+    - Remove field short_url from doublebox
+    - Remove field skills from doublebox
+    - Remove field created from starbox
+    - Remove field generator from starbox
+    - Remove field id from starbox
+    - Remove field sequence from starbox
+    - Remove field short_url from starbox
+    - Remove field skills from starbox
+    - Add field course_id to box
+    - Add field course_ptr to box
+    - Add field course_id to doublebox
+    - Add field course_ptr to doublebox
+    - Add field course_id to starbox
+    - Add field course_ptr to starbox
+&lt;/pre&gt;
+&lt;p&gt;This automatic migration removes the fields (drops the columns) in the subclass models and with them all the existing data (including keys used in foreign key tables) is lost. But at least I can modify the migration to do what I need for the first migrations. The steps will be:&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;Keep the &lt;tt class="docutils literal"&gt;CreateModel&lt;/tt&gt; of the parent class, &lt;tt class="docutils literal"&gt;Course&lt;/tt&gt;, table.&lt;/li&gt;
+&lt;li&gt;Manually edit the &lt;tt class="docutils literal"&gt;AddField&lt;/tt&gt; of the &lt;tt class="docutils literal"&gt;OneToOneField&lt;/tt&gt; from the child classes to the parent from this:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre class="code python literal-block"&gt;
+&lt;span class="n"&gt;migrations&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;AddField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+    &lt;span class="n"&gt;model_name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'box'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'course_ptr'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="n"&gt;field&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;models&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;OneToOneField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;parent_link&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;auto_created&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;primary_key&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;default&lt;/span&gt;&lt;span class="o"&gt;=-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;serialize&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'box.Course'&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+    &lt;span class="n"&gt;preserve_default&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="p"&gt;),&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;to remove the default and add null/blank parameters (which allows the inserts during the data migrations):&lt;/p&gt;
+&lt;pre class="code python literal-block"&gt;
+&lt;span class="n"&gt;migrations&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;AddField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+    &lt;span class="n"&gt;model_name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'box'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'course_ptr'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="n"&gt;field&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;models&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;OneToOneField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;parent_link&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;auto_created&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;null&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;blank&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;serialize&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'box.Course'&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+    &lt;span class="n"&gt;preserve_default&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="p"&gt;),&lt;/span&gt;
+&lt;/pre&gt;
+&lt;ol class="arabic simple" start="3"&gt;
+&lt;li&gt;For each subclass I need to remove the primary key constraint on the subclass's id columns and remove any foreign key constraints between the subclass and it's many-to-many tables. In my case:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre class="code python literal-block"&gt;
+&lt;span class="n"&gt;migrations&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;RunSQL&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+    &lt;span class="s"&gt;&amp;quot;ALTER TABLE box_box DROP CONSTRAINT box_box_pkey CASCADE;&amp;quot;&lt;/span&gt;
+&lt;span class="p"&gt;),&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;If you want to see/validate/test the SQL that will be run you can use the &lt;tt class="docutils literal"&gt;sqlmigrate&lt;/tt&gt; management command (just give it your app name and the number of the migration):&lt;/p&gt;
+&lt;pre class="code bash literal-block"&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;python ./manage.py sqlmigrate box 0004
+BEGIN;
+CREATE TABLE &lt;span class="s2"&gt;&amp;quot;box_course&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;id&amp;quot;&lt;/span&gt; serial NOT NULL PRIMARY KEY, &lt;span class="s2"&gt;&amp;quot;sequence&amp;quot;&lt;/span&gt; varchar&lt;span class="o"&gt;(&lt;/span&gt;64&lt;span class="o"&gt;)&lt;/span&gt; NOT NULL, &lt;span class="s2"&gt;&amp;quot;short_url&amp;quot;&lt;/span&gt; varchar&lt;span class="o"&gt;(&lt;/span&gt;64&lt;span class="o"&gt;)&lt;/span&gt; NOT NULL, &lt;span class="s2"&gt;&amp;quot;created&amp;quot;&lt;/span&gt; timestamp with &lt;span class="nb"&gt;time &lt;/span&gt;zone NOT NULL, &lt;span class="s2"&gt;&amp;quot;generator&amp;quot;&lt;/span&gt; varchar&lt;span class="o"&gt;(&lt;/span&gt;2&lt;span class="o"&gt;)&lt;/span&gt; NOT NULL, &lt;span class="s2"&gt;&amp;quot;subclass&amp;quot;&lt;/span&gt; integer NOT NULL, &lt;span class="s2"&gt;&amp;quot;subclassid&amp;quot;&lt;/span&gt; integer NOT NULL&lt;span class="o"&gt;)&lt;/span&gt;;
+CREATE TABLE &lt;span class="s2"&gt;&amp;quot;box_course_skills&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;id&amp;quot;&lt;/span&gt; serial NOT NULL PRIMARY KEY, &lt;span class="s2"&gt;&amp;quot;course_id&amp;quot;&lt;/span&gt; integer NOT NULL, &lt;span class="s2"&gt;&amp;quot;skill_id&amp;quot;&lt;/span&gt; integer NOT NULL, UNIQUE &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;course_id&amp;quot;&lt;/span&gt;, &lt;span class="s2"&gt;&amp;quot;skill_id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;))&lt;/span&gt;;
+ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_box&amp;quot;&lt;/span&gt; ADD COLUMN &lt;span class="s2"&gt;&amp;quot;course_ptr_id&amp;quot;&lt;/span&gt; integer NULL UNIQUE;
+ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_box&amp;quot;&lt;/span&gt; ALTER COLUMN &lt;span class="s2"&gt;&amp;quot;course_ptr_id&amp;quot;&lt;/span&gt; DROP DEFAULT;
+ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_doublebox&amp;quot;&lt;/span&gt; ADD COLUMN &lt;span class="s2"&gt;&amp;quot;course_ptr_id&amp;quot;&lt;/span&gt; integer NULL UNIQUE;
+ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_doublebox&amp;quot;&lt;/span&gt; ALTER COLUMN &lt;span class="s2"&gt;&amp;quot;course_ptr_id&amp;quot;&lt;/span&gt; DROP DEFAULT;
+ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_starbox&amp;quot;&lt;/span&gt; ADD COLUMN &lt;span class="s2"&gt;&amp;quot;course_ptr_id&amp;quot;&lt;/span&gt; integer NULL UNIQUE;
+ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_starbox&amp;quot;&lt;/span&gt; ALTER COLUMN &lt;span class="s2"&gt;&amp;quot;course_ptr_id&amp;quot;&lt;/span&gt; DROP DEFAULT;
+ALTER TABLE box_box DROP CONSTRAINT box_box_pkey CASCADE;
+ALTER TABLE box_doublebox DROP CONSTRAINT box_doublebox_pkey CASCADE;
+ALTER TABLE box_starbox DROP CONSTRAINT box_starbox_pkey CASCADE;
+ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_course_skills&amp;quot;&lt;/span&gt; ADD CONSTRAINT &lt;span class="s2"&gt;&amp;quot;box_course_skills_course_id_4bbae33e06b494d4_fk_box_course_id&amp;quot;&lt;/span&gt; FOREIGN KEY &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;course_id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; REFERENCES &lt;span class="s2"&gt;&amp;quot;box_course&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_course_skills&amp;quot;&lt;/span&gt; ADD CONSTRAINT &lt;span class="s2"&gt;&amp;quot;box_course_skills_skill_id_35b3dcfd6d387281_fk_box_skill_id&amp;quot;&lt;/span&gt; FOREIGN KEY &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;skill_id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; REFERENCES &lt;span class="s2"&gt;&amp;quot;box_skill&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; DEFERRABLE INITIALLY DEFERRED;
+CREATE INDEX &lt;span class="s2"&gt;&amp;quot;box_course_skills_ea134da7&amp;quot;&lt;/span&gt; ON &lt;span class="s2"&gt;&amp;quot;box_course_skills&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;course_id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;;
+CREATE INDEX &lt;span class="s2"&gt;&amp;quot;box_course_skills_d38d4c39&amp;quot;&lt;/span&gt; ON &lt;span class="s2"&gt;&amp;quot;box_course_skills&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;skill_id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;;
+ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_box&amp;quot;&lt;/span&gt; ADD CONSTRAINT &lt;span class="s2"&gt;&amp;quot;box_box_course_ptr_id_9f73cfe60a5d542_fk_box_course_id&amp;quot;&lt;/span&gt; FOREIGN KEY &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;course_ptr_id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; REFERENCES &lt;span class="s2"&gt;&amp;quot;box_course&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_doublebox&amp;quot;&lt;/span&gt; ADD CONSTRAINT &lt;span class="s2"&gt;&amp;quot;box_doublebox_course_ptr_id_6b112382d489a445_fk_box_course_id&amp;quot;&lt;/span&gt; FOREIGN KEY &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;course_ptr_id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; REFERENCES &lt;span class="s2"&gt;&amp;quot;box_course&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_starbox&amp;quot;&lt;/span&gt; ADD CONSTRAINT &lt;span class="s2"&gt;&amp;quot;box_starbox_course_ptr_id_25fd8909f85eb93a_fk_box_course_id&amp;quot;&lt;/span&gt; FOREIGN KEY &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;course_ptr_id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; REFERENCES &lt;span class="s2"&gt;&amp;quot;box_course&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; DEFERRABLE INITIALLY DEFERRED;
+
+COMMIT;
+&lt;/pre&gt;
+&lt;p&gt;If you are happy then save and run the migration:&lt;/p&gt;
+&lt;pre class="code bash literal-block"&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;python ./manage.py python migrate box
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div class="section" id="data-migration"&gt;
+&lt;h2&gt;Data Migration&lt;/h2&gt;
+&lt;p&gt;I decided to use SQL (via &lt;a class="reference external" href="https://docs.djangoproject.com/en/1.8/ref/migration-operations/#runsql"&gt;RunSQL&lt;/a&gt; ) for the data migration since it was easier/faster than instantiating each Django model instance as part of the migration. I didn't write reverse migrations since I won't be needing them.&lt;/p&gt;
+&lt;p&gt;Here's my approach:&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;Copy subclass rows into parent &lt;tt class="docutils literal"&gt;course&lt;/tt&gt; table with the &lt;tt class="docutils literal"&gt;subclass&lt;/tt&gt; column set to a unique value for the subclass (just used a number for each subclass: 1, 2 &amp;amp; 3) and &lt;tt class="docutils literal"&gt;subclassid&lt;/tt&gt; set to each the child table's &lt;tt class="docutils literal"&gt;id&lt;/tt&gt; value. Together they are a composite key that will be used to tie the parent records back to the child records and their many-to-one relationships.&lt;/li&gt;
+&lt;li&gt;Update the subclass &lt;tt class="docutils literal"&gt;course_ptr&lt;/tt&gt; foreign key column with the primary key id of the &lt;tt class="docutils literal"&gt;course&lt;/tt&gt; table rows having the subclass's id and subclass number value.&lt;/li&gt;
+&lt;li&gt;Update other tables that have a foreign key into the subclass tables.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Create an empty migration:&lt;/p&gt;
+&lt;pre class="code bash literal-block"&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;python manage.py makemigrations --empty box
+&lt;/pre&gt;
+&lt;p&gt;Then add the migration queries to it (repeat the following for each of the subclasses giving each a different number):&lt;/p&gt;
+&lt;pre class="code python literal-block"&gt;
+&lt;span class="n"&gt;operations&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
+    &lt;span class="c"&gt;# insert data from subclass into parent class with subclass 'number' and primary key/id&lt;/span&gt;
+    &lt;span class="n"&gt;migrations&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;RunSQL&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&amp;quot;&amp;quot;INSERT INTO box_course (sequence, short_url, created, generator, subclass, subclassid)
+                      SELECT sequence, short_url, created, generator, 1, id
+                      FROM box_box;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+
+    &lt;span class="p"&gt;),&lt;/span&gt;
+    &lt;span class="c"&gt;# update subclass primary key to point to parent class (notice composite key values):&lt;/span&gt;
+    &lt;span class="n"&gt;migrations&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;RunSQL&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;UPDATE box_box box SET course_ptr_id=course.id FROM box_course course WHERE course.subclassid=box.id AND course.subclass=1;&amp;quot;&lt;/span&gt;
+    &lt;span class="p"&gt;),&lt;/span&gt;
+    &lt;span class="c"&gt;# insert child's many-to-many foreign key references into it's parent's many-to-many table&lt;/span&gt;
+    &lt;span class="n"&gt;migrations&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;RunSQL&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&amp;quot;&amp;quot;INSERT INTO box_course_skills (course_id, skill_id)
+                      SELECT box.course_ptr_id, skills.id
+                      FROM box_box box JOIN box_box_skills skills
+                      ON box.id = skills.box_id&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+    &lt;span class="p"&gt;),&lt;/span&gt;
+&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div class="section" id="final-schema-migration"&gt;
+&lt;h2&gt;Final Schema Migration&lt;/h2&gt;
+&lt;p&gt;Then it is time to edit the &lt;tt class="docutils literal"&gt;models.py&lt;/tt&gt; file and remove the temporary members/fields in the parent class: &lt;tt class="docutils literal"&gt;subclass&lt;/tt&gt; and &lt;tt class="docutils literal"&gt;subclassid&lt;/tt&gt;. Then create the schema migration which will drop those columns and the migrated columns from the child tables:&lt;/p&gt;
+&lt;pre class="code bash literal-block"&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;python manage.py makemigrations box
+  You are trying to add a non-nullable field &lt;span class="s1"&gt;'course_ptr'&lt;/span&gt; to doublebox without a default; we can&lt;span class="s1"&gt;'t do that (the database needs something to populate existing rows).
+  Please select a fix:
+   1) Provide a one-off default now (will be set on all existing rows)
+   2) Quit, and let me add a default in models.py
+  Select an option: 1
+  Please enter the default value now, as valid Python
+  The datetime and django.utils.timezone modules are available, so you can do e.g. timezone.now()
+  &amp;gt;&amp;gt;&amp;gt; -1
+  You are trying to add a non-nullable field '&lt;/span&gt;course_ptr&lt;span class="s1"&gt;' to starbox without a default; we can'&lt;/span&gt;t &lt;span class="k"&gt;do &lt;/span&gt;that &lt;span class="o"&gt;(&lt;/span&gt;the database needs something to populate existing rows&lt;span class="o"&gt;)&lt;/span&gt;.
+  Please &lt;span class="k"&gt;select &lt;/span&gt;a fix:
+   1&lt;span class="o"&gt;)&lt;/span&gt; Provide a one-off default now &lt;span class="o"&gt;(&lt;/span&gt;will be &lt;span class="nb"&gt;set &lt;/span&gt;on all existing rows&lt;span class="o"&gt;)&lt;/span&gt;
+   2&lt;span class="o"&gt;)&lt;/span&gt; Quit, and &lt;span class="nb"&gt;let &lt;/span&gt;me add a default in models.py
+  Select an option: 1
+  Please enter the default value now, as valid Python
+  The datetime and django.utils.timezone modules are available, so you can &lt;span class="k"&gt;do &lt;/span&gt;e.g. timezone.now&lt;span class="o"&gt;()&lt;/span&gt;
+  &amp;gt;&amp;gt;&amp;gt; -1
+  You are trying to change the nullable field &lt;span class="s1"&gt;'course_ptr'&lt;/span&gt; on box to non-nullable without a default; we can&lt;span class="s1"&gt;'t do that (the database needs something to populate existing rows).
+  Please select a fix:
+   1) Provide a one-off default now (will be set on all existing rows)
+   2) Ignore for now, and let me handle existing rows with NULL myself (e.g. adding a RunPython or RunSQL operation in the new migration file before the AlterField operation)
+   3) Quit, and let me add a default in models.py
+  Select an option: 1
+  Please enter the default value now, as valid Python
+  The datetime and django.utils.timezone modules are available, so you can do e.g. timezone.now()
+  &amp;gt;&amp;gt;&amp;gt; -1
+  Migrations for '&lt;/span&gt;box&lt;span class="err"&gt;'&lt;/span&gt;:
+    0006_auto_20151114_1708.py:
+      - Remove field created from box
+      - Remove field generator from box
+      - Remove field id from box
+      - Remove field sequence from box
+      - Remove field short_url from box
+      - Remove field skills from box
+      - Remove field subclass from course
+      - Remove field subclassid from course
+      - Remove field created from doublebox
+      - Remove field generator from doublebox
+      - Remove field id from doublebox
+      - Remove field sequence from doublebox
+      - Remove field short_url from doublebox
+      - Remove field skills from doublebox
+      - Remove field created from starbox
+      - Remove field generator from starbox
+      - Remove field id from starbox
+      - Remove field sequence from starbox
+      - Remove field short_url from starbox
+      - Remove field skills from starbox
+      - Alter field course_ptr to doublebox
+      - Alter field course_ptr to starbox
+      - Alter field course_ptr on box
+&lt;/pre&gt;
+&lt;p&gt;It detects that the child fields still haven't been deleted and that the default value for inserts of the children's parent reference still doesn't exist. Running this final migration completes the migration:&lt;/p&gt;
+&lt;pre class="code bash literal-block"&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;python ./manage.py migrate box
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div class="section" id="wrap-up"&gt;
+&lt;h2&gt;Wrap Up&lt;/h2&gt;
+&lt;p&gt;I hope this helps if you need this type of migration. It may look a little complicated at first, but all it amounts to is:&lt;/p&gt;
+&lt;p&gt;Step 1. Remove abstract inheritance and add temporary fields to the parent class for identifying each subclass's records in the parent table when migrating the data.&lt;/p&gt;
+&lt;p&gt;Step 2. Migrate the child data to the parent class with the subclass composite keys. Use new parent primary keys to migrate tables with foreign key that have moved to the parent class.&lt;/p&gt;
+&lt;p&gt;Step 3. Drop columns used in migration on the parent and child tables.&lt;/p&gt;
+&lt;p&gt;Let me know if you've found other/better solutions!&lt;/p&gt;
+&lt;/div&gt;
+</summary><category term="python"></category><category term="agilitycourses"></category><category term="django"></category><category term="database"></category><category term="migration"></category></entry><entry><title>Django REST Registration with django-rest-auth and django-allauth</title><link href="http://tech.agilitynerd.com/django-rest-registration-with-django-rest-auth.html" rel="alternate"></link><updated>2014-10-26T03:02:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2014-10-26:django-rest-registration-with-django-rest-auth.html</id><summary type="html">&lt;p&gt;I'm creating a mobile app for my &lt;a class="reference external" href="http://agilitycourses.com"&gt;agilitycourses website&lt;/a&gt; and I'm using &lt;a class="reference external" href="http://www.django-rest-framework.org/"&gt;django-rest-framework&lt;/a&gt; to provide a REST API for use by the client application. In order to provide authentication and registration I'm using &lt;a class="reference external" href="http://django-allauth.readthedocs.org/en/latest/"&gt;django-allauth&lt;/a&gt;. Lastly I use &lt;a class="reference external" href="https://github.com/Tivix/django-rest-auth/"&gt;django-rest-auth&lt;/a&gt; to provide REST resources for authentication and registration.&lt;/p&gt;
 &lt;p&gt;I implemented and tested &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;django-rest-framework&lt;/span&gt;&lt;/tt&gt; and then added in &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;django-allauth&lt;/span&gt;&lt;/tt&gt;. But when I went to integrate &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;django-rest-auth&lt;/span&gt;&lt;/tt&gt; POSTing to the &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;/rest-auth/registration/&lt;/span&gt;&lt;/tt&gt; resource was generating a traceback:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
 Exception Type: TypeError at /rest-auth/registration/

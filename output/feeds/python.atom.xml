@@ -94,7 +94,7 @@ orders of magnitude.&lt;/p&gt;
 packages in the system installation. My application uses &lt;a class="reference external" href="http://cairographics.org/pyrsvg/"&gt;pyrsvg&lt;/a&gt; and
 it is installed by default as a system package. Consequently I had to
 link the shared libraries it installs (w/in gtk) into my virtualenv.&lt;/p&gt;
-&lt;p&gt;Here are the links I created (workon and cdsitepackages are
+&lt;p&gt;Here are the links I created (&lt;tt class="docutils literal"&gt;workon&lt;/tt&gt; and &lt;tt class="docutils literal"&gt;cdsitepackages&lt;/tt&gt; are
 &lt;a class="reference external" href="http://www.doughellmann.com/projects/virtualenvwrapper/"&gt;virtualenvwrapper&lt;/a&gt; shell aliases):&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
 $ workon project

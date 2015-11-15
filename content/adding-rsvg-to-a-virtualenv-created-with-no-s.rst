@@ -12,7 +12,7 @@ packages in the system installation. My application uses `pyrsvg`_ and
 it is installed by default as a system package. Consequently I had to
 link the shared libraries it installs (w/in gtk) into my virtualenv.
 
-Here are the links I created (workon and cdsitepackages are
+Here are the links I created (``workon`` and ``cdsitepackages`` are
 `virtualenvwrapper`_ shell aliases)::
 
   $ workon project
