@@ -1,6 +1,6 @@
 Django Migrating Models from an Abstract Base Class to a Concrete Base Class
 ############################################################################
-:date: 2015-11-15 21:00
+:date: 2015-11-15 05:00
 :author: Steve Schwarz
 :category: webdev
 :tags: python, agilitycourses, django, database, migration
@@ -116,14 +116,6 @@ to remove the default and add null/blank parameters (which allows leaving subcla
             preserve_default=False,
         ),
 
-3. For each subclass I need to remove the primary key constraint on the subclass's id columns and remove any foreign key constraints between the subclass and it's many-to-many tables. In my case:
-
-.. code:: python
-
-        migrations.RunSQL(
-            "ALTER TABLE box_box DROP CONSTRAINT box_box_pkey CASCADE;"
-        ),
-
 If you want to see/validate/test the SQL that will be run you can use the ``sqlmigrate`` management command (just give it your app name and the number of the migration):
 
 .. code:: bash
@@ -138,9 +130,6 @@ If you want to see/validate/test the SQL that will be run you can use the ``sqlm
     ALTER TABLE "box_doublebox" ALTER COLUMN "course_ptr_id" DROP DEFAULT;
     ALTER TABLE "box_starbox" ADD COLUMN "course_ptr_id" integer NULL UNIQUE;
     ALTER TABLE "box_starbox" ALTER COLUMN "course_ptr_id" DROP DEFAULT;
-    ALTER TABLE box_box DROP CONSTRAINT box_box_pkey CASCADE;
-    ALTER TABLE box_doublebox DROP CONSTRAINT box_doublebox_pkey CASCADE;
-    ALTER TABLE box_starbox DROP CONSTRAINT box_starbox_pkey CASCADE;
     ALTER TABLE "box_course_skills" ADD CONSTRAINT "box_course_skills_course_id_4bbae33e06b494d4_fk_box_course_id" FOREIGN KEY ("course_id") REFERENCES "box_course" ("id") DEFERRABLE INITIALLY DEFERRED;
     ALTER TABLE "box_course_skills" ADD CONSTRAINT "box_course_skills_skill_id_35b3dcfd6d387281_fk_box_skill_id" FOREIGN KEY ("skill_id") REFERENCES "box_skill" ("id") DEFERRABLE INITIALLY DEFERRED;
     CREATE INDEX "box_course_skills_ea134da7" ON "box_course_skills" ("course_id");

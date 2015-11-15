@@ -81,7 +81,7 @@
             <div class="span9">
 	      	      <div class='article'>
   <div class="page-header"><h1>Django Migrating Models from an Abstract Base Class to a Concrete Base Class</h1></div>
-  <div class="well small"><a class="more" href="http://tech.agilitynerd.com/django-migrate-abstract-concrete-base-class.html">On 15 Nov 2015 at 2100</a>
+  <div class="well small"><a class="more" href="http://tech.agilitynerd.com/django-migrate-abstract-concrete-base-class.html">On 15 Nov 2015 at 0500</a>
 by <a class="url fn" href="http://tech.agilitynerd.com/author/steve-schwarz.html">Steve Schwarz</a> in <a href="http://tech.agilitynerd.com/category/webdev.html">webdev</a>
  | <a href="http://tech.agilitynerd.com/django-migrate-abstract-concrete-base-class.html#disqus_thread">Comments</a></div>
   <div><p>On my <a class="reference external" href="http://agilitycourses.com">agilitycourses.com</a> I had been modeling three types of dog agility courses using an abstract base class <tt class="docutils literal">Course</tt> with three child classes: <tt class="docutils literal">Box</tt>, <tt class="docutils literal">StarBox</tt>, and <tt class="docutils literal">DoubleBox</tt>. This created three tables in the database prepended with the <a class="reference external" href="http://djangoproject.com">Django</a> application name <tt class="docutils literal">box</tt>: <tt class="docutils literal">box_box</tt>, <tt class="docutils literal">box_starbox</tt>, and <tt class="docutils literal">box_doublebox</tt>. I needed to add a relationship to all three classes from a new table and, rather than creating three separate tables relating to each child table, I decided to convert the <tt class="docutils literal">Course</tt> class to a concrete class/table and relate the new class/table to it instead of each child class. For my purposes the extra join to the child class won't impact performance significantly (if it does I'd move the identity of the type of subclass into a column in the parent <tt class="docutils literal">Course</tt> table and delete the child tables/models).</p>
@@ -177,14 +177,6 @@ Migrations for '</span>box<span class="err">'</span>:
     <span class="n">preserve_default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
 <span class="p">),</span>
 </pre>
-<ol class="arabic simple" start="3">
-<li>For each subclass I need to remove the primary key constraint on the subclass's id columns and remove any foreign key constraints between the subclass and it's many-to-many tables. In my case:</li>
-</ol>
-<pre class="code python literal-block">
-<span class="n">migrations</span><span class="o">.</span><span class="n">RunSQL</span><span class="p">(</span>
-    <span class="s">&quot;ALTER TABLE box_box DROP CONSTRAINT box_box_pkey CASCADE;&quot;</span>
-<span class="p">),</span>
-</pre>
 <p>If you want to see/validate/test the SQL that will be run you can use the <tt class="docutils literal">sqlmigrate</tt> management command (just give it your app name and the number of the migration):</p>
 <pre class="code bash literal-block">
 <span class="nv">$ </span>python ./manage.py sqlmigrate box 0004
@@ -197,9 +189,6 @@ ALTER TABLE <span class="s2">&quot;box_doublebox&quot;</span> ADD COLUMN <span c
 ALTER TABLE <span class="s2">&quot;box_doublebox&quot;</span> ALTER COLUMN <span class="s2">&quot;course_ptr_id&quot;</span> DROP DEFAULT;
 ALTER TABLE <span class="s2">&quot;box_starbox&quot;</span> ADD COLUMN <span class="s2">&quot;course_ptr_id&quot;</span> integer NULL UNIQUE;
 ALTER TABLE <span class="s2">&quot;box_starbox&quot;</span> ALTER COLUMN <span class="s2">&quot;course_ptr_id&quot;</span> DROP DEFAULT;
-ALTER TABLE box_box DROP CONSTRAINT box_box_pkey CASCADE;
-ALTER TABLE box_doublebox DROP CONSTRAINT box_doublebox_pkey CASCADE;
-ALTER TABLE box_starbox DROP CONSTRAINT box_starbox_pkey CASCADE;
 ALTER TABLE <span class="s2">&quot;box_course_skills&quot;</span> ADD CONSTRAINT <span class="s2">&quot;box_course_skills_course_id_4bbae33e06b494d4_fk_box_course_id&quot;</span> FOREIGN KEY <span class="o">(</span><span class="s2">&quot;course_id&quot;</span><span class="o">)</span> REFERENCES <span class="s2">&quot;box_course&quot;</span> <span class="o">(</span><span class="s2">&quot;id&quot;</span><span class="o">)</span> DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE <span class="s2">&quot;box_course_skills&quot;</span> ADD CONSTRAINT <span class="s2">&quot;box_course_skills_skill_id_35b3dcfd6d387281_fk_box_skill_id&quot;</span> FOREIGN KEY <span class="o">(</span><span class="s2">&quot;skill_id&quot;</span><span class="o">)</span> REFERENCES <span class="s2">&quot;box_skill&quot;</span> <span class="o">(</span><span class="s2">&quot;id&quot;</span><span class="o">)</span> DEFERRABLE INITIALLY DEFERRED;
 CREATE INDEX <span class="s2">&quot;box_course_skills_ea134da7&quot;</span> ON <span class="s2">&quot;box_course_skills&quot;</span> <span class="o">(</span><span class="s2">&quot;course_id&quot;</span><span class="o">)</span>;
