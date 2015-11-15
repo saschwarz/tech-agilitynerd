@@ -94,7 +94,7 @@ This automatic migration drops the columns in the subclass tables and with them 
 
 1. Keep the ``CreateModel`` of the parent class, ``Course``, table.
 
-2. Manually edit the ``AddField`` of the ``OneToOneField`` from the child classes to the parent from this:
+2. Manually edit the ``AddField`` of the ``OneToOneField`` on the child classes to keep the existing primary key on the table during the migration. Change them from this:
 
 .. code:: python
 
@@ -105,7 +105,7 @@ This automatic migration drops the columns in the subclass tables and with them 
             preserve_default=False,
         ),
 
-to remove the default and add null/blank parameters (which allows leaving subclass data in place during the data migrations):
+to remove the primary_key, default and add null/blank parameters:
 
 .. code:: python
 
@@ -248,7 +248,9 @@ Then it is time to edit the ``models.py`` file and remove the temporary members/
         - Alter field course_ptr to starbox
         - Alter field course_ptr on box
 
-You see management command detects that the child fields still haven't been deleted and that the default value for inserts of the children's parent reference still doesn't exist. Running this final migration completes the migration:
+You see management command detects that the child fields still haven't been deleted and that the default value for inserts of the children's parent reference still doesn't exist. Lastly the migration converts the ``OneToOne`` field back to a primary key.
+
+Then migrate a final time:
 
 .. code:: bash
 

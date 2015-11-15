@@ -158,7 +158,7 @@ Migrations for '</span>box<span class="err">'</span>:
 <p>This automatic migration drops the columns in the subclass tables and with them all the existing data (including keys used in foreign key tables) is lost. But at least I can modify the migration to do what I need for the first migration. The steps will be:</p>
 <ol class="arabic simple">
 <li>Keep the <tt class="docutils literal">CreateModel</tt> of the parent class, <tt class="docutils literal">Course</tt>, table.</li>
-<li>Manually edit the <tt class="docutils literal">AddField</tt> of the <tt class="docutils literal">OneToOneField</tt> from the child classes to the parent from this:</li>
+<li>Manually edit the <tt class="docutils literal">AddField</tt> of the <tt class="docutils literal">OneToOneField</tt> on the child classes to keep the existing primary key on the table during the migration. Change them from this:</li>
 </ol>
 <pre class="code python literal-block">
 <span class="n">migrations</span><span class="o">.</span><span class="n">AddField</span><span class="p">(</span>
@@ -168,7 +168,7 @@ Migrations for '</span>box<span class="err">'</span>:
     <span class="n">preserve_default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
 <span class="p">),</span>
 </pre>
-<p>to remove the default and add null/blank parameters (which allows leaving subclass data in place during the data migrations):</p>
+<p>to remove the primary_key, default and add null/blank parameters:</p>
 <pre class="code python literal-block">
 <span class="n">migrations</span><span class="o">.</span><span class="n">AddField</span><span class="p">(</span>
     <span class="n">model_name</span><span class="o">=</span><span class="s">'box'</span><span class="p">,</span>
@@ -294,7 +294,8 @@ COMMIT;
       - Alter field course_ptr to starbox
       - Alter field course_ptr on box
 </pre>
-<p>You see management command detects that the child fields still haven't been deleted and that the default value for inserts of the children's parent reference still doesn't exist. Running this final migration completes the migration:</p>
+<p>You see management command detects that the child fields still haven't been deleted and that the default value for inserts of the children's parent reference still doesn't exist. Lastly the migration converts the <tt class="docutils literal">OneToOne</tt> field back to a primary key.</p>
+<p>Then migrate a final time:</p>
 <pre class="code bash literal-block">
 <span class="nv">$ </span>python ./manage.py migrate box
 </pre>
