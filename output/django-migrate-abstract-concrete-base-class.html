@@ -81,19 +81,19 @@
             <div class="span9">
 	      	      <div class='article'>
   <div class="page-header"><h1>Django Migrating Models from an Abstract Base Class to a Concrete Base Class</h1></div>
-  <div class="well small"><a class="more" href="http://tech.agilitynerd.com/django-migrate-abstract-concrete-base-class.html">On 15 Nov 2015 at 2302</a>
+  <div class="well small"><a class="more" href="http://tech.agilitynerd.com/django-migrate-abstract-concrete-base-class.html">On 15 Nov 2015 at 2100</a>
 by <a class="url fn" href="http://tech.agilitynerd.com/author/steve-schwarz.html">Steve Schwarz</a> in <a href="http://tech.agilitynerd.com/category/webdev.html">webdev</a>
  | <a href="http://tech.agilitynerd.com/django-migrate-abstract-concrete-base-class.html#disqus_thread">Comments</a></div>
-  <div><p>On my <a class="reference external" href="http://agilitycourses.com">agilitycourses.com</a> I had been modeling three types of dog agility courses using an abstract base class <tt class="docutils literal">Course</tt> with three child classes: <tt class="docutils literal">Box</tt>, <tt class="docutils literal">StarBox</tt>, and <tt class="docutils literal">DoubleBox</tt>. This created three tables in the database prepended with the <a class="reference external" href="http://djangoproject.com">Django</a> application name <tt class="docutils literal">box</tt>: <tt class="docutils literal">box_box</tt>, <tt class="docutils literal">box_starbox</tt>, and <tt class="docutils literal">box_doublebox</tt>. I needed to add a relationship to all three classes from a new table and, rather than creating three separate tables relating to each child table, I decided to convert the <tt class="docutils literal">Course</tt> class to a concreate class/table and relate the new class/table to it instead of each child class. For my purposes the extra join to the child class won't impact performance significantly (if it does I'd move the identity of the type of subclass into a column in the parent <tt class="docutils literal">Course</tt> table and deleting the child tables/models).</p>
-<p>I didn't find any examples of this migration on line so I thought I write down my notes in case they are useful to others.</p>
-<p>This ends up being a schema migration to put columns in place for inserting data into the parent table, a data migration to populate that table and the new many-to-many table, and then another schema migration to remove the temporary columns.</p>
-<p>After playing around with a few approaches I found it was easiest to put temporary join ids on the parent class that I could use during the migration and then remove them when I was done. I added these fields to the parent:</p>
+  <div><p>On my <a class="reference external" href="http://agilitycourses.com">agilitycourses.com</a> I had been modeling three types of dog agility courses using an abstract base class <tt class="docutils literal">Course</tt> with three child classes: <tt class="docutils literal">Box</tt>, <tt class="docutils literal">StarBox</tt>, and <tt class="docutils literal">DoubleBox</tt>. This created three tables in the database prepended with the <a class="reference external" href="http://djangoproject.com">Django</a> application name <tt class="docutils literal">box</tt>: <tt class="docutils literal">box_box</tt>, <tt class="docutils literal">box_starbox</tt>, and <tt class="docutils literal">box_doublebox</tt>. I needed to add a relationship to all three classes from a new table and, rather than creating three separate tables relating to each child table, I decided to convert the <tt class="docutils literal">Course</tt> class to a concrete class/table and relate the new class/table to it instead of each child class. For my purposes the extra join to the child class won't impact performance significantly (if it does I'd move the identity of the type of subclass into a column in the parent <tt class="docutils literal">Course</tt> table and delete the child tables/models).</p>
+<p>I didn't find any examples of this type of migration online so I thought I write down my notes in case they are useful to others.</p>
+<p>This ends up being a schema migration to put columns in place for inserting data into the parent table, a data migration to populate that table and the new many-to-many table(s), and then another schema migration to remove the temporary columns.</p>
+<p>After playing around with a few approaches I found it was easiest to put temporary join ids on the parent class that I could use during the migration and then remove them when I was done. I added these fields to the parent in the <tt class="docutils literal">models.py</tt>:</p>
 <pre class="code python literal-block">
 <span class="n">subclass</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">default</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">subclassid</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">default</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 </pre>
 <p>and removed the <tt class="docutils literal">abstract = True</tt> Meta class attribute from <tt class="docutils literal">Course</tt>.</p>
-<p>I struggled for a while when I found I couldn't control the <tt class="docutils literal">OneToOneField</tt> Django automatically creates from the child classes to the parent. I then saw this <a class="reference external" href="http://stackoverflow.com/a/32997081/457935">SO answer</a> which gave the correct null/blank settings that you'll see I use below.</p>
+<p>I struggled for a while when I found I couldn't control the <tt class="docutils literal">OneToOneField</tt> Django automatically creates from the child classes to the parent. I then saw this <a class="reference external" href="http://stackoverflow.com/a/32997081/457935">StackOverflow answer on a table inheritance question</a> which gave the null/blank field attribute that you'll see I use below.</p>
 <div class="section" id="backup-your-database">
 <h2>Backup Your Database</h2>
 <p>It took me a few attempts to get this right so backups are wise...</p>
@@ -155,7 +155,7 @@ Migrations for '</span>box<span class="err">'</span>:
     - Add field course_id to starbox
     - Add field course_ptr to starbox
 </pre>
-<p>This automatic migration removes the fields (drops the columns) in the subclass models and with them all the existing data (including keys used in foreign key tables) is lost. But at least I can modify the migration to do what I need for the first migrations. The steps will be:</p>
+<p>This automatic migration drops the columns in the subclass tables and with them all the existing data (including keys used in foreign key tables) is lost. But at least I can modify the migration to do what I need for the first migration. The steps will be:</p>
 <ol class="arabic simple">
 <li>Keep the <tt class="docutils literal">CreateModel</tt> of the parent class, <tt class="docutils literal">Course</tt>, table.</li>
 <li>Manually edit the <tt class="docutils literal">AddField</tt> of the <tt class="docutils literal">OneToOneField</tt> from the child classes to the parent from this:</li>
@@ -168,7 +168,7 @@ Migrations for '</span>box<span class="err">'</span>:
     <span class="n">preserve_default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
 <span class="p">),</span>
 </pre>
-<p>to remove the default and add null/blank parameters (which allows the inserts during the data migrations):</p>
+<p>to remove the default and add null/blank parameters (which allows leaving subclass data in place during the data migrations):</p>
 <pre class="code python literal-block">
 <span class="n">migrations</span><span class="o">.</span><span class="n">AddField</span><span class="p">(</span>
     <span class="n">model_name</span><span class="o">=</span><span class="s">'box'</span><span class="p">,</span>
@@ -220,9 +220,9 @@ COMMIT;
 <p>I decided to use SQL (via <a class="reference external" href="https://docs.djangoproject.com/en/1.8/ref/migration-operations/#runsql">RunSQL</a> ) for the data migration since it was easier/faster than instantiating each Django model instance as part of the migration. I didn't write reverse migrations since I won't be needing them.</p>
 <p>Here's my approach:</p>
 <ol class="arabic simple">
-<li>Copy subclass rows into parent <tt class="docutils literal">course</tt> table with the <tt class="docutils literal">subclass</tt> column set to a unique value for the subclass (just used a number for each subclass: 1, 2 &amp; 3) and <tt class="docutils literal">subclassid</tt> set to each the child table's <tt class="docutils literal">id</tt> value. Together they are a composite key that will be used to tie the parent records back to the child records and their many-to-one relationships.</li>
+<li>Copy subclass rows into parent <tt class="docutils literal">course</tt> table with the <tt class="docutils literal">subclass</tt> column set to a unique value for the subclass (just used a number for each subclass: 1, 2 &amp; 3) and <tt class="docutils literal">subclassid</tt> set to each the child table's <tt class="docutils literal">id</tt> (primary key) value. Together they are a composite key that will be used to tie the parent records back to the child records and their many-to-many relationships.</li>
 <li>Update the subclass <tt class="docutils literal">course_ptr</tt> foreign key column with the primary key id of the <tt class="docutils literal">course</tt> table rows having the subclass's id and subclass number value.</li>
-<li>Update other tables that have a foreign key into the subclass tables.</li>
+<li>Insert subclass's many-to-many table data into the corresponding many-to-many parent table.</li>
 </ol>
 <p>Create an empty migration:</p>
 <pre class="code bash literal-block">
@@ -305,7 +305,7 @@ COMMIT;
       - Alter field course_ptr to starbox
       - Alter field course_ptr on box
 </pre>
-<p>It detects that the child fields still haven't been deleted and that the default value for inserts of the children's parent reference still doesn't exist. Running this final migration completes the migration:</p>
+<p>You see management command detects that the child fields still haven't been deleted and that the default value for inserts of the children's parent reference still doesn't exist. Running this final migration completes the migration:</p>
 <pre class="code bash literal-block">
 <span class="nv">$ </span>python ./manage.py migrate box
 </pre>

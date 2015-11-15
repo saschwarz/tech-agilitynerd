@@ -1,19 +1,19 @@
 Django Migrating Models from an Abstract Base Class to a Concrete Base Class
 ############################################################################
-:date: 2015-11-15 23:02
+:date: 2015-11-15 21:00
 :author: Steve Schwarz
 :category: webdev
 :tags: python, agilitycourses, django, database, migration
 :slug: django-migrate-abstract-concrete-base-class
 
 
-On my `agilitycourses.com <http://agilitycourses.com>`_ I had been modeling three types of dog agility courses using an abstract base class ``Course`` with three child classes: ``Box``, ``StarBox``, and ``DoubleBox``. This created three tables in the database prepended with the `Django <http://djangoproject.com>`_ application name ``box``: ``box_box``, ``box_starbox``, and ``box_doublebox``. I needed to add a relationship to all three classes from a new table and, rather than creating three separate tables relating to each child table, I decided to convert the ``Course`` class to a concreate class/table and relate the new class/table to it instead of each child class. For my purposes the extra join to the child class won't impact performance significantly (if it does I'd move the identity of the type of subclass into a column in the parent ``Course`` table and deleting the child tables/models).
+On my `agilitycourses.com <http://agilitycourses.com>`_ I had been modeling three types of dog agility courses using an abstract base class ``Course`` with three child classes: ``Box``, ``StarBox``, and ``DoubleBox``. This created three tables in the database prepended with the `Django <http://djangoproject.com>`_ application name ``box``: ``box_box``, ``box_starbox``, and ``box_doublebox``. I needed to add a relationship to all three classes from a new table and, rather than creating three separate tables relating to each child table, I decided to convert the ``Course`` class to a concrete class/table and relate the new class/table to it instead of each child class. For my purposes the extra join to the child class won't impact performance significantly (if it does I'd move the identity of the type of subclass into a column in the parent ``Course`` table and delete the child tables/models).
 
-I didn't find any examples of this migration on line so I thought I write down my notes in case they are useful to others.
+I didn't find any examples of this type of migration online so I thought I write down my notes in case they are useful to others.
 
-This ends up being a schema migration to put columns in place for inserting data into the parent table, a data migration to populate that table and the new many-to-many table, and then another schema migration to remove the temporary columns.
+This ends up being a schema migration to put columns in place for inserting data into the parent table, a data migration to populate that table and the new many-to-many table(s), and then another schema migration to remove the temporary columns.
 
-After playing around with a few approaches I found it was easiest to put temporary join ids on the parent class that I could use during the migration and then remove them when I was done. I added these fields to the parent:
+After playing around with a few approaches I found it was easiest to put temporary join ids on the parent class that I could use during the migration and then remove them when I was done. I added these fields to the parent in the ``models.py``:
 
 .. code:: python
 
@@ -22,7 +22,7 @@ After playing around with a few approaches I found it was easiest to put tempora
 
 and removed the ``abstract = True`` Meta class attribute from ``Course``.
 
-I struggled for a while when I found I couldn't control the ``OneToOneField`` Django automatically creates from the child classes to the parent. I then saw this `SO answer <http://stackoverflow.com/a/32997081/457935>`_ which gave the correct null/blank settings that you'll see I use below.
+I struggled for a while when I found I couldn't control the ``OneToOneField`` Django automatically creates from the child classes to the parent. I then saw this `StackOverflow answer on a table inheritance question <http://stackoverflow.com/a/32997081/457935>`_ which gave the null/blank field attribute that you'll see I use below.
 
 
 Backup Your Database
@@ -90,7 +90,7 @@ Now that the models are prepared I created the first database migration adding a
         - Add field course_id to starbox
         - Add field course_ptr to starbox
 
-This automatic migration removes the fields (drops the columns) in the subclass models and with them all the existing data (including keys used in foreign key tables) is lost. But at least I can modify the migration to do what I need for the first migrations. The steps will be:
+This automatic migration drops the columns in the subclass tables and with them all the existing data (including keys used in foreign key tables) is lost. But at least I can modify the migration to do what I need for the first migration. The steps will be:
 
 1. Keep the ``CreateModel`` of the parent class, ``Course``, table.
 
@@ -105,7 +105,7 @@ This automatic migration removes the fields (drops the columns) in the subclass 
             preserve_default=False,
         ),
 
-to remove the default and add null/blank parameters (which allows the inserts during the data migrations):
+to remove the default and add null/blank parameters (which allows leaving subclass data in place during the data migrations):
 
 .. code:: python
 
@@ -165,11 +165,11 @@ I decided to use SQL (via `RunSQL <https://docs.djangoproject.com/en/1.8/ref/mig
 
 Here's my approach:
 
-1. Copy subclass rows into parent ``course`` table with the ``subclass`` column set to a unique value for the subclass (just used a number for each subclass: 1, 2 & 3) and ``subclassid`` set to each the child table's ``id`` value. Together they are a composite key that will be used to tie the parent records back to the child records and their many-to-one relationships.
+1. Copy subclass rows into parent ``course`` table with the ``subclass`` column set to a unique value for the subclass (just used a number for each subclass: 1, 2 & 3) and ``subclassid`` set to each the child table's ``id`` (primary key) value. Together they are a composite key that will be used to tie the parent records back to the child records and their many-to-many relationships.
 
 2. Update the subclass ``course_ptr`` foreign key column with the primary key id of the ``course`` table rows having the subclass's id and subclass number value.
 
-3. Update other tables that have a foreign key into the subclass tables.
+3. Insert subclass's many-to-many table data into the corresponding many-to-many parent table.
 
 Create an empty migration:
 
@@ -259,7 +259,7 @@ Then it is time to edit the ``models.py`` file and remove the temporary members/
         - Alter field course_ptr to starbox
         - Alter field course_ptr on box
 
-It detects that the child fields still haven't been deleted and that the default value for inserts of the children's parent reference still doesn't exist. Running this final migration completes the migration:
+You see management command detects that the child fields still haven't been deleted and that the default value for inserts of the children's parent reference still doesn't exist. Running this final migration completes the migration:
 
 .. code:: bash
 
