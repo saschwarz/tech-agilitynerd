@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <title>tech.agilitynerd</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Steve Schwarz">
+    <!-- <link href="http://127.0.0.1:8000/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" /> -->
+    <link href="http://feeds.feedburner.com/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" />
+    <!-- Le styles -->
+    <link href="http://tech.agilitynerd.com/theme/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+      padding-top: 60px;
+      padding-bottom: 40px;
+      }
+      .sidebar-nav {
+      padding: 9px 0;
+      }
+    </style>
+    <link href="http://tech.agilitynerd.com/theme/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="http://tech.agilitynerd.com/theme/local.css" rel="stylesheet">
+    <link href="http://tech.agilitynerd.com/theme/pygments.css" rel="stylesheet">
+<script>var _gaq=[['_setAccount','UA-1127677-3'],['_trackPageview']];(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.src='//www.google-analytics.com/ga.js';s.parentNode.insertBefore(g,s)}(document,'script'))</script>
+<script type="text/javascript">
+  var disqus_shortname = "techagilitynerd"; // required: replace example with your forum shortname
+  var disqus_developer = 1;
+  
+  var disqus_identifier = "confidently-refactoring-django-urls-views-and.html";
+  (function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+
+  (function () {
+  var s = document.createElement('script'); s.async = true;
+  s.type = 'text/javascript';
+  s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+  }());
+</script>
+  </head>
+  <body>
+<!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+    
+<div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container-fluid">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+      </a>
+      <a class="brand" href="http://tech.agilitynerd.com/index.html">tech.agilitynerd</a>
+      <div class="nav-collapse collapse">
+	<ul class="nav">
+	  <li ><a href="http://tech.agilitynerd.com/category/devops.html">devops</a></li>
+	  <li ><a href="http://tech.agilitynerd.com/category/misc.html">misc</a></li>
+	  <li ><a href="http://tech.agilitynerd.com/category/programming.html">programming</a></li>
+	  <li ><a href="http://tech.agilitynerd.com/category/python.html">python</a></li>
+	  <li class="active"><a href="http://tech.agilitynerd.com/category/webdev.html">webdev</a></li>
+	</ul>
+	<p class="navbar-text pull-right">
+	  <a class="navbar-link" href="http://tech.agilitynerd.com/archives.html">[archives]</a>
+	  <a class="navbar-link" href="http://tech.agilitynerd.com/tags.html">[tags]</a>
+	</p>
+      </div><!--/.nav-collapse -->
+    </div>
+  </div>
+</div>
+    <div class="container-fluid">
+      <div class="row-fluid">
+	<div class="span1">&nbsp;</div>
+	<div class="span10">
+	  <div class="row-fluid">
+            <div class="span9">
+<div class='article'>
+  <div class="page-header"><h1>Confidently Refactoring Django URLs, Views, and Templates</h1></div>
+  <div class="well small"><a class="more" href="http://tech.agilitynerd.com/confidently-refactoring-django-urls-views-and.html">On 22 Aug 2010 at 0512</a>
+by <a class="url fn" href="http://tech.agilitynerd.com/author/steve-schwarz.html">Steve Schwarz</a> in <a href="http://tech.agilitynerd.com/category/webdev.html">webdev</a>
+ | <a href="http://tech.agilitynerd.com/confidently-refactoring-django-urls-views-and.html#disqus_thread">Comments</a></div>
+  <div><p><a class="reference external" href="http://googility.com/">Googility.com</a>is my first Django website and under the covers the
+oldest code looked like it. I had originally written it with the sole
+intent of allowing people to enter dog agility businesses and websites
+into a database that I could use to create a Dog Agility <a class="reference external" href="http://www.google.com/cse/">Google Custom
+Search Engine</a>. The primary mistake I made was making the &quot;project&quot; (in
+Django speak) effectively equivalent to the primary application. In
+other words I didn't divide the major features of the site into
+standalone applications (which would allow them to be more easily
+reused, extended and tested).</p>
+<p>As I continued to work on it I learned more about organizing Django
+projects. When I added the periodical search to the website I created it
+as a standalone application. I recently split out my
+<a class="reference external" href="http://github.com/saschwarz/django-stw">django-shrinktheweb</a> application from the main code base.</p>
+<p>The Custom Search Engine (CSE) functionality is a worthwhile application
+that I'm planning on releasing as its own reusable application. I had
+already created an application directory called &quot;cse&quot; into which I had
+placed my models, views, urls, and tests specific to the CSE
+functionality. But I wanted to make the following changes:</p>
+<ul class="simple">
+<li>Move CSE templates into a cse template subdirectory</li>
+<li>Name the templates to match the views that use them</li>
+<li>Name the urls in the urls.py prefixed with the application name (&quot;cse_&quot;)</li>
+<li>Covert all reverse() calls in the views and url template tags to use
+the named urls</li>
+</ul>
+<p>Those are enough changes that I was concerned that I might miss
+something that would fail either in the view code or in rendering of the
+templates.</p>
+<p>The Django test client makes it easy to test the forward and reverse url
+matching, calling the view and rendering the template. It is kind of a
+coarse grained test but the changes I was making were perfect for this
+tool. Given a urls.py:</p>
+<pre class="code python literal-block">
+<span class="n">urlpatterns</span> <span class="o">=</span> <span class="n">patterns</span><span class="p">(</span><span class="s">'cse.views'</span><span class="p">,</span>
+                    <span class="n">url</span><span class="p">(</span><span class="s">r'^site/view/(?P&lt;id&gt;d+)/$'</span><span class="p">,</span> <span class="s">'view'</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">'cse_view'</span><span class="p">),)</span><span class="sb">``</span>
+</pre>
+<p>and a view:</p>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">view</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="s">'cse/view.html'</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Display an end user read only view of the site information&quot;&quot;&quot;</span>
+    <span class="n">site</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Annotation</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">render_to_response</span><span class="p">(</span><span class="n">template</span><span class="p">,</span>
+                          <span class="p">{</span><span class="s">'site'</span><span class="p">:</span> <span class="n">site</span><span class="p">,</span>
+                           <span class="s">'labels'</span><span class="p">:</span> <span class="n">get_labels_for</span><span class="p">(</span><span class="n">site</span><span class="p">,</span> <span class="n">cap</span><span class="o">=</span><span class="bp">None</span><span class="p">),</span>
+                           <span class="p">},</span>
+                          <span class="n">context_instance</span><span class="o">=</span><span class="n">RequestContext</span><span class="p">(</span><span class="n">request</span><span class="p">))</span><span class="sb">``</span>
+</pre>
+<p>I then wrote a test class to create the required test instances and
+tests for each url to verify that the url can be found by name (via
+reverse()), the url maps to a view, the view invokes the desired
+template(s), and the {% url %} calls within the template can all be
+resolved:</p>
+<pre class="code python literal-block">
+<span class="kn">from</span> <span class="nn">django.test</span> <span class="kn">import</span> <span class="n">TestCase</span>
+<span class="kn">from</span> <span class="nn">django.test.client</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">django.core.urlresolvers</span> <span class="kn">import</span> <span class="n">reverse</span>
+<span class="kn">from</span> <span class="nn">cse.models</span> <span class="kn">import</span> <span class="n">Label</span><span class="p">,</span> <span class="n">Annotation</span>
+
+<span class="k">class</span> <span class="nc">ViewsTestCase</span><span class="p">(</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ROOT_URLCONF</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">ROOT_URLCONF</span>
+        <span class="c"># can provide a custom urls.py for testing so the tests can be run when</span>
+        <span class="c"># the application is incorporated into another project</span>
+        <span class="c"># settings.ROOT_URLCONF = 'cse.tests.cse_test_urls'</span>
+        <span class="c"># override the template context processors if there are special ones in place</span>
+        <span class="c"># that either you want to test or want to avoid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">TEMPLATE_CONTEXT_PROCESSORS</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">TEMPLATE_CONTEXT_PROCESSORS</span>
+        <span class="n">settings</span><span class="o">.</span><span class="n">TEMPLATE_CONTEXT_PROCESSORS</span> <span class="o">=</span> <span class="p">()</span>
+        <span class="c"># Create some instances on which we can invoke views</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">'name'</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s">'description'</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">annotation</span> <span class="o">=</span> <span class="n">Annotation</span><span class="p">(</span><span class="n">comment</span><span class="o">=</span><span class="s">'Site Name'</span><span class="p">,</span> <span class="n">original_url</span><span class="o">=</span><span class="s">'http://example.com/'</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">annotation</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">annotation</span><span class="o">.</span><span class="n">labels</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">annotation</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">tearDown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c"># put settings back so the next tests aren't effected</span>
+        <span class="n">settings</span><span class="o">.</span><span class="n">ROOT_URLCONF</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ROOT_URLCONF</span>
+        <span class="n">settings</span><span class="o">.</span><span class="n">TEMPLATE_CONTEXT_PROCESSORS</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">TEMPLATE_CONTEXT_PROCESSORS</span>
+
+    <span class="k">def</span> <span class="nf">test_view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="s">'cse_view'</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="s">&quot;id&quot;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">annotation</span><span class="o">.</span><span class="n">id</span><span class="p">}))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEquals</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTemplateUsed</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="s">'cse/view.html'</span><span class="p">)</span>
+</pre>
+<p>The normal unittest asserts are available in the tests. I'm using one of
+the <a class="reference external" href="http://docs.djangoproject.com/en/dev/topics/testing/#assertions">special asserts provided by the Django test Client</a> to verify that
+the template I expected was used. All the templates used (due to
+template inheritance) are collected by the client and can also be
+verified.</p>
+<p>I used these tests in a TDD-ish manner, I wrote the test for a view, ran
+the tests and kept resolving errors in the templates as I made the
+changes in my bullet list. It made a tedious job simple and gave me good
+confidence that I'd found all the renamed urls, views, and templates.</p>
+</div>
+  <div>
+    <h2>Comments</h2>
+    <div id="disqus_thread"></div>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  </div>
+</div>	
+            </div><!--/span-->
+
+	    <div class="span3">
+<div class="author">
+<h4>About</h4>
+<div class="author-about">
+  <p class="about">I'm Steve Schwarz a Chicago software developer and dog agility enthusiast. <a href="/pages/about.html">more</a></p>
+</div>
+</div>
+<div class="well sidebar-nav">
+  <ul class="nav nav-list">
+    <li class="nav-header">Blogroll</li>
+    <li><a href="http://agilitynerd.com/blog/">agilitynerd.com</a></li>
+    <li><a href="http://agilitycourses.com/">agilitycourses.com</a></li>
+    <li><a href="http://googility.com/">googility.com</a></li>
+  </ul>
+  <ul class="nav nav-list social">
+    <li class="nav-header">Elsewhere</li>
+    <li><a href="http://www.linkedin.com/profile/view?id=10135443">Linked in</a></li>
+    <li><a href="https://github.com/saschwarz">GitHub</a></li>
+    <li><a href="https://twitter.com/steveaschwarz">Twitter</a></li>
+  </ul>
+</div><!--/.well -->
+ <script>
+  (function() {
+    var cx = '001042720131993941673:szhtogqckem';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+        '//www.google.com/cse/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+<div class="search">
+    <gcse:search></gcse:search>
+</div>
+            </div><!--/span-->
+
+	  </div>
+	</div>
+      </div><!--/row-->
+
+      <hr>
+
+      <footer>
+        <p>Powered by <a href="http://blog.getpelican.com/">Pelican</a></p>
+	<p>&copy; Steve Schwarz 2015</p>
+      </footer>
+
+    </div><!--/.fluid-container-->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="http://tech.agilitynerd.com/theme/js/jquery-1.7.2.min.js"><\/script>')</script>
+      <script src="http://tech.agilitynerd.com/theme/bootstrap/js/bootstrap.min.js"></script>
+      <script src="http://tech.agilitynerd.com/theme/js/modernizr-2.5.3-respond-1.1.0.min.js"></script>
+
+  </body>
+</html>

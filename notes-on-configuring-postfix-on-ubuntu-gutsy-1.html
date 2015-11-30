@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <title>tech.agilitynerd</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Steve Schwarz">
+    <!-- <link href="http://127.0.0.1:8000/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" /> -->
+    <link href="http://feeds.feedburner.com/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" />
+    <!-- Le styles -->
+    <link href="http://tech.agilitynerd.com/theme/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+      padding-top: 60px;
+      padding-bottom: 40px;
+      }
+      .sidebar-nav {
+      padding: 9px 0;
+      }
+    </style>
+    <link href="http://tech.agilitynerd.com/theme/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="http://tech.agilitynerd.com/theme/local.css" rel="stylesheet">
+    <link href="http://tech.agilitynerd.com/theme/pygments.css" rel="stylesheet">
+<script>var _gaq=[['_setAccount','UA-1127677-3'],['_trackPageview']];(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.src='//www.google-analytics.com/ga.js';s.parentNode.insertBefore(g,s)}(document,'script'))</script>
+<script type="text/javascript">
+  var disqus_shortname = "techagilitynerd"; // required: replace example with your forum shortname
+  var disqus_developer = 1;
+  
+  var disqus_identifier = "notes-on-configuring-postfix-on-ubuntu-gutsy-1.html";
+  (function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+
+  (function () {
+  var s = document.createElement('script'); s.async = true;
+  s.type = 'text/javascript';
+  s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+  }());
+</script>
+  </head>
+  <body>
+<!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+    
+<div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container-fluid">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+      </a>
+      <a class="brand" href="http://tech.agilitynerd.com/index.html">tech.agilitynerd</a>
+      <div class="nav-collapse collapse">
+	<ul class="nav">
+	  <li class="active"><a href="http://tech.agilitynerd.com/category/devops.html">devops</a></li>
+	  <li ><a href="http://tech.agilitynerd.com/category/misc.html">misc</a></li>
+	  <li ><a href="http://tech.agilitynerd.com/category/programming.html">programming</a></li>
+	  <li ><a href="http://tech.agilitynerd.com/category/python.html">python</a></li>
+	  <li ><a href="http://tech.agilitynerd.com/category/webdev.html">webdev</a></li>
+	</ul>
+	<p class="navbar-text pull-right">
+	  <a class="navbar-link" href="http://tech.agilitynerd.com/archives.html">[archives]</a>
+	  <a class="navbar-link" href="http://tech.agilitynerd.com/tags.html">[tags]</a>
+	</p>
+      </div><!--/.nav-collapse -->
+    </div>
+  </div>
+</div>
+    <div class="container-fluid">
+      <div class="row-fluid">
+	<div class="span1">&nbsp;</div>
+	<div class="span10">
+	  <div class="row-fluid">
+            <div class="span9">
+<div class='article'>
+  <div class="page-header"><h1>Notes on Configuring Postfix on Ubuntu Gutsy to Send Email via Google Apps</h1></div>
+  <div class="well small"><a class="more" href="http://tech.agilitynerd.com/notes-on-configuring-postfix-on-ubuntu-gutsy-1.html">On 05 Jan 2008 at 2353</a>
+by <a class="url fn" href="http://tech.agilitynerd.com/author/steve-schwarz.html">Steve Schwarz</a> in <a href="http://tech.agilitynerd.com/category/devops.html">devops</a>
+ | <a href="http://tech.agilitynerd.com/notes-on-configuring-postfix-on-ubuntu-gutsy-1.html#disqus_thread">Comments</a></div>
+  <div><p>Here are some notes I took on configuring my <a class="reference external" href="http://www.slicehost.com/">Slicehost</a> Ubuntu Gutsy
+installation to use Postfix to send emails via Google Apps. I am far
+from an expert on postfix configuration but maybe these notes will be
+helpful to others needing this configuration.</p>
+<p>These sites contain the key information:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://behindmyscreen.newsvine.com/_news/2006/12/31/501615-configuringubuntu-postfix-and-gmail-in-101-easy-steps">Behind My Screen - Configuring[Ubuntu] Postfix and Gmail in 10+1
+Easy Steps</a></li>
+<li><a class="reference external" href="http://prantran.blogspot.com/2007/01/getting-postfix-to-work-on-ubuntu-with.html">The Prancing Tarantula - Getting Postfix to work on Ubuntu with
+Gmail</a></li>
+<li><a class="reference external" href="http://souptonuts.sourceforge.net/postfix_tutorial.html">Mike Chirico - Gmail on Home Linux Box using Postfix and Fetchmail</a></li>
+</ul>
+<p>I basically followed the Behind My Screen tutorial (read the comments
+too) with the updates from The Prancing Tarantula and the following
+changes.</p>
+<p>My Ubuntu server install didn't have the Thawte certificates installed
+by default so I installed them:</p>
+<pre class="literal-block">
+sudo aptitude install ca-certificates
+</pre>
+<p>Then you can append that file to your /etc/postfix/cacert.pem If you
+&quot;sudo su&quot; before doing the append to the file you won't get messed up by
+the shell:</p>
+<pre class="literal-block">
+$ sudo su
+# cat /etc/ssl/certs/Thawte_Premium_Server_CA.pem &gt;&gt;
+/etc/postfix/cacert.pem
+</pre>
+<p>Since I have Google Apps setup for my domain I don't just want to relay
+email as &quot;<a class="reference external" href="mailto:user&#64;gmail.com">user&#64;gmail.com</a>&quot;, I want the email to be sent as though it
+came from my domain (&quot;<a class="reference external" href="mailto:me&#64;agilitynerd.com">me&#64;agilitynerd.com</a>&quot;). This requires some simple
+changes to the config files.</p>
+<p>In my transport file I have:</p>
+<pre class="literal-block">
+agilitynerd.com smtp:[smtp.gmail.com]:587
+</pre>
+<p>In my generic file I have:</p>
+<pre class="literal-block">
+demo&#64;myservername.agilitynerd.com me&#64;agilitynerd.com
+</pre>
+<p>Where &quot;demo&quot; is the login name and &quot;myservername&quot; is my slicename. In my
+sasl_passwd file I have:</p>
+<pre class="literal-block">
+[smtp.gmail.com]:587 me&#64;agilitynerd.com:me_gmail_account_password
+</pre>
+<p>After restarting postix you can test sending email from your server:</p>
+<pre class="literal-block">
+$ sudo aptitude install mailx
+$ mailx -s &quot;test email&quot; someotheraccount&#64;gmail.com &lt;
+~/sometestfile_to_send
+</pre>
+<p>Check your logfiles for errors/warnings:</p>
+<pre class="literal-block">
+sudo tail /var/log/mail.\*
+</pre>
+<p>I hope these notes might help folks &quot;get over the hump&quot; if they are
+setting up the same configuration.</p>
+</div>
+  <div>
+    <h2>Comments</h2>
+    <div id="disqus_thread"></div>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  </div>
+</div>	
+            </div><!--/span-->
+
+	    <div class="span3">
+<div class="author">
+<h4>About</h4>
+<div class="author-about">
+  <p class="about">I'm Steve Schwarz a Chicago software developer and dog agility enthusiast. <a href="/pages/about.html">more</a></p>
+</div>
+</div>
+<div class="well sidebar-nav">
+  <ul class="nav nav-list">
+    <li class="nav-header">Blogroll</li>
+    <li><a href="http://agilitynerd.com/blog/">agilitynerd.com</a></li>
+    <li><a href="http://agilitycourses.com/">agilitycourses.com</a></li>
+    <li><a href="http://googility.com/">googility.com</a></li>
+  </ul>
+  <ul class="nav nav-list social">
+    <li class="nav-header">Elsewhere</li>
+    <li><a href="http://www.linkedin.com/profile/view?id=10135443">Linked in</a></li>
+    <li><a href="https://github.com/saschwarz">GitHub</a></li>
+    <li><a href="https://twitter.com/steveaschwarz">Twitter</a></li>
+  </ul>
+</div><!--/.well -->
+ <script>
+  (function() {
+    var cx = '001042720131993941673:szhtogqckem';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+        '//www.google.com/cse/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+<div class="search">
+    <gcse:search></gcse:search>
+</div>
+            </div><!--/span-->
+
+	  </div>
+	</div>
+      </div><!--/row-->
+
+      <hr>
+
+      <footer>
+        <p>Powered by <a href="http://blog.getpelican.com/">Pelican</a></p>
+	<p>&copy; Steve Schwarz 2015</p>
+      </footer>
+
+    </div><!--/.fluid-container-->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="http://tech.agilitynerd.com/theme/js/jquery-1.7.2.min.js"><\/script>')</script>
+      <script src="http://tech.agilitynerd.com/theme/bootstrap/js/bootstrap.min.js"></script>
+      <script src="http://tech.agilitynerd.com/theme/js/modernizr-2.5.3-respond-1.1.0.min.js"></script>
+
+  </body>
+</html>

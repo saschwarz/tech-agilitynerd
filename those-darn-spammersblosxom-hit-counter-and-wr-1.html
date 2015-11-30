@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <title>tech.agilitynerd</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Steve Schwarz">
+    <!-- <link href="http://127.0.0.1:8000/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" /> -->
+    <link href="http://feeds.feedburner.com/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" />
+    <!-- Le styles -->
+    <link href="http://tech.agilitynerd.com/theme/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+      padding-top: 60px;
+      padding-bottom: 40px;
+      }
+      .sidebar-nav {
+      padding: 9px 0;
+      }
+    </style>
+    <link href="http://tech.agilitynerd.com/theme/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="http://tech.agilitynerd.com/theme/local.css" rel="stylesheet">
+    <link href="http://tech.agilitynerd.com/theme/pygments.css" rel="stylesheet">
+<script>var _gaq=[['_setAccount','UA-1127677-3'],['_trackPageview']];(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.src='//www.google-analytics.com/ga.js';s.parentNode.insertBefore(g,s)}(document,'script'))</script>
+<script type="text/javascript">
+  var disqus_shortname = "techagilitynerd"; // required: replace example with your forum shortname
+  var disqus_developer = 1;
+  
+  var disqus_identifier = "those-darn-spammersblosxom-hit-counter-and-wr-1.html";
+  (function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+
+  (function () {
+  var s = document.createElement('script'); s.async = true;
+  s.type = 'text/javascript';
+  s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+  }());
+</script>
+  </head>
+  <body>
+<!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+    
+<div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container-fluid">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+      </a>
+      <a class="brand" href="http://tech.agilitynerd.com/index.html">tech.agilitynerd</a>
+      <div class="nav-collapse collapse">
+	<ul class="nav">
+	  <li ><a href="http://tech.agilitynerd.com/category/devops.html">devops</a></li>
+	  <li ><a href="http://tech.agilitynerd.com/category/misc.html">misc</a></li>
+	  <li ><a href="http://tech.agilitynerd.com/category/programming.html">programming</a></li>
+	  <li ><a href="http://tech.agilitynerd.com/category/python.html">python</a></li>
+	  <li class="active"><a href="http://tech.agilitynerd.com/category/webdev.html">webdev</a></li>
+	</ul>
+	<p class="navbar-text pull-right">
+	  <a class="navbar-link" href="http://tech.agilitynerd.com/archives.html">[archives]</a>
+	  <a class="navbar-link" href="http://tech.agilitynerd.com/tags.html">[tags]</a>
+	</p>
+      </div><!--/.nav-collapse -->
+    </div>
+  </div>
+</div>
+    <div class="container-fluid">
+      <div class="row-fluid">
+	<div class="span1">&nbsp;</div>
+	<div class="span10">
+	  <div class="row-fluid">
+            <div class="span9">
+<div class='article'>
+  <div class="page-header"><h1>Those Darn Spammers Blosxom - Hit Counter and Writeback Changes</h1></div>
+  <div class="well small"><a class="more" href="http://tech.agilitynerd.com/those-darn-spammersblosxom-hit-counter-and-wr-1.html">On 11 Aug 2006 at 1900</a>
+by <a class="url fn" href="http://tech.agilitynerd.com/author/steve-schwarz.html">Steve Schwarz</a> in <a href="http://tech.agilitynerd.com/category/webdev.html">webdev</a>
+ | <a href="http://tech.agilitynerd.com/those-darn-spammersblosxom-hit-counter-and-wr-1.html#disqus_thread">Comments</a></div>
+  <div><p>Over the past year I'd noticed that comment and trackback spammers had
+been hitting the same dozen or so pages of my blog multiple times daily.
+(It is probably the same person/group who took a snapshot of the
+articles on my front page at that time and just reuses those URLs for
+all of their different domains). Last I calculated, about 50% of my
+overall website traffic is due to spammers. This constant barrage of
+hits skews my <a class="reference external" href="http://awstats.sourceforge.net">AWStats</a> statistics and, more importantly, skews the
+results on my <a class="reference external" href="http://agilitynerd.com/blog/static/Favorites.html">Favorites page</a>. So I took a little time to work on this
+problem.</p>
+<p>FWIW I'm also starting to see a lot of spam coming from &quot;blogs&quot; being
+setup on <a class="reference external" href="http://blogspot.com">BlogSpot</a> that are a single page all of whose links point to
+the real site. Some of these bogus blogs use the BlogSpot temmplate
+which contains a flag used to alert BlogSpot admins to content in
+violation of their Terms of Service. This allows anyone to report the
+bogus blog by just clicking on the flag. Other &quot;blogs&quot; just use their
+own HTML and BlogSpot support would have to be sent an email with the
+offending site's URL.</p>
+<p>So anyway, I've taken the following steps:</p>
+<ul class="simple">
+<li>Disabled trackback comments entirely using the configuration variable
+in the writeback plugin. I've never received a legitimate trackback
+ping.</li>
+<li>Modified my modified version of the writeback plugin to set a
+variable $rejected with a 1 if the comment was rejected or if
+trackback was attempted.</li>
+<li>Modified my HitCounter plugin to read the $writeback::rejected
+variable and then not increase the counter for the spammed page.</li>
+<li>I had to change the ordering of the hitcounter plugin to run after
+writeback so the variable would be set correctly when hitcounter ran.</li>
+<li>Set the $hitcounter::reset_count variable and reset the counts of
+the spammed pages back to &quot;reasonable&quot; counts.</li>
+</ul>
+<p>Another couple hours wasted messing around against spammers.</p>
+<p>I've <a class="reference external" href="/blosxom-plugin-to-block-referer-spam-1.html">previously written</a> how I've been using comment content
+blacklisting to reject comment, trackback, and referer (sic) spam. My
+current blacklist file has over 40 regular expressions containing over
+250 words and patterns. I update it whenever a spam comment slips
+through. So that is an ongoing almost daily effort. I might just have to
+go to the trouble of getting a <a class="reference external" href="http://varg.dyndns.org/psi/pub/code/misc/wbcaptcha.html">CAPTCHA</a> plugin to work.</p>
+</div>
+  <div>
+    <h2>Comments</h2>
+    <div id="disqus_thread"></div>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  </div>
+</div>	
+            </div><!--/span-->
+
+	    <div class="span3">
+<div class="author">
+<h4>About</h4>
+<div class="author-about">
+  <p class="about">I'm Steve Schwarz a Chicago software developer and dog agility enthusiast. <a href="/pages/about.html">more</a></p>
+</div>
+</div>
+<div class="well sidebar-nav">
+  <ul class="nav nav-list">
+    <li class="nav-header">Blogroll</li>
+    <li><a href="http://agilitynerd.com/blog/">agilitynerd.com</a></li>
+    <li><a href="http://agilitycourses.com/">agilitycourses.com</a></li>
+    <li><a href="http://googility.com/">googility.com</a></li>
+  </ul>
+  <ul class="nav nav-list social">
+    <li class="nav-header">Elsewhere</li>
+    <li><a href="http://www.linkedin.com/profile/view?id=10135443">Linked in</a></li>
+    <li><a href="https://github.com/saschwarz">GitHub</a></li>
+    <li><a href="https://twitter.com/steveaschwarz">Twitter</a></li>
+  </ul>
+</div><!--/.well -->
+ <script>
+  (function() {
+    var cx = '001042720131993941673:szhtogqckem';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+        '//www.google.com/cse/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+<div class="search">
+    <gcse:search></gcse:search>
+</div>
+            </div><!--/span-->
+
+	  </div>
+	</div>
+      </div><!--/row-->
+
+      <hr>
+
+      <footer>
+        <p>Powered by <a href="http://blog.getpelican.com/">Pelican</a></p>
+	<p>&copy; Steve Schwarz 2015</p>
+      </footer>
+
+    </div><!--/.fluid-container-->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="http://tech.agilitynerd.com/theme/js/jquery-1.7.2.min.js"><\/script>')</script>
+      <script src="http://tech.agilitynerd.com/theme/bootstrap/js/bootstrap.min.js"></script>
+      <script src="http://tech.agilitynerd.com/theme/js/modernizr-2.5.3-respond-1.1.0.min.js"></script>
+
+  </body>
+</html>

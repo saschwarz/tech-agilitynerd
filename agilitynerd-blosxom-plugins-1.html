@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <title>tech.agilitynerd</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Steve Schwarz">
+    <!-- <link href="http://127.0.0.1:8000/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" /> -->
+    <link href="http://feeds.feedburner.com/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" />
+    <!-- Le styles -->
+    <link href="http://tech.agilitynerd.com/theme/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+      padding-top: 60px;
+      padding-bottom: 40px;
+      }
+      .sidebar-nav {
+      padding: 9px 0;
+      }
+    </style>
+    <link href="http://tech.agilitynerd.com/theme/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="http://tech.agilitynerd.com/theme/local.css" rel="stylesheet">
+    <link href="http://tech.agilitynerd.com/theme/pygments.css" rel="stylesheet">
+<script>var _gaq=[['_setAccount','UA-1127677-3'],['_trackPageview']];(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.src='//www.google-analytics.com/ga.js';s.parentNode.insertBefore(g,s)}(document,'script'))</script>
+<script type="text/javascript">
+  var disqus_shortname = "techagilitynerd"; // required: replace example with your forum shortname
+  var disqus_developer = 1;
+  
+  var disqus_identifier = "agilitynerd-blosxom-plugins-1.html";
+  (function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+
+  (function () {
+  var s = document.createElement('script'); s.async = true;
+  s.type = 'text/javascript';
+  s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+  }());
+</script>
+  </head>
+  <body>
+<!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+    
+<div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container-fluid">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+      </a>
+      <a class="brand" href="http://tech.agilitynerd.com/index.html">tech.agilitynerd</a>
+      <div class="nav-collapse collapse">
+	<ul class="nav">
+	  <li ><a href="http://tech.agilitynerd.com/category/devops.html">devops</a></li>
+	  <li ><a href="http://tech.agilitynerd.com/category/misc.html">misc</a></li>
+	  <li ><a href="http://tech.agilitynerd.com/category/programming.html">programming</a></li>
+	  <li ><a href="http://tech.agilitynerd.com/category/python.html">python</a></li>
+	  <li class="active"><a href="http://tech.agilitynerd.com/category/webdev.html">webdev</a></li>
+	</ul>
+	<p class="navbar-text pull-right">
+	  <a class="navbar-link" href="http://tech.agilitynerd.com/archives.html">[archives]</a>
+	  <a class="navbar-link" href="http://tech.agilitynerd.com/tags.html">[tags]</a>
+	</p>
+      </div><!--/.nav-collapse -->
+    </div>
+  </div>
+</div>
+    <div class="container-fluid">
+      <div class="row-fluid">
+	<div class="span1">&nbsp;</div>
+	<div class="span10">
+	  <div class="row-fluid">
+            <div class="span9">
+<div class='article'>
+  <div class="page-header"><h1>AgilityNerd Blosxom Plugins</h1></div>
+  <div class="well small"><a class="more" href="http://tech.agilitynerd.com/agilitynerd-blosxom-plugins-1.html">On 10 Aug 2004 at 1900</a>
+by <a class="url fn" href="http://tech.agilitynerd.com/author/steve-schwarz.html">Steve Schwarz</a> in <a href="http://tech.agilitynerd.com/category/webdev.html">webdev</a>
+ | <a href="http://tech.agilitynerd.com/agilitynerd-blosxom-plugins-1.html#disqus_thread">Comments</a></div>
+  <div><p><strong>Updated 20-Jun-08 for addition of storytitle</strong></p>
+<p>I'm really impressed with the <a class="reference external" href="http://blosxom.sourceforge.net/">Blosxom</a> <a class="reference external" href="http://blosxom.com/documentation/users/plugins.html">plugin</a> mechanism. <a class="reference external" href="http://www.raelity.org/">Rael
+Dornfest</a>, author of Blosxom, put hooks at strategic points in the page
+generation process. At each hook point the main script iterates all the
+plugins present in the plugin directory. Plugins that implement the hook
+function can then modify the state or add additional data for use in the
+page presentation.</p>
+<p>Consequently, a plugin only implements the hook functions it needs
+invoked to provide its features. Some powerful plugins need only
+implement one or two hook functions and are implemented with a couple
+dozen lines of Perl code.</p>
+<p>When I started building this site I found it a little confusing to sort
+through all the plugins and understand their functionality. The ease of
+creating and modifying plugins has allowed a lot of developers to
+contribute to the Blosxom plugin <a class="reference external" href="http://blosxom.com/plugins">registry</a>. I found it helpful when
+Blosxom sites listed the plugins that implemented their site's features.
+So here is the list of plugins I use.</p>
+<p><a class="reference external" href="http://www.blosxom.com/plugins/syndication/atomfeed.htm">atomfeed</a> - Provides the AgilityNerd Atom feed. Point
+your browser to <a class="reference external" href="http://agilitynerd.com/blog/index.atom">http://agilitynerd.com/blog/index.atom</a></p>
+<p><a class="reference external" href="http://www.blosxom.com/plugins/display/breadcrumbs.htm">breadcrumbs</a> - Creates the click-able trail to the current position in
+the weblog's path shown at the top of all .index pages and at the bottom
+of each article.</p>
+<p><a class="reference external" href="http://www.blosxom.com/plugins/display/binary.htm">binary</a> - Used to supply images from the directory in which an article
+exists. Modified to use LWP::MediaTypes since MIME::Types isn't
+installed on this web server. I also commented out the interpolate()
+function and added it to the one in interpolate_fancy to make this
+plugin coexist with interpolate fancy.</p>
+<p>I no longer use binary because it is faster to just have Apache serve
+binary files directly from one or more directories outside of the
+Blosxom src tree.</p>
+<p>I've stopped using this plugin since it requires Blosxom to look at each
+file to determine whether or not it should be skipped. So I'm starting
+to put all binary files in my images directory outside of Blosxom. This
+has the added advantage that I can just put &quot;/images&quot; and &quot;/video&quot; in by
+robots.txt file so my images and videos don't get indexed by search
+engine robots.</p>
+<p><a class="reference external" href="http://www.blosxom.com/plugins/category/categories.htm">categories</a> - Displays the tree of paths/categories of articles on the
+<a class="reference external" href="http://agilitynerd.com/blog/navigate/">navigate</a> page. Slightly modified to remove the root directory from
+the display. Added a hide feature to hide specified directories entirely
+- used this to prune subdirectories for my side bar menu. Removed
+flavour ending from all generated links since all paths are valid links,
+are shorter for people emailing links around, and would always use the
+default flavour. Modified to not calculate breadcrumbs since I use the
+breadcrumbs plugin for that feature.</p>
+<p><a class="reference external" href="http://www.blosxom.com/plugins/general/config.htm">config</a> - Allows any Perl variable to be set differently in any
+category/directory. I use this to change the sort order for my
+<a class="reference external" href="http://agilitynerd.com/blog/agility/glossary/">glossary</a> page to be alphabetical order by changing the sort_order
+plugin's sorder variable.</p>
+<p><a class="reference external" href="http://www.blosxom.com/plugins/indexing/entries_cache.htm">entries_cache</a> - Speeds up processing of the site by caching the
+article index to avoid scanning directories until a configured amount of
+time has elapsed. Also caches article creation time to allow for editing
+of articles without changing their timestamps.</p>
+<p><a class="reference external" href="/blosxom-hit-counter-and-favorites-plugins-1.html">favorites</a> - Used to automatically generate my <a class="reference external" href="http://agilitynerd.com/blog/static/Favorites.html">Favorites page</a> based on the visitor hit counts recorded by my hitcounter plugin.</p>
+<p><a class="reference external" href="http://www.blosxom.com/plugins/include/file.htm">file</a> - Used to include the navigational side div into all pages
+without copy/paste of the same HTML.</p>
+<p><a class="reference external" href="http://www.blosxom.com/plugins/search/find.htm">find</a> - Provides search capabilities for all articles, comments, and
+linkbacks on the web site. HTML slightly modified to remove the advanced
+search link. Also set the hidden &quot;path&quot; input to the empty string so the
+entire site is searched regardless of where in the hierarchy the search
+was initiated.</p>
+<p><a class="reference external" href="http://www.blosxom.com/plugins/text/foreshortened.htm">foreshortened</a> - Ends articles at the end of the first sentence. Used
+to provide the shortened version of articles for use in RSS and Atom
+feeds.</p>
+<p><a class="reference external" href="http://www.blosxom.com/plugins/display/headlines.htm">headlines</a> - Used to determine all the entries in my <a class="reference external" href="http://agilitynerd.com/blog/agility/glossary/">glossary</a>
+category and create links in alphabetical order. Requires
+interpolate_fancy.</p>
+<p><a class="reference external" href="http://www.blosxom.com/plugins/files/hide.htm">hide</a> - Excludes directories of articles from the index views (like
+the agilitynerd.com main page) but still allows them to be searched by
+find.</p>
+<p><a class="reference external" href="/blosxom-hit-counter-and-favorites-plugins-1.html">hitcounter</a> - Used to automatically generate the
+number of visitors displayed in the footer for each page on my site.
+These hit counts per page are used by my favorites plugin to generate my
+<a class="reference external" href="http://agilitynerd.com/blog/static/Favorites.html">Favorites page</a>.</p>
+<p><a class="reference external" href="http://www.blosxom.com/plugins/interpolate/interpolate_fancy.htm">interpolate_fancy</a> - Used to remove the space allocated for the
+results of find and the breadcrumbs plugin when their variables aren't
+defined. I think I'll use this more in the future to dynamically change
+the page format.</p>
+<p><a class="reference external" href="/blosxom-plugins-lastcommented-and-lastread-1.html">lastcommented</a> - Used to automatically
+generate the list of the last 10 articles that were commented shown in
+the side bar on each page of the site.</p>
+<p><a class="reference external" href="/blosxom-plugins-lastcommented-and-lastread-1.html">lastread</a> - Used to automatically generate
+the list of the last 10 articles that were read shown in the side bar on
+each page of the site.</p>
+<p><a class="reference external" href="http://www.blosxom.com/plugins/display/moreentries.htm">moreentries</a> - Creates the &quot;Previous&quot; and &quot;Next&quot; links at the bottom
+of each index or search page when there are more than
+<tt class="docutils literal"><span class="pre">$blosxom::num_entries</span></tt> entries. I've modified this plugin as I described
+<a class="reference external" href="/minor-additional-mods-to-blosxom-moreenties-p-1.html">here</a>.</p>
+<p><a class="reference external" href="http://www.blosxom.com/plugins/display/postheadprefoot.htm">postheadprefoot</a> - Allows each category/directory to have unique text
+inserted after the header and/or before the footer. I use this on my
+<a class="reference external" href="http://agilitynerd.com/blog/agility/glossary/">glossary</a> page to add a category specific subsection. I had to <a class="reference external" href="http://groups.yahoo.com/group/blosxom/message/9364">modify
+the script</a> to have paths resolve correctly.</p>
+<p><a class="reference external" href="http://www.blosxom.com/plugins/general/redirect.htm">redirect</a> - Unmodified version of this plugin. I had to use it when I
+moved a directory within my tree so search engine and email list links
+would redirect correctly.</p>
+<p><a class="reference external" href="/refererblock-version-02-1.html">refererblock</a> - A blacklist driven plugin to permanently
+redirect referer spam. The redirect probably has little effect on the
+receipt of referer spam but the 301 redirect code keeps the spammer's
+sites out of my site statistics.</p>
+<p><a class="reference external" href="http://www.blosxom.com/plugins/syndication/rss10.htm">rss10</a> - Provides the extra information to provide a valid RSS 1.0
+feed for syndication. Slightly modified to work with the writeback
+plugin.</p>
+<p><a class="reference external" href="http://www.blosxom.com/plugins/display/seemore.htm">seemore</a> - Adds &quot;See more...&quot; link within the text of a post when the
+post is shown in an index page. The location of the link is controlled
+by placing a special tag in the posting source file. I have <a class="reference external" href="/see-more-added-to-article-display-on-index-pa-1.html">modified</a>
+this plugin to show the first &quot;n&quot; entries of an index page in full.
+Furthe</p>
+<p>r modified to always create a link to my html flavoured pages.</p>
+<p><a class="reference external" href="http://blosxom.ookee.com/blosxom/plugins/v2/sort_order-v0i85">sort_order</a> - Allows sorting by date, directory names, or file name.
+I modified it to not read the URI parameters and just use a
+configuration variable. Then I used the config plugin to change the sort
+order for my <a class="reference external" href="http://agilitynerd.com/blog/agility/glossary/">glossary</a> page to sort by file name instead of in reverse
+chronological order.</p>
+<p><a class="reference external" href="http://www.leverton.org/blosxom/Software/Projects/Blosxom/storytitle.html">storytitle</a> - sets the &lt;title&gt; element in the HTML &lt;head&gt; with the
+title of the article or the name of the category. I use it
+to aid in navigation and site statistics]].</p>
+<p><a class="reference external" href="http://www.blosxom.com/plugins/date/timezone2.htm">timezone</a> - Adjusts timestamps automatically created or entered using
+meta-creation_date: to be offset correctly to my timezone; which is
+different from the web server's timezone.</p>
+<p>I no longer use timezone since I can set the timezone on my
+Slicehost server.</p>
+<p><a class="reference external" href="/blosxom-default-flavour-plugin-fixes-unknown-1.html">defaultflavour</a> - Provides the user with the
+default Blosxom flavoured feed when an unknown flavour is requested.
+This keeps the user from getting the Unknown Flavour error across the
+top of the page.</p>
+<p><a class="reference external" href="http://varg.dyndns.org/psi/pub/code/misc/wbcaptcha.html">wbcaptcha</a> - Provides an ASCII image via <a class="reference external" href="http://www.figlet.org">FIGlet</a> when visitors enter
+comments to stop spam bots from saturating my blog comments. See this article for <a class="reference external" href="/comment-spam-and-wbcaptcha-plugin-enhancement-1.html">my modifications</a> to this plugin.</p>
+<p><a class="reference external" href="http://www.blosxom.com/plugins/text/wikiwordish.htm">wikiwordish</a> - Provides WikiWord-like linking to Wiki articles, local
+article file names and modified to replace WikiWords with HTML &lt;a&gt;
+links. This plugin saves me from having to enter links to common sites
+to which I always refer. I had to name this file 00wikiwordish so that
+WikiWords would be correctly replaced in RSS and Atom feeds.</p>
+<p><a class="reference external" href="http://www.lathi.net/twiki-bin/view/Main/BlogSpam">writeback blacklist plugin</a> - Provides comment and TrackBack
+capability. This is Doug Alcorn's blacklist modified version to help
+fight comment spam. I've slightly modified mine to try to protect
+comment poster's from spam by obfuscating their email addresses.</p>
+<p>In case anyone is trying to get these plugins to &quot;play&quot; together I have
+them named as follows:</p>
+<ul class="simple">
+<li>000refererblock</li>
+<li>001redirect</li>
+<li>002defaultflavour</li>
+<li>005wikiwordish</li>
+<li>007google_highlight</li>
+<li>008wbcaptcha</li>
+<li>01atomfeed</li>
+<li>01breadcrumbs</li>
+<li>01categories</li>
+<li>01config</li>
+<li>01entriescache</li>
+<li>01favorites</li>
+<li>01file</li>
+<li>01find</li>
+<li>01foreshortened</li>
+<li>01fullcategories</li>
+<li>01headlines</li>
+<li>01hide</li>
+<li>01moreentries</li>
+<li>01postheadprefoot</li>
+<li>01rss10</li>
+<li>01seemore</li>
+<li>01sort_order</li>
+<li>01storytitle</li>
+<li>01writeback</li>
+<li>02hitcounter</li>
+<li>02lastcommented</li>
+<li>02lastread</li>
+<li>02recentwritebacks</li>
+<li>50interpolate_fancy</li>
+</ul>
+</div>
+  <div>
+    <h2>Comments</h2>
+    <div id="disqus_thread"></div>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  </div>
+</div>	
+            </div><!--/span-->
+
+	    <div class="span3">
+<div class="author">
+<h4>About</h4>
+<div class="author-about">
+  <p class="about">I'm Steve Schwarz a Chicago software developer and dog agility enthusiast. <a href="/pages/about.html">more</a></p>
+</div>
+</div>
+<div class="well sidebar-nav">
+  <ul class="nav nav-list">
+    <li class="nav-header">Blogroll</li>
+    <li><a href="http://agilitynerd.com/blog/">agilitynerd.com</a></li>
+    <li><a href="http://agilitycourses.com/">agilitycourses.com</a></li>
+    <li><a href="http://googility.com/">googility.com</a></li>
+  </ul>
+  <ul class="nav nav-list social">
+    <li class="nav-header">Elsewhere</li>
+    <li><a href="http://www.linkedin.com/profile/view?id=10135443">Linked in</a></li>
+    <li><a href="https://github.com/saschwarz">GitHub</a></li>
+    <li><a href="https://twitter.com/steveaschwarz">Twitter</a></li>
+  </ul>
+</div><!--/.well -->
+ <script>
+  (function() {
+    var cx = '001042720131993941673:szhtogqckem';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+        '//www.google.com/cse/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+<div class="search">
+    <gcse:search></gcse:search>
+</div>
+            </div><!--/span-->
+
+	  </div>
+	</div>
+      </div><!--/row-->
+
+      <hr>
+
+      <footer>
+        <p>Powered by <a href="http://blog.getpelican.com/">Pelican</a></p>
+	<p>&copy; Steve Schwarz 2015</p>
+      </footer>
+
+    </div><!--/.fluid-container-->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="http://tech.agilitynerd.com/theme/js/jquery-1.7.2.min.js"><\/script>')</script>
+      <script src="http://tech.agilitynerd.com/theme/bootstrap/js/bootstrap.min.js"></script>
+      <script src="http://tech.agilitynerd.com/theme/js/modernizr-2.5.3-respond-1.1.0.min.js"></script>
+
+  </body>
+</html>

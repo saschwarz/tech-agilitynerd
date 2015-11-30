@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:8000/feeds/tag.github.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2015-11-29T15:00:00-06:00</updated><entry><title>Upgrading Pelican and Migrating to GitHub Pages</title><link href="http://tech.agilitynerd.com/upgrading-pelican-migrating-gh-pages.html" rel="alternate"></link><updated>2015-11-29T15:00:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2015-11-29:upgrading-pelican-migrating-gh-pages.html</id><summary type="html">&lt;p&gt;I've been using &lt;a class="reference external" href="http://blog.getpelican.com/"&gt;Pelican&lt;/a&gt; for this blog for almost three years with source and output stored in a GitHub repository. The output files were then checked out and hosted as static content behind an &lt;a class="reference external" href="http://www.nginx.com/"&gt;NGINX web server&lt;/a&gt; on my VPS. Since I set that up GitHub introduced &lt;a class="reference external" href="https://pages.github.com/"&gt;GitHub Pages&lt;/a&gt; with support for custom domains and all the &amp;quot;cool kids&amp;quot; started hosting their static web sites right on GitHub.&lt;/p&gt;
+&lt;p&gt;I had some free time this weekend and decided to see what it would take to upgrade my Pelican version to the latest (3.6.3) and host my files on GitHub Pages. I had four steps to perform:&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;Create a new environment with the latest Pelican&lt;/li&gt;
+&lt;li&gt;Update my content files for the changes in Pelican versions&lt;/li&gt;
+&lt;li&gt;Put output files into GitHub and verify them on GitHub Pages&lt;/li&gt;
+&lt;li&gt;Move my subdomain to point to my GitHub Pages&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="section" id="create-new-environment"&gt;
+&lt;h2&gt;Create New Environment&lt;/h2&gt;
+&lt;p&gt;I didn't want to screw up my existing/working virtual environment so I created a new one containing Pelican and &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;ghp-import&lt;/span&gt;&lt;/tt&gt; which does all the work of updating the &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;gh-pages&lt;/span&gt;&lt;/tt&gt; branch with the output:&lt;/p&gt;
+&lt;pre class="code bash literal-block"&gt;
+&lt;span class="c"&gt;# Create a new virtualenv
+&lt;/span&gt;mkvirtualenv pelican-new
+&lt;span class="c"&gt;# Install pelican and ghp-import:
+&lt;/span&gt;pip install pelican ghp-import
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div class="section" id="update-content"&gt;
+&lt;h2&gt;Update Content&lt;/h2&gt;
+&lt;p&gt;This was arguably the most painful part as I wasn't using appropriate reStructuredText markup for my images and the location of images required removing &lt;tt class="docutils literal"&gt;/static&lt;/tt&gt; from the path. So my markup went from:&lt;/p&gt;
+&lt;pre class="code literal-block"&gt;
+.. raw:: html
+
+   &amp;lt;div class=&amp;quot;thumbnail&amp;quot;&amp;gt;
+
+&amp;lt;img src=&amp;quot;/static/images/myimage.png&amp;quot; /&amp;gt;
+
+.. raw:: html
+
+   &amp;lt;/div&amp;gt;
+&lt;/pre&gt;
+&lt;p&gt;to this (which includes adding a missing &lt;tt class="docutils literal"&gt;alt&lt;/tt&gt; tag):&lt;/p&gt;
+&lt;pre class="code literal-block"&gt;
+.. class:: thumbnail
+.. figure:: {filename}/images/myimage.png
+   :alt: Clever alt image text goes here
+&lt;/pre&gt;
+&lt;p&gt;Those changes were mostly mechanical and using &lt;tt class="docutils literal"&gt;figure::&lt;/tt&gt; in place of &lt;tt class="docutils literal"&gt;raw::&lt;/tt&gt; also cleaned up the mark up. I tested the changes locally and confirmed all modified pages where displaying correctly.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="convert-to-github-pages"&gt;
+&lt;h2&gt;Convert to GitHub Pages&lt;/h2&gt;
+&lt;p&gt;This setup is now documented in the Pelican docs on &lt;a class="reference external" href="http://docs.getpelican.com/en/3.6.3/tips.html#publishing-to-github"&gt;Publish to GitHub&lt;/a&gt; and is easy.&lt;/p&gt;
+&lt;p&gt;It looks like the clever setup is to put the source for the blog in the &lt;tt class="docutils literal"&gt;master&lt;/tt&gt; branch and then check the output of running &lt;tt class="docutils literal"&gt;pelican&lt;/tt&gt; into a branch called &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;gh-pages&lt;/span&gt;&lt;/tt&gt;.  The &lt;a class="reference external" href="https://github.com/davisp/ghp-import"&gt;ghp-import python package&lt;/a&gt; does all the work of creating and updating the &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;gh-pages&lt;/span&gt;&lt;/tt&gt; branch from the &lt;tt class="docutils literal"&gt;output&lt;/tt&gt; directory for you!&lt;/p&gt;
+&lt;p&gt;The first thing I did was to switch to my &lt;tt class="docutils literal"&gt;master&lt;/tt&gt; branch and then remove the &lt;tt class="docutils literal"&gt;content&lt;/tt&gt; directory and all of it's files:&lt;/p&gt;
+&lt;pre class="code bash literal-block"&gt;
+git checkout master
+rm -rf output
+&lt;/pre&gt;
+&lt;p&gt;Then I edited the &lt;tt class="docutils literal"&gt;.gitignore&lt;/tt&gt; file to exclude the &lt;tt class="docutils literal"&gt;output&lt;/tt&gt; directory.&lt;/p&gt;
+&lt;p&gt;I wanted to keep my existing blog working until I worked out all the kinks in the migration. So I delayed pointing DNS to the GitHub pages. That meant I needed to temporarily change the URL of the blog to match where it will be hosted on GitHub pages. So I edited the &lt;tt class="docutils literal"&gt;publishconf.py&lt;/tt&gt; configuration file and changed the &lt;tt class="docutils literal"&gt;SITEURL&lt;/tt&gt; temporarily from:&lt;/p&gt;
+&lt;pre class="code python literal-block"&gt;
+&lt;span class="n"&gt;SITEURL&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;'http://steve.agilitynerd.com'&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;to it's location on GitHub Pages:&lt;/p&gt;
+&lt;pre class="code python literal-block"&gt;
+&lt;span class="n"&gt;SITEURL&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;'http://saschwarz.github.io/steve-agilitynerd'&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;Get the URL by clicking on the Settings tab for the GitHub repository:&lt;/p&gt;
+&lt;div class="thumbnail figure"&gt;
+&lt;img alt="Screenshot of GitHub settings showing URL for GitHub pages" src="http://tech.agilitynerd.com/images/github-pages-url.png" /&gt;
+&lt;/div&gt;
+&lt;p&gt;Now that the &lt;tt class="docutils literal"&gt;master&lt;/tt&gt; branch is set up I checked in and commited the changes:&lt;/p&gt;
+&lt;pre class="code bash literal-block"&gt;
+git commit -a -m&lt;span class="s2"&gt;&amp;quot;Migration to GitHub Pages&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;Now I followed the instructions in the Pelican docs to generate the output and add it to the &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;gh-pages&lt;/span&gt;&lt;/tt&gt; branch via &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;ghp-import&lt;/span&gt;&lt;/tt&gt; (except they show using &lt;tt class="docutils literal"&gt;pelicanconf.py&lt;/tt&gt; which I use for local development)&lt;/p&gt;
+&lt;pre class="code bash literal-block"&gt;
+pelican content -o output -s publishconf.py
+ghp-import output
+&lt;/pre&gt;
+&lt;p&gt;or if since I opted to have Pelican automation setup I did:&lt;/p&gt;
+&lt;pre class="code bash literal-block"&gt;
+make github
+&lt;/pre&gt;
+&lt;p&gt;So now &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;ghp-import&lt;/span&gt;&lt;/tt&gt; has pushed the output to GitHub and I tested that files/images were correctly being served by going to the GitHub Pages URL in my browser.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="move-subdomain-to-github-pages"&gt;
+&lt;h2&gt;Move Subdomain to GitHub Pages&lt;/h2&gt;
+&lt;p&gt;This step is well documented in the GitHub help page: &lt;a class="reference external" href="https://help.github.com/articles/about-custom-domains-for-github-pages-sites/"&gt;About custom domains for GitHub Pages sites&lt;/a&gt;. In my case I was already using a subdomain for my Pelican blogs so I just followed their instructions.&lt;/p&gt;
+&lt;p&gt;On my VPS's DNS configuration screen I deleted my subdomain's &lt;tt class="docutils literal"&gt;A&lt;/tt&gt; record pointing to my VPS and added a &lt;tt class="docutils literal"&gt;CNAME&lt;/tt&gt; record pointing to my GitHub &lt;cite&gt;.io&lt;/cite&gt; account.&lt;/p&gt;
+&lt;p&gt;Then &lt;strong&gt;don't followed these instructions:&lt;/strong&gt; &lt;a class="reference external" href="https://help.github.com/articles/adding-a-cname-file-to-your-repository/"&gt;Adding a CNAME file to your repository&lt;/a&gt; to setup a &lt;tt class="docutils literal"&gt;CNAME&lt;/tt&gt; file in the &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;gh-pages&lt;/span&gt;&lt;/tt&gt; branch. The instructions work but &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;ghp-import&lt;/span&gt;&lt;/tt&gt; deletes the content of the &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;gh-pages&lt;/span&gt;&lt;/tt&gt; branch before re-adding files and that deletes the &lt;tt class="docutils literal"&gt;CNAME&lt;/tt&gt; file you just added!&lt;/p&gt;
+&lt;p&gt;After some googing I found Tip #2 in the &lt;a class="reference external" href="http://docs.getpelican.com/en/latest/tips.html#extra-tips"&gt;Pelican Tips&lt;/a&gt; and followed their instructions. I added the following to my &lt;tt class="docutils literal"&gt;publishconf.py&lt;/tt&gt;:&lt;/p&gt;
+&lt;pre class="code python literal-block"&gt;
+&lt;span class="n"&gt;STATIC_PATHS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;'images'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;'extra/CNAME'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;EXTRA_PATH_METADATA&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s"&gt;'extra/CNAME'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s"&gt;'path'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;'CNAME'&lt;/span&gt;&lt;span class="p"&gt;},}&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;Then I created the &lt;tt class="docutils literal"&gt;CNAME&lt;/tt&gt; file in the new &lt;tt class="docutils literal"&gt;content/extra&lt;/tt&gt; directory with the name of my subdomain in it &lt;tt class="docutils literal"&gt;steve.agilitynerd.com&lt;/tt&gt;.&lt;/p&gt;
+&lt;p&gt;Undo the edit to &lt;tt class="docutils literal"&gt;publishconf.py&lt;/tt&gt; so it uses the subdomain name:&lt;/p&gt;
+&lt;pre class="code python literal-block"&gt;
+&lt;span class="n"&gt;SITEURL&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;'http://steve.agilitynerd.com'&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;Commit that edit to the &lt;tt class="docutils literal"&gt;master&lt;/tt&gt; branch and then regenerate the output and commit it to &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;gh-pages&lt;/span&gt;&lt;/tt&gt; branches:&lt;/p&gt;
+&lt;pre class="code bash literal-block"&gt;
+git commit -a -m&lt;span class="s2"&gt;&amp;quot;Done with migration to sub domain&amp;quot;&lt;/span&gt;
+git push
+make github
+&lt;/pre&gt;
+&lt;p&gt;Opened the browser to my subdomain and verified that images and links within the site were working correctly. I went back to my VPS and disabled the subdomains from NGINX and deleted the blog check outs to free some resources.  Two fewer websites to maintain on my VPS!&lt;/p&gt;
+&lt;/div&gt;
+</summary><category term="pelican"></category><category term="github"></category><category term="python"></category></entry><entry><title>Integrated Coverage Analysis with Coveralls</title><link href="http://tech.agilitynerd.com/coverage-analysis-with-coveralls.html" rel="alternate"></link><updated>2013-12-15T17:00:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2013-12-15:coverage-analysis-with-coveralls.html</id><summary type="html">&lt;p&gt;When I converted &lt;a class="reference external" href="https://github.com/saschwarz/django-periodicals"&gt;django-periodicals&lt;/a&gt; to use &lt;a class="reference external" href="http://tech.agilitynerd.com/cookiecutter-django-do-the-right-thing.html"&gt;cookiecutter-djangopackage&lt;/a&gt; I was running &lt;a class="reference external" href="https://pypi.python.org/pypi/coverage"&gt;coverage.py&lt;/a&gt; in my &lt;a class="reference external" href="https://travis-ci.org"&gt;Travis-CI&lt;/a&gt; &lt;tt class="docutils literal"&gt;.travis.yml&lt;/tt&gt; to report the coverage results to the command line log. The coverage results were interesting but didn't really alter my development practice much.&lt;/p&gt;
+&lt;p&gt;Over the years I've had differing options about coverage testing/analysis. Like any programming metric you can &amp;quot;cook the books&amp;quot; and pump up the metric while not actually improving the quality or maintainability of the code being measured.  Minimally coverage testing can uncover unexercised corners of the code, especially error handling code. Nothing is worse than crashing an application with faulty error handling code.&lt;/p&gt;
+&lt;p&gt;&lt;tt class="docutils literal"&gt;coverage.py&lt;/tt&gt; is trivial to run and it generates reports in various formats to make finding unexercised code simple. It is so easy there is no reason not to run it.&lt;/p&gt;
+&lt;p&gt;So my local coverage testing showed 7% of my code wasn't exercised - &amp;quot;good enough&amp;quot; right?&lt;/p&gt;
+&lt;p&gt;Then I discovered &lt;a class="reference external" href="https://coveralls.io/"&gt;Coveralls&lt;/a&gt;. Coveralls integrates with Travis and collects coverage data for each buid and displays it on their website. It was &lt;a class="reference external" href="https://github.com/coagulant/coveralls-python#usage-travis-ci"&gt;trivial to setup&lt;/a&gt;:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Create a login on Coverall and enable your Travis-CI project.&lt;/li&gt;
+&lt;li&gt;Add &lt;tt class="docutils literal"&gt;coveralls&lt;/tt&gt; to the project's test &lt;tt class="docutils literal"&gt;requirements.txt&lt;/tt&gt;.&lt;/li&gt;
+&lt;li&gt;Then add &lt;tt class="docutils literal"&gt;after_success: coveralls&lt;/tt&gt; to &lt;tt class="docutils literal"&gt;.travis.yml&lt;/tt&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The next time the project is tested on Travis-CI the coverage results appear on coveralls.io. You can view the untested code in each file and Coveralls will track the increase/decrease of coverage in each file each time you check-in/test.&lt;/p&gt;
+&lt;p&gt;They also have badges showing the percent coverage that you can embed in your reStructuredText documentation on GitHub and ReadTheDocs. And that's the insidious part of integrated open source development...&lt;/p&gt;
+&lt;p&gt;The &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;cookiecutter-djangoproject&lt;/span&gt;&lt;/tt&gt; produces an application GitHub page that shows the Travis-CI test status and the PyPi package version. With the addition of the Coveralls badge it can now show the coverage percentage. That turned out to be a little bit of programming peer group pressure that made 93% coverge no longer &amp;quot;good enough&amp;quot;!&lt;/p&gt;
+&lt;p&gt;So a few minutes and a few tests later I had tests that did exercise the full code base including error handling. That gave me a happy little green badge that displayed &amp;quot;coverage 100%&amp;quot;.&lt;/p&gt;
+&lt;p&gt;So not only is Coveralls fully integrated with the GitHub - CI - Open Source infrastructure, and dead simple to use, it got this developer to push into all the corners of his code before releasing. And I now have the peace of mind that Travis &lt;em&gt;and&lt;/em&gt; Coveralls will be watching my back.&lt;/p&gt;
+&lt;a class="reference external image-reference" href="http://badge.fury.io/py/django-periodicals"&gt;&lt;img alt="badge image" src="https://badge.fury.io/py/django-periodicals.png" /&gt;&lt;/a&gt;
+&lt;a class="reference external image-reference" href="https://travis-ci.org/saschwarz/django-periodicals"&gt;&lt;img alt="badge image for travis" src="https://travis-ci.org/saschwarz/django-periodicals.png?branch=master" /&gt;&lt;/a&gt;
+&lt;a class="reference external image-reference" href="https://coveralls.io/r/saschwarz/django-periodicals?branch=master"&gt;&lt;img alt="badge image for coveralls" src="https://coveralls.io/repos/saschwarz/django-periodicals/badge.png?branch=master" /&gt;&lt;/a&gt;
+</summary><category term="coverage"></category><category term="webdevelopment"></category><category term="github"></category><category term="django"></category><category term="testing"></category><category term="travis"></category><category term="python"></category></entry><entry><title>cookiecutter-djangopackage - Do the Right Thing</title><link href="http://tech.agilitynerd.com/cookiecutter-django-do-the-right-thing.html" rel="alternate"></link><updated>2013-12-09T23:02:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2013-12-09:cookiecutter-django-do-the-right-thing.html</id><summary type="html">&lt;p&gt;In preparation for upgrading and enhancing &lt;a class="reference external" href="http://googility.com"&gt;Googility.com&lt;/a&gt; I've started breaking out reusable applications, upgrading them, and open sourcing the code on GitHub. I wanted to follow development best practices and create high quality applications including these features:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;A full set of tests.&lt;/li&gt;
+&lt;li&gt;Near 100% code coverage.&lt;/li&gt;
+&lt;li&gt;Continuous Integration running on each check-in via &lt;a class="reference external" href="https://travis-ci.org/"&gt;Travis CI&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Documentation in Sphinx on &lt;a class="reference external" href="https://readthedocs.org/"&gt;Read the Docs (RTD)&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Packaging/versioning compatible with &lt;a class="reference external" href="https://pypi.python.org/pypi"&gt;PyPi&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Packaging building/testing on multiple python versions using virtualenvs via &lt;a class="reference external" href="http://tox.readthedocs.org/en/latest/"&gt;tox&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I had started researching each aspect and was getting a little frustrated that there wasn't a best practice for tying everthing together. Then I came across &lt;a class="reference external" href="https://twitter.com/audreyr"&gt;Audrey Roy's&lt;/a&gt; &lt;a class="reference external" href="https://github.com/audreyr/cookiecutter"&gt;cookiecutter&lt;/a&gt; and &lt;a class="reference external" href="http://pydanny.com/"&gt;Daniel Greenfeld's&lt;/a&gt; &lt;a class="reference external" href="https://github.com/pydanny/cookiecutter-djangopackage"&gt;cookiecutter-djangopackage&lt;/a&gt;. &lt;tt class="docutils literal"&gt;cookiecutter&lt;/tt&gt; is a utility to create project directory structures and files from the command line. &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;cookiecutter-djangopackage&lt;/span&gt;&lt;/tt&gt; is a template for creating a reusable Django application.&lt;/p&gt;
+&lt;p&gt;Yes there are other similar projects, and Django provides &lt;tt class="docutils literal"&gt;startproject&lt;/tt&gt; and &lt;tt class="docutils literal"&gt;startapp&lt;/tt&gt; commands that can take template arguments. But since I've never used Travis, RTD or tox I really wanted to leverage more experienced developers' knowledge so I could set them up in a &amp;quot;smart&amp;quot; way.&lt;/p&gt;
+&lt;p&gt;That's what I liked about &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;cookiecutter-djangopackage&lt;/span&gt;&lt;/tt&gt; it came with sane defaults that worked out of the box &lt;a class="footnote-reference" href="#id2" id="id1"&gt;[1]&lt;/a&gt; and did smart stuff like wiring the version from the package's &lt;tt class="docutils literal"&gt;__init__.py&lt;/tt&gt; in to the documentation and &lt;tt class="docutils literal"&gt;setup.py&lt;/tt&gt;. The &lt;tt class="docutils literal"&gt;requirements.txt&lt;/tt&gt; used by &lt;tt class="docutils literal"&gt;pip&lt;/tt&gt; is wired in to &lt;tt class="docutils literal"&gt;tox&lt;/tt&gt; and the &lt;tt class="docutils literal"&gt;README.rst&lt;/tt&gt; is used in the &lt;tt class="docutils literal"&gt;setup.py&lt;/tt&gt; and included in the Spinx docs.&lt;/p&gt;
+&lt;p&gt;And there are other integrations that make it easy to release a professional Django application. In fact that's my long winded point - it makes it hard to not do the right thing! I might have skipped using one or more of these support technologies, but &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;cookiecutter-djangopackage&lt;/span&gt;&lt;/tt&gt; made it easy for me to use them and focus on writing code, tests and documentation.&lt;/p&gt;
+&lt;p&gt;So that is what I want to stress: with &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;cookiecutter-djangopackage&lt;/span&gt;&lt;/tt&gt; you &lt;em&gt;can&lt;/em&gt; create a packaged application, whose code is tested on multiple python/Django versions, tested for installation, installable via PyPi and nicely documented without much additional effort.&lt;/p&gt;
+&lt;p&gt;So take look at my nearly released &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;django-periodicals&lt;/span&gt;&lt;/tt&gt; application to see how it all works on &lt;a class="reference external" href="https://github.com/saschwarz/django-periodicals"&gt;GitHub&lt;/a&gt;, &lt;a class="reference external" href="http://django-periodicals.readthedocs.org/en/latest/"&gt;RTD&lt;/a&gt; and &lt;a class="reference external" href="https://travis-ci.org/saschwarz/django-periodicals"&gt;Travis&lt;/a&gt;.&lt;/p&gt;
+&lt;!-- rubric: Footnotes --&gt;
+&lt;table class="docutils footnote" frame="void" id="id2" rules="none"&gt;
+&lt;colgroup&gt;&lt;col class="label" /&gt;&lt;col /&gt;&lt;/colgroup&gt;
+&lt;tbody valign="top"&gt;
+&lt;tr&gt;&lt;td class="label"&gt;&lt;a class="fn-backref" href="#id1"&gt;[1]&lt;/a&gt;&lt;/td&gt;&lt;td&gt;I submitted a very minor &lt;a class="reference external" href="https://github.com/pydanny/cookiecutter-djangopackage/pull/13"&gt;pull request&lt;/a&gt; and found a related issue with application names that don't match their imported package name. (i.e. &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;django-periodicals&lt;/span&gt;&lt;/tt&gt; is the application name and &lt;tt class="docutils literal"&gt;periodicals&lt;/tt&gt; is the package that is imported).&lt;/td&gt;&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+</summary><category term="python"></category><category term="django"></category><category term="googility"></category><category term="development"></category><category term="testing"></category><category term="travis"></category><category term="rtd"></category><category term="pypi"></category><category term="tox"></category><category term="virtualenv"></category><category term="webdevelopment"></category><category term="github"></category></entry><entry><title>Initial Release of django-stw</title><link href="http://tech.agilitynerd.com/initial-release-of-django-stw.html" rel="alternate"></link><updated>2010-07-11T15:47:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-07-11:initial-release-of-django-stw.html</id><summary type="html">&lt;p&gt;I have been using the free website thumbnail service from &lt;a class="reference external" href="http://www.shrinktheweb.com?a=988"&gt;Shrink The
+Web&lt;/a&gt; on my dog agility search website &lt;a class="reference external" href="http://googility.com"&gt;Googility&lt;/a&gt; since I launched it.
+It is quick and easy to use and it adds a lot to the look of the pages.&lt;/p&gt;
+&lt;p&gt;I had created a simple &lt;a class="reference external" href="http://djangoproject.com/"&gt;Django&lt;/a&gt; template tag for inserting the little
+snippet of HTML needed by their service.&lt;/p&gt;
+&lt;p&gt;Recently they asked me to add support for their advanced features to my
+template tag. I used this opportunity to convert my templatetag to a
+Django application. This mostly makes it a lot easier to install but it
+also let me to bundle tests and an example template with the template
+tag.&lt;/p&gt;
+&lt;p&gt;I kept the existing &lt;tt class="docutils literal"&gt;shrinkthewebimage&lt;/tt&gt; template tag and added a new
+tag called &lt;tt class="docutils literal"&gt;stwimage&lt;/tt&gt; to enable the new features.&lt;/p&gt;
+&lt;p&gt;I'm hosting the example page included in the package &lt;a class="reference external" href="http://googility.com/django-stw/"&gt;here&lt;/a&gt; so you can
+see how the template tags work.&lt;/p&gt;
+&lt;p&gt;I've hosted the &lt;a class="reference external" href="http://github.com/saschwarz/django-stw"&gt;project source on github&lt;/a&gt; and uploaded the &lt;a class="reference external" href="http://pypi.python.org/pypi/django-stw/"&gt;initial
+release to the CheeseShop&lt;/a&gt; for easy installation.&lt;/p&gt;
+</summary><category term="django"></category><category term="github"></category><category term="googility"></category><category term="pypi"></category><category term="python"></category><category term="shrinktheweb"></category><category term="webdevelopment"></category></entry></feed>

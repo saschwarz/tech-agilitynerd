@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:8000/feeds/tag.perl.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2010-11-23T05:00:00-06:00</updated><entry><title>Blosxom Plugin for Generating Facebook Comment xids</title><link href="http://tech.agilitynerd.com/blosxom-plugin-for-generating-facebook-commen.html" rel="alternate"></link><updated>2010-11-23T05:00:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-11-23:blosxom-plugin-for-generating-facebook-commen.html</id><summary type="html">&lt;p&gt;I've been using &lt;a class="reference external" href="http://www.blosxom.com/"&gt;Blosxom&lt;/a&gt; to power my dog agility blog for over 6
+years. In the past year or so I've enabled &lt;a class="reference external" href="http://developers.facebook.com/docs/reference/plugins/comments"&gt;Facebook comments&lt;/a&gt; in
+addition to my site's own comment plugin. I ran into a problem using
+Facebook's comments: if the user enters a comment on a page and the URL
+has any additional URL parameters then the comment is only associated
+with the page when accessed with those parameters, others hitting the
+page w/o parameters won't see the comments.&lt;/p&gt;
+&lt;p&gt;This behavior is &lt;a class="reference external" href="http://developers.facebook.com/docs/reference/fbml/comments_%28XFBML%29"&gt;documented by Facebook&lt;/a&gt; when the &lt;tt class="docutils literal"&gt;xid&lt;/tt&gt; attribute
+isn't set in &lt;tt class="docutils literal"&gt;fb:comments&lt;/tt&gt; HTML element. I didn't think I'd encounter this
+situation since my blog post URLs don't contain any parameters. However,
+when people link to one of my articles within Facebook, Facebook appends
+various parameters to the base URL.&lt;/p&gt;
+&lt;p&gt;The solution is to specify an &lt;tt class="docutils literal"&gt;xid&lt;/tt&gt; attribute in the &lt;tt class="docutils literal"&gt;fb:comments&lt;/tt&gt; element
+containing the URL encoded URL of the page (Facebook's default &lt;tt class="docutils literal"&gt;xid&lt;/tt&gt;).
+This causes existing comments to show up and causes comments created
+when the page is loaded with URL parameters to use the same encoded URL.&lt;/p&gt;
+&lt;p&gt;So I created a simple Blosxom plugin to perform the encoding so the
+encoded URL can be placed in the story.html template:&lt;/p&gt;
+&lt;pre class="code perl literal-block"&gt;
+&lt;span class="c1"&gt;# Blosxom Plugin: urlencode -*- perl -*-&lt;/span&gt;
+&lt;span class="c1"&gt;# Author: Steve Schwarz &amp;lt;http://agilitynerd.com/&amp;gt;&lt;/span&gt;
+&lt;span class="c1"&gt;# 2010-NOV-22    0.1 initial version.package urlencode;&lt;/span&gt;
+&lt;span class="c1"&gt;# puts the urlencoded string of the URL for this page&lt;/span&gt;
+&lt;span class="c1"&gt;# into $urlencode::url without any params# use this in fb.comments xid to give the same xid&lt;/span&gt;
+&lt;span class="c1"&gt;# even when query params are provided&lt;/span&gt;
+&lt;span class="c1"&gt;# -------------------&lt;/span&gt;
+&lt;span class="k"&gt;use&lt;/span&gt; &lt;span class="n"&gt;CGI&lt;/span&gt; &lt;span class="sx"&gt;qw/:standard/&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;use&lt;/span&gt; &lt;span class="n"&gt;&lt;/span&gt;&lt;span class="nn"&gt;URI::&lt;/span&gt;&lt;span class="n"&gt;Escape&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="k"&gt;sub &lt;/span&gt;&lt;span class="nf"&gt;start&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nv"&gt;$url&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;''&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="k"&gt;sub &lt;/span&gt;&lt;span class="nf"&gt;story&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;my&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;$pkg&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nv"&gt;$path&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nv"&gt;$filename&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nv"&gt;$story_ref&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nv"&gt;$title_ref&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nv"&gt;$body_ref&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nv"&gt;&amp;#64;_&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="nv"&gt;$&lt;/span&gt;&lt;span class="nn"&gt;urlencode::&lt;/span&gt;&lt;span class="nv"&gt;url&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;uri_escape&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;$blosxom::url/${blosxom::path_info}&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;Then it is used in the story template:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+&amp;lt;fb:comments width=&amp;quot;550&amp;quot; numposts=&amp;quot;5&amp;quot; xid=&amp;quot;$urlencode::url&amp;quot;&amp;gt;&amp;lt;/fb:comments&amp;gt;
+&lt;/pre&gt;
+&lt;p&gt;Now my readers won't have to worry that their comments won't show up.&lt;/p&gt;
+</summary><category term="blosxom"></category><category term="comments"></category><category term="facebook"></category><category term="perl"></category></entry><entry><title>Blosxom hitcounter, favorites and lastread plugins for MongoDB</title><link href="http://tech.agilitynerd.com/blosxom-hitcounter-favorites-and-lastread-plugins-for-mongodb.html" rel="alternate"></link><updated>2010-05-17T10:48:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-05-17:blosxom-hitcounter-favorites-and-lastread-plugins-for-mongodb.html</id><summary type="html">&lt;p&gt;When I wrote my plugins for tracking the visits to each page
+(&lt;tt class="docutils literal"&gt;hitcounter&lt;/tt&gt;), presenting the counts by popularity (&lt;tt class="docutils literal"&gt;favorites&lt;/tt&gt;), and
+displaying the most recently read posts (&lt;tt class="docutils literal"&gt;lastread&lt;/tt&gt;) I used Perl's
+&lt;tt class="docutils literal"&gt;Storable&lt;/tt&gt; module as a simple way to serialize the data structure to and
+from disk. At the time I wasn't too concerned with performance, my blog
+&lt;a class="reference external" href="http://agilitynerd.com"&gt;agilitynerd.com&lt;/a&gt; didn't suffer under the load of the disk reads/writes.&lt;/p&gt;
+&lt;p&gt;But periodically I get DOS'd and my website becomes unresponsive. Not
+too suprising since Blosxom has to run as a plain CGI script; but I'm
+certain the disk writes of these plugins weren't helping. Occasionally
+the Storable on disk would become corrupted which would take down the
+site (not enough exception handling in the plugins).&lt;/p&gt;
+&lt;p&gt;I decided to go with &lt;a class="reference external" href="http://mongodb.org"&gt;Mongo&lt;/a&gt; as the backing data store to remove the
+disk reads/write from the cgi script. It supports an increment operation
+(ala memcached) so multiple threads can update the hit count and MongoDB
+will &amp;quot;do the right thing&amp;quot;. It also has a query API that made rewriting
+favorites and lastread trivial.&lt;/p&gt;
+&lt;div style="float:right;padding 20px;"&gt;&lt;p&gt;&lt;img alt="Poweredmongodbgreen75" src="/images/2010/05/9077760-PoweredMongoDBgreen75.png" /&gt;&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;I haven't tested the performance but my website, especially the
+favorites page, seems faster. Once I write a JavaScript client to update
+the hitcounts I'll be able to move the website to a fully cached
+deployment while still tracking hits which should make the load of
+running the agilitynerd blog very low.&lt;/p&gt;
+&lt;p&gt;I've hosted the plugins on github:
+&lt;a class="reference external" href="http://github.com/saschwarz/blosxom-mongodb-plugins"&gt;http://github.com/saschwarz/blosxom-mongodb-plugins&lt;/a&gt; The mongohitcounter
+plugin can be configured to automatically import existing count data
+from the hitcounter plugin's Storable. So conversion to the new plugins
+just requires updating the template's variables to the new plugin names.&lt;/p&gt;
+</summary><category term="blosxom"></category><category term="mongodb"></category><category term="perl"></category><category term="webdevelopment"></category></entry><entry><title>AgilityNerd Blosxom Plugins</title><link href="http://tech.agilitynerd.com/agilitynerd-blosxom-plugins-1.html" rel="alternate"></link><updated>2004-08-10T19:00:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2004-08-10:agilitynerd-blosxom-plugins-1.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Updated 20-Jun-08 for addition of storytitle&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;I'm really impressed with the &lt;a class="reference external" href="http://blosxom.sourceforge.net/"&gt;Blosxom&lt;/a&gt; &lt;a class="reference external" href="http://blosxom.com/documentation/users/plugins.html"&gt;plugin&lt;/a&gt; mechanism. &lt;a class="reference external" href="http://www.raelity.org/"&gt;Rael
+Dornfest&lt;/a&gt;, author of Blosxom, put hooks at strategic points in the page
+generation process. At each hook point the main script iterates all the
+plugins present in the plugin directory. Plugins that implement the hook
+function can then modify the state or add additional data for use in the
+page presentation.&lt;/p&gt;
+&lt;p&gt;Consequently, a plugin only implements the hook functions it needs
+invoked to provide its features. Some powerful plugins need only
+implement one or two hook functions and are implemented with a couple
+dozen lines of Perl code.&lt;/p&gt;
+&lt;p&gt;When I started building this site I found it a little confusing to sort
+through all the plugins and understand their functionality. The ease of
+creating and modifying plugins has allowed a lot of developers to
+contribute to the Blosxom plugin &lt;a class="reference external" href="http://blosxom.com/plugins"&gt;registry&lt;/a&gt;. I found it helpful when
+Blosxom sites listed the plugins that implemented their site's features.
+So here is the list of plugins I use.&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="http://www.blosxom.com/plugins/syndication/atomfeed.htm"&gt;atomfeed&lt;/a&gt; - Provides the AgilityNerd Atom feed. Point
+your browser to &lt;a class="reference external" href="http://agilitynerd.com/blog/index.atom"&gt;http://agilitynerd.com/blog/index.atom&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="http://www.blosxom.com/plugins/display/breadcrumbs.htm"&gt;breadcrumbs&lt;/a&gt; - Creates the click-able trail to the current position in
+the weblog's path shown at the top of all .index pages and at the bottom
+of each article.&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="http://www.blosxom.com/plugins/display/binary.htm"&gt;binary&lt;/a&gt; - Used to supply images from the directory in which an article
+exists. Modified to use LWP::MediaTypes since MIME::Types isn't
+installed on this web server. I also commented out the interpolate()
+function and added it to the one in interpolate_fancy to make this
+plugin coexist with interpolate fancy.&lt;/p&gt;
+&lt;p&gt;I no longer use binary because it is faster to just have Apache serve
+binary files directly from one or more directories outside of the
+Blosxom src tree.&lt;/p&gt;
+&lt;p&gt;I've stopped using this plugin since it requires Blosxom to look at each
+file to determine whether or not it should be skipped. So I'm starting
+to put all binary files in my images directory outside of Blosxom. This
+has the added advantage that I can just put &amp;quot;/images&amp;quot; and &amp;quot;/video&amp;quot; in by
+robots.txt file so my images and videos don't get indexed by search
+engine robots.&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="http://www.blosxom.com/plugins/category/categories.htm"&gt;categories&lt;/a&gt; - Displays the tree of paths/categories of articles on the
+&lt;a class="reference external" href="http://agilitynerd.com/blog/navigate/"&gt;navigate&lt;/a&gt; page. Slightly modified to remove the root directory from
+the display. Added a hide feature to hide specified directories entirely
+- used this to prune subdirectories for my side bar menu. Removed
+flavour ending from all generated links since all paths are valid links,
+are shorter for people emailing links around, and would always use the
+default flavour. Modified to not calculate breadcrumbs since I use the
+breadcrumbs plugin for that feature.&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="http://www.blosxom.com/plugins/general/config.htm"&gt;config&lt;/a&gt; - Allows any Perl variable to be set differently in any
+category/directory. I use this to change the sort order for my
+&lt;a class="reference external" href="http://agilitynerd.com/blog/agility/glossary/"&gt;glossary&lt;/a&gt; page to be alphabetical order by changing the sort_order
+plugin's sorder variable.&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="http://www.blosxom.com/plugins/indexing/entries_cache.htm"&gt;entries_cache&lt;/a&gt; - Speeds up processing of the site by caching the
+article index to avoid scanning directories until a configured amount of
+time has elapsed. Also caches article creation time to allow for editing
+of articles without changing their timestamps.&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="/blosxom-hit-counter-and-favorites-plugins-1.html"&gt;favorites&lt;/a&gt; - Used to automatically generate my &lt;a class="reference external" href="http://agilitynerd.com/blog/static/Favorites.html"&gt;Favorites page&lt;/a&gt; based on the visitor hit counts recorded by my hitcounter plugin.&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="http://www.blosxom.com/plugins/include/file.htm"&gt;file&lt;/a&gt; - Used to include the navigational side div into all pages
+without copy/paste of the same HTML.&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="http://www.blosxom.com/plugins/search/find.htm"&gt;find&lt;/a&gt; - Provides search capabilities for all articles, comments, and
+linkbacks on the web site. HTML slightly modified to remove the advanced
+search link. Also set the hidden &amp;quot;path&amp;quot; input to the empty string so the
+entire site is searched regardless of where in the hierarchy the search
+was initiated.&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="http://www.blosxom.com/plugins/text/foreshortened.htm"&gt;foreshortened&lt;/a&gt; - Ends articles at the end of the first sentence. Used
+to provide the shortened version of articles for use in RSS and Atom
+feeds.&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="http://www.blosxom.com/plugins/display/headlines.htm"&gt;headlines&lt;/a&gt; - Used to determine all the entries in my &lt;a class="reference external" href="http://agilitynerd.com/blog/agility/glossary/"&gt;glossary&lt;/a&gt;
+category and create links in alphabetical order. Requires
+interpolate_fancy.&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="http://www.blosxom.com/plugins/files/hide.htm"&gt;hide&lt;/a&gt; - Excludes directories of articles from the index views (like
+the agilitynerd.com main page) but still allows them to be searched by
+find.&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="/blosxom-hit-counter-and-favorites-plugins-1.html"&gt;hitcounter&lt;/a&gt; - Used to automatically generate the
+number of visitors displayed in the footer for each page on my site.
+These hit counts per page are used by my favorites plugin to generate my
+&lt;a class="reference external" href="http://agilitynerd.com/blog/static/Favorites.html"&gt;Favorites page&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="http://www.blosxom.com/plugins/interpolate/interpolate_fancy.htm"&gt;interpolate_fancy&lt;/a&gt; - Used to remove the space allocated for the
+results of find and the breadcrumbs plugin when their variables aren't
+defined. I think I'll use this more in the future to dynamically change
+the page format.&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="/blosxom-plugins-lastcommented-and-lastread-1.html"&gt;lastcommented&lt;/a&gt; - Used to automatically
+generate the list of the last 10 articles that were commented shown in
+the side bar on each page of the site.&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="/blosxom-plugins-lastcommented-and-lastread-1.html"&gt;lastread&lt;/a&gt; - Used to automatically generate
+the list of the last 10 articles that were read shown in the side bar on
+each page of the site.&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="http://www.blosxom.com/plugins/display/moreentries.htm"&gt;moreentries&lt;/a&gt; - Creates the &amp;quot;Previous&amp;quot; and &amp;quot;Next&amp;quot; links at the bottom
+of each index or search page when there are more than
+&lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;$blosxom::num_entries&lt;/span&gt;&lt;/tt&gt; entries. I've modified this plugin as I described
+&lt;a class="reference external" href="/minor-additional-mods-to-blosxom-moreenties-p-1.html"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="http://www.blosxom.com/plugins/display/postheadprefoot.htm"&gt;postheadprefoot&lt;/a&gt; - Allows each category/directory to have unique text
+inserted after the header and/or before the footer. I use this on my
+&lt;a class="reference external" href="http://agilitynerd.com/blog/agility/glossary/"&gt;glossary&lt;/a&gt; page to add a category specific subsection. I had to &lt;a class="reference external" href="http://groups.yahoo.com/group/blosxom/message/9364"&gt;modify
+the script&lt;/a&gt; to have paths resolve correctly.&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="http://www.blosxom.com/plugins/general/redirect.htm"&gt;redirect&lt;/a&gt; - Unmodified version of this plugin. I had to use it when I
+moved a directory within my tree so search engine and email list links
+would redirect correctly.&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="/refererblock-version-02-1.html"&gt;refererblock&lt;/a&gt; - A blacklist driven plugin to permanently
+redirect referer spam. The redirect probably has little effect on the
+receipt of referer spam but the 301 redirect code keeps the spammer's
+sites out of my site statistics.&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="http://www.blosxom.com/plugins/syndication/rss10.htm"&gt;rss10&lt;/a&gt; - Provides the extra information to provide a valid RSS 1.0
+feed for syndication. Slightly modified to work with the writeback
+plugin.&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="http://www.blosxom.com/plugins/display/seemore.htm"&gt;seemore&lt;/a&gt; - Adds &amp;quot;See more...&amp;quot; link within the text of a post when the
+post is shown in an index page. The location of the link is controlled
+by placing a special tag in the posting source file. I have &lt;a class="reference external" href="/see-more-added-to-article-display-on-index-pa-1.html"&gt;modified&lt;/a&gt;
+this plugin to show the first &amp;quot;n&amp;quot; entries of an index page in full.
+Furthe&lt;/p&gt;
+&lt;p&gt;r modified to always create a link to my html flavoured pages.&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="http://blosxom.ookee.com/blosxom/plugins/v2/sort_order-v0i85"&gt;sort_order&lt;/a&gt; - Allows sorting by date, directory names, or file name.
+I modified it to not read the URI parameters and just use a
+configuration variable. Then I used the config plugin to change the sort
+order for my &lt;a class="reference external" href="http://agilitynerd.com/blog/agility/glossary/"&gt;glossary&lt;/a&gt; page to sort by file name instead of in reverse
+chronological order.&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="http://www.leverton.org/blosxom/Software/Projects/Blosxom/storytitle.html"&gt;storytitle&lt;/a&gt; - sets the &amp;lt;title&amp;gt; element in the HTML &amp;lt;head&amp;gt; with the
+title of the article or the name of the category. I use it
+to aid in navigation and site statistics]].&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="http://www.blosxom.com/plugins/date/timezone2.htm"&gt;timezone&lt;/a&gt; - Adjusts timestamps automatically created or entered using
+meta-creation_date: to be offset correctly to my timezone; which is
+different from the web server's timezone.&lt;/p&gt;
+&lt;p&gt;I no longer use timezone since I can set the timezone on my
+Slicehost server.&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="/blosxom-default-flavour-plugin-fixes-unknown-1.html"&gt;defaultflavour&lt;/a&gt; - Provides the user with the
+default Blosxom flavoured feed when an unknown flavour is requested.
+This keeps the user from getting the Unknown Flavour error across the
+top of the page.&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="http://varg.dyndns.org/psi/pub/code/misc/wbcaptcha.html"&gt;wbcaptcha&lt;/a&gt; - Provides an ASCII image via &lt;a class="reference external" href="http://www.figlet.org"&gt;FIGlet&lt;/a&gt; when visitors enter
+comments to stop spam bots from saturating my blog comments. See this article for &lt;a class="reference external" href="/comment-spam-and-wbcaptcha-plugin-enhancement-1.html"&gt;my modifications&lt;/a&gt; to this plugin.&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="http://www.blosxom.com/plugins/text/wikiwordish.htm"&gt;wikiwordish&lt;/a&gt; - Provides WikiWord-like linking to Wiki articles, local
+article file names and modified to replace WikiWords with HTML &amp;lt;a&amp;gt;
+links. This plugin saves me from having to enter links to common sites
+to which I always refer. I had to name this file 00wikiwordish so that
+WikiWords would be correctly replaced in RSS and Atom feeds.&lt;/p&gt;
+&lt;p&gt;&lt;a class="reference external" href="http://www.lathi.net/twiki-bin/view/Main/BlogSpam"&gt;writeback blacklist plugin&lt;/a&gt; - Provides comment and TrackBack
+capability. This is Doug Alcorn's blacklist modified version to help
+fight comment spam. I've slightly modified mine to try to protect
+comment poster's from spam by obfuscating their email addresses.&lt;/p&gt;
+&lt;p&gt;In case anyone is trying to get these plugins to &amp;quot;play&amp;quot; together I have
+them named as follows:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;000refererblock&lt;/li&gt;
+&lt;li&gt;001redirect&lt;/li&gt;
+&lt;li&gt;002defaultflavour&lt;/li&gt;
+&lt;li&gt;005wikiwordish&lt;/li&gt;
+&lt;li&gt;007google_highlight&lt;/li&gt;
+&lt;li&gt;008wbcaptcha&lt;/li&gt;
+&lt;li&gt;01atomfeed&lt;/li&gt;
+&lt;li&gt;01breadcrumbs&lt;/li&gt;
+&lt;li&gt;01categories&lt;/li&gt;
+&lt;li&gt;01config&lt;/li&gt;
+&lt;li&gt;01entriescache&lt;/li&gt;
+&lt;li&gt;01favorites&lt;/li&gt;
+&lt;li&gt;01file&lt;/li&gt;
+&lt;li&gt;01find&lt;/li&gt;
+&lt;li&gt;01foreshortened&lt;/li&gt;
+&lt;li&gt;01fullcategories&lt;/li&gt;
+&lt;li&gt;01headlines&lt;/li&gt;
+&lt;li&gt;01hide&lt;/li&gt;
+&lt;li&gt;01moreentries&lt;/li&gt;
+&lt;li&gt;01postheadprefoot&lt;/li&gt;
+&lt;li&gt;01rss10&lt;/li&gt;
+&lt;li&gt;01seemore&lt;/li&gt;
+&lt;li&gt;01sort_order&lt;/li&gt;
+&lt;li&gt;01storytitle&lt;/li&gt;
+&lt;li&gt;01writeback&lt;/li&gt;
+&lt;li&gt;02hitcounter&lt;/li&gt;
+&lt;li&gt;02lastcommented&lt;/li&gt;
+&lt;li&gt;02lastread&lt;/li&gt;
+&lt;li&gt;02recentwritebacks&lt;/li&gt;
+&lt;li&gt;50interpolate_fancy&lt;/li&gt;
+&lt;/ul&gt;
+</summary><category term="blosxom"></category><category term="perl"></category><category term="plugin"></category></entry></feed>

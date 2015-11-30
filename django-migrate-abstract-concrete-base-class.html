@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <title>tech.agilitynerd</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Steve Schwarz">
+    <!-- <link href="http://127.0.0.1:8000/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" /> -->
+    <link href="http://feeds.feedburner.com/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" />
+    <!-- Le styles -->
+    <link href="http://tech.agilitynerd.com/theme/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+      padding-top: 60px;
+      padding-bottom: 40px;
+      }
+      .sidebar-nav {
+      padding: 9px 0;
+      }
+    </style>
+    <link href="http://tech.agilitynerd.com/theme/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="http://tech.agilitynerd.com/theme/local.css" rel="stylesheet">
+    <link href="http://tech.agilitynerd.com/theme/pygments.css" rel="stylesheet">
+<script>var _gaq=[['_setAccount','UA-1127677-3'],['_trackPageview']];(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.src='//www.google-analytics.com/ga.js';s.parentNode.insertBefore(g,s)}(document,'script'))</script>
+<script type="text/javascript">
+  var disqus_shortname = "techagilitynerd"; // required: replace example with your forum shortname
+  var disqus_developer = 1;
+  
+  var disqus_identifier = "django-migrate-abstract-concrete-base-class.html";
+  (function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+
+  (function () {
+  var s = document.createElement('script'); s.async = true;
+  s.type = 'text/javascript';
+  s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+  }());
+</script>
+  </head>
+  <body>
+<!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+    
+<div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container-fluid">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+      </a>
+      <a class="brand" href="http://tech.agilitynerd.com/index.html">tech.agilitynerd</a>
+      <div class="nav-collapse collapse">
+	<ul class="nav">
+	  <li ><a href="http://tech.agilitynerd.com/category/devops.html">devops</a></li>
+	  <li ><a href="http://tech.agilitynerd.com/category/misc.html">misc</a></li>
+	  <li ><a href="http://tech.agilitynerd.com/category/programming.html">programming</a></li>
+	  <li ><a href="http://tech.agilitynerd.com/category/python.html">python</a></li>
+	  <li class="active"><a href="http://tech.agilitynerd.com/category/webdev.html">webdev</a></li>
+	</ul>
+	<p class="navbar-text pull-right">
+	  <a class="navbar-link" href="http://tech.agilitynerd.com/archives.html">[archives]</a>
+	  <a class="navbar-link" href="http://tech.agilitynerd.com/tags.html">[tags]</a>
+	</p>
+      </div><!--/.nav-collapse -->
+    </div>
+  </div>
+</div>
+    <div class="container-fluid">
+      <div class="row-fluid">
+	<div class="span1">&nbsp;</div>
+	<div class="span10">
+	  <div class="row-fluid">
+            <div class="span9">
+<div class='article'>
+  <div class="page-header"><h1>Django Migrating Models from an Abstract Base Class to a Concrete Base Class</h1></div>
+  <div class="well small"><a class="more" href="http://tech.agilitynerd.com/django-migrate-abstract-concrete-base-class.html">On 15 Nov 2015 at 0500</a>
+by <a class="url fn" href="http://tech.agilitynerd.com/author/steve-schwarz.html">Steve Schwarz</a> in <a href="http://tech.agilitynerd.com/category/webdev.html">webdev</a>
+ | <a href="http://tech.agilitynerd.com/django-migrate-abstract-concrete-base-class.html#disqus_thread">Comments</a></div>
+  <div><p>On my <a class="reference external" href="http://agilitycourses.com">agilitycourses.com</a> I had been modeling three types of dog agility courses using an abstract base class <tt class="docutils literal">Course</tt> with three child classes: <tt class="docutils literal">Box</tt>, <tt class="docutils literal">StarBox</tt>, and <tt class="docutils literal">DoubleBox</tt>. This created three tables in the database prepended with the <a class="reference external" href="http://djangoproject.com">Django</a> application name <tt class="docutils literal">box</tt>: <tt class="docutils literal">box_box</tt>, <tt class="docutils literal">box_starbox</tt>, and <tt class="docutils literal">box_doublebox</tt>. I needed to add a relationship to all three classes from a new table and, rather than creating three separate tables relating to each child table, I decided to convert the <tt class="docutils literal">Course</tt> class to a concrete class/table and relate the new class/table to it instead of each child class. For my purposes the extra join to the child class won't impact performance significantly (if it does I'd move the identity of the type of subclass into a column in the parent <tt class="docutils literal">Course</tt> table and delete the child tables/models).</p>
+<p>I didn't find any examples of this type of migration online so I thought I write down my notes in case they are useful to others.</p>
+<p>This ends up being a schema migration to put columns in place for inserting data into the parent table, a data migration to populate that table and the new many-to-many table(s), and then another schema migration to remove the temporary columns.</p>
+<p>After playing around with a few approaches I found it was easiest to put temporary join ids on the parent class that I could use during the migration and then remove them when I was done. I added these fields to the parent in the <tt class="docutils literal">models.py</tt>:</p>
+<pre class="code python literal-block">
+<span class="n">subclass</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">default</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">subclassid</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">default</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+</pre>
+<p>and removed the <tt class="docutils literal">abstract = True</tt> Meta class attribute from <tt class="docutils literal">Course</tt>.</p>
+<p>I struggled for a while when I found I couldn't control the <tt class="docutils literal">OneToOneField</tt> Django automatically creates from the child classes to the parent. I then saw this <a class="reference external" href="http://stackoverflow.com/a/32997081/457935">StackOverflow answer on a table inheritance question</a> which gave the null/blank field attribute that you'll see I use below.</p>
+<div class="section" id="backup-your-database">
+<h2>Backup Your Database</h2>
+<p>It took me a few attempts to get this right so backups are wise...</p>
+</div>
+<div class="section" id="first-schema-migration">
+<h2>First Schema Migration</h2>
+<p>Now that the models are prepared I created the first database migration adding a default of <tt class="docutils literal"><span class="pre">-1</span></tt> for the foreign key from the existing child tables to their new concrete parent (which I'll remove manually):</p>
+<pre class="code bash literal-block">
+<span class="nv">$ </span>python ./manage.py makemigrations box --settings<span class="o">=</span>dev_settings
+You are trying to add a non-nullable field <span class="s1">'course_ptr'</span> to box without a default<span class="p">;</span> we can<span class="s1">'t do that (the database needs something to populate existing rows).
+Please select a fix:
+ 1) Provide a one-off default now (will be set on all existing rows)
+ 2) Quit, and let me add a default in models.py
+Select an option: 1
+Please enter the default value now, as valid Python
+The datetime and django.utils.timezone modules are available, so you can do e.g. timezone.now()
+&gt;&gt;&gt; -1
+You are trying to add a non-nullable field '</span>course_ptr<span class="s1">' to doublebox without a default; we can'</span>t <span class="k">do</span> that <span class="o">(</span>the database needs something to populate existing rows<span class="o">)</span>.
+Please <span class="k">select</span> a fix:
+ 1<span class="o">)</span> Provide a one-off default now <span class="o">(</span>will be <span class="nb">set </span>on all existing rows<span class="o">)</span>
+ 2<span class="o">)</span> Quit, and <span class="nb">let </span>me add a default in models.py
+Select an option: 1
+Please enter the default value now, as valid Python
+The datetime and django.utils.timezone modules are available, so you can <span class="k">do</span> e.g. timezone.now<span class="o">()</span>
+&gt;&gt;&gt; -1
+You are trying to add a non-nullable field <span class="s1">'course_ptr'</span> to starbox without a default<span class="p">;</span> we can<span class="s1">'t do that (the database needs something to populate existing rows).
+Please select a fix:
+ 1) Provide a one-off default now (will be set on all existing rows)
+ 2) Quit, and let me add a default in models.py
+Select an option: 1
+Please enter the default value now, as valid Python
+The datetime and django.utils.timezone modules are available, so you can do e.g. timezone.now()
+&gt;&gt;&gt; -1
+Migrations for '</span>box<span class="err">'</span>:
+  0004_auto_20151114_1255.py:
+    - Create model Course
+    - Remove field created from box
+    - Remove field generator from box
+    - Remove field id from box
+    - Remove field sequence from box
+    - Remove field short_url from box
+    - Remove field skills from box
+    - Remove field created from doublebox
+    - Remove field generator from doublebox
+    - Remove field id from doublebox
+    - Remove field sequence from doublebox
+    - Remove field short_url from doublebox
+    - Remove field skills from doublebox
+    - Remove field created from starbox
+    - Remove field generator from starbox
+    - Remove field id from starbox
+    - Remove field sequence from starbox
+    - Remove field short_url from starbox
+    - Remove field skills from starbox
+    - Add field course_id to box
+    - Add field course_ptr to box
+    - Add field course_id to doublebox
+    - Add field course_ptr to doublebox
+    - Add field course_id to starbox
+    - Add field course_ptr to starbox
+</pre>
+<p>This automatic migration drops the columns in the subclass tables and with them all the existing data (including keys used in foreign key tables) is lost. But at least I can modify the migration to do what I need for the first migration. The steps will be:</p>
+<ol class="arabic simple">
+<li>Keep the <tt class="docutils literal">CreateModel</tt> of the parent class, <tt class="docutils literal">Course</tt>, table.</li>
+<li>Manually edit the <tt class="docutils literal">AddField</tt> of the <tt class="docutils literal">OneToOneField</tt> on the child classes to keep the existing primary key on the table during the migration. Change them from this:</li>
+</ol>
+<pre class="code python literal-block">
+<span class="n">migrations</span><span class="o">.</span><span class="n">AddField</span><span class="p">(</span>
+    <span class="n">model_name</span><span class="o">=</span><span class="s">'box'</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s">'course_ptr'</span><span class="p">,</span>
+    <span class="n">field</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">OneToOneField</span><span class="p">(</span><span class="n">parent_link</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">auto_created</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">serialize</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="s">'box.Course'</span><span class="p">),</span>
+    <span class="n">preserve_default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+<span class="p">),</span>
+</pre>
+<p>to remove the primary_key, default and add null/blank parameters:</p>
+<pre class="code python literal-block">
+<span class="n">migrations</span><span class="o">.</span><span class="n">AddField</span><span class="p">(</span>
+    <span class="n">model_name</span><span class="o">=</span><span class="s">'box'</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s">'course_ptr'</span><span class="p">,</span>
+    <span class="n">field</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">OneToOneField</span><span class="p">(</span><span class="n">parent_link</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">auto_created</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">serialize</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="s">'box.Course'</span><span class="p">),</span>
+    <span class="n">preserve_default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+<span class="p">),</span>
+</pre>
+<ol class="arabic simple" start="3">
+<li>Delete all the <tt class="docutils literal">RemoveField</tt> entries in the migration. They'll be added in our final migration.</li>
+</ol>
+<p>If you want to see/validate/test the SQL that will be run you can use the <tt class="docutils literal">sqlmigrate</tt> management command (just give it your app name and the number of the migration):</p>
+<pre class="code bash literal-block">
+<span class="nv">$ </span>python ./manage.py sqlmigrate box 0004
+BEGIN<span class="p">;</span>
+CREATE TABLE <span class="s2">&quot;box_course&quot;</span> <span class="o">(</span><span class="s2">&quot;id&quot;</span> serial NOT NULL PRIMARY KEY, <span class="s2">&quot;sequence&quot;</span> varchar<span class="o">(</span>64<span class="o">)</span> NOT NULL, <span class="s2">&quot;short_url&quot;</span> varchar<span class="o">(</span>64<span class="o">)</span> NOT NULL, <span class="s2">&quot;created&quot;</span> timestamp with <span class="nb">time </span>zone NOT NULL, <span class="s2">&quot;generator&quot;</span> varchar<span class="o">(</span>2<span class="o">)</span> NOT NULL, <span class="s2">&quot;subclass&quot;</span> integer NOT NULL, <span class="s2">&quot;subclassid&quot;</span> integer NOT NULL<span class="o">)</span><span class="p">;</span>
+CREATE TABLE <span class="s2">&quot;box_course_skills&quot;</span> <span class="o">(</span><span class="s2">&quot;id&quot;</span> serial NOT NULL PRIMARY KEY, <span class="s2">&quot;course_id&quot;</span> integer NOT NULL, <span class="s2">&quot;skill_id&quot;</span> integer NOT NULL, UNIQUE <span class="o">(</span><span class="s2">&quot;course_id&quot;</span>, <span class="s2">&quot;skill_id&quot;</span><span class="o">))</span><span class="p">;</span>
+ALTER TABLE <span class="s2">&quot;box_box&quot;</span> ADD COLUMN <span class="s2">&quot;course_ptr_id&quot;</span> integer NULL UNIQUE<span class="p">;</span>
+ALTER TABLE <span class="s2">&quot;box_box&quot;</span> ALTER COLUMN <span class="s2">&quot;course_ptr_id&quot;</span> DROP DEFAULT<span class="p">;</span>
+ALTER TABLE <span class="s2">&quot;box_doublebox&quot;</span> ADD COLUMN <span class="s2">&quot;course_ptr_id&quot;</span> integer NULL UNIQUE<span class="p">;</span>
+ALTER TABLE <span class="s2">&quot;box_doublebox&quot;</span> ALTER COLUMN <span class="s2">&quot;course_ptr_id&quot;</span> DROP DEFAULT<span class="p">;</span>
+ALTER TABLE <span class="s2">&quot;box_starbox&quot;</span> ADD COLUMN <span class="s2">&quot;course_ptr_id&quot;</span> integer NULL UNIQUE<span class="p">;</span>
+ALTER TABLE <span class="s2">&quot;box_starbox&quot;</span> ALTER COLUMN <span class="s2">&quot;course_ptr_id&quot;</span> DROP DEFAULT<span class="p">;</span>
+ALTER TABLE <span class="s2">&quot;box_course_skills&quot;</span> ADD CONSTRAINT <span class="s2">&quot;box_course_skills_course_id_4bbae33e06b494d4_fk_box_course_id&quot;</span> FOREIGN KEY <span class="o">(</span><span class="s2">&quot;course_id&quot;</span><span class="o">)</span> REFERENCES <span class="s2">&quot;box_course&quot;</span> <span class="o">(</span><span class="s2">&quot;id&quot;</span><span class="o">)</span> DEFERRABLE INITIALLY DEFERRED<span class="p">;</span>
+ALTER TABLE <span class="s2">&quot;box_course_skills&quot;</span> ADD CONSTRAINT <span class="s2">&quot;box_course_skills_skill_id_35b3dcfd6d387281_fk_box_skill_id&quot;</span> FOREIGN KEY <span class="o">(</span><span class="s2">&quot;skill_id&quot;</span><span class="o">)</span> REFERENCES <span class="s2">&quot;box_skill&quot;</span> <span class="o">(</span><span class="s2">&quot;id&quot;</span><span class="o">)</span> DEFERRABLE INITIALLY DEFERRED<span class="p">;</span>
+CREATE INDEX <span class="s2">&quot;box_course_skills_ea134da7&quot;</span> ON <span class="s2">&quot;box_course_skills&quot;</span> <span class="o">(</span><span class="s2">&quot;course_id&quot;</span><span class="o">)</span><span class="p">;</span>
+CREATE INDEX <span class="s2">&quot;box_course_skills_d38d4c39&quot;</span> ON <span class="s2">&quot;box_course_skills&quot;</span> <span class="o">(</span><span class="s2">&quot;skill_id&quot;</span><span class="o">)</span><span class="p">;</span>
+ALTER TABLE <span class="s2">&quot;box_box&quot;</span> ADD CONSTRAINT <span class="s2">&quot;box_box_course_ptr_id_9f73cfe60a5d542_fk_box_course_id&quot;</span> FOREIGN KEY <span class="o">(</span><span class="s2">&quot;course_ptr_id&quot;</span><span class="o">)</span> REFERENCES <span class="s2">&quot;box_course&quot;</span> <span class="o">(</span><span class="s2">&quot;id&quot;</span><span class="o">)</span> DEFERRABLE INITIALLY DEFERRED<span class="p">;</span>
+ALTER TABLE <span class="s2">&quot;box_doublebox&quot;</span> ADD CONSTRAINT <span class="s2">&quot;box_doublebox_course_ptr_id_6b112382d489a445_fk_box_course_id&quot;</span> FOREIGN KEY <span class="o">(</span><span class="s2">&quot;course_ptr_id&quot;</span><span class="o">)</span> REFERENCES <span class="s2">&quot;box_course&quot;</span> <span class="o">(</span><span class="s2">&quot;id&quot;</span><span class="o">)</span> DEFERRABLE INITIALLY DEFERRED<span class="p">;</span>
+ALTER TABLE <span class="s2">&quot;box_starbox&quot;</span> ADD CONSTRAINT <span class="s2">&quot;box_starbox_course_ptr_id_25fd8909f85eb93a_fk_box_course_id&quot;</span> FOREIGN KEY <span class="o">(</span><span class="s2">&quot;course_ptr_id&quot;</span><span class="o">)</span> REFERENCES <span class="s2">&quot;box_course&quot;</span> <span class="o">(</span><span class="s2">&quot;id&quot;</span><span class="o">)</span> DEFERRABLE INITIALLY DEFERRED<span class="p">;</span>
+
+COMMIT<span class="p">;</span>
+</pre>
+<p>If you are happy then save and run the migration:</p>
+<pre class="code bash literal-block">
+<span class="nv">$ </span>python ./manage.py python migrate box
+</pre>
+</div>
+<div class="section" id="data-migration">
+<h2>Data Migration</h2>
+<p>I decided to use SQL (via <a class="reference external" href="https://docs.djangoproject.com/en/1.8/ref/migration-operations/#runsql">RunSQL</a> ) for the data migration since it was easier/faster than instantiating each Django model instance as part of the migration. I didn't write reverse migrations since I won't be needing them.</p>
+<p>Here's my approach:</p>
+<ol class="arabic simple">
+<li>Copy subclass rows into parent <tt class="docutils literal">course</tt> table with the <tt class="docutils literal">subclass</tt> column set to a unique value for the subclass (just used a number for each subclass: 1, 2 &amp; 3) and <tt class="docutils literal">subclassid</tt> set to each the child table's <tt class="docutils literal">id</tt> (primary key) value. Together they are a composite key that will be used to tie the parent records back to the child records and their many-to-many relationships.</li>
+<li>Update the subclass <tt class="docutils literal">course_ptr</tt> foreign key column with the primary key id of the <tt class="docutils literal">course</tt> table rows having the subclass's id and subclass number value.</li>
+<li>Insert subclass's many-to-many table data into the corresponding many-to-many parent table.</li>
+</ol>
+<p>Create an empty migration:</p>
+<pre class="code bash literal-block">
+<span class="nv">$ </span>python manage.py makemigrations --empty box
+</pre>
+<p>Then add the migration queries to it (repeat the following for each of the subclasses giving each a different number):</p>
+<pre class="code python literal-block">
+<span class="n">operations</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c"># insert data from subclass into parent class with subclass 'number' and primary key/id</span>
+    <span class="n">migrations</span><span class="o">.</span><span class="n">RunSQL</span><span class="p">(</span><span class="s">&quot;&quot;&quot;INSERT INTO box_course (sequence, short_url, created, generator, subclass, subclassid)
+                      SELECT sequence, short_url, created, generator, 1, id
+                      FROM box_box;&quot;&quot;&quot;</span>
+
+    <span class="p">),</span>
+    <span class="c"># update subclass primary key to point to parent class (notice composite key values):</span>
+    <span class="n">migrations</span><span class="o">.</span><span class="n">RunSQL</span><span class="p">(</span><span class="s">&quot;UPDATE box_box box SET course_ptr_id=course.id FROM box_course course WHERE course.subclassid=box.id AND course.subclass=1;&quot;</span>
+    <span class="p">),</span>
+    <span class="c"># insert child's many-to-many foreign key references into it's parent's many-to-many table</span>
+    <span class="n">migrations</span><span class="o">.</span><span class="n">RunSQL</span><span class="p">(</span><span class="s">&quot;&quot;&quot;INSERT INTO box_course_skills (course_id, skill_id)
+                      SELECT box.course_ptr_id, skills.id
+                      FROM box_box box JOIN box_box_skills skills
+                      ON box.id = skills.box_id&quot;&quot;&quot;</span>
+    <span class="p">),</span>
+<span class="p">]</span>
+</pre>
+</div>
+<div class="section" id="final-schema-migration">
+<h2>Final Schema Migration</h2>
+<p>Then it is time to edit the <tt class="docutils literal">models.py</tt> file and remove the temporary members/fields in the parent class: <tt class="docutils literal">subclass</tt> and <tt class="docutils literal">subclassid</tt>. Then create the schema migration which will drop those columns and the migrated columns from the child tables:</p>
+<pre class="code bash literal-block">
+<span class="nv">$ </span>python manage.py makemigrations box
+  You are trying to add a non-nullable field <span class="s1">'course_ptr'</span> to doublebox without a default<span class="p">;</span> we can<span class="s1">'t do that (the database needs something to populate existing rows).
+  Please select a fix:
+   1) Provide a one-off default now (will be set on all existing rows)
+   2) Quit, and let me add a default in models.py
+  Select an option: 1
+  Please enter the default value now, as valid Python
+  The datetime and django.utils.timezone modules are available, so you can do e.g. timezone.now()
+  &gt;&gt;&gt; -1
+  You are trying to add a non-nullable field '</span>course_ptr<span class="s1">' to starbox without a default; we can'</span>t <span class="k">do</span> that <span class="o">(</span>the database needs something to populate existing rows<span class="o">)</span>.
+  Please <span class="k">select</span> a fix:
+   1<span class="o">)</span> Provide a one-off default now <span class="o">(</span>will be <span class="nb">set </span>on all existing rows<span class="o">)</span>
+   2<span class="o">)</span> Quit, and <span class="nb">let </span>me add a default in models.py
+  Select an option: 1
+  Please enter the default value now, as valid Python
+  The datetime and django.utils.timezone modules are available, so you can <span class="k">do</span> e.g. timezone.now<span class="o">()</span>
+  &gt;&gt;&gt; -1
+  You are trying to change the nullable field <span class="s1">'course_ptr'</span> on box to non-nullable without a default<span class="p">;</span> we can<span class="s1">'t do that (the database needs something to populate existing rows).
+  Please select a fix:
+   1) Provide a one-off default now (will be set on all existing rows)
+   2) Ignore for now, and let me handle existing rows with NULL myself (e.g. adding a RunPython or RunSQL operation in the new migration file before the AlterField operation)
+   3) Quit, and let me add a default in models.py
+  Select an option: 1
+  Please enter the default value now, as valid Python
+  The datetime and django.utils.timezone modules are available, so you can do e.g. timezone.now()
+  &gt;&gt;&gt; -1
+  Migrations for '</span>box<span class="err">'</span>:
+    0006_auto_20151114_1708.py:
+      - Remove field created from box
+      - Remove field generator from box
+      - Remove field id from box
+      - Remove field sequence from box
+      - Remove field short_url from box
+      - Remove field skills from box
+      - Remove field subclass from course
+      - Remove field subclassid from course
+      - Remove field created from doublebox
+      - Remove field generator from doublebox
+      - Remove field id from doublebox
+      - Remove field sequence from doublebox
+      - Remove field short_url from doublebox
+      - Remove field skills from doublebox
+      - Remove field created from starbox
+      - Remove field generator from starbox
+      - Remove field id from starbox
+      - Remove field sequence from starbox
+      - Remove field short_url from starbox
+      - Remove field skills from starbox
+      - Alter field course_ptr to doublebox
+      - Alter field course_ptr to starbox
+      - Alter field course_ptr on box
+</pre>
+<p>You see management command detects that the child fields still haven't been deleted and that the default value for inserts of the children's parent reference still doesn't exist. Lastly the migration converts the <tt class="docutils literal">OneToOne</tt> field back to a primary key.</p>
+<p>Then migrate a final time:</p>
+<pre class="code bash literal-block">
+<span class="nv">$ </span>python ./manage.py migrate box
+</pre>
+</div>
+<div class="section" id="wrap-up">
+<h2>Wrap Up</h2>
+<p>I hope this helps if you need this type of migration. It may look a little complicated at first, but all it amounts to is:</p>
+<p>Step 1. Remove abstract inheritance and add temporary fields to the parent class for identifying each subclass's records in the parent table when migrating the data.</p>
+<p>Step 2. Migrate the child data to the parent class with the subclass composite keys. Use new parent primary keys to migrate tables with foreign key that have moved to the parent class.</p>
+<p>Step 3. Drop columns used in migration on the parent and child tables.</p>
+<p>Let me know if you've found other/better solutions!</p>
+</div>
+</div>
+  <div>
+    <h2>Comments</h2>
+    <div id="disqus_thread"></div>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  </div>
+</div>	
+            </div><!--/span-->
+
+	    <div class="span3">
+<div class="author">
+<h4>About</h4>
+<div class="author-about">
+  <p class="about">I'm Steve Schwarz a Chicago software developer and dog agility enthusiast. <a href="/pages/about.html">more</a></p>
+</div>
+</div>
+<div class="well sidebar-nav">
+  <ul class="nav nav-list">
+    <li class="nav-header">Blogroll</li>
+    <li><a href="http://agilitynerd.com/blog/">agilitynerd.com</a></li>
+    <li><a href="http://agilitycourses.com/">agilitycourses.com</a></li>
+    <li><a href="http://googility.com/">googility.com</a></li>
+  </ul>
+  <ul class="nav nav-list social">
+    <li class="nav-header">Elsewhere</li>
+    <li><a href="http://www.linkedin.com/profile/view?id=10135443">Linked in</a></li>
+    <li><a href="https://github.com/saschwarz">GitHub</a></li>
+    <li><a href="https://twitter.com/steveaschwarz">Twitter</a></li>
+  </ul>
+</div><!--/.well -->
+ <script>
+  (function() {
+    var cx = '001042720131993941673:szhtogqckem';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+        '//www.google.com/cse/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+<div class="search">
+    <gcse:search></gcse:search>
+</div>
+            </div><!--/span-->
+
+	  </div>
+	</div>
+      </div><!--/row-->
+
+      <hr>
+
+      <footer>
+        <p>Powered by <a href="http://blog.getpelican.com/">Pelican</a></p>
+	<p>&copy; Steve Schwarz 2015</p>
+      </footer>
+
+    </div><!--/.fluid-container-->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="http://tech.agilitynerd.com/theme/js/jquery-1.7.2.min.js"><\/script>')</script>
+      <script src="http://tech.agilitynerd.com/theme/bootstrap/js/bootstrap.min.js"></script>
+      <script src="http://tech.agilitynerd.com/theme/js/modernizr-2.5.3-respond-1.1.0.min.js"></script>
+
+  </body>
+</html>

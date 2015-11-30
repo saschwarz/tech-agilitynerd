@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:8000/feeds/tag.whoosh.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2010-08-10T03:41:00-05:00</updated><entry><title>Haystack Search Result Ordering and Pre-Rendering Results</title><link href="http://tech.agilitynerd.com/haystack-search-result-ordering-and-pre-rende.html" rel="alternate"></link><updated>2010-08-10T03:41:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-08-10:haystack-search-result-ordering-and-pre-rende.html</id><summary type="html">&lt;p&gt;I use &lt;a class="reference external" href="http://haystacksearch.org/"&gt;Haystack&lt;/a&gt; and the Python &lt;a class="reference external" href="http://whoosh.ca/"&gt;Whoosh&lt;/a&gt; project to provide search
+over ~3400 articles in my &lt;a class="reference external" href="http://googility.com"&gt;Googility.com&lt;/a&gt; database. I had originally
+implemented the search in the &amp;quot;simplest way that works&amp;quot;. I was making
+some other enhancement to Googility and noticed the search result page
+had two undesirable&amp;nbsp; behaviors:&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;The ordering of results was basically random for all matching
+articles. For the domain of magazine article search having a bias
+toward the most recent publications would be more desirable.&lt;/li&gt;
+&lt;li&gt;Looking at the django-debug-toolbar output each element in the search
+results was hitting the database twice (once for the Article instance
+and again for its corresponding Periodical). So a single result page
+was making as many as 60 database selects.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Haystack provides mechanisms to help with both of these issues.&lt;/p&gt;
+&lt;p&gt;Imposing an Order on the SearchQuerySet&lt;/p&gt;
+&lt;p&gt;Haystack models search using an API based on Django's QuerySet. The
+only thing to remember is it performs its queries over the Haystack
+SearchIndex subclass(es) you create instead of over the Django ORM. So
+you define a SearchIndex subclass that contains the data from the
+application's model overwhich you'd like to search. You can also define
+additional fields that can be used to modify the results of the query.
+Here is my magazine Article search index:&lt;/p&gt;
+&lt;pre class="code python literal-block"&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;haystack.sites&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;site&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;haystack&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;indexes&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;periodicals.models&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Article&lt;/span&gt;
+
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;ArticleIndex&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;indexes&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;SearchIndex&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;text&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;indexes&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;CharField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;document&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;use_template&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;pub_date&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;indexes&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DateTimeField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;model_attr&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'issue__pub_date'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;site&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;register&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Article&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ArticleIndex&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="sb"&gt;``&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;The text field contains the &amp;quot;document&amp;quot; over which the search engine
+(Whoosh) will actually perform the search. I'm using the template
+feature that allows me to use Django templates to format the data
+presented to the search engine.&lt;/p&gt;
+&lt;p&gt;I added the pub_date field to the index to allow the matching search
+results to be ordered by the pub_date field. The 'issue__pub_date'
+syntax mirrors the Django QuerySet syntax and means extract the
+&amp;quot;pub_date&amp;quot; attribute of the Article's &amp;quot;issue&amp;quot; attribute (it joins
+Article to Publication and get's the Publication's published date).&lt;/p&gt;
+&lt;p&gt;Then the urls.py is modified to change the SearchQuerySet passed to
+the default haystacksearch view to order by the ArticleIndex's pub_date
+attribute:&lt;/p&gt;
+&lt;pre class="code python literal-block"&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;haystack.views&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;SearchView&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;haystack.query&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;SearchQuerySet&lt;/span&gt;
+
+&lt;span class="c"&gt;# query results with most recent publication date first&lt;/span&gt;
+&lt;span class="n"&gt;sqs&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;SearchQuerySet&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;order_by&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;'-pub_date'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;urlpatterns&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;patterns&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;''&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                       &lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;r'^search/'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                           &lt;span class="n"&gt;SearchView&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+                               &lt;span class="n"&gt;load_all&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                               &lt;span class="n"&gt;searchqueryset&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;sqs&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                               &lt;span class="p"&gt;),&lt;/span&gt;
+                           &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'haystack_search'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                           &lt;span class="p"&gt;),&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;snip&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="sb"&gt;``&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;Pre-Rendering Result HTML&lt;/p&gt;
+&lt;p&gt;Since I have only a few thousand records I decided to follow the
+&lt;a class="reference external" href="http://docs.haystacksearch.org/dev/best_practices.html#avoid-hitting-the-database"&gt;Haystack Best Practices for Not Hitting the Database&lt;/a&gt;. This solution
+trades space in the Whoosh index files by generating the HTML that will
+be displayed when each article matches along with the data used by
+Whoosh to match articles to search keywords. The changes were pretty
+simple. In the ArticleIndex:&lt;/p&gt;
+&lt;pre class="code python literal-block"&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;haystack.sites&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;site&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;haystack&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;indexes&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;periodicals.models&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Article&lt;/span&gt;
+
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;ArticleIndex&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;indexes&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;SearchIndex&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;text&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;indexes&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;CharField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;document&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;use_template&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;pub_date&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;indexes&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DateTimeField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;model_attr&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'issue__pub_date'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="c"&gt;# pregenerate the search result HTML for an Article&lt;/span&gt;
+    &lt;span class="c"&gt;# this avoids any database hits when results are processed&lt;/span&gt;
+    &lt;span class="c"&gt;# at the cost of storing all the data in the Haystack index&lt;/span&gt;
+    &lt;span class="n"&gt;result_text&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;indexes&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;CharField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;indexed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;use_template&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="n"&gt;site&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;register&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Article&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ArticleIndex&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="sb"&gt;``&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;The use_template keyword requires you to create a Django template file
+that is used during index creation to build the HTML that will be
+displayed. The only peculiarity I found was figuring out where the
+template should live. On my system it was at
+templates/search/indexes/periodicals/article_result_text.txt. I
+understand the periodicals/article_result_text part but I haven't
+looked into where the search/indexes is generated from. I imagine a
+reverse() to find the url for the view and &amp;quot;indexes&amp;quot; is appended to
+that...&lt;/p&gt;
+&lt;p&gt;The final change is the template used to display the search results.
+In order to not hit the database the object list generated by the
+haystack SearchView is placed into the context used by the template and
+only the result_text attribute should be accessed:&lt;/p&gt;
+&lt;pre class="code xml literal-block"&gt;
+{% if page.object_list %}
+&lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;search-results-title&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;Results &lt;span class="nt"&gt;&amp;lt;b&amp;gt;&lt;/span&gt;{{page.start_index}}&lt;span class="nt"&gt;&amp;lt;/b&amp;gt;&lt;/span&gt;  - &lt;span class="nt"&gt;&amp;lt;b&amp;gt;&lt;/span&gt;{{page.end_index}}&lt;span class="nt"&gt;&amp;lt;/b&amp;gt;&lt;/span&gt; for &lt;span class="nt"&gt;&amp;lt;b&amp;gt;&lt;/span&gt;{{query}}&lt;span class="nt"&gt;&amp;lt;/b&amp;gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;search-results-list&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+{% for result in page.object_list %}
+  {{result.result_text|safe}}
+{% endfor %}
+&lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;pagination&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;span&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;step-links&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+      {% if page.has_previous %}
+          previous
+      {% endif %}
+      &lt;span class="nt"&gt;&amp;lt;span&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;current&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+          Page {{ page.number }} of {{ page.paginator.num_pages }}
+      &lt;span class="nt"&gt;&amp;lt;/span&amp;gt;&lt;/span&gt;
+      {% if page.has_next %}
+          next
+      {% endif %}
+    &lt;span class="nt"&gt;&amp;lt;/span&amp;gt;&lt;/span&gt;
+  &lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&amp;lt;/div&amp;gt;&lt;/span&gt;{% else %}&lt;span class="nt"&gt;&amp;lt;h2&amp;gt;&lt;/span&gt;No matching articles found.&lt;span class="nt"&gt;&amp;lt;/h2&amp;gt;&lt;/span&gt;
+{% endif %}
+&lt;/pre&gt;
+&lt;p&gt;The actual result is placed in the template via
+{{result.result_text|safe}} the safe filter is required since the HTML
+doesn't need to be escaped again - it was escaped by Django when it was
+placed into the SearchIndex.&lt;/p&gt;
+&lt;p&gt;So now my search results are in reverse chronological order and they
+render using only 3 database queries and at least 10x faster than
+before.&lt;/p&gt;
+</summary><category term="django"></category><category term="haystack"></category><category term="search"></category><category term="whoosh"></category></entry></feed>

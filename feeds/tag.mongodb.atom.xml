@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:8000/feeds/tag.mongodb.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2010-05-17T10:48:00-05:00</updated><entry><title>Blosxom hitcounter, favorites and lastread plugins for MongoDB</title><link href="http://tech.agilitynerd.com/blosxom-hitcounter-favorites-and-lastread-plugins-for-mongodb.html" rel="alternate"></link><updated>2010-05-17T10:48:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-05-17:blosxom-hitcounter-favorites-and-lastread-plugins-for-mongodb.html</id><summary type="html">&lt;p&gt;When I wrote my plugins for tracking the visits to each page
+(&lt;tt class="docutils literal"&gt;hitcounter&lt;/tt&gt;), presenting the counts by popularity (&lt;tt class="docutils literal"&gt;favorites&lt;/tt&gt;), and
+displaying the most recently read posts (&lt;tt class="docutils literal"&gt;lastread&lt;/tt&gt;) I used Perl's
+&lt;tt class="docutils literal"&gt;Storable&lt;/tt&gt; module as a simple way to serialize the data structure to and
+from disk. At the time I wasn't too concerned with performance, my blog
+&lt;a class="reference external" href="http://agilitynerd.com"&gt;agilitynerd.com&lt;/a&gt; didn't suffer under the load of the disk reads/writes.&lt;/p&gt;
+&lt;p&gt;But periodically I get DOS'd and my website becomes unresponsive. Not
+too suprising since Blosxom has to run as a plain CGI script; but I'm
+certain the disk writes of these plugins weren't helping. Occasionally
+the Storable on disk would become corrupted which would take down the
+site (not enough exception handling in the plugins).&lt;/p&gt;
+&lt;p&gt;I decided to go with &lt;a class="reference external" href="http://mongodb.org"&gt;Mongo&lt;/a&gt; as the backing data store to remove the
+disk reads/write from the cgi script. It supports an increment operation
+(ala memcached) so multiple threads can update the hit count and MongoDB
+will &amp;quot;do the right thing&amp;quot;. It also has a query API that made rewriting
+favorites and lastread trivial.&lt;/p&gt;
+&lt;div style="float:right;padding 20px;"&gt;&lt;p&gt;&lt;img alt="Poweredmongodbgreen75" src="/images/2010/05/9077760-PoweredMongoDBgreen75.png" /&gt;&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;I haven't tested the performance but my website, especially the
+favorites page, seems faster. Once I write a JavaScript client to update
+the hitcounts I'll be able to move the website to a fully cached
+deployment while still tracking hits which should make the load of
+running the agilitynerd blog very low.&lt;/p&gt;
+&lt;p&gt;I've hosted the plugins on github:
+&lt;a class="reference external" href="http://github.com/saschwarz/blosxom-mongodb-plugins"&gt;http://github.com/saschwarz/blosxom-mongodb-plugins&lt;/a&gt; The mongohitcounter
+plugin can be configured to automatically import existing count data
+from the hitcounter plugin's Storable. So conversion to the new plugins
+just requires updating the template's variables to the new plugin names.&lt;/p&gt;
+</summary><category term="blosxom"></category><category term="mongodb"></category><category term="perl"></category><category term="webdevelopment"></category></entry></feed>

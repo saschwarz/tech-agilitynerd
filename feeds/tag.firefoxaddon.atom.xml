@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:8000/feeds/tag.firefoxaddon.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2010-07-25T16:36:00-05:00</updated><entry><title>Firediff: track and save CSS edits in Firebug</title><link href="http://tech.agilitynerd.com/firediff-track-and-save-css-edits-in-firebug.html" rel="alternate"></link><updated>2010-07-25T16:36:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-07-25:firediff-track-and-save-css-edits-in-firebug.html</id><summary type="html">&lt;p&gt;When I'm making fiddly changes to a web page I like to tweak the CSS
+using the Firefox Firebug plugin. It has the advantage of letting you
+try changes quickly and see the effect. The downside has always been
+that you had to then change the source CSS file to include your changes.
+Which increases the risk that you forget to include a change.&lt;/p&gt;
+&lt;p&gt;I was thinking about that recently when I changed the color scheme on my
+AgilityNerd blog and went searching for a way to at least identify the
+changes. Turns out there is a nice plugin that provides exactly that
+functionality. The &lt;a class="reference external" href="https://addons.mozilla.org/en-US/firefox/addon/13179/"&gt;Firediff plugin&lt;/a&gt; not only tracks changes to the CSS
+it also allows you to save those changes for overwriting or diff'ing
+into you CSS file(s).&lt;/p&gt;
+&lt;p&gt;Like other firebug related extensions you need to enable this feature
+per page by clicking on the arrow next to the new Changes tab.&lt;/p&gt;
+&lt;p&gt;Here is a screenshot of the plugin in action:&lt;/p&gt;
+&lt;div class="thumbnail"&gt;&lt;p&gt;&lt;img alt="Firediff" src="/images/2010/07/12587332-firediff.png" /&gt;&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;You can see I've changed the line-height attribute - it shows the
+previous and final values. A right mouse menu lets you save those
+changes to a file or revert them.&lt;/p&gt;
+&lt;p&gt;Another feature that can be configured in the Changes menu is whether to
+track changes made by other JavaScript to the page. This is an
+interesting feature if you were wondering how a JQuery or other
+JavaScript modified the page for a given effect.&lt;/p&gt;
+&lt;p&gt;This is a great plugin that I'll continue to use regularly.&lt;/p&gt;
+</summary><category term="css"></category><category term="firefoxaddon"></category><category term="webdevelopment"></category></entry><entry><title>Firefox Web Developer Add-on AJAX NON-Caching Problem</title><link href="http://tech.agilitynerd.com/firefox-web-developer-add-on-ajax-non-caching-1.html" rel="alternate"></link><updated>2008-12-30T04:08:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2008-12-30:firefox-web-developer-add-on-ajax-non-caching-1.html</id><summary type="html">&lt;p&gt;I ran across some &amp;quot;interesting&amp;quot; behavior of the Firefox &lt;a class="reference external" href="https://addons.mozilla.org/en-US/firefox/addon/60"&gt;Web Developer
+Add-on&lt;/a&gt; today. When editing JavaScript code I normally leave Web
+Developer set to &amp;quot;disable cache&amp;quot;. This causes all images and,
+significantly for my purposes, the JavaScript files to be downloaded
+from the server on every page request. But I ran into a unexpected
+problem with this setting that cost me a couple hours today.&lt;/p&gt;
+&lt;p&gt;I was working on a legacy page today that uses an AJAX POST and the
+response is sent to an IFRAME. The POST was successful, the results were
+valid and present in the IFRAME. The problem was as soon as the content
+of the IFRAME was eval'd() a GET was being sent to the server for the
+URL of the page. This GET was a problem because it had a side effect of
+clearing the session data (which contained the POSTed AJAX data) for the
+current page. So when the page's FORM was finally POSTed the server
+couldn't find the data in the session.&lt;/p&gt;
+&lt;p&gt;After trying numerous code changes including disabling event handlers
+and events, it finally occurred to me that the cache disable feature of
+the add-on might be causing the unexpected GET. Sure enough, once I
+re-enabled caching the GET stopped being sent.&lt;/p&gt;
+&lt;p&gt;It was strange that the &lt;tt class="docutils literal"&gt;eval()&lt;/tt&gt; caused the GET to be requested. All
+the other code around processing the IFRAME's data didn't trigger it,
+only the eval. Strange but true.&lt;/p&gt;
+&lt;p&gt;So just something to keep in mind when strange behavior occurs on AJAX
+pages where session data is being used.&lt;/p&gt;
+</summary><category term="ajax"></category><category term="firefox"></category><category term="firefoxaddon"></category><category term="webdevelopment"></category></entry></feed>

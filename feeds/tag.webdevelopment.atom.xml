@@ -1,0 +1,473 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:8000/feeds/tag.webdevelopment.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2013-12-15T17:00:00-06:00</updated><entry><title>Integrated Coverage Analysis with Coveralls</title><link href="http://tech.agilitynerd.com/coverage-analysis-with-coveralls.html" rel="alternate"></link><updated>2013-12-15T17:00:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2013-12-15:coverage-analysis-with-coveralls.html</id><summary type="html">&lt;p&gt;When I converted &lt;a class="reference external" href="https://github.com/saschwarz/django-periodicals"&gt;django-periodicals&lt;/a&gt; to use &lt;a class="reference external" href="http://tech.agilitynerd.com/cookiecutter-django-do-the-right-thing.html"&gt;cookiecutter-djangopackage&lt;/a&gt; I was running &lt;a class="reference external" href="https://pypi.python.org/pypi/coverage"&gt;coverage.py&lt;/a&gt; in my &lt;a class="reference external" href="https://travis-ci.org"&gt;Travis-CI&lt;/a&gt; &lt;tt class="docutils literal"&gt;.travis.yml&lt;/tt&gt; to report the coverage results to the command line log. The coverage results were interesting but didn't really alter my development practice much.&lt;/p&gt;
+&lt;p&gt;Over the years I've had differing options about coverage testing/analysis. Like any programming metric you can &amp;quot;cook the books&amp;quot; and pump up the metric while not actually improving the quality or maintainability of the code being measured.  Minimally coverage testing can uncover unexercised corners of the code, especially error handling code. Nothing is worse than crashing an application with faulty error handling code.&lt;/p&gt;
+&lt;p&gt;&lt;tt class="docutils literal"&gt;coverage.py&lt;/tt&gt; is trivial to run and it generates reports in various formats to make finding unexercised code simple. It is so easy there is no reason not to run it.&lt;/p&gt;
+&lt;p&gt;So my local coverage testing showed 7% of my code wasn't exercised - &amp;quot;good enough&amp;quot; right?&lt;/p&gt;
+&lt;p&gt;Then I discovered &lt;a class="reference external" href="https://coveralls.io/"&gt;Coveralls&lt;/a&gt;. Coveralls integrates with Travis and collects coverage data for each buid and displays it on their website. It was &lt;a class="reference external" href="https://github.com/coagulant/coveralls-python#usage-travis-ci"&gt;trivial to setup&lt;/a&gt;:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Create a login on Coverall and enable your Travis-CI project.&lt;/li&gt;
+&lt;li&gt;Add &lt;tt class="docutils literal"&gt;coveralls&lt;/tt&gt; to the project's test &lt;tt class="docutils literal"&gt;requirements.txt&lt;/tt&gt;.&lt;/li&gt;
+&lt;li&gt;Then add &lt;tt class="docutils literal"&gt;after_success: coveralls&lt;/tt&gt; to &lt;tt class="docutils literal"&gt;.travis.yml&lt;/tt&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The next time the project is tested on Travis-CI the coverage results appear on coveralls.io. You can view the untested code in each file and Coveralls will track the increase/decrease of coverage in each file each time you check-in/test.&lt;/p&gt;
+&lt;p&gt;They also have badges showing the percent coverage that you can embed in your reStructuredText documentation on GitHub and ReadTheDocs. And that's the insidious part of integrated open source development...&lt;/p&gt;
+&lt;p&gt;The &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;cookiecutter-djangoproject&lt;/span&gt;&lt;/tt&gt; produces an application GitHub page that shows the Travis-CI test status and the PyPi package version. With the addition of the Coveralls badge it can now show the coverage percentage. That turned out to be a little bit of programming peer group pressure that made 93% coverge no longer &amp;quot;good enough&amp;quot;!&lt;/p&gt;
+&lt;p&gt;So a few minutes and a few tests later I had tests that did exercise the full code base including error handling. That gave me a happy little green badge that displayed &amp;quot;coverage 100%&amp;quot;.&lt;/p&gt;
+&lt;p&gt;So not only is Coveralls fully integrated with the GitHub - CI - Open Source infrastructure, and dead simple to use, it got this developer to push into all the corners of his code before releasing. And I now have the peace of mind that Travis &lt;em&gt;and&lt;/em&gt; Coveralls will be watching my back.&lt;/p&gt;
+&lt;a class="reference external image-reference" href="http://badge.fury.io/py/django-periodicals"&gt;&lt;img alt="badge image" src="https://badge.fury.io/py/django-periodicals.png" /&gt;&lt;/a&gt;
+&lt;a class="reference external image-reference" href="https://travis-ci.org/saschwarz/django-periodicals"&gt;&lt;img alt="badge image for travis" src="https://travis-ci.org/saschwarz/django-periodicals.png?branch=master" /&gt;&lt;/a&gt;
+&lt;a class="reference external image-reference" href="https://coveralls.io/r/saschwarz/django-periodicals?branch=master"&gt;&lt;img alt="badge image for coveralls" src="https://coveralls.io/repos/saschwarz/django-periodicals/badge.png?branch=master" /&gt;&lt;/a&gt;
+</summary><category term="coverage"></category><category term="webdevelopment"></category><category term="github"></category><category term="django"></category><category term="testing"></category><category term="travis"></category><category term="python"></category></entry><entry><title>cookiecutter-djangopackage - Do the Right Thing</title><link href="http://tech.agilitynerd.com/cookiecutter-django-do-the-right-thing.html" rel="alternate"></link><updated>2013-12-09T23:02:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2013-12-09:cookiecutter-django-do-the-right-thing.html</id><summary type="html">&lt;p&gt;In preparation for upgrading and enhancing &lt;a class="reference external" href="http://googility.com"&gt;Googility.com&lt;/a&gt; I've started breaking out reusable applications, upgrading them, and open sourcing the code on GitHub. I wanted to follow development best practices and create high quality applications including these features:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;A full set of tests.&lt;/li&gt;
+&lt;li&gt;Near 100% code coverage.&lt;/li&gt;
+&lt;li&gt;Continuous Integration running on each check-in via &lt;a class="reference external" href="https://travis-ci.org/"&gt;Travis CI&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Documentation in Sphinx on &lt;a class="reference external" href="https://readthedocs.org/"&gt;Read the Docs (RTD)&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Packaging/versioning compatible with &lt;a class="reference external" href="https://pypi.python.org/pypi"&gt;PyPi&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Packaging building/testing on multiple python versions using virtualenvs via &lt;a class="reference external" href="http://tox.readthedocs.org/en/latest/"&gt;tox&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I had started researching each aspect and was getting a little frustrated that there wasn't a best practice for tying everthing together. Then I came across &lt;a class="reference external" href="https://twitter.com/audreyr"&gt;Audrey Roy's&lt;/a&gt; &lt;a class="reference external" href="https://github.com/audreyr/cookiecutter"&gt;cookiecutter&lt;/a&gt; and &lt;a class="reference external" href="http://pydanny.com/"&gt;Daniel Greenfeld's&lt;/a&gt; &lt;a class="reference external" href="https://github.com/pydanny/cookiecutter-djangopackage"&gt;cookiecutter-djangopackage&lt;/a&gt;. &lt;tt class="docutils literal"&gt;cookiecutter&lt;/tt&gt; is a utility to create project directory structures and files from the command line. &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;cookiecutter-djangopackage&lt;/span&gt;&lt;/tt&gt; is a template for creating a reusable Django application.&lt;/p&gt;
+&lt;p&gt;Yes there are other similar projects, and Django provides &lt;tt class="docutils literal"&gt;startproject&lt;/tt&gt; and &lt;tt class="docutils literal"&gt;startapp&lt;/tt&gt; commands that can take template arguments. But since I've never used Travis, RTD or tox I really wanted to leverage more experienced developers' knowledge so I could set them up in a &amp;quot;smart&amp;quot; way.&lt;/p&gt;
+&lt;p&gt;That's what I liked about &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;cookiecutter-djangopackage&lt;/span&gt;&lt;/tt&gt; it came with sane defaults that worked out of the box &lt;a class="footnote-reference" href="#id2" id="id1"&gt;[1]&lt;/a&gt; and did smart stuff like wiring the version from the package's &lt;tt class="docutils literal"&gt;__init__.py&lt;/tt&gt; in to the documentation and &lt;tt class="docutils literal"&gt;setup.py&lt;/tt&gt;. The &lt;tt class="docutils literal"&gt;requirements.txt&lt;/tt&gt; used by &lt;tt class="docutils literal"&gt;pip&lt;/tt&gt; is wired in to &lt;tt class="docutils literal"&gt;tox&lt;/tt&gt; and the &lt;tt class="docutils literal"&gt;README.rst&lt;/tt&gt; is used in the &lt;tt class="docutils literal"&gt;setup.py&lt;/tt&gt; and included in the Spinx docs.&lt;/p&gt;
+&lt;p&gt;And there are other integrations that make it easy to release a professional Django application. In fact that's my long winded point - it makes it hard to not do the right thing! I might have skipped using one or more of these support technologies, but &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;cookiecutter-djangopackage&lt;/span&gt;&lt;/tt&gt; made it easy for me to use them and focus on writing code, tests and documentation.&lt;/p&gt;
+&lt;p&gt;So that is what I want to stress: with &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;cookiecutter-djangopackage&lt;/span&gt;&lt;/tt&gt; you &lt;em&gt;can&lt;/em&gt; create a packaged application, whose code is tested on multiple python/Django versions, tested for installation, installable via PyPi and nicely documented without much additional effort.&lt;/p&gt;
+&lt;p&gt;So take look at my nearly released &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;django-periodicals&lt;/span&gt;&lt;/tt&gt; application to see how it all works on &lt;a class="reference external" href="https://github.com/saschwarz/django-periodicals"&gt;GitHub&lt;/a&gt;, &lt;a class="reference external" href="http://django-periodicals.readthedocs.org/en/latest/"&gt;RTD&lt;/a&gt; and &lt;a class="reference external" href="https://travis-ci.org/saschwarz/django-periodicals"&gt;Travis&lt;/a&gt;.&lt;/p&gt;
+&lt;!-- rubric: Footnotes --&gt;
+&lt;table class="docutils footnote" frame="void" id="id2" rules="none"&gt;
+&lt;colgroup&gt;&lt;col class="label" /&gt;&lt;col /&gt;&lt;/colgroup&gt;
+&lt;tbody valign="top"&gt;
+&lt;tr&gt;&lt;td class="label"&gt;&lt;a class="fn-backref" href="#id1"&gt;[1]&lt;/a&gt;&lt;/td&gt;&lt;td&gt;I submitted a very minor &lt;a class="reference external" href="https://github.com/pydanny/cookiecutter-djangopackage/pull/13"&gt;pull request&lt;/a&gt; and found a related issue with application names that don't match their imported package name. (i.e. &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;django-periodicals&lt;/span&gt;&lt;/tt&gt; is the application name and &lt;tt class="docutils literal"&gt;periodicals&lt;/tt&gt; is the package that is imported).&lt;/td&gt;&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+</summary><category term="python"></category><category term="django"></category><category term="googility"></category><category term="development"></category><category term="testing"></category><category term="travis"></category><category term="rtd"></category><category term="pypi"></category><category term="tox"></category><category term="virtualenv"></category><category term="webdevelopment"></category><category term="github"></category></entry><entry><title>Reducing the Cost of Client Side Analytics</title><link href="http://tech.agilitynerd.com/reducing-the-impact-of-client-side-analytics.html" rel="alternate"></link><updated>2012-01-12T22:10:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2012-01-12:reducing-the-impact-of-client-side-analytics.html</id><summary type="html">&lt;p&gt;I read&amp;nbsp;&lt;a class="reference external" href="http://blog.mozilla.com/webdev/2012/01/06/timing-amo-user-experience/"&gt;Andy McKay's blog post on timing user experience&lt;/a&gt;&amp;nbsp;on the
+&lt;a class="reference external" href="http://blog.mozilla.com/webdev"&gt;Mozilla Webdev blog&lt;/a&gt;&amp;nbsp;the other day and it reminded me of an idea I was
+thinking about for measuring client side timings at work. I had been
+toying with the idea of rolling our own library to capture JavaScript
+rendering time for our JS heavy pages (grids of hundreds of lines of
+data).&lt;/p&gt;
+&lt;p&gt;Andy's post mentions the &lt;a class="reference external" href="http://yahoo.github.com/boomerang/doc/"&gt;boomerang JavaScript library&lt;/a&gt;&amp;nbsp;and when I was
+reading it's docs they pointed out potential for abuse/load on the URL
+used to report the timings. For each instrumented page boomerang can hit
+the &amp;quot;beacon&amp;quot; URL to report the statistics it collects. So in the worst
+case you could double your page hits - although for specific
+pages/samples recording a few statistics shouldn't be too costly for low
+volume sites.&lt;/p&gt;
+&lt;p&gt;One solution is to only sample the pages/users of interest; selecting
+the sample could occur on the server and/or client. But another solution
+would be to collect statistics across multiple pages and periodically
+send batches of analytics to the beacon URL.&lt;/p&gt;
+&lt;p&gt;I've been playing with mobile web development for
+&lt;a class="reference external" href="http://m.agilitycourses.com/"&gt;agilitycourses.com&lt;/a&gt;&amp;nbsp;lately and will soon let users store the courses
+they create in localStorage on their browser. That got me thinking that
+&lt;a class="reference external" href="http://en.wikipedia.org/wiki/Web_Storage#Local_and_session_storage"&gt;sessionStorage&lt;/a&gt; could be used to store analytics across pages and then
+periodically send the stats to the server. This would reduce the number
+of hits on the beacon, allowing deployment to a larger sample of
+clients. It also gets flushed once the session is closed and (if kept
+small) doesn't prompt the user to approve storing the data.&lt;/p&gt;
+&lt;p&gt;A lot of modern &lt;a class="reference external" href="http://www.delicious.com/redirect?url=http%3A//dev-test.nemikor.com/web-storage/support-test/"&gt;browsers support session storage&lt;/a&gt;&amp;nbsp;and for my purposes
+only ones with support would be relevant - due to our browser support
+policy at work.&lt;/p&gt;
+&lt;p&gt;The other problem the boomerang docs discuss is&lt;a class="reference external" href="http://yahoo.github.com/boomerang/doc/howtos/howto-7.html"&gt;abuse of the beacon&lt;/a&gt;
+(accidental or malicious). A solution would be to piggyback reporting of
+analytics into application form post payloads. This is trickier to
+implement and it suffers from coupling analytic reporting into the
+application itself.&lt;/p&gt;
+&lt;p&gt;To try to solve it some what generally... The client side JS library
+could add a hidden field to any/some/specific forms into which it writes
+the analytics data collected thus far. If it hooked the form submit
+callback it could know if the form was successfully submitted and clear
+the session storage.&lt;/p&gt;
+&lt;p&gt;Server side middleware could detect the hidden analytics field in the
+form and extract/store the data. It could also remove the field before
+passing the request data along to the app server.&lt;/p&gt;
+&lt;p&gt;All in all a fair amount of twiddling to keep from exposing a recording
+URL to the outside world.&lt;/p&gt;
+&lt;p&gt;Of course if an authenticated session was being used then abusers would
+have to have a valid session to post to the beacon URL.&lt;/p&gt;
+&lt;p&gt;I don't know if I will have time to play with the sessionStorage idea
+but I think it might be a worthwhile extension to boomerang or other
+client side analytics capture libraries.&lt;/p&gt;
+</summary><category term="analytics"></category><category term="boomerang"></category><category term="javascript"></category><category term="sessionstorage"></category><category term="webdevelopment"></category></entry><entry><title>Debug Site for Website Redirects By Referer String</title><link href="http://tech.agilitynerd.com/debug-tool-for-mobile-website-selection-by-re.html" rel="alternate"></link><updated>2010-09-29T18:42:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-09-29:debug-tool-for-mobile-website-selection-by-re.html</id><summary type="html">&lt;p&gt;I'm adding an &amp;quot;m&amp;quot; subdomain to agilitycourses.com to provide a better
+mobile browsing experience. I'm using the referrer string in Django
+middleware (currently using &lt;a class="reference external" href="http://code.google.com/p/minidetector/"&gt;minidetector&lt;/a&gt;) to detect whether the
+client is mobile and redirect them to the mobile site. Since it is
+likely that some folks will/won't get appropriately redirected I was
+looking for an easy way for them to tell me when they were incorrectly
+redirected. I'd need to know their referer string.&lt;/p&gt;
+&lt;p&gt;A little googling turned up a nice one purpose website:
+&lt;a class="reference external" href="http://www.whatismyreferrer.com/"&gt;www.whatismyreferrer.com/&lt;/a&gt;&lt;/p&gt;
+</summary><category term="django"></category><category term="mobile"></category><category term="referrer"></category><category term="webdevelopment"></category></entry><entry><title>Improving Google Ads and Google Search Descriptions</title><link href="http://tech.agilitynerd.com/improving-google-ads-and-google-search-descri.html" rel="alternate"></link><updated>2010-08-03T01:46:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-08-03:improving-google-ads-and-google-search-descri.html</id><summary type="html">&lt;p&gt;I was looking at the google search results for my &lt;a class="reference external" href="http://googility.com/"&gt;Googility web site&lt;/a&gt;
+and noticed that the descriptions shown underneath the title often
+contained text from my navigation links instead of content from the body
+of the page:&lt;/p&gt;
+&lt;div class="thumbnail"&gt;&lt;p&gt;&lt;img alt="Google_description" src="/images/2010/08/13127405-google_description.jpg" /&gt;&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;I did some searching and found the Google Webmaster blog post about
+&lt;a class="reference external" href="http://googlewebmastercentral.blogspot.com/2007/09/improve-snippets-with-meta-description.html"&gt;description meta tags&lt;/a&gt;. Since almost all of the pages on Googility are
+generated by fewer than a dozen Django templates I edited the templates
+and inserted meta tags and filled the description in with data from each
+database entry. This avoids boilerplate information that would be
+ignored by Google and improves the descriptions shown to Google
+searchers. Some of my pages have already been reindexed:&lt;/p&gt;
+&lt;/p&gt;&lt;div class="p_embed p_image_embed"&gt;&lt;p&gt;&lt;img alt="Google_description_after" src="/images/2010/08/13127843-google_description_after.jpg" /&gt;&lt;/p&gt;
+&lt;/div&gt;&lt;/p&gt;&lt;p&gt;Yahoo and some other search sites use a &lt;a class="reference external" href="http://help.yahoo.com/l/us/yahoo/search/indexing/slurp-14.html"&gt;class robots-nocontent&lt;/a&gt; on any
+page elements it should ignore for it's index, Unfortunately, Google
+doesn't follow this standard. So I might end up making that edit to the
+templates also. Looking at my site's log files it appears the Yahoo
+spider is hitting my site more frequently than Google's and the Yahoo
+index is more up to date. Looking at my analytics reports though Google
+refers far more readers to my site than Yahoo...&lt;/p&gt;
+&lt;p&gt;I also noticed that the ads served on pages containing mostly links
+appeared to be using words in my navigation or other boilerplate instead
+of the few lines of valuable content. More searching to the rescue and I
+found this &lt;a class="reference external" href="https://www.google.com/adsense/support/bin/answer.py?answer=23168"&gt;Google Adsense article on section targeting&lt;/a&gt;. Once again
+editing the dozen or so templates I used were easy to edit to add in
+these HTML comment tags. Checking back a couple days later showed
+improvements in the ads being generated for those pages. I keep an eye
+on my Adsense click rate and see if there is any increase in ad clicks.&lt;/p&gt;
+&lt;p&gt;So a couple simple edits made noticeable improvements not bad for a
+couple hours investigation and implementation.&lt;/p&gt;
+&lt;/p&gt;</summary><category term="adsense"></category><category term="django"></category><category term="google"></category><category term="search"></category><category term="webdevelopment"></category></entry><entry><title>Firediff: track and save CSS edits in Firebug</title><link href="http://tech.agilitynerd.com/firediff-track-and-save-css-edits-in-firebug.html" rel="alternate"></link><updated>2010-07-25T16:36:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-07-25:firediff-track-and-save-css-edits-in-firebug.html</id><summary type="html">&lt;p&gt;When I'm making fiddly changes to a web page I like to tweak the CSS
+using the Firefox Firebug plugin. It has the advantage of letting you
+try changes quickly and see the effect. The downside has always been
+that you had to then change the source CSS file to include your changes.
+Which increases the risk that you forget to include a change.&lt;/p&gt;
+&lt;p&gt;I was thinking about that recently when I changed the color scheme on my
+AgilityNerd blog and went searching for a way to at least identify the
+changes. Turns out there is a nice plugin that provides exactly that
+functionality. The &lt;a class="reference external" href="https://addons.mozilla.org/en-US/firefox/addon/13179/"&gt;Firediff plugin&lt;/a&gt; not only tracks changes to the CSS
+it also allows you to save those changes for overwriting or diff'ing
+into you CSS file(s).&lt;/p&gt;
+&lt;p&gt;Like other firebug related extensions you need to enable this feature
+per page by clicking on the arrow next to the new Changes tab.&lt;/p&gt;
+&lt;p&gt;Here is a screenshot of the plugin in action:&lt;/p&gt;
+&lt;div class="thumbnail"&gt;&lt;p&gt;&lt;img alt="Firediff" src="/images/2010/07/12587332-firediff.png" /&gt;&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;You can see I've changed the line-height attribute - it shows the
+previous and final values. A right mouse menu lets you save those
+changes to a file or revert them.&lt;/p&gt;
+&lt;p&gt;Another feature that can be configured in the Changes menu is whether to
+track changes made by other JavaScript to the page. This is an
+interesting feature if you were wondering how a JQuery or other
+JavaScript modified the page for a given effect.&lt;/p&gt;
+&lt;p&gt;This is a great plugin that I'll continue to use regularly.&lt;/p&gt;
+</summary><category term="css"></category><category term="firefoxaddon"></category><category term="webdevelopment"></category></entry><entry><title>Initial Release of django-stw</title><link href="http://tech.agilitynerd.com/initial-release-of-django-stw.html" rel="alternate"></link><updated>2010-07-11T15:47:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-07-11:initial-release-of-django-stw.html</id><summary type="html">&lt;p&gt;I have been using the free website thumbnail service from &lt;a class="reference external" href="http://www.shrinktheweb.com?a=988"&gt;Shrink The
+Web&lt;/a&gt; on my dog agility search website &lt;a class="reference external" href="http://googility.com"&gt;Googility&lt;/a&gt; since I launched it.
+It is quick and easy to use and it adds a lot to the look of the pages.&lt;/p&gt;
+&lt;p&gt;I had created a simple &lt;a class="reference external" href="http://djangoproject.com/"&gt;Django&lt;/a&gt; template tag for inserting the little
+snippet of HTML needed by their service.&lt;/p&gt;
+&lt;p&gt;Recently they asked me to add support for their advanced features to my
+template tag. I used this opportunity to convert my templatetag to a
+Django application. This mostly makes it a lot easier to install but it
+also let me to bundle tests and an example template with the template
+tag.&lt;/p&gt;
+&lt;p&gt;I kept the existing &lt;tt class="docutils literal"&gt;shrinkthewebimage&lt;/tt&gt; template tag and added a new
+tag called &lt;tt class="docutils literal"&gt;stwimage&lt;/tt&gt; to enable the new features.&lt;/p&gt;
+&lt;p&gt;I'm hosting the example page included in the package &lt;a class="reference external" href="http://googility.com/django-stw/"&gt;here&lt;/a&gt; so you can
+see how the template tags work.&lt;/p&gt;
+&lt;p&gt;I've hosted the &lt;a class="reference external" href="http://github.com/saschwarz/django-stw"&gt;project source on github&lt;/a&gt; and uploaded the &lt;a class="reference external" href="http://pypi.python.org/pypi/django-stw/"&gt;initial
+release to the CheeseShop&lt;/a&gt; for easy installation.&lt;/p&gt;
+</summary><category term="django"></category><category term="github"></category><category term="googility"></category><category term="pypi"></category><category term="python"></category><category term="shrinktheweb"></category><category term="webdevelopment"></category></entry><entry><title>Embedding JSON Within Generated HTML</title><link href="http://tech.agilitynerd.com/embedding-json-within-generated-html.html" rel="alternate"></link><updated>2010-07-08T21:03:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-07-08:embedding-json-within-generated-html.html</id><summary type="html">&lt;p&gt;Ran into an interesting problem at work this past week that had a simple
+and pleasing resolution. We have an in house developed JavaScript grid
+on some of our pages and when users entered some text strings we'd
+generate invalid &lt;a class="reference external" href="http://www.json.org/js.html"&gt;JSON&lt;/a&gt; payloads that would give the user an error
+page. If they entered strings that looked like an HTML Entity i.e. &amp;amp;#13
+which (with the addition of a trailing ; ) is a non-visible HTML
+character (carriage return) the text wasn't displayed in the widget. To
+further complicate things some of the content displayed in the grid is
+HTML which is inserted into the grid as is and can contain escaped HTML
+characters.&lt;/p&gt;
+&lt;p&gt;The grid gets its content as a JSON payload from within a hidden div in
+the HTML which is generated via a template mechanism. Heres a portion of
+the template where &amp;lt;%= and %&amp;gt; stringifying of the value of the Python
+variable(s)/code they surround:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+&amp;lt;div style=&amp;quot;display:none;&amp;quot; id=&amp;quot;grid-init-args-&amp;lt;%= count %&amp;gt;&amp;quot;&amp;gt;
+  &amp;lt;textarea&amp;gt;
+  &amp;lt;!-- this is the JSON payload loaded via the grid JavaScript --&amp;gt;
+  &amp;lt;%= [ columnsIndex, indexColumns, columns, rowBuffer, footerRows, formulas] %&amp;gt;
+  &amp;lt;/textarea&amp;gt;
+&amp;lt;/div&amp;gt;
+&lt;/pre&gt;
+&lt;p&gt;This approach has a number of problems:&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;By using the template mechanism to create the JSON payload this
+template was relying on the similarity of the string representation
+of Python objects to JSON. After some testing I found the following
+scenarios: If a string contained a single quote character the string
+representation was a double quoted string around the text and the
+single quote; a valid JSON string. If the string contained a double
+quote character the string representation was a single quoted string
+around the text and the double quote; &lt;a class="reference external" href="http://www.bennadel.com/blog/388-People-Please-Stop-Using-Single-Quotes-.htm"&gt;an invalid JSON string&lt;/a&gt;. If
+the string contained both a single and a double quote the string
+representation would be a single quoted string containing a slash
+escaped single quote and the double quote; an invalid JSON string.
+Depending on the browser (of course) the JSON string would fail to
+parse correctly when the double quote was encountered within the
+single quoted string.&lt;/li&gt;
+&lt;li&gt;The JSON payload had to be HTML encoded (converting &amp;lt;, &amp;gt;, &amp;quot;, and &amp;amp;)
+since it was parsed by the browser as HTML.&lt;/li&gt;
+&lt;li&gt;The HTML encoding would encode or double encode HTML to be inserted
+directly into the grid's DOM.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The variation in single/double quoting was an easy fix, I changed to
+&lt;a class="reference external" href="http://pypi.python.org/pypi/simplejson/"&gt;simplejson&lt;/a&gt;.dumps() which correctly double quotes key/values in dicts
+and escapes embedded double quotes (single quotes don't need to be
+escaped). I didn't time it but with the C extension it may be faster
+than the template engine for our larger datasets.&lt;/p&gt;
+&lt;p&gt;I played around with (not) encoding various portions of the payload and
+then it hit me that I should change the grid to get its payload from a
+non HTML element so that only HTML destined for insertion into the DOM
+would be HTML encoded (which is as you'd expect for normal HTML
+handling). I started changing the payload to be stored in JavaScript
+generated in the template but didn't like the impact the change would
+have on all the existing templates. So I started Googling and found &lt;a class="reference external" href="http://www.bennadel.com/blog/1603-jQuery-And-Script-Tags-As-Data-Containers.htm"&gt;Ben
+Nadel's blog post on using script tags as data containers&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;So here's my solution:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+&amp;lt;div style=&amp;quot;display:none;&amp;quot; id=&amp;quot;grid-init-args-&amp;lt;%= count %&amp;gt;&amp;quot;&amp;gt;
+&amp;lt;script type=&amp;quot;application/json&amp;quot;&amp;gt;
+&amp;lt;%= simplejson.dumps([ columnsIndex, indexColumns, columns, rowBuffer, footerRows, formulas]) %&amp;gt;
+&amp;lt;/script&amp;gt;
+&amp;lt;/div&amp;gt;
+&lt;/pre&gt;
+&lt;p&gt;There were two changes:&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;Used &lt;tt class="docutils literal"&gt;simplejson.dumps&lt;/tt&gt; to correctly double quote and escape double
+quotes within the variables in the payload.&lt;/li&gt;
+&lt;li&gt;Change the textarea to a script element.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;By converting to a script tag within the hidden div the HTML parser no
+longer parsed the content of the JSON payload. so the JSON payload only
+needed to HTML encode HTML elements that were being inserted into the
+DOM created by the grid.&lt;/p&gt;
+&lt;p&gt;This change also meant I was able to delete the unnecessary HTML
+encoding of non-HTML JSON payload data. Got to love solutions that
+involve deleting code.&lt;/p&gt;
+&lt;p&gt;Ultimately, we'll convert to loading the JSON payload as a separate AJAX
+request from the page to the server, but for now this simplifies the
+markup and handles all types of user input and HTML encoded characters
+correctly.&lt;/p&gt;
+</summary><category term="html"></category><category term="javascript"></category><category term="json"></category><category term="python"></category><category term="webdevelopment"></category></entry><entry><title>Django Shrink The Web Template Tag Updated</title><link href="http://tech.agilitynerd.com/django-shrink-the-web-template-tag-updated.html" rel="alternate"></link><updated>2010-07-01T23:00:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-07-01:django-shrink-the-web-template-tag-updated.html</id><summary type="html">&lt;p&gt;I recently updated my &lt;a class="reference external" href="http://djangoproject.com/"&gt;Django&lt;/a&gt; template tag for simplifying the use of
+&lt;a class="reference external" href="http://www.shrinktheweb.com/"&gt;Shrink The Web&lt;/a&gt; images. They recently announced a CDN based
+distribution of images and they took the opportunity to modify their
+API.&lt;/p&gt;
+&lt;p&gt;The updated template tag &lt;a class="reference external" href="http://djangosnippets.org/snippets/1744/"&gt;is on django snippets&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The STW folks have asked be to extend my template tag with support for
+&lt;a class="reference external" href="http://www.shrinktheweb.com/content/shrinktheweb-pagepix-documentation.html"&gt;their PRO features&lt;/a&gt;. With luck I'll make that available sometime this
+weekend.&lt;/p&gt;
+</summary><category term="django"></category><category term="python"></category><category term="shrinktheweb"></category><category term="webdevelopment"></category></entry><entry><title>Multiple YouTube Videos per page using VideoLightBox</title><link href="http://tech.agilitynerd.com/multiple-youtube-videos-per-page-using-videol.html" rel="alternate"></link><updated>2010-06-04T22:58:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-06-04:multiple-youtube-videos-per-page-using-videol.html</id><summary type="html">&lt;p&gt;I decided to stop displaying the default &lt;a class="reference external" href="http://youtube.com"&gt;YouTube&lt;/a&gt; video players within
+posts on my &lt;a class="reference external" href="http://agilitynerd.com/"&gt;AgilityNerd blog&lt;/a&gt; and I started looking for a light boxed
+player. Their were two main reasons. The smallest video playback window
+provided by YouTube for HD videos is too wide for my two column layout
+and now that I'm posting more videos the load time of the page is
+delayed by the communication with all the off site webservers; serving
+the YouTube static image of the video will be much faster/lighter
+weight.&lt;/p&gt;
+&lt;p&gt;I looked around and really liked the lightbox containing the default
+YouTube player provided by &lt;a class="reference external" href="http://videolightbox.com"&gt;VideoLightBox&lt;/a&gt; and started playing around
+with their demo. VideoLightBox (VLB) has an interesting approach. You
+download an application (PC or Mac), configure how you want your
+video(s) to look and it generates a directory of files on your local
+disk (or uploads files to your website via FTP) along with an index.html
+file from which you copy the code to put in the &amp;lt;head&amp;gt; and &amp;lt;body&amp;gt; of
+your web page. For YouTube it also downloads a static image for each
+selected video which is used as the image link within the HTML page.
+Straight forward and works well.&lt;/p&gt;
+&lt;p&gt;For my purposes there was a problem with their approach, its locates the
+image used to launch the light box using an element id. This assumes a
+single video or gallery of videos per web page. On my blog's main page
+or the category pages there will be multiple videos (possibly multiple
+videos within a single post). I figured a little bit of CSS and JQuery
+hacking would solve the problem and it did.&lt;/p&gt;
+&lt;p&gt;I decided to modify their HTML/CSS/JS to use a CSS class instead of an
+element id to allow for multiple videos per page. At first I just
+modified the generated files. Then I saw that VLB has template files in
+their installation. So I started modifying the templates to output the
+new code. Two hours later I bailed. Using &lt;a class="reference external" href="http://technet.microsoft.com/en-us/sysinternals/bb896645.aspx"&gt;procmon&lt;/a&gt; it looks like the
+client app reads the template files but then doesn't actually use the
+files to generate the output files(?). I was only able to modify one of
+the three template files that needed to change and have it effect the
+generated files.&lt;/p&gt;
+&lt;p&gt;I'm going to provide my edits to the VLB developers in case they are
+interested.&lt;/p&gt;
+&lt;p&gt;So the solution is to edit one of the template files and then edit two
+of the generated files; not ideal but once you put the generated files
+on your webserver you'll probably not touch them unless you are changing
+CSS styles. The modifications aren't hard but you need to be careful and
+typos will definitely break things. You should backup the VLB directory
+before your start or be prepared to uninstall and reinstall from their
+installation program.&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;Navigate to the VideoLightBox directory (i.e. C:Program Files
+(x86)VideoLightBox)&lt;/li&gt;
+&lt;li&gt;Change the permissions on the templates subdirectory to give your
+user full access to overwrite the files&lt;/li&gt;
+&lt;li&gt;For each directory in the templates subdirectory open the
+videolightbox.js file in an programming editor (a keyboard macro
+makes this trivial):&lt;ol class="arabic"&gt;
+&lt;li&gt;Globally replace $(&amp;quot;#videogallery a[rel]&amp;quot;) with
+$(&amp;quot;.videogallery a[rel]&amp;quot;).each(function(idx){$(this)&lt;/li&gt;
+&lt;li&gt;Go to the end of the line and add });&lt;/li&gt;
+&lt;li&gt;Save the file&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Then generate the output files using the VLB executable for one or more
+videos, saving the results to your local file system&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;Navigate to the output directory&lt;/li&gt;
+&lt;li&gt;Open the index.html file in an programming editor&lt;ol class="arabic"&gt;
+&lt;li&gt;Globally replace #videogallery with .videogallery&lt;/li&gt;
+&lt;li&gt;Globally replace id=&amp;quot;videogallery&amp;quot; with class=&amp;quot;videogallery&amp;quot;&lt;/li&gt;
+&lt;li&gt;Save the file&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;In the engine/css subdirectory open the videolightbox.css file in an
+programming editor&lt;ol class="arabic"&gt;
+&lt;li&gt;Globally replace #videogallery with .videogallery&lt;/li&gt;
+&lt;li&gt;Save the file&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Then you can copy the files just as specified by the VLB installation
+instructions.&lt;/p&gt;
+&lt;p&gt;The other change I'll be making for my deployment is to rename the video
+images. They are named 0.png, 1.png, etc. I'm going to put them all in a
+directory on my resource webserver so I'll rename the files and their
+references in the code copied from the index.html to use the YouTube
+video id.&lt;/p&gt;
+&lt;p&gt;I'll be changing my existing web posts over to this new scheme over
+time...&lt;/p&gt;
+</summary><category term="css"></category><category term="html"></category><category term="javascript"></category><category term="jquery"></category><category term="video"></category><category term="visuallightbox"></category><category term="webdevelopment"></category><category term="youtube"></category></entry><entry><title>Blosxom hitcounter, favorites and lastread plugins for MongoDB</title><link href="http://tech.agilitynerd.com/blosxom-hitcounter-favorites-and-lastread-plugins-for-mongodb.html" rel="alternate"></link><updated>2010-05-17T10:48:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-05-17:blosxom-hitcounter-favorites-and-lastread-plugins-for-mongodb.html</id><summary type="html">&lt;p&gt;When I wrote my plugins for tracking the visits to each page
+(&lt;tt class="docutils literal"&gt;hitcounter&lt;/tt&gt;), presenting the counts by popularity (&lt;tt class="docutils literal"&gt;favorites&lt;/tt&gt;), and
+displaying the most recently read posts (&lt;tt class="docutils literal"&gt;lastread&lt;/tt&gt;) I used Perl's
+&lt;tt class="docutils literal"&gt;Storable&lt;/tt&gt; module as a simple way to serialize the data structure to and
+from disk. At the time I wasn't too concerned with performance, my blog
+&lt;a class="reference external" href="http://agilitynerd.com"&gt;agilitynerd.com&lt;/a&gt; didn't suffer under the load of the disk reads/writes.&lt;/p&gt;
+&lt;p&gt;But periodically I get DOS'd and my website becomes unresponsive. Not
+too suprising since Blosxom has to run as a plain CGI script; but I'm
+certain the disk writes of these plugins weren't helping. Occasionally
+the Storable on disk would become corrupted which would take down the
+site (not enough exception handling in the plugins).&lt;/p&gt;
+&lt;p&gt;I decided to go with &lt;a class="reference external" href="http://mongodb.org"&gt;Mongo&lt;/a&gt; as the backing data store to remove the
+disk reads/write from the cgi script. It supports an increment operation
+(ala memcached) so multiple threads can update the hit count and MongoDB
+will &amp;quot;do the right thing&amp;quot;. It also has a query API that made rewriting
+favorites and lastread trivial.&lt;/p&gt;
+&lt;div style="float:right;padding 20px;"&gt;&lt;p&gt;&lt;img alt="Poweredmongodbgreen75" src="/images/2010/05/9077760-PoweredMongoDBgreen75.png" /&gt;&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;I haven't tested the performance but my website, especially the
+favorites page, seems faster. Once I write a JavaScript client to update
+the hitcounts I'll be able to move the website to a fully cached
+deployment while still tracking hits which should make the load of
+running the agilitynerd blog very low.&lt;/p&gt;
+&lt;p&gt;I've hosted the plugins on github:
+&lt;a class="reference external" href="http://github.com/saschwarz/blosxom-mongodb-plugins"&gt;http://github.com/saschwarz/blosxom-mongodb-plugins&lt;/a&gt; The mongohitcounter
+plugin can be configured to automatically import existing count data
+from the hitcounter plugin's Storable. So conversion to the new plugins
+just requires updating the template's variables to the new plugin names.&lt;/p&gt;
+</summary><category term="blosxom"></category><category term="mongodb"></category><category term="perl"></category><category term="webdevelopment"></category></entry><entry><title>Using django-sitemap with django-tagging</title><link href="http://tech.agilitynerd.com/using-django-sitemap-with-django-tagging.html" rel="alternate"></link><updated>2009-11-27T17:33:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2009-11-27:using-django-sitemap-with-django-tagging.html</id><summary type="html">&lt;p&gt;I was adding &lt;a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/sitemaps/"&gt;django-sitemap&lt;/a&gt; to &lt;a class="reference external" href="http://googility.com/"&gt;googility.com&lt;/a&gt; yesterday and found
+that Tags don't implement &lt;tt class="docutils literal"&gt;get_absolute_url()&lt;/tt&gt;. Which makes sense since
+the site developer would want to decide how to expose them in the URL
+space.&lt;/p&gt;
+&lt;p&gt;It is also arguable that links to pages displaying the tag view already
+exist in the page for models that are already in the sitemap so they
+don't need to be put in the sitemap explicitly. For example, a page for
+an Article might be at &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;/article/django-11-release&lt;/span&gt;&lt;/tt&gt; and that page would
+contain the links to pages linked with the tags for that article e.g.
+&lt;tt class="docutils literal"&gt;/tag/django/&lt;/tt&gt; and &lt;tt class="docutils literal"&gt;/tag/python/&lt;/tt&gt;&lt;/p&gt;
+&lt;p&gt;But I figured having the tag pages indexed by Google would be useful. It
+also allows a different priority to be specified for the pages. So I
+made a little class that derives from &lt;tt class="docutils literal"&gt;GenericSitemap&lt;/tt&gt; that allows the url
+and suffix for the Tag name to be specified:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+class SlugSitemap(GenericSitemap):
+&amp;quot;&amp;quot;&amp;quot;Use for objects that don't implement get_absolute_url
+   but have a slug field used in creating their url&amp;quot;&amp;quot;&amp;quot;
+
+def __init__(self, info_dict, priority=None, changefreq=None):
+    GenericSitemap.__init__(self, info_dict,
+                            priority=priority,
+                            changefreq=changefreq)
+    self.url = info_dict.get('url', '/')
+    self.slugfield = info_dict['slugfield']
+    self.suffix = info_dict.get('suffix', '')
+
+def location(self, obj):
+    return &amp;quot;%s%s%s&amp;quot; % (self.url,
+                       getattr(obj, self.slugfield),
+                       self.suffix)
+&lt;/pre&gt;
+&lt;p&gt;Here's how I use it:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+sitemaps = {'tag_detail': SlugSitemap({'queryset':Tag.objects,
+                                       'url':'/tag/',
+                                       'slugfield':'name',
+                                       'suffix':'/'},
+                                       changefreq='monthly',
+                                       priority='0.5'),
+}
+&lt;/pre&gt;
+&lt;p&gt;The urls for tags are at /tag/&lt;em&gt;slugname&lt;/em&gt;/ where /tag/ is prepended to
+tag.name and / is appended to the end&lt;/p&gt;
+&lt;p&gt;This class can be used to create sitemap entries for any url
+parameterized on a single field of an instance returned by the QuerySet.&lt;/p&gt;
+</summary><category term="django"></category><category term="djangositemap"></category><category term="djangotagging"></category><category term="python"></category><category term="webdevelopment"></category></entry><entry><title>Firefox Web Developer Add-on AJAX NON-Caching Problem</title><link href="http://tech.agilitynerd.com/firefox-web-developer-add-on-ajax-non-caching-1.html" rel="alternate"></link><updated>2008-12-30T04:08:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2008-12-30:firefox-web-developer-add-on-ajax-non-caching-1.html</id><summary type="html">&lt;p&gt;I ran across some &amp;quot;interesting&amp;quot; behavior of the Firefox &lt;a class="reference external" href="https://addons.mozilla.org/en-US/firefox/addon/60"&gt;Web Developer
+Add-on&lt;/a&gt; today. When editing JavaScript code I normally leave Web
+Developer set to &amp;quot;disable cache&amp;quot;. This causes all images and,
+significantly for my purposes, the JavaScript files to be downloaded
+from the server on every page request. But I ran into a unexpected
+problem with this setting that cost me a couple hours today.&lt;/p&gt;
+&lt;p&gt;I was working on a legacy page today that uses an AJAX POST and the
+response is sent to an IFRAME. The POST was successful, the results were
+valid and present in the IFRAME. The problem was as soon as the content
+of the IFRAME was eval'd() a GET was being sent to the server for the
+URL of the page. This GET was a problem because it had a side effect of
+clearing the session data (which contained the POSTed AJAX data) for the
+current page. So when the page's FORM was finally POSTed the server
+couldn't find the data in the session.&lt;/p&gt;
+&lt;p&gt;After trying numerous code changes including disabling event handlers
+and events, it finally occurred to me that the cache disable feature of
+the add-on might be causing the unexpected GET. Sure enough, once I
+re-enabled caching the GET stopped being sent.&lt;/p&gt;
+&lt;p&gt;It was strange that the &lt;tt class="docutils literal"&gt;eval()&lt;/tt&gt; caused the GET to be requested. All
+the other code around processing the IFRAME's data didn't trigger it,
+only the eval. Strange but true.&lt;/p&gt;
+&lt;p&gt;So just something to keep in mind when strange behavior occurs on AJAX
+pages where session data is being used.&lt;/p&gt;
+</summary><category term="ajax"></category><category term="firefox"></category><category term="firefoxaddon"></category><category term="webdevelopment"></category></entry><entry><title>Centering DIVs in CSS</title><link href="http://tech.agilitynerd.com/centering-divs-in-css-1.html" rel="alternate"></link><updated>2004-08-15T00:00:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2004-08-15:centering-divs-in-css-1.html</id><summary type="html">&lt;p&gt;I took a look at this site on an 800x600 resolution monitor and didn't
+like how the original layout looked. Having the menu box on the left hand
+side with a &lt;tt class="docutils literal"&gt;20px&lt;/tt&gt; margin to the left used up too much screen space. So I
+decided to move the menu box to the right of the main body of the page.&lt;/p&gt;
+&lt;p&gt;I could have hard-coded the box position; but decided that I wanted
+to have the main body remain centered regardless of browser size.
+That would complicate the positioning of the menu box (which is it's
+own div not contained with the main page). Once again &lt;a class="reference external" href="http://www.alistapart.com"&gt;A List Apart&lt;/a&gt; had
+a good &lt;a class="reference external" href="http://www.alistapart.com/articles/journey/"&gt;article&lt;/a&gt;describing how they got their CSS centering to work.&lt;/p&gt;
+&lt;p&gt;The ALA article had links to these two pages describing the methods
+I used: &lt;a class="reference external" href="http://bluerobot.com/web/css/center1.html"&gt;Auto Width Margins&lt;/a&gt;and &lt;a class="reference external" href="http://bluerobot.com/web/css/center2.html"&gt;NegativeMargins&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The AgilityNerd site has two main divs: #page for the main body
+and#sidebar for the box containing the menu. I used the Auto Width
+Margins method to center the main body:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+#page { font-size: 13px; background: white; border: 1px solid black;
+top: 0px; width: 640px; margin: 0px auto; margin-bottom: 50px;
+text-align: left;}
+&lt;/pre&gt;
+&lt;p&gt;The two lines of interest are &lt;tt class="docutils literal"&gt;margin: 0px auto;` and &lt;span class="pre"&gt;``text-align:&lt;/span&gt; left;&lt;/tt&gt;.
+Thelater is required because I used the IE 5.x workaround of
+specifying &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;text-align:&lt;/span&gt; center;&lt;/tt&gt; in the body element.&lt;/p&gt;
+&lt;p&gt;So now that the main body of the site was centered, I wanted the menu to
+be floating off to the right of the main body. The Negative
+Margins method let me horizontally center the divand also offset it
+horizontally by any amount. I offset it by half the(fixed) width of the
+main body plus a little space. The additionalspace keeps IE 5.x
+browser's miscalculation of sizes from causing theborders to not meet
+correctly:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+#sidebar { background: white; font-size: 12px; position: fixed;
+width: 140px; height: auto; top: 70px; left: 50%; margin-left:
+330px; text-align: center; border: 1px solid black; }
+&lt;/pre&gt;
+&lt;p&gt;Unlike the article, I used &lt;tt class="docutils literal"&gt;position: fixed&lt;/tt&gt; instead of absolute. This
+allows the menubox to float in place during scrolling (but only for CSS
+compliant browsers like: Mozilla/Netscape).&lt;/p&gt;
+</summary><category term="css"></category><category term="webdevelopment"></category></entry></feed>

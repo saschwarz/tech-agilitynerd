@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:8000/feeds/tag.django-rest-auth.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2014-10-26T03:02:00-05:00</updated><entry><title>Django REST Registration with django-rest-auth and django-allauth</title><link href="http://tech.agilitynerd.com/django-rest-registration-with-django-rest-auth.html" rel="alternate"></link><updated>2014-10-26T03:02:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2014-10-26:django-rest-registration-with-django-rest-auth.html</id><summary type="html">&lt;p&gt;I'm creating a mobile app for my &lt;a class="reference external" href="http://agilitycourses.com"&gt;agilitycourses website&lt;/a&gt; and I'm using &lt;a class="reference external" href="http://www.django-rest-framework.org/"&gt;django-rest-framework&lt;/a&gt; to provide a REST API for use by the client application. In order to provide authentication and registration I'm using &lt;a class="reference external" href="http://django-allauth.readthedocs.org/en/latest/"&gt;django-allauth&lt;/a&gt;. Lastly I use &lt;a class="reference external" href="https://github.com/Tivix/django-rest-auth/"&gt;django-rest-auth&lt;/a&gt; to provide REST resources for authentication and registration.&lt;/p&gt;
+&lt;p&gt;I implemented and tested &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;django-rest-framework&lt;/span&gt;&lt;/tt&gt; and then added in &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;django-allauth&lt;/span&gt;&lt;/tt&gt;. But when I went to integrate &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;django-rest-auth&lt;/span&gt;&lt;/tt&gt; POSTing to the &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;/rest-auth/registration/&lt;/span&gt;&lt;/tt&gt; resource was generating a traceback:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+Exception Type: TypeError at /rest-auth/registration/
+Exception Value: add_message() argument must be an HttpRequest object, not 'Request';.
+&lt;/pre&gt;
+&lt;p&gt;It turns out &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;django-allauth&lt;/span&gt;&lt;/tt&gt;'s &lt;tt class="docutils literal"&gt;allauth.account.adapter.DefaultAccountAdapter&lt;/tt&gt; uses Django's messaging middleware to give feedback to users when HTML templates are used. When &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;rest-auth&lt;/span&gt;&lt;/tt&gt; invokes the view it is is passing in a &lt;tt class="docutils literal"&gt;Request&lt;/tt&gt;. I took a look at the &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;rest-auth&lt;/span&gt;&lt;/tt&gt; demo application and saw that it's &lt;tt class="docutils literal"&gt;settings.py&lt;/tt&gt; file had &lt;tt class="docutils literal"&gt;django.contrib.messages&lt;/tt&gt; disabled. Which keeps this traceback from happening.&lt;/p&gt;
+&lt;p&gt;Disabling messaging is a reasonable thing to do if the service is only handling REST data. For now I'd like to use the same service for both HTML and REST traffic. So I needed a way to disable messaging in &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;django-allauth&lt;/span&gt;&lt;/tt&gt;.&lt;/p&gt;
+&lt;p&gt;I found &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;django-allauth&lt;/span&gt;&lt;/tt&gt; allows configuring/replacing the account adapter so I subclassed &lt;tt class="docutils literal"&gt;DefaultAccountAdapter&lt;/tt&gt; and stubbed out the &lt;tt class="docutils literal"&gt;add_message&lt;/tt&gt; method. I put it in my &amp;quot;glue&amp;quot; application (called &lt;tt class="docutils literal"&gt;main&lt;/tt&gt;) in a file called &lt;tt class="docutils literal"&gt;adapters.py&lt;/tt&gt;:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+class MessageFreeAdapter(DefaultAccountAdapter):
+    &amp;quot;&amp;quot;&amp;quot;
+    django-allauth's `allauth.account.adapter.DefaultAccountAdapter` uses Django's messaging middleware to give feedback to users. When using django-rest-auth for registration/login JSON-REST requests a traceback is generated when the `HTTPRequest` is passed into `django.contrib.messages.add_messages` when a `Request` is expected:
+
+    Exception Type: TypeError at /rest-auth/registration/
+    Exception Value: add_message() argument must be an HttpRequest object, not &amp;amp;#39;Request&amp;amp;#39;.
+
+    If messaging cannot be disabled (it is used by other applications) using this subclass
+    disables messaging for allauth/django-rest-auth.
+
+    In settings.py add ACCOUNT_ADAPTER = 'main.adapters.MessageFreeAdapter'
+    &amp;quot;&amp;quot;&amp;quot;
+    def add_message(self, request, level, message_template,
+                    message_context={}, extra_tags=''):
+        pass
+&lt;/pre&gt;
+&lt;p&gt;Then I set the &lt;tt class="docutils literal"&gt;ACCOUNT_ADAPTER&lt;/tt&gt; variable in &lt;tt class="docutils literal"&gt;settings.py&lt;/tt&gt; to use this new adapter:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+ACCOUNT_ADAPTER = 'main.adapters.MessageFreeAdapter'
+&lt;/pre&gt;
+&lt;p&gt;So now I can continue to use Django messaging and use &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;django-allauth&lt;/span&gt;&lt;/tt&gt; in the same Django project.&lt;/p&gt;
+</summary><category term="python"></category><category term="REST"></category><category term="API"></category><category term="agilitycourses"></category><category term="django"></category><category term="django-rest-framework"></category><category term="django-allauth"></category><category term="django-rest-auth"></category><category term="mobile"></category></entry></feed>

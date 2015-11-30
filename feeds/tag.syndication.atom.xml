@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:8000/feeds/tag.syndication.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2008-01-11T22:24:00-06:00</updated><entry><title>Feed2JS - Adding AgilityNerd Headlines to Your Website</title><link href="http://tech.agilitynerd.com/feed2js-adding-agilitynerd-headlines-to-your-1.html" rel="alternate"></link><updated>2008-01-11T22:24:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2008-01-11:feed2js-adding-agilitynerd-headlines-to-your-1.html</id><summary type="html">&lt;p&gt;&lt;strong&gt;Updated 16-Aug-2006 to reflect Feed2JS's move to http://feed2js.org&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;I never thought anyone would want me to &lt;a class="reference external" href="http://en.wikipedia.org/wiki/Web_syndication"&gt;syndicate&lt;/a&gt; my blog and put
+links to my latest articles on their website. But Marj Kibby in
+Australia with her very nice dog raising and training blog &lt;a class="reference external" href="http://marjkibby.blogspot.com/"&gt;Choose and
+Raise a Puppy&lt;/a&gt; did just that. So I started thinking about how I might
+provide an HTML feed that could be included into blogs using client-side
+JavaScript as not all web/blog writers are developers who can integrate
+this data on the server side.&lt;/p&gt;
+&lt;p&gt;Well Google to the rescue: the &lt;a class="reference external" href="http://feed2js.org/"&gt;Feed To JavaScript&lt;/a&gt; Open Source project
+provides a really great service that exactly fits the bill. If you have
+a website or blog and wish to list the latest articles from another
+website you can just fill out a form on the Feed2JS site and get the
+HTML to paste into your website. All you do is supply the RSS feed from
+the source site to Feed2JS, select the options and click Preview or
+Generate JavaScript to get the code you need. Feed2JS does all the
+&amp;quot;heavy lifting&amp;quot;.&lt;/p&gt;
+&lt;p&gt;Here is an example of the generated HTML as it would appear in your
+website using the current data from this site:&lt;/p&gt;
+&lt;p&gt;The code for the above is a single (long) line of code:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+&amp;lt;script src=&amp;quot;http://feed2js.org/feed2js.php?src=http%3A%2F%2Fagilitynerd.com%2Fblog%2Findex.rss10&amp;amp;chan=y&amp;amp;desc=0&amp;amp;date=n&amp;quot; type=&amp;quot;text/javascript&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+&lt;/pre&gt;
+&lt;p&gt;There are many other ways to configure/display the information from
+AgilityNerd on your site. Just go to:
+&lt;a class="reference external" href="http://feed2js.org/index.php?s=build"&gt;http://feed2js.org/index.php?s=build&lt;/a&gt; and enter:
+&lt;a class="reference external" href="http://agilitynerd.com/blog/index.rss10"&gt;http://agilitynerd.com/blog/index.rss10&lt;/a&gt; in the URL text entry box. Then
+answer the other questions.&lt;/p&gt;
+&lt;p&gt;Feed2JS kindly caches the latest RSS feed from the source site you
+specify and replies with the above HTML each time someone visits a page
+on your site. This has the added advantage of not taxing the webserver
+of the source site to feed your website; which is nice for sites like
+this one with a small monthly bandwidth quota.&lt;/p&gt;
+&lt;p&gt;Feed2JS also has a number of ways to style the HTML that is delivered so
+you can change the look of the links to match your site. Of course, web
+developers fluent in CSS can just style the HTML directly.&lt;/p&gt;
+&lt;p&gt;For &lt;a class="reference external" href="http://blosxom.sourceforge.net/"&gt;Blosxom&lt;/a&gt; bloggers I've been playing around developing a new plugin
+based on the headlines plugin to provide this same functionality. I hope
+to post this new plugin when/if I get it working. Either way I strongly
+recommend Feed2JS, it is a great project developed in the true spirit of
+the Open Source movement.&lt;/p&gt;
+</summary><category term="syndication"></category></entry></feed>

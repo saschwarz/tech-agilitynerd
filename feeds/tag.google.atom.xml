@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:8000/feeds/tag.google.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2012-05-12T23:57:00-05:00</updated><entry><title>Create Posterous Posts from Google Forms</title><link href="http://tech.agilitynerd.com/create-posterous-posts-from-google-forms.html" rel="alternate"></link><updated>2012-05-12T23:57:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2012-05-12:create-posterous-posts-from-google-forms.html</id><summary type="html">&lt;p&gt;I've been organizing dog agility bloggers for&amp;nbsp;&lt;a class="reference external" href="http://dog-agility-blog-events.posterous.com/"&gt;Dog Agility Blog Action
+Days&lt;/a&gt;&amp;nbsp;and wanted to automate updating our group's blog when each
+blogger posted their article on the event/action days. For past events I
+had the bloggers email me with the information and manually created each
+entry in the blog.&lt;/p&gt;
+&lt;p&gt;Since &lt;a class="reference external" href="http://posterous.com"&gt;posterous&lt;/a&gt; supports posting via email I knew I could create a
+form on one of my web servers and have the page format the data so
+posterous could turn it into a post. Here are the details for formatting
+emails for posterous: &lt;a class="reference external" href="http://howdoi.posterous.com/how-to-get-the-most-out-of-posting-by-email"&gt;how to get the most out of posting by email&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Instead I stumbled upon an article on using Google Forms to send emails
+via the Google infrastructure:&amp;nbsp;&lt;a class="reference external" href="http://www.labnol.org/internet/google-docs-email-form/20884/"&gt;Get Form Data from Google Docs in an
+Email Message [Video Tutorial]&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;So all I had to do was create a form for my bloggers to fill out and
+then have the script run by their submission format and send an email to
+posterous to post.&lt;/p&gt;
+&lt;p&gt;Here's my modified version of the form script:&lt;/p&gt;
+&lt;pre class="code javascript literal-block"&gt;
+&lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nx"&gt;sendFormByEmail&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;e&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="c1"&gt;// create a draft post - posterous will send you an email
+&lt;/span&gt;  &lt;span class="c1"&gt;// when the draft is created.  var email = &amp;quot;draft&amp;#64;YOURBLOGNAMEHERE.posterous.com&amp;quot;;
+&lt;/span&gt;  &lt;span class="c1"&gt;// e.namedValues is a dictionary where the keys
+&lt;/span&gt;  &lt;span class="c1"&gt;// are the names of your form's questions. So you can pick
+&lt;/span&gt;  &lt;span class="c1"&gt;// them out and combine them as you wish.
+&lt;/span&gt;  &lt;span class="c1"&gt;//
+&lt;/span&gt;  &lt;span class="c1"&gt;// My form contained five questions:
+&lt;/span&gt;  &lt;span class="c1"&gt;// 1. 'Title of your blog as you want it to appear'
+&lt;/span&gt;  &lt;span class="c1"&gt;// 2. 'The URL of your blog as you type it in your browser'
+&lt;/span&gt;  &lt;span class="c1"&gt;// 3. 'Title of your article'
+&lt;/span&gt;  &lt;span class="c1"&gt;// 4. 'The URL of your article copied from your browser'
+&lt;/span&gt;  &lt;span class="c1"&gt;// 5. 'Short description/teaser about your article'
+&lt;/span&gt;  &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;v&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;e&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;namedValues&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;subject&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;v&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'Title of your article'&lt;/span&gt;&lt;span class="p"&gt;].&lt;/span&gt;&lt;span class="nx"&gt;toString&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+  &lt;span class="nx"&gt;subject&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;((tag: attitude))&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// add tags as you wish
+&lt;/span&gt;  &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;message&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;'&amp;lt;a href=&amp;quot;'&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="nx"&gt;v&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'The URL of your blog as you type it in your browser'&lt;/span&gt;&lt;span class="p"&gt;].&lt;/span&gt;&lt;span class="nx"&gt;toString&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="s1"&gt;'&amp;quot;&amp;gt;'&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="nx"&gt;message&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="nx"&gt;v&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'Title of your blog as you want it to appear'&lt;/span&gt;&lt;span class="p"&gt;].&lt;/span&gt;&lt;span class="nx"&gt;toString&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+  &lt;span class="nx"&gt;message&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="s1"&gt;'&amp;lt;/a &amp;gt; wrote:'&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="nx"&gt;message&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;nn&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="nx"&gt;message&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="nx"&gt;v&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'Short description/teaser about your article'&lt;/span&gt;&lt;span class="p"&gt;].&lt;/span&gt;&lt;span class="nx"&gt;toString&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+  &lt;span class="nx"&gt;message&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="s1"&gt;'&amp;lt; a href=&amp;quot;'&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="nx"&gt;v&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'The URL of your article copied from your browser'&lt;/span&gt;&lt;span class="p"&gt;].&lt;/span&gt;&lt;span class="nx"&gt;toString&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+  &lt;span class="nx"&gt;message&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="s1"&gt;'&amp;quot;&amp;gt; Read the full article &amp;lt; /a &amp;gt;nn'&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="nx"&gt;message&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;n#end&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="c1"&gt;// so your email signature won't cause a problem
+&lt;/span&gt;  &lt;span class="c1"&gt;// This is the MailApp service of Google Apps Script
+&lt;/span&gt;  &lt;span class="c1"&gt;// that sends the email. You can also use GmailApp here.
+&lt;/span&gt;  &lt;span class="nx"&gt;MailApp&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;sendEmail&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;email&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;subject&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;message&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="c1"&gt;// Watch the following video for details   // http://youtu.be/z6klwUxRwQI
+&lt;/span&gt;  &lt;span class="c1"&gt;// By Amit Agarwal - www.labnol.org
+&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;In the script you can see how I've accessed the form fields by the full
+name and woven them into an email with links embedded - just have to
+watch the use of double quotes within single quotes. Which produces blog
+entries similar &lt;a class="reference external" href="http://dogagilityblogevents.wordpress.com/if-i-knew-then-proactive-handling"&gt;to this one I created manually&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;So now I can just send the link to the Google form to participants and
+they'll create drafts that I can tweak and/or just submit. It took
+longer to write this post than it took to modify and test the script!&lt;/p&gt;
+</summary><category term="email"></category><category term="google"></category><category term="posterous"></category></entry><entry><title>Improving Google Ads and Google Search Descriptions</title><link href="http://tech.agilitynerd.com/improving-google-ads-and-google-search-descri.html" rel="alternate"></link><updated>2010-08-03T01:46:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-08-03:improving-google-ads-and-google-search-descri.html</id><summary type="html">&lt;p&gt;I was looking at the google search results for my &lt;a class="reference external" href="http://googility.com/"&gt;Googility web site&lt;/a&gt;
+and noticed that the descriptions shown underneath the title often
+contained text from my navigation links instead of content from the body
+of the page:&lt;/p&gt;
+&lt;div class="thumbnail"&gt;&lt;p&gt;&lt;img alt="Google_description" src="/images/2010/08/13127405-google_description.jpg" /&gt;&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;I did some searching and found the Google Webmaster blog post about
+&lt;a class="reference external" href="http://googlewebmastercentral.blogspot.com/2007/09/improve-snippets-with-meta-description.html"&gt;description meta tags&lt;/a&gt;. Since almost all of the pages on Googility are
+generated by fewer than a dozen Django templates I edited the templates
+and inserted meta tags and filled the description in with data from each
+database entry. This avoids boilerplate information that would be
+ignored by Google and improves the descriptions shown to Google
+searchers. Some of my pages have already been reindexed:&lt;/p&gt;
+&lt;/p&gt;&lt;div class="p_embed p_image_embed"&gt;&lt;p&gt;&lt;img alt="Google_description_after" src="/images/2010/08/13127843-google_description_after.jpg" /&gt;&lt;/p&gt;
+&lt;/div&gt;&lt;/p&gt;&lt;p&gt;Yahoo and some other search sites use a &lt;a class="reference external" href="http://help.yahoo.com/l/us/yahoo/search/indexing/slurp-14.html"&gt;class robots-nocontent&lt;/a&gt; on any
+page elements it should ignore for it's index, Unfortunately, Google
+doesn't follow this standard. So I might end up making that edit to the
+templates also. Looking at my site's log files it appears the Yahoo
+spider is hitting my site more frequently than Google's and the Yahoo
+index is more up to date. Looking at my analytics reports though Google
+refers far more readers to my site than Yahoo...&lt;/p&gt;
+&lt;p&gt;I also noticed that the ads served on pages containing mostly links
+appeared to be using words in my navigation or other boilerplate instead
+of the few lines of valuable content. More searching to the rescue and I
+found this &lt;a class="reference external" href="https://www.google.com/adsense/support/bin/answer.py?answer=23168"&gt;Google Adsense article on section targeting&lt;/a&gt;. Once again
+editing the dozen or so templates I used were easy to edit to add in
+these HTML comment tags. Checking back a couple days later showed
+improvements in the ads being generated for those pages. I keep an eye
+on my Adsense click rate and see if there is any increase in ad clicks.&lt;/p&gt;
+&lt;p&gt;So a couple simple edits made noticeable improvements not bad for a
+couple hours investigation and implementation.&lt;/p&gt;
+&lt;/p&gt;</summary><category term="adsense"></category><category term="django"></category><category term="google"></category><category term="search"></category><category term="webdevelopment"></category></entry><entry><title>New Scheme Using YouTube to Get "Google Juice"?</title><link href="http://tech.agilitynerd.com/new-scheme-using-youtube-to-get-google-juice-1.html" rel="alternate"></link><updated>2008-02-15T04:32:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2008-02-15:new-scheme-using-youtube-to-get-google-juice-1.html</id><summary type="html">&lt;p&gt;In the last couple days my YouTube account has fallen victim to a new
+scheme by porn websites attempting to garner Google Juice. It is pretty
+straightforward. A generic YouTube account is created with a user name
+like &amp;quot;babiegirl123xyz&amp;quot; and the &amp;quot;user&amp;quot; has a single line profile with the
+line &amp;quot;all my pics are at the link below&amp;quot;. The link is to an adult
+sex/dating site.&lt;/p&gt;
+&lt;p&gt;All by itself creating a bogus YouTube account with a link to your site
+won't get a site listed any higher in a Google search. But the clever
+part of this approach is the &amp;quot;user&amp;quot; subscribes to many YouTube channels.
+Since YouTube users often have channel pages with links to all of their
+subscribers, the more subscriptions the bogus user creates; the more
+incoming links they have to their profile and consequently to their
+adult website. But I'd think the Google algorithm wouldn't weigh links
+from YouTube too heavily anyway...&lt;/p&gt;
+&lt;p&gt;I came across this scheme because I got several subscription emails from
+variants of the babiegirl accounts all with the same template of a
+profile page and all linking to the same website. It doesn't really
+matter much to me that they go to this trouble, but it is strange since
+I don't display a list of my subscribers on my channel so they don't get
+any real benefit.&lt;/p&gt;
+&lt;p&gt;I guess another way this scheme could help increase traffic would be
+through the subscription emails. Heck I clicked on the links to see what
+the site was about. It could be there are enough folks who do the same
+in response to the subscription email. If only a few end up becoming
+members of the adult sites it could make this a worthwhile means for
+these sites to get more page hits/subscribers.&lt;/p&gt;
+&lt;p&gt;Sigh...&lt;/p&gt;
+&lt;/p&gt;</summary><category term="google"></category><category term="youtube"></category></entry></feed>

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:8000/feeds/tag.spam.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2007-12-29T23:16:00-06:00</updated><entry><title>Blog Spammers Using URL Encoding</title><link href="http://tech.agilitynerd.com/blog-spammers-using-url-encoding-1.html" rel="alternate"></link><updated>2007-12-29T23:16:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2007-12-29:blog-spammers-using-url-encoding-1.html</id><summary type="html">&lt;p&gt;I was getting hit by comment spammers in the last week who were using
+&lt;a class="reference external" href="http://www.w3schools.com/tags/ref_urlencode.asp"&gt;URL-encoding&lt;/a&gt; of their addresses to get around the comment
+blacklisting filter I use. By replacing regular characters with the
+multi-character encoded representation of those characters within the
+URL the spammers were able to post comment spam with links to casino and
+porn websites to my blog.&lt;/p&gt;
+&lt;p&gt;This type of spam is a reversal of the same method for hiding your own
+email address in a web page so it won't be harvested by email spammers
+(see for example &lt;a class="reference external" href="http://www.unicom.com/chrome/a/000388.html"&gt;Chip Rosenthal's Blog entry&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;I just added a regular expressions in my blacklist file to block the use
+of URL encoded characters in all links. If your blog comment software
+supports this approach you might want to do the same thing.&lt;/p&gt;
+</summary><category term="spam"></category></entry><entry><title>Refererblock Version 0.2</title><link href="http://tech.agilitynerd.com/refererblock-version-02-1.html" rel="alternate"></link><updated>2007-12-29T23:16:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2007-12-29:refererblock-version-02-1.html</id><summary type="html">&lt;p&gt;I came up with two improvements to the first release of my &lt;a class="reference external" href="http://agilitynerd.posterous.com/blosxom-plugin-to-block-referer-spam-1"&gt;refererblock
+plugin&lt;/a&gt;:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;If the referer string matches the site's URL it passed immediately
+and isn't checked against the blacklist.&lt;/li&gt;
+&lt;li&gt;The blacklist.txt file was being read even if the referer string was
+empty. Now it is only read if the referer string is not empty and it
+isn't for the site's URL.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;These optimizations do improve the performance of the plugin. My testing
+on a PIII 800MHz running Fedora Core 3 Linux with Apache 2.0 showed the
+following average latencies:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;1.5 ms - Empty referer string or current domain.&lt;/li&gt;
+&lt;li&gt;2.0 ms - Referer string matching the first regex of the example
+blacklist file.&lt;/li&gt;
+&lt;li&gt;3.0 ms - Referer string matching the final regex of the example
+blacklist file.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I was kind of surprised at how little additional time was required to
+load the blacklist file and process the regular expressions. This is
+probably due to the file remaining in the disk cache for subsequent
+requests. Of course your mileage may vary.&lt;/p&gt;
+&lt;p&gt;Download version 0.2 of the plugin &lt;a class="reference external" href="http://data.agilitynerd.com/downloads/refererblock_0.2.tar"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;See my &lt;a class="reference external" href="/blosxom-plugin-to-block-referer-spam-1"&gt;original plugin description&lt;/a&gt; for installation, configuration,
+and testing information. Please let me know if you use this plugin or if
+you have comments or suggestions for improving it.&lt;/p&gt;
+</summary><category term="blosxom"></category><category term="plugin"></category><category term="referrer"></category><category term="spam"></category></entry><entry><title>Those Darn Spammers Blosxom - Hit Counter and Writeback Changes</title><link href="http://tech.agilitynerd.com/those-darn-spammersblosxom-hit-counter-and-wr-1.html" rel="alternate"></link><updated>2006-08-11T19:00:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2006-08-11:those-darn-spammersblosxom-hit-counter-and-wr-1.html</id><summary type="html">&lt;p&gt;Over the past year I'd noticed that comment and trackback spammers had
+been hitting the same dozen or so pages of my blog multiple times daily.
+(It is probably the same person/group who took a snapshot of the
+articles on my front page at that time and just reuses those URLs for
+all of their different domains). Last I calculated, about 50% of my
+overall website traffic is due to spammers. This constant barrage of
+hits skews my &lt;a class="reference external" href="http://awstats.sourceforge.net"&gt;AWStats&lt;/a&gt; statistics and, more importantly, skews the
+results on my &lt;a class="reference external" href="http://agilitynerd.com/blog/static/Favorites.html"&gt;Favorites page&lt;/a&gt;. So I took a little time to work on this
+problem.&lt;/p&gt;
+&lt;p&gt;FWIW I'm also starting to see a lot of spam coming from &amp;quot;blogs&amp;quot; being
+setup on &lt;a class="reference external" href="http://blogspot.com"&gt;BlogSpot&lt;/a&gt; that are a single page all of whose links point to
+the real site. Some of these bogus blogs use the BlogSpot temmplate
+which contains a flag used to alert BlogSpot admins to content in
+violation of their Terms of Service. This allows anyone to report the
+bogus blog by just clicking on the flag. Other &amp;quot;blogs&amp;quot; just use their
+own HTML and BlogSpot support would have to be sent an email with the
+offending site's URL.&lt;/p&gt;
+&lt;p&gt;So anyway, I've taken the following steps:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Disabled trackback comments entirely using the configuration variable
+in the writeback plugin. I've never received a legitimate trackback
+ping.&lt;/li&gt;
+&lt;li&gt;Modified my modified version of the writeback plugin to set a
+variable $rejected with a 1 if the comment was rejected or if
+trackback was attempted.&lt;/li&gt;
+&lt;li&gt;Modified my HitCounter plugin to read the $writeback::rejected
+variable and then not increase the counter for the spammed page.&lt;/li&gt;
+&lt;li&gt;I had to change the ordering of the hitcounter plugin to run after
+writeback so the variable would be set correctly when hitcounter ran.&lt;/li&gt;
+&lt;li&gt;Set the $hitcounter::reset_count variable and reset the counts of
+the spammed pages back to &amp;quot;reasonable&amp;quot; counts.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Another couple hours wasted messing around against spammers.&lt;/p&gt;
+&lt;p&gt;I've &lt;a class="reference external" href="/blosxom-plugin-to-block-referer-spam-1.html"&gt;previously written&lt;/a&gt; how I've been using comment content
+blacklisting to reject comment, trackback, and referer (sic) spam. My
+current blacklist file has over 40 regular expressions containing over
+250 words and patterns. I update it whenever a spam comment slips
+through. So that is an ongoing almost daily effort. I might just have to
+go to the trouble of getting a &lt;a class="reference external" href="http://varg.dyndns.org/psi/pub/code/misc/wbcaptcha.html"&gt;CAPTCHA&lt;/a&gt; plugin to work.&lt;/p&gt;
+</summary><category term="blosxom"></category><category term="plugin"></category><category term="spam"></category></entry><entry><title>Blosxom Plugin to Block Referer Spam</title><link href="http://tech.agilitynerd.com/blosxom-plugin-to-block-referer-spam-1.html" rel="alternate"></link><updated>2005-02-12T20:00:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2005-02-12:blosxom-plugin-to-block-referer-spam-1.html</id><summary type="html">&lt;p&gt;Like so many other bloggers who allow comments on their websites and
+blog articles, I was facing increasing &lt;a class="reference external" href="http://en.wikipedia.org/wiki/Blog_spam"&gt;comment spam&lt;/a&gt; as my blog got
+noticed by more spammers. The size of this problem is illustrated by
+&lt;a class="reference external" href="http://www.google.com/search?q=%22comment+spam%22"&gt;this Google query for &amp;quot;comment spam&amp;quot;&lt;/a&gt; that returned 1.5 million hits.
+For the uninitiated comment spam is like email spam for blogs; the
+spammer inserts fake comments in a blog where either the comment text
+contains from one to dozens of links to the spammer's websites. When web
+search sites &amp;quot;spider&amp;quot; the blog the links to the spammer's site are
+treated as &amp;quot;endorsements&amp;quot; of the spammer's sites and the spammer's sites
+are raised to the top of the search site's result lists.&lt;/p&gt;
+&lt;p&gt;There is another growing type of blog spam called &lt;a class="reference external" href="http://www.spywareinfo.com/articles/referer_spam/"&gt;referer spam&lt;/a&gt; (yes
+it is &lt;a class="reference external" href="http://dictionary.reference.com/search?q=referer"&gt;officially misspelled&lt;/a&gt;). When a web surfer clicks on a link in a
+web page that sends them to another web page most web browsers fill in
+the URL of the referring page into the request called the HTTP_REFERER.
+Some websites and blogs capture that page link information when they are
+on the receiving end of a web request. These sites might have a section
+on each page indicating the sites that link to that page. These links
+are referer links.&lt;/p&gt;
+&lt;p&gt;Referer spam uses the same mechanism as comment spam to raise the search
+sites ranking of the spammer's websites. But referer spammer's don't
+post comments; they post fake referrals to a website. The are hoping
+that the website or blog displays links of the sites that refer to them.
+So when the website is spidered the search ranking is raised.&lt;/p&gt;
+&lt;div class="section" id="blosxom-plugins-addressing-spam"&gt;
+&lt;h2&gt;Blosxom Plugins Addressing Spam&lt;/h2&gt;
+&lt;p&gt;Like so many bloggers once I started getting comment spam I was able to
+manually delete them as they occurred. But that got old fast. After some
+Googling I discovered &lt;a class="reference external" href="http://www.lathi.net"&gt;Doug Alcorn's&lt;/a&gt; &lt;a class="reference external" href="http://blosxom.sourceforge.net/"&gt;Blosxom&lt;/a&gt; &lt;a class="reference external" href="http://www.lathi.net/twiki-bin/view/Main/BlogSpam"&gt;writeback blacklist
+plugin&lt;/a&gt;. I had been using the original &lt;a class="reference external" href="http://www.blosxom.com/plugins/input/writeback.htm"&gt;writeback&lt;/a&gt; plugin. Doug's
+improvements provided enough protection (so far) with less than a dozen
+regular expressions removing all my comment spam.&lt;/p&gt;
+&lt;p&gt;Referer spam started hitting me three weeks ago. What was most
+infuriating was that I don't display any links of referring sites on my
+site at all. So all these spammers were succeeding in doing was skewing
+my site statistics and using my bandwidth with their fake referer
+attacks several times a day.&lt;/p&gt;
+&lt;p&gt;Of course all the referer spam site's addresses contained one or more of
+the same dozen blacklisted words I had already configured for comment
+spam. About the same time I saw &lt;a class="reference external" href="http://jclark.org"&gt;Jason Clark&lt;/a&gt; post his &lt;a class="reference external" href="http://jclark.org/weblog/WebDev/Blosxom/plugins/deferer/deferer-0-1i.html"&gt;deferer
+plugin&lt;/a&gt; to return a 301 permanent redirect for the IP address of one
+particular referer spammer who was attacking his site. I thought that by
+combining Doug's blacklisting plugin with Jason's immediate redirect
+plugin I could reduce the referer spam from my log files.&lt;/p&gt;
+&lt;p&gt;This plugin hasn't removed the entries entirely from my logs, since the
+initial request is still logged with a 301 status. But it has stopped
+the subsequent downloading of images for the pages whose content is now
+not served. Now that the log contains 301 status messages for these
+requests they are ignored by my host's statistics program (&lt;a class="reference external" href="http://awstats.sourceforge.net"&gt;Advanced Web
+Statistics - AWStats&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;On a re-reading of Jason's blog entry for deferer he also mentions the
+idea of white and black lists for referer filtering. So I might have
+subliminally remembered his idea and implemented my refererblock plugin
+based on his idea. In any event, I fully credit Jason and Doug for
+giving me the ideas and code with which to put together my plugin.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="referer-block-plugin"&gt;
+&lt;h2&gt;Referer Block Plugin&lt;/h2&gt;
+&lt;p&gt;The refererblock plugin's tar file can be downloaded &lt;a class="reference external" href="http://data.agilitynerd.com/downloads/refererblock_0.1.tar"&gt;here&lt;/a&gt;. It
+contains the refererblock plugin already named 000refererblock so that
+it runs before all other plugins (you want to discard the blacklisted
+requests before all legitimate requests). A sample blacklist.txt file is
+provided and contains some example regexs. It uses the same blacklist
+file format and file name as Doug's writeback modification (I took the
+code from his plugin with only cosmetic changes). See Doug's website for
+links to the Movable Type and other blacklists.&lt;/p&gt;
+&lt;p&gt;The only configuration variable you can set is $log_blacklisted. If set
+to a full path file name the script logs the UTC date/time, referer
+string, and the page to which they were referring. You could use the
+frequency of words in the rejected referer strings to fine tune the
+content and ordering of your blacklist.txt file to match the spammers
+hitting your site. Be aware that this file isn't trimmed so you might
+want to keep an eye on its size.&lt;/p&gt;
+&lt;p&gt;Lastly, the zip file contains a simple Perl script you can use to test
+the plugin. Execute it as:&lt;/p&gt;
+&lt;pre class="code literal-block"&gt;
+referer_test.pl http://example.com http://referer-spam.com
+where the first URL is your website and the second URL is the referer
+&lt;/pre&gt;
+&lt;p&gt;to be sent in the request. This script uses &lt;a class="reference external" href="HTTP::Request"&gt;HTTP::Request&lt;/a&gt; to send the
+request. The script returns the status &amp;quot;200 OK&amp;quot; for the requested page
+if it isn't blacklisted and &amp;quot;301 Moved Permanently&amp;quot; if the referer is
+blacklisted.&lt;/p&gt;
+&lt;p&gt;Please let me know if you use this plugin or if you have comments or
+suggestions for improving it.&lt;/p&gt;
+&lt;/div&gt;
+</summary><category term="blosxom"></category><category term="plugin"></category><category term="spam"></category></entry></feed>

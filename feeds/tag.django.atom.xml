@@ -1,0 +1,948 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:8000/feeds/tag.django.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2015-11-15T05:00:00-06:00</updated><entry><title>Django Migrating Models from an Abstract Base Class to a Concrete Base Class</title><link href="http://tech.agilitynerd.com/django-migrate-abstract-concrete-base-class.html" rel="alternate"></link><updated>2015-11-15T05:00:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2015-11-15:django-migrate-abstract-concrete-base-class.html</id><summary type="html">&lt;p&gt;On my &lt;a class="reference external" href="http://agilitycourses.com"&gt;agilitycourses.com&lt;/a&gt; I had been modeling three types of dog agility courses using an abstract base class &lt;tt class="docutils literal"&gt;Course&lt;/tt&gt; with three child classes: &lt;tt class="docutils literal"&gt;Box&lt;/tt&gt;, &lt;tt class="docutils literal"&gt;StarBox&lt;/tt&gt;, and &lt;tt class="docutils literal"&gt;DoubleBox&lt;/tt&gt;. This created three tables in the database prepended with the &lt;a class="reference external" href="http://djangoproject.com"&gt;Django&lt;/a&gt; application name &lt;tt class="docutils literal"&gt;box&lt;/tt&gt;: &lt;tt class="docutils literal"&gt;box_box&lt;/tt&gt;, &lt;tt class="docutils literal"&gt;box_starbox&lt;/tt&gt;, and &lt;tt class="docutils literal"&gt;box_doublebox&lt;/tt&gt;. I needed to add a relationship to all three classes from a new table and, rather than creating three separate tables relating to each child table, I decided to convert the &lt;tt class="docutils literal"&gt;Course&lt;/tt&gt; class to a concrete class/table and relate the new class/table to it instead of each child class. For my purposes the extra join to the child class won't impact performance significantly (if it does I'd move the identity of the type of subclass into a column in the parent &lt;tt class="docutils literal"&gt;Course&lt;/tt&gt; table and delete the child tables/models).&lt;/p&gt;
+&lt;p&gt;I didn't find any examples of this type of migration online so I thought I write down my notes in case they are useful to others.&lt;/p&gt;
+&lt;p&gt;This ends up being a schema migration to put columns in place for inserting data into the parent table, a data migration to populate that table and the new many-to-many table(s), and then another schema migration to remove the temporary columns.&lt;/p&gt;
+&lt;p&gt;After playing around with a few approaches I found it was easiest to put temporary join ids on the parent class that I could use during the migration and then remove them when I was done. I added these fields to the parent in the &lt;tt class="docutils literal"&gt;models.py&lt;/tt&gt;:&lt;/p&gt;
+&lt;pre class="code python literal-block"&gt;
+&lt;span class="n"&gt;subclass&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;models&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;IntegerField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;default&lt;/span&gt;&lt;span class="o"&gt;=-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;subclassid&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;models&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;IntegerField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;default&lt;/span&gt;&lt;span class="o"&gt;=-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;and removed the &lt;tt class="docutils literal"&gt;abstract = True&lt;/tt&gt; Meta class attribute from &lt;tt class="docutils literal"&gt;Course&lt;/tt&gt;.&lt;/p&gt;
+&lt;p&gt;I struggled for a while when I found I couldn't control the &lt;tt class="docutils literal"&gt;OneToOneField&lt;/tt&gt; Django automatically creates from the child classes to the parent. I then saw this &lt;a class="reference external" href="http://stackoverflow.com/a/32997081/457935"&gt;StackOverflow answer on a table inheritance question&lt;/a&gt; which gave the null/blank field attribute that you'll see I use below.&lt;/p&gt;
+&lt;div class="section" id="backup-your-database"&gt;
+&lt;h2&gt;Backup Your Database&lt;/h2&gt;
+&lt;p&gt;It took me a few attempts to get this right so backups are wise...&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="first-schema-migration"&gt;
+&lt;h2&gt;First Schema Migration&lt;/h2&gt;
+&lt;p&gt;Now that the models are prepared I created the first database migration adding a default of &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;-1&lt;/span&gt;&lt;/tt&gt; for the foreign key from the existing child tables to their new concrete parent (which I'll remove manually):&lt;/p&gt;
+&lt;pre class="code bash literal-block"&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;python ./manage.py makemigrations box --settings&lt;span class="o"&gt;=&lt;/span&gt;dev_settings
+You are trying to add a non-nullable field &lt;span class="s1"&gt;'course_ptr'&lt;/span&gt; to box without a default&lt;span class="p"&gt;;&lt;/span&gt; we can&lt;span class="s1"&gt;'t do that (the database needs something to populate existing rows).
+Please select a fix:
+ 1) Provide a one-off default now (will be set on all existing rows)
+ 2) Quit, and let me add a default in models.py
+Select an option: 1
+Please enter the default value now, as valid Python
+The datetime and django.utils.timezone modules are available, so you can do e.g. timezone.now()
+&amp;gt;&amp;gt;&amp;gt; -1
+You are trying to add a non-nullable field '&lt;/span&gt;course_ptr&lt;span class="s1"&gt;' to doublebox without a default; we can'&lt;/span&gt;t &lt;span class="k"&gt;do&lt;/span&gt; that &lt;span class="o"&gt;(&lt;/span&gt;the database needs something to populate existing rows&lt;span class="o"&gt;)&lt;/span&gt;.
+Please &lt;span class="k"&gt;select&lt;/span&gt; a fix:
+ 1&lt;span class="o"&gt;)&lt;/span&gt; Provide a one-off default now &lt;span class="o"&gt;(&lt;/span&gt;will be &lt;span class="nb"&gt;set &lt;/span&gt;on all existing rows&lt;span class="o"&gt;)&lt;/span&gt;
+ 2&lt;span class="o"&gt;)&lt;/span&gt; Quit, and &lt;span class="nb"&gt;let &lt;/span&gt;me add a default in models.py
+Select an option: 1
+Please enter the default value now, as valid Python
+The datetime and django.utils.timezone modules are available, so you can &lt;span class="k"&gt;do&lt;/span&gt; e.g. timezone.now&lt;span class="o"&gt;()&lt;/span&gt;
+&amp;gt;&amp;gt;&amp;gt; -1
+You are trying to add a non-nullable field &lt;span class="s1"&gt;'course_ptr'&lt;/span&gt; to starbox without a default&lt;span class="p"&gt;;&lt;/span&gt; we can&lt;span class="s1"&gt;'t do that (the database needs something to populate existing rows).
+Please select a fix:
+ 1) Provide a one-off default now (will be set on all existing rows)
+ 2) Quit, and let me add a default in models.py
+Select an option: 1
+Please enter the default value now, as valid Python
+The datetime and django.utils.timezone modules are available, so you can do e.g. timezone.now()
+&amp;gt;&amp;gt;&amp;gt; -1
+Migrations for '&lt;/span&gt;box&lt;span class="err"&gt;'&lt;/span&gt;:
+  0004_auto_20151114_1255.py:
+    - Create model Course
+    - Remove field created from box
+    - Remove field generator from box
+    - Remove field id from box
+    - Remove field sequence from box
+    - Remove field short_url from box
+    - Remove field skills from box
+    - Remove field created from doublebox
+    - Remove field generator from doublebox
+    - Remove field id from doublebox
+    - Remove field sequence from doublebox
+    - Remove field short_url from doublebox
+    - Remove field skills from doublebox
+    - Remove field created from starbox
+    - Remove field generator from starbox
+    - Remove field id from starbox
+    - Remove field sequence from starbox
+    - Remove field short_url from starbox
+    - Remove field skills from starbox
+    - Add field course_id to box
+    - Add field course_ptr to box
+    - Add field course_id to doublebox
+    - Add field course_ptr to doublebox
+    - Add field course_id to starbox
+    - Add field course_ptr to starbox
+&lt;/pre&gt;
+&lt;p&gt;This automatic migration drops the columns in the subclass tables and with them all the existing data (including keys used in foreign key tables) is lost. But at least I can modify the migration to do what I need for the first migration. The steps will be:&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;Keep the &lt;tt class="docutils literal"&gt;CreateModel&lt;/tt&gt; of the parent class, &lt;tt class="docutils literal"&gt;Course&lt;/tt&gt;, table.&lt;/li&gt;
+&lt;li&gt;Manually edit the &lt;tt class="docutils literal"&gt;AddField&lt;/tt&gt; of the &lt;tt class="docutils literal"&gt;OneToOneField&lt;/tt&gt; on the child classes to keep the existing primary key on the table during the migration. Change them from this:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre class="code python literal-block"&gt;
+&lt;span class="n"&gt;migrations&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;AddField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+    &lt;span class="n"&gt;model_name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'box'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'course_ptr'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="n"&gt;field&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;models&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;OneToOneField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;parent_link&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;auto_created&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;primary_key&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;default&lt;/span&gt;&lt;span class="o"&gt;=-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;serialize&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'box.Course'&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+    &lt;span class="n"&gt;preserve_default&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="p"&gt;),&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;to remove the primary_key, default and add null/blank parameters:&lt;/p&gt;
+&lt;pre class="code python literal-block"&gt;
+&lt;span class="n"&gt;migrations&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;AddField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+    &lt;span class="n"&gt;model_name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'box'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'course_ptr'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="n"&gt;field&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;models&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;OneToOneField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;parent_link&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;auto_created&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;null&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;blank&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;serialize&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'box.Course'&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+    &lt;span class="n"&gt;preserve_default&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="p"&gt;),&lt;/span&gt;
+&lt;/pre&gt;
+&lt;ol class="arabic simple" start="3"&gt;
+&lt;li&gt;Delete all the &lt;tt class="docutils literal"&gt;RemoveField&lt;/tt&gt; entries in the migration. They'll be added in our final migration.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;If you want to see/validate/test the SQL that will be run you can use the &lt;tt class="docutils literal"&gt;sqlmigrate&lt;/tt&gt; management command (just give it your app name and the number of the migration):&lt;/p&gt;
+&lt;pre class="code bash literal-block"&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;python ./manage.py sqlmigrate box 0004
+BEGIN&lt;span class="p"&gt;;&lt;/span&gt;
+CREATE TABLE &lt;span class="s2"&gt;&amp;quot;box_course&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;id&amp;quot;&lt;/span&gt; serial NOT NULL PRIMARY KEY, &lt;span class="s2"&gt;&amp;quot;sequence&amp;quot;&lt;/span&gt; varchar&lt;span class="o"&gt;(&lt;/span&gt;64&lt;span class="o"&gt;)&lt;/span&gt; NOT NULL, &lt;span class="s2"&gt;&amp;quot;short_url&amp;quot;&lt;/span&gt; varchar&lt;span class="o"&gt;(&lt;/span&gt;64&lt;span class="o"&gt;)&lt;/span&gt; NOT NULL, &lt;span class="s2"&gt;&amp;quot;created&amp;quot;&lt;/span&gt; timestamp with &lt;span class="nb"&gt;time &lt;/span&gt;zone NOT NULL, &lt;span class="s2"&gt;&amp;quot;generator&amp;quot;&lt;/span&gt; varchar&lt;span class="o"&gt;(&lt;/span&gt;2&lt;span class="o"&gt;)&lt;/span&gt; NOT NULL, &lt;span class="s2"&gt;&amp;quot;subclass&amp;quot;&lt;/span&gt; integer NOT NULL, &lt;span class="s2"&gt;&amp;quot;subclassid&amp;quot;&lt;/span&gt; integer NOT NULL&lt;span class="o"&gt;)&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+CREATE TABLE &lt;span class="s2"&gt;&amp;quot;box_course_skills&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;id&amp;quot;&lt;/span&gt; serial NOT NULL PRIMARY KEY, &lt;span class="s2"&gt;&amp;quot;course_id&amp;quot;&lt;/span&gt; integer NOT NULL, &lt;span class="s2"&gt;&amp;quot;skill_id&amp;quot;&lt;/span&gt; integer NOT NULL, UNIQUE &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;course_id&amp;quot;&lt;/span&gt;, &lt;span class="s2"&gt;&amp;quot;skill_id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;))&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_box&amp;quot;&lt;/span&gt; ADD COLUMN &lt;span class="s2"&gt;&amp;quot;course_ptr_id&amp;quot;&lt;/span&gt; integer NULL UNIQUE&lt;span class="p"&gt;;&lt;/span&gt;
+ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_box&amp;quot;&lt;/span&gt; ALTER COLUMN &lt;span class="s2"&gt;&amp;quot;course_ptr_id&amp;quot;&lt;/span&gt; DROP DEFAULT&lt;span class="p"&gt;;&lt;/span&gt;
+ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_doublebox&amp;quot;&lt;/span&gt; ADD COLUMN &lt;span class="s2"&gt;&amp;quot;course_ptr_id&amp;quot;&lt;/span&gt; integer NULL UNIQUE&lt;span class="p"&gt;;&lt;/span&gt;
+ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_doublebox&amp;quot;&lt;/span&gt; ALTER COLUMN &lt;span class="s2"&gt;&amp;quot;course_ptr_id&amp;quot;&lt;/span&gt; DROP DEFAULT&lt;span class="p"&gt;;&lt;/span&gt;
+ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_starbox&amp;quot;&lt;/span&gt; ADD COLUMN &lt;span class="s2"&gt;&amp;quot;course_ptr_id&amp;quot;&lt;/span&gt; integer NULL UNIQUE&lt;span class="p"&gt;;&lt;/span&gt;
+ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_starbox&amp;quot;&lt;/span&gt; ALTER COLUMN &lt;span class="s2"&gt;&amp;quot;course_ptr_id&amp;quot;&lt;/span&gt; DROP DEFAULT&lt;span class="p"&gt;;&lt;/span&gt;
+ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_course_skills&amp;quot;&lt;/span&gt; ADD CONSTRAINT &lt;span class="s2"&gt;&amp;quot;box_course_skills_course_id_4bbae33e06b494d4_fk_box_course_id&amp;quot;&lt;/span&gt; FOREIGN KEY &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;course_id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; REFERENCES &lt;span class="s2"&gt;&amp;quot;box_course&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; DEFERRABLE INITIALLY DEFERRED&lt;span class="p"&gt;;&lt;/span&gt;
+ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_course_skills&amp;quot;&lt;/span&gt; ADD CONSTRAINT &lt;span class="s2"&gt;&amp;quot;box_course_skills_skill_id_35b3dcfd6d387281_fk_box_skill_id&amp;quot;&lt;/span&gt; FOREIGN KEY &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;skill_id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; REFERENCES &lt;span class="s2"&gt;&amp;quot;box_skill&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; DEFERRABLE INITIALLY DEFERRED&lt;span class="p"&gt;;&lt;/span&gt;
+CREATE INDEX &lt;span class="s2"&gt;&amp;quot;box_course_skills_ea134da7&amp;quot;&lt;/span&gt; ON &lt;span class="s2"&gt;&amp;quot;box_course_skills&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;course_id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+CREATE INDEX &lt;span class="s2"&gt;&amp;quot;box_course_skills_d38d4c39&amp;quot;&lt;/span&gt; ON &lt;span class="s2"&gt;&amp;quot;box_course_skills&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;skill_id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_box&amp;quot;&lt;/span&gt; ADD CONSTRAINT &lt;span class="s2"&gt;&amp;quot;box_box_course_ptr_id_9f73cfe60a5d542_fk_box_course_id&amp;quot;&lt;/span&gt; FOREIGN KEY &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;course_ptr_id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; REFERENCES &lt;span class="s2"&gt;&amp;quot;box_course&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; DEFERRABLE INITIALLY DEFERRED&lt;span class="p"&gt;;&lt;/span&gt;
+ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_doublebox&amp;quot;&lt;/span&gt; ADD CONSTRAINT &lt;span class="s2"&gt;&amp;quot;box_doublebox_course_ptr_id_6b112382d489a445_fk_box_course_id&amp;quot;&lt;/span&gt; FOREIGN KEY &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;course_ptr_id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; REFERENCES &lt;span class="s2"&gt;&amp;quot;box_course&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; DEFERRABLE INITIALLY DEFERRED&lt;span class="p"&gt;;&lt;/span&gt;
+ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_starbox&amp;quot;&lt;/span&gt; ADD CONSTRAINT &lt;span class="s2"&gt;&amp;quot;box_starbox_course_ptr_id_25fd8909f85eb93a_fk_box_course_id&amp;quot;&lt;/span&gt; FOREIGN KEY &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;course_ptr_id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; REFERENCES &lt;span class="s2"&gt;&amp;quot;box_course&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; DEFERRABLE INITIALLY DEFERRED&lt;span class="p"&gt;;&lt;/span&gt;
+
+COMMIT&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;If you are happy then save and run the migration:&lt;/p&gt;
+&lt;pre class="code bash literal-block"&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;python ./manage.py python migrate box
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div class="section" id="data-migration"&gt;
+&lt;h2&gt;Data Migration&lt;/h2&gt;
+&lt;p&gt;I decided to use SQL (via &lt;a class="reference external" href="https://docs.djangoproject.com/en/1.8/ref/migration-operations/#runsql"&gt;RunSQL&lt;/a&gt; ) for the data migration since it was easier/faster than instantiating each Django model instance as part of the migration. I didn't write reverse migrations since I won't be needing them.&lt;/p&gt;
+&lt;p&gt;Here's my approach:&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;Copy subclass rows into parent &lt;tt class="docutils literal"&gt;course&lt;/tt&gt; table with the &lt;tt class="docutils literal"&gt;subclass&lt;/tt&gt; column set to a unique value for the subclass (just used a number for each subclass: 1, 2 &amp;amp; 3) and &lt;tt class="docutils literal"&gt;subclassid&lt;/tt&gt; set to each the child table's &lt;tt class="docutils literal"&gt;id&lt;/tt&gt; (primary key) value. Together they are a composite key that will be used to tie the parent records back to the child records and their many-to-many relationships.&lt;/li&gt;
+&lt;li&gt;Update the subclass &lt;tt class="docutils literal"&gt;course_ptr&lt;/tt&gt; foreign key column with the primary key id of the &lt;tt class="docutils literal"&gt;course&lt;/tt&gt; table rows having the subclass's id and subclass number value.&lt;/li&gt;
+&lt;li&gt;Insert subclass's many-to-many table data into the corresponding many-to-many parent table.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Create an empty migration:&lt;/p&gt;
+&lt;pre class="code bash literal-block"&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;python manage.py makemigrations --empty box
+&lt;/pre&gt;
+&lt;p&gt;Then add the migration queries to it (repeat the following for each of the subclasses giving each a different number):&lt;/p&gt;
+&lt;pre class="code python literal-block"&gt;
+&lt;span class="n"&gt;operations&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
+    &lt;span class="c"&gt;# insert data from subclass into parent class with subclass 'number' and primary key/id&lt;/span&gt;
+    &lt;span class="n"&gt;migrations&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;RunSQL&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&amp;quot;&amp;quot;INSERT INTO box_course (sequence, short_url, created, generator, subclass, subclassid)
+                      SELECT sequence, short_url, created, generator, 1, id
+                      FROM box_box;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+
+    &lt;span class="p"&gt;),&lt;/span&gt;
+    &lt;span class="c"&gt;# update subclass primary key to point to parent class (notice composite key values):&lt;/span&gt;
+    &lt;span class="n"&gt;migrations&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;RunSQL&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;UPDATE box_box box SET course_ptr_id=course.id FROM box_course course WHERE course.subclassid=box.id AND course.subclass=1;&amp;quot;&lt;/span&gt;
+    &lt;span class="p"&gt;),&lt;/span&gt;
+    &lt;span class="c"&gt;# insert child's many-to-many foreign key references into it's parent's many-to-many table&lt;/span&gt;
+    &lt;span class="n"&gt;migrations&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;RunSQL&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&amp;quot;&amp;quot;INSERT INTO box_course_skills (course_id, skill_id)
+                      SELECT box.course_ptr_id, skills.id
+                      FROM box_box box JOIN box_box_skills skills
+                      ON box.id = skills.box_id&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+    &lt;span class="p"&gt;),&lt;/span&gt;
+&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div class="section" id="final-schema-migration"&gt;
+&lt;h2&gt;Final Schema Migration&lt;/h2&gt;
+&lt;p&gt;Then it is time to edit the &lt;tt class="docutils literal"&gt;models.py&lt;/tt&gt; file and remove the temporary members/fields in the parent class: &lt;tt class="docutils literal"&gt;subclass&lt;/tt&gt; and &lt;tt class="docutils literal"&gt;subclassid&lt;/tt&gt;. Then create the schema migration which will drop those columns and the migrated columns from the child tables:&lt;/p&gt;
+&lt;pre class="code bash literal-block"&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;python manage.py makemigrations box
+  You are trying to add a non-nullable field &lt;span class="s1"&gt;'course_ptr'&lt;/span&gt; to doublebox without a default&lt;span class="p"&gt;;&lt;/span&gt; we can&lt;span class="s1"&gt;'t do that (the database needs something to populate existing rows).
+  Please select a fix:
+   1) Provide a one-off default now (will be set on all existing rows)
+   2) Quit, and let me add a default in models.py
+  Select an option: 1
+  Please enter the default value now, as valid Python
+  The datetime and django.utils.timezone modules are available, so you can do e.g. timezone.now()
+  &amp;gt;&amp;gt;&amp;gt; -1
+  You are trying to add a non-nullable field '&lt;/span&gt;course_ptr&lt;span class="s1"&gt;' to starbox without a default; we can'&lt;/span&gt;t &lt;span class="k"&gt;do&lt;/span&gt; that &lt;span class="o"&gt;(&lt;/span&gt;the database needs something to populate existing rows&lt;span class="o"&gt;)&lt;/span&gt;.
+  Please &lt;span class="k"&gt;select&lt;/span&gt; a fix:
+   1&lt;span class="o"&gt;)&lt;/span&gt; Provide a one-off default now &lt;span class="o"&gt;(&lt;/span&gt;will be &lt;span class="nb"&gt;set &lt;/span&gt;on all existing rows&lt;span class="o"&gt;)&lt;/span&gt;
+   2&lt;span class="o"&gt;)&lt;/span&gt; Quit, and &lt;span class="nb"&gt;let &lt;/span&gt;me add a default in models.py
+  Select an option: 1
+  Please enter the default value now, as valid Python
+  The datetime and django.utils.timezone modules are available, so you can &lt;span class="k"&gt;do&lt;/span&gt; e.g. timezone.now&lt;span class="o"&gt;()&lt;/span&gt;
+  &amp;gt;&amp;gt;&amp;gt; -1
+  You are trying to change the nullable field &lt;span class="s1"&gt;'course_ptr'&lt;/span&gt; on box to non-nullable without a default&lt;span class="p"&gt;;&lt;/span&gt; we can&lt;span class="s1"&gt;'t do that (the database needs something to populate existing rows).
+  Please select a fix:
+   1) Provide a one-off default now (will be set on all existing rows)
+   2) Ignore for now, and let me handle existing rows with NULL myself (e.g. adding a RunPython or RunSQL operation in the new migration file before the AlterField operation)
+   3) Quit, and let me add a default in models.py
+  Select an option: 1
+  Please enter the default value now, as valid Python
+  The datetime and django.utils.timezone modules are available, so you can do e.g. timezone.now()
+  &amp;gt;&amp;gt;&amp;gt; -1
+  Migrations for '&lt;/span&gt;box&lt;span class="err"&gt;'&lt;/span&gt;:
+    0006_auto_20151114_1708.py:
+      - Remove field created from box
+      - Remove field generator from box
+      - Remove field id from box
+      - Remove field sequence from box
+      - Remove field short_url from box
+      - Remove field skills from box
+      - Remove field subclass from course
+      - Remove field subclassid from course
+      - Remove field created from doublebox
+      - Remove field generator from doublebox
+      - Remove field id from doublebox
+      - Remove field sequence from doublebox
+      - Remove field short_url from doublebox
+      - Remove field skills from doublebox
+      - Remove field created from starbox
+      - Remove field generator from starbox
+      - Remove field id from starbox
+      - Remove field sequence from starbox
+      - Remove field short_url from starbox
+      - Remove field skills from starbox
+      - Alter field course_ptr to doublebox
+      - Alter field course_ptr to starbox
+      - Alter field course_ptr on box
+&lt;/pre&gt;
+&lt;p&gt;You see management command detects that the child fields still haven't been deleted and that the default value for inserts of the children's parent reference still doesn't exist. Lastly the migration converts the &lt;tt class="docutils literal"&gt;OneToOne&lt;/tt&gt; field back to a primary key.&lt;/p&gt;
+&lt;p&gt;Then migrate a final time:&lt;/p&gt;
+&lt;pre class="code bash literal-block"&gt;
+&lt;span class="nv"&gt;$ &lt;/span&gt;python ./manage.py migrate box
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div class="section" id="wrap-up"&gt;
+&lt;h2&gt;Wrap Up&lt;/h2&gt;
+&lt;p&gt;I hope this helps if you need this type of migration. It may look a little complicated at first, but all it amounts to is:&lt;/p&gt;
+&lt;p&gt;Step 1. Remove abstract inheritance and add temporary fields to the parent class for identifying each subclass's records in the parent table when migrating the data.&lt;/p&gt;
+&lt;p&gt;Step 2. Migrate the child data to the parent class with the subclass composite keys. Use new parent primary keys to migrate tables with foreign key that have moved to the parent class.&lt;/p&gt;
+&lt;p&gt;Step 3. Drop columns used in migration on the parent and child tables.&lt;/p&gt;
+&lt;p&gt;Let me know if you've found other/better solutions!&lt;/p&gt;
+&lt;/div&gt;
+</summary><category term="python"></category><category term="agilitycourses"></category><category term="django"></category><category term="database"></category><category term="migration"></category></entry><entry><title>Django REST Registration with django-rest-auth and django-allauth</title><link href="http://tech.agilitynerd.com/django-rest-registration-with-django-rest-auth.html" rel="alternate"></link><updated>2014-10-26T03:02:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2014-10-26:django-rest-registration-with-django-rest-auth.html</id><summary type="html">&lt;p&gt;I'm creating a mobile app for my &lt;a class="reference external" href="http://agilitycourses.com"&gt;agilitycourses website&lt;/a&gt; and I'm using &lt;a class="reference external" href="http://www.django-rest-framework.org/"&gt;django-rest-framework&lt;/a&gt; to provide a REST API for use by the client application. In order to provide authentication and registration I'm using &lt;a class="reference external" href="http://django-allauth.readthedocs.org/en/latest/"&gt;django-allauth&lt;/a&gt;. Lastly I use &lt;a class="reference external" href="https://github.com/Tivix/django-rest-auth/"&gt;django-rest-auth&lt;/a&gt; to provide REST resources for authentication and registration.&lt;/p&gt;
+&lt;p&gt;I implemented and tested &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;django-rest-framework&lt;/span&gt;&lt;/tt&gt; and then added in &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;django-allauth&lt;/span&gt;&lt;/tt&gt;. But when I went to integrate &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;django-rest-auth&lt;/span&gt;&lt;/tt&gt; POSTing to the &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;/rest-auth/registration/&lt;/span&gt;&lt;/tt&gt; resource was generating a traceback:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+Exception Type: TypeError at /rest-auth/registration/
+Exception Value: add_message() argument must be an HttpRequest object, not 'Request';.
+&lt;/pre&gt;
+&lt;p&gt;It turns out &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;django-allauth&lt;/span&gt;&lt;/tt&gt;'s &lt;tt class="docutils literal"&gt;allauth.account.adapter.DefaultAccountAdapter&lt;/tt&gt; uses Django's messaging middleware to give feedback to users when HTML templates are used. When &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;rest-auth&lt;/span&gt;&lt;/tt&gt; invokes the view it is is passing in a &lt;tt class="docutils literal"&gt;Request&lt;/tt&gt;. I took a look at the &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;rest-auth&lt;/span&gt;&lt;/tt&gt; demo application and saw that it's &lt;tt class="docutils literal"&gt;settings.py&lt;/tt&gt; file had &lt;tt class="docutils literal"&gt;django.contrib.messages&lt;/tt&gt; disabled. Which keeps this traceback from happening.&lt;/p&gt;
+&lt;p&gt;Disabling messaging is a reasonable thing to do if the service is only handling REST data. For now I'd like to use the same service for both HTML and REST traffic. So I needed a way to disable messaging in &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;django-allauth&lt;/span&gt;&lt;/tt&gt;.&lt;/p&gt;
+&lt;p&gt;I found &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;django-allauth&lt;/span&gt;&lt;/tt&gt; allows configuring/replacing the account adapter so I subclassed &lt;tt class="docutils literal"&gt;DefaultAccountAdapter&lt;/tt&gt; and stubbed out the &lt;tt class="docutils literal"&gt;add_message&lt;/tt&gt; method. I put it in my &amp;quot;glue&amp;quot; application (called &lt;tt class="docutils literal"&gt;main&lt;/tt&gt;) in a file called &lt;tt class="docutils literal"&gt;adapters.py&lt;/tt&gt;:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+class MessageFreeAdapter(DefaultAccountAdapter):
+    &amp;quot;&amp;quot;&amp;quot;
+    django-allauth's `allauth.account.adapter.DefaultAccountAdapter` uses Django's messaging middleware to give feedback to users. When using django-rest-auth for registration/login JSON-REST requests a traceback is generated when the `HTTPRequest` is passed into `django.contrib.messages.add_messages` when a `Request` is expected:
+
+    Exception Type: TypeError at /rest-auth/registration/
+    Exception Value: add_message() argument must be an HttpRequest object, not &amp;amp;#39;Request&amp;amp;#39;.
+
+    If messaging cannot be disabled (it is used by other applications) using this subclass
+    disables messaging for allauth/django-rest-auth.
+
+    In settings.py add ACCOUNT_ADAPTER = 'main.adapters.MessageFreeAdapter'
+    &amp;quot;&amp;quot;&amp;quot;
+    def add_message(self, request, level, message_template,
+                    message_context={}, extra_tags=''):
+        pass
+&lt;/pre&gt;
+&lt;p&gt;Then I set the &lt;tt class="docutils literal"&gt;ACCOUNT_ADAPTER&lt;/tt&gt; variable in &lt;tt class="docutils literal"&gt;settings.py&lt;/tt&gt; to use this new adapter:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+ACCOUNT_ADAPTER = 'main.adapters.MessageFreeAdapter'
+&lt;/pre&gt;
+&lt;p&gt;So now I can continue to use Django messaging and use &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;django-allauth&lt;/span&gt;&lt;/tt&gt; in the same Django project.&lt;/p&gt;
+</summary><category term="python"></category><category term="REST"></category><category term="API"></category><category term="agilitycourses"></category><category term="django"></category><category term="django-rest-framework"></category><category term="django-allauth"></category><category term="django-rest-auth"></category><category term="mobile"></category></entry><entry><title>Integrated Coverage Analysis with Coveralls</title><link href="http://tech.agilitynerd.com/coverage-analysis-with-coveralls.html" rel="alternate"></link><updated>2013-12-15T17:00:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2013-12-15:coverage-analysis-with-coveralls.html</id><summary type="html">&lt;p&gt;When I converted &lt;a class="reference external" href="https://github.com/saschwarz/django-periodicals"&gt;django-periodicals&lt;/a&gt; to use &lt;a class="reference external" href="http://tech.agilitynerd.com/cookiecutter-django-do-the-right-thing.html"&gt;cookiecutter-djangopackage&lt;/a&gt; I was running &lt;a class="reference external" href="https://pypi.python.org/pypi/coverage"&gt;coverage.py&lt;/a&gt; in my &lt;a class="reference external" href="https://travis-ci.org"&gt;Travis-CI&lt;/a&gt; &lt;tt class="docutils literal"&gt;.travis.yml&lt;/tt&gt; to report the coverage results to the command line log. The coverage results were interesting but didn't really alter my development practice much.&lt;/p&gt;
+&lt;p&gt;Over the years I've had differing options about coverage testing/analysis. Like any programming metric you can &amp;quot;cook the books&amp;quot; and pump up the metric while not actually improving the quality or maintainability of the code being measured.  Minimally coverage testing can uncover unexercised corners of the code, especially error handling code. Nothing is worse than crashing an application with faulty error handling code.&lt;/p&gt;
+&lt;p&gt;&lt;tt class="docutils literal"&gt;coverage.py&lt;/tt&gt; is trivial to run and it generates reports in various formats to make finding unexercised code simple. It is so easy there is no reason not to run it.&lt;/p&gt;
+&lt;p&gt;So my local coverage testing showed 7% of my code wasn't exercised - &amp;quot;good enough&amp;quot; right?&lt;/p&gt;
+&lt;p&gt;Then I discovered &lt;a class="reference external" href="https://coveralls.io/"&gt;Coveralls&lt;/a&gt;. Coveralls integrates with Travis and collects coverage data for each buid and displays it on their website. It was &lt;a class="reference external" href="https://github.com/coagulant/coveralls-python#usage-travis-ci"&gt;trivial to setup&lt;/a&gt;:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Create a login on Coverall and enable your Travis-CI project.&lt;/li&gt;
+&lt;li&gt;Add &lt;tt class="docutils literal"&gt;coveralls&lt;/tt&gt; to the project's test &lt;tt class="docutils literal"&gt;requirements.txt&lt;/tt&gt;.&lt;/li&gt;
+&lt;li&gt;Then add &lt;tt class="docutils literal"&gt;after_success: coveralls&lt;/tt&gt; to &lt;tt class="docutils literal"&gt;.travis.yml&lt;/tt&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The next time the project is tested on Travis-CI the coverage results appear on coveralls.io. You can view the untested code in each file and Coveralls will track the increase/decrease of coverage in each file each time you check-in/test.&lt;/p&gt;
+&lt;p&gt;They also have badges showing the percent coverage that you can embed in your reStructuredText documentation on GitHub and ReadTheDocs. And that's the insidious part of integrated open source development...&lt;/p&gt;
+&lt;p&gt;The &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;cookiecutter-djangoproject&lt;/span&gt;&lt;/tt&gt; produces an application GitHub page that shows the Travis-CI test status and the PyPi package version. With the addition of the Coveralls badge it can now show the coverage percentage. That turned out to be a little bit of programming peer group pressure that made 93% coverge no longer &amp;quot;good enough&amp;quot;!&lt;/p&gt;
+&lt;p&gt;So a few minutes and a few tests later I had tests that did exercise the full code base including error handling. That gave me a happy little green badge that displayed &amp;quot;coverage 100%&amp;quot;.&lt;/p&gt;
+&lt;p&gt;So not only is Coveralls fully integrated with the GitHub - CI - Open Source infrastructure, and dead simple to use, it got this developer to push into all the corners of his code before releasing. And I now have the peace of mind that Travis &lt;em&gt;and&lt;/em&gt; Coveralls will be watching my back.&lt;/p&gt;
+&lt;a class="reference external image-reference" href="http://badge.fury.io/py/django-periodicals"&gt;&lt;img alt="badge image" src="https://badge.fury.io/py/django-periodicals.png" /&gt;&lt;/a&gt;
+&lt;a class="reference external image-reference" href="https://travis-ci.org/saschwarz/django-periodicals"&gt;&lt;img alt="badge image for travis" src="https://travis-ci.org/saschwarz/django-periodicals.png?branch=master" /&gt;&lt;/a&gt;
+&lt;a class="reference external image-reference" href="https://coveralls.io/r/saschwarz/django-periodicals?branch=master"&gt;&lt;img alt="badge image for coveralls" src="https://coveralls.io/repos/saschwarz/django-periodicals/badge.png?branch=master" /&gt;&lt;/a&gt;
+</summary><category term="coverage"></category><category term="webdevelopment"></category><category term="github"></category><category term="django"></category><category term="testing"></category><category term="travis"></category><category term="python"></category></entry><entry><title>cookiecutter-djangopackage - Do the Right Thing</title><link href="http://tech.agilitynerd.com/cookiecutter-django-do-the-right-thing.html" rel="alternate"></link><updated>2013-12-09T23:02:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2013-12-09:cookiecutter-django-do-the-right-thing.html</id><summary type="html">&lt;p&gt;In preparation for upgrading and enhancing &lt;a class="reference external" href="http://googility.com"&gt;Googility.com&lt;/a&gt; I've started breaking out reusable applications, upgrading them, and open sourcing the code on GitHub. I wanted to follow development best practices and create high quality applications including these features:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;A full set of tests.&lt;/li&gt;
+&lt;li&gt;Near 100% code coverage.&lt;/li&gt;
+&lt;li&gt;Continuous Integration running on each check-in via &lt;a class="reference external" href="https://travis-ci.org/"&gt;Travis CI&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Documentation in Sphinx on &lt;a class="reference external" href="https://readthedocs.org/"&gt;Read the Docs (RTD)&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Packaging/versioning compatible with &lt;a class="reference external" href="https://pypi.python.org/pypi"&gt;PyPi&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Packaging building/testing on multiple python versions using virtualenvs via &lt;a class="reference external" href="http://tox.readthedocs.org/en/latest/"&gt;tox&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I had started researching each aspect and was getting a little frustrated that there wasn't a best practice for tying everthing together. Then I came across &lt;a class="reference external" href="https://twitter.com/audreyr"&gt;Audrey Roy's&lt;/a&gt; &lt;a class="reference external" href="https://github.com/audreyr/cookiecutter"&gt;cookiecutter&lt;/a&gt; and &lt;a class="reference external" href="http://pydanny.com/"&gt;Daniel Greenfeld's&lt;/a&gt; &lt;a class="reference external" href="https://github.com/pydanny/cookiecutter-djangopackage"&gt;cookiecutter-djangopackage&lt;/a&gt;. &lt;tt class="docutils literal"&gt;cookiecutter&lt;/tt&gt; is a utility to create project directory structures and files from the command line. &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;cookiecutter-djangopackage&lt;/span&gt;&lt;/tt&gt; is a template for creating a reusable Django application.&lt;/p&gt;
+&lt;p&gt;Yes there are other similar projects, and Django provides &lt;tt class="docutils literal"&gt;startproject&lt;/tt&gt; and &lt;tt class="docutils literal"&gt;startapp&lt;/tt&gt; commands that can take template arguments. But since I've never used Travis, RTD or tox I really wanted to leverage more experienced developers' knowledge so I could set them up in a &amp;quot;smart&amp;quot; way.&lt;/p&gt;
+&lt;p&gt;That's what I liked about &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;cookiecutter-djangopackage&lt;/span&gt;&lt;/tt&gt; it came with sane defaults that worked out of the box &lt;a class="footnote-reference" href="#id2" id="id1"&gt;[1]&lt;/a&gt; and did smart stuff like wiring the version from the package's &lt;tt class="docutils literal"&gt;__init__.py&lt;/tt&gt; in to the documentation and &lt;tt class="docutils literal"&gt;setup.py&lt;/tt&gt;. The &lt;tt class="docutils literal"&gt;requirements.txt&lt;/tt&gt; used by &lt;tt class="docutils literal"&gt;pip&lt;/tt&gt; is wired in to &lt;tt class="docutils literal"&gt;tox&lt;/tt&gt; and the &lt;tt class="docutils literal"&gt;README.rst&lt;/tt&gt; is used in the &lt;tt class="docutils literal"&gt;setup.py&lt;/tt&gt; and included in the Spinx docs.&lt;/p&gt;
+&lt;p&gt;And there are other integrations that make it easy to release a professional Django application. In fact that's my long winded point - it makes it hard to not do the right thing! I might have skipped using one or more of these support technologies, but &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;cookiecutter-djangopackage&lt;/span&gt;&lt;/tt&gt; made it easy for me to use them and focus on writing code, tests and documentation.&lt;/p&gt;
+&lt;p&gt;So that is what I want to stress: with &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;cookiecutter-djangopackage&lt;/span&gt;&lt;/tt&gt; you &lt;em&gt;can&lt;/em&gt; create a packaged application, whose code is tested on multiple python/Django versions, tested for installation, installable via PyPi and nicely documented without much additional effort.&lt;/p&gt;
+&lt;p&gt;So take look at my nearly released &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;django-periodicals&lt;/span&gt;&lt;/tt&gt; application to see how it all works on &lt;a class="reference external" href="https://github.com/saschwarz/django-periodicals"&gt;GitHub&lt;/a&gt;, &lt;a class="reference external" href="http://django-periodicals.readthedocs.org/en/latest/"&gt;RTD&lt;/a&gt; and &lt;a class="reference external" href="https://travis-ci.org/saschwarz/django-periodicals"&gt;Travis&lt;/a&gt;.&lt;/p&gt;
+&lt;!-- rubric: Footnotes --&gt;
+&lt;table class="docutils footnote" frame="void" id="id2" rules="none"&gt;
+&lt;colgroup&gt;&lt;col class="label" /&gt;&lt;col /&gt;&lt;/colgroup&gt;
+&lt;tbody valign="top"&gt;
+&lt;tr&gt;&lt;td class="label"&gt;&lt;a class="fn-backref" href="#id1"&gt;[1]&lt;/a&gt;&lt;/td&gt;&lt;td&gt;I submitted a very minor &lt;a class="reference external" href="https://github.com/pydanny/cookiecutter-djangopackage/pull/13"&gt;pull request&lt;/a&gt; and found a related issue with application names that don't match their imported package name. (i.e. &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;django-periodicals&lt;/span&gt;&lt;/tt&gt; is the application name and &lt;tt class="docutils literal"&gt;periodicals&lt;/tt&gt; is the package that is imported).&lt;/td&gt;&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+</summary><category term="python"></category><category term="django"></category><category term="googility"></category><category term="development"></category><category term="testing"></category><category term="travis"></category><category term="rtd"></category><category term="pypi"></category><category term="tox"></category><category term="virtualenv"></category><category term="webdevelopment"></category><category term="github"></category></entry><entry><title>Django Shrink The Web django-stw 0.2.0 Released</title><link href="http://tech.agilitynerd.com/django-shrink-the-web-django-stw-020-released.html" rel="alternate"></link><updated>2011-04-23T13:32:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2011-04-23:django-shrink-the-web-django-stw-020-released.html</id><summary type="html">&lt;p&gt;&lt;a class="reference external" href="http://www.shrinktheweb.com/"&gt;Shrink The Web&lt;/a&gt; has announced a new API for free users using their new
+&lt;a class="reference external" href="http://www.shrinktheweb.com/content/what-stw-preview-verification.html"&gt;preview verification&lt;/a&gt; feature. This change required changes to my
+django-stw package.&lt;/p&gt;
+&lt;p&gt;The changes (lifted from the &lt;a class="reference external" href="https://github.com/saschwarz/django-stw/blob/master/CHANGELOG.txt"&gt;CHANGELOG.txt&lt;/a&gt;):&lt;/p&gt;
+&lt;p&gt;Changes to the &lt;tt class="docutils literal"&gt;shrinkthewebimage&lt;/tt&gt; template tag:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;The &lt;tt class="docutils literal"&gt;shrinkthewebimage&lt;/tt&gt; template tag is NOT backward compatible with
+version 0.0.1. The alt argument is no longer accepted.&lt;/li&gt;
+&lt;li&gt;The &lt;tt class="docutils literal"&gt;shrinkthewebimage&lt;/tt&gt; template tag is now intended for use by free
+accounts, it adds the required preview feature. It can also be used
+by PRO account users wanting the preview functionality.&lt;/li&gt;
+&lt;li&gt;The &lt;tt class="docutils literal"&gt;shrinkthewebimage&lt;/tt&gt; template tag now accepts PRO key-value
+arguments in the same manner as the stwimage tag. This functionality
+is shown in theexample template but may not yet be fully implemented
+by the STW web service.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Changes to the &lt;tt class="docutils literal"&gt;stwimage&lt;/tt&gt; template tag:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;The &lt;tt class="docutils literal"&gt;stwimage&lt;/tt&gt; can now only be used for PRO features.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Common changes:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Template tags now throw exceptions in their constructors instead of
+in the render function so configuration errors are visible during
+development.&lt;/li&gt;
+&lt;li&gt;django-stw defines a key 'lang' for the SHRINK_THE_WEB dictionary
+that can be passed along as a default to the preview tag. Alternately
+a 'lang' keyword can be supplied in each template tag invocation.
+django-stw defaults it to 'en'. This functionality is not yet
+implemented by the STW web service.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The v 0.2.0 package is &lt;a class="reference external" href="http://pypi.python.org/pypi?:action=display&amp;amp;name=django-stw&amp;amp;version=0.2.0"&gt;available on PyPi&lt;/a&gt;, as a &lt;a class="reference external" href="https://github.com/saschwarz/django-stw/archives/v0.2.0"&gt;source download on
+github&lt;/a&gt;, or via &lt;a class="reference external" href="https://github.com/saschwarz/django-stw"&gt;git clone&lt;/a&gt;.&lt;/p&gt;
+</summary><category term="django"></category><category term="shrinktheweb"></category></entry><entry><title>Obtain Short URLs and QR-Codes for Django Apps</title><link href="http://tech.agilitynerd.com/obtain-short-urls-and-their-qr-codes-for-djan.html" rel="alternate"></link><updated>2010-10-22T04:00:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-10-22:obtain-short-urls-and-their-qr-codes-for-djan.html</id><summary type="html">&lt;p&gt;Lately I've been interested in improving the interaction of my
+&lt;a class="reference external" href="http://agilitycourses.com"&gt;agilitycourses&lt;/a&gt; website for mobile users. One such improvement is to add
+&lt;a class="reference external" href="http://en.wikipedia.org/wiki/QR_Code"&gt;QR Codes&lt;/a&gt; (aka 2D barcodes) representing the page URLs to the printed
+representations of pages served as PDFs.&lt;/p&gt;
+&lt;p&gt;I found that developers have reverse engineered the &amp;quot;api&amp;quot; of the
+&lt;a class="reference external" href="http://goo.gl"&gt;goo.gl&lt;/a&gt; URL shortening web site. In my brief testing it is very fast.
+What makes that service extra useful is by adding &amp;quot;.qr&amp;quot; to a shortened
+URL it returns a PNG image of the QR Code for the shortened URL. That
+made it perfect for providing both short text and QR Code URL
+representations for my printed documents.&lt;/p&gt;
+&lt;p&gt;I threw together a few functions and put them in a module to make it
+easy to shorten a long URL, obtain the QR Code PNG and store it using
+&lt;a class="reference external" href="http://docs.djangoproject.com/en/dev/topics/files/"&gt;Django's Storage functionality&lt;/a&gt;:&lt;/p&gt;
+&lt;pre class="code python literal-block"&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;osimport&lt;/span&gt; &lt;span class="nn"&gt;urllib&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.utils&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;simplejson&lt;/span&gt;
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;googl_shorten_url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;long_url&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;
+    Returns goo.gl shortened url for the provided long_url.
+    Code taken from: http://djangosnippets.org/snippets/2220/
+    Parameters:
+    - `long_url`: the url to supply to goo.gl to be shortened.
+    &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;params&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;urllib&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;urlencode&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;&lt;span class="s"&gt;'security_token'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;'url'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;long_url&lt;/span&gt;&lt;span class="p"&gt;})&lt;/span&gt;
+    &lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;urllib&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;urlopen&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;'http://goo.gl/api/shorten'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;params&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;simplejson&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;loads&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;read&lt;/span&gt;&lt;span class="p"&gt;())[&lt;/span&gt;&lt;span class="s"&gt;'short_url'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;googl_qrcode&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;googl_url&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;
+    Return file containing qr code image file for the given goo.gl url.
+    Parameters:
+    - `googl_url`: url from which to obtain the qr code.
+    &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;urllib&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;urlopen&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;googl_url&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="s"&gt;'.qr'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;get_url_qr_code_image&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;long_url&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;storage&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;storage_image_file_path&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;''&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;
+    Return goo.gl shortened url and storage name of qr code corresponding to
+    the shortened url for the supplied full url. Contacts goo.gl to shorten
+    the supplied long url then downloads and stores the qr code image file
+    in the storage instance using the file path and the shortened url name
+    as the storage name.
+    Parameters:
+    - `long_url`: the url to shorten.
+    - `storage': a Django storage instance into which to store the qr code
+    image.
+    - `storage_image_file_path`: file system path to prepend to shortened
+    url. This path must exist prior to calling this function.
+    &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+    &lt;span class="k"&gt;try&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="n"&gt;googl_url&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;googl_shorten_url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;long_url&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;qr_file_name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;googl_url&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;split&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;'/'&lt;/span&gt;&lt;span class="p"&gt;)[&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="s"&gt;'.qr'&lt;/span&gt;
+        &lt;span class="n"&gt;qr_code_name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;storage_image_file_path&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;qr_file_name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="ow"&gt;not&lt;/span&gt; &lt;span class="n"&gt;storage&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;exists&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;qr_code_name&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+            &lt;span class="n"&gt;qr_buffer&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;storage&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;qr_code_name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;'wb'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+            &lt;span class="n"&gt;qr_buffer&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;write&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;googl_qrcode&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;googl_url&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;read&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
+            &lt;span class="n"&gt;qr_buffer&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;close&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+    &lt;span class="k"&gt;except&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="n"&gt;googl_url&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;
+        &lt;span class="n"&gt;qr_code_name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;googl_url&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;qr_code_name&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;Yes, it has a nasty bare try/except. For my uses this is optional
+functionality so I never want a failure to stop the main functionality
+of the views that use it. Add exception handling appropriate for your
+needs.&lt;/p&gt;
+&lt;p&gt;The main entry point is &lt;tt class="docutils literal"&gt;get_url_qr_code_image()&lt;/tt&gt;. Here is an example
+of its use (assuming you save the code in googl.py):&lt;/p&gt;
+&lt;pre class="code python literal-block"&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;googl&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.core.files.storage&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;default_storage&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;short_url&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;qr_code_storage_name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;googl&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_url_qr_code_image&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;'http://google.com'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;default_storage&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;short_urlu&lt;/span&gt;&lt;span class="s"&gt;'http://goo.gl/mR2d'&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;qr_code_storage_nameu&lt;/span&gt;&lt;span class="s"&gt;'mR2d.qr'&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;default_storage&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;qr_code_storage_name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="s"&gt;u'/home/dev/agilitycourses/static/mR2d.qr'&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;default_storage&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;qr_code_storage_name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="s"&gt;u'mR2d.qr'&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;Hope you find this useful.&lt;/p&gt;
+</summary><category term="django"></category><category term="googl"></category><category term="python"></category><category term="qrcode"></category></entry><entry><title>Mobile Web Site Redirects in Django</title><link href="http://tech.agilitynerd.com/conditional-mobile-web-site-redirect-in-djang.html" rel="alternate"></link><updated>2010-10-05T14:34:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-10-05:conditional-mobile-web-site-redirect-in-djang.html</id><summary type="html">&lt;p&gt;For the mobile version of agilitycourses.com I wanted to follow the
+approach Google appears to be using on some of its sites:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;If the user views agilitycourses.com from a desktop browser they
+should see the standard/desktop version of the site.&lt;/li&gt;
+&lt;li&gt;If the user views agilitycourses.com from a mobile browser they
+should be redirected to a mobile domain (m.agilitycourses.com).&lt;/li&gt;
+&lt;li&gt;The mobile version of the website includes a link to the standard
+version.&lt;/li&gt;
+&lt;li&gt;If the mobile user chooses the standard website they should &amp;quot;stick&amp;quot;
+on that site and not be redirected to the mobile site.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I wanted to run two different websites but share templates and have the
+templates and css change for the mobile site. That meant that I'd need
+to set a variable(s) in the request to use to generate the appropriate
+HTML. So I found the simplest mobile device detector &lt;a class="reference external" href="http://code.google.com/p/minidetector/"&gt;minidetector&lt;/a&gt; and
+initially used that. I later found &lt;a class="reference external" href="http://github.com/shelfworthy/minidetector"&gt;Chris Drackett's fork&lt;/a&gt; has a number
+of useful enhancements and switched to it.&lt;/p&gt;
+&lt;p&gt;But minidetector didn't provide the ability to redirect to another site.
+I found &lt;a class="reference external" href="http://www.packtpub.com/article/multiple-templates-in-django"&gt;Scott Newman's article&lt;/a&gt; on using multiple templates which had
+a section on performing the redirect and storing the user's selection in
+the session. So I forked Chris' minidetector and modified it to include
+the redirect and session storage. At the same time I decided to store
+all the minidetector variables into the session and add them, via
+middleware, to the request so the raw request wouldn't have to be parsed
+each time. My fork is &lt;a class="reference external" href="http://github.com/saschwarz/minidetector"&gt;available here&lt;/a&gt; with details on the new
+configuration options.&lt;/p&gt;
+&lt;p&gt;I'm using two domains so I can track analytics for the mobile and
+non-mobile sites separately and allow users to bookmark the desired
+site's pages. I use Google Analytics (via django-google-analytics) and
+Awstats for analytics.&lt;/p&gt;
+&lt;p&gt;Since I'm using two separate domain and sharing everything else I'm
+using a setup similar to the one described by &lt;a class="reference external" href="http://www.nerdydork.com/mobile-app-on-subdomain-with-django.html"&gt;Dustin Davis&lt;/a&gt;. I have a
+settings.py file and a mobile_settings.py that only overrides the
+features I need:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+from settings import *
+SITE_ID = 2
+CACHE_MIDDLEWARE_KEY_PREFIX = &amp;quot;m.ac-&amp;quot;
+&lt;/pre&gt;
+&lt;p&gt;I use a different memcached key prefix so the cached pages for the
+mobile site don't clash with those for the desktop site.&lt;/p&gt;
+&lt;p&gt;I setup m.agilitycourses on my server using the same &lt;a class="reference external" href="http://tech.agilitynerd.com/configuring-runit-for-gunicorn-and-django-ins"&gt;Gunicorn setup I
+used for agilitycourses.com&lt;/a&gt; with the only changes being specifying the
+&lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;--bind&lt;/span&gt; address/port&lt;/tt&gt; and the name of the mobile settings file:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+#!/bin/sh
+GUNICORN=/home/user/virtualenvs/myapp/bin/gunicorn_django
+ROOT=/home/user/source/myapp
+PID=/var/run/myapp.pid
+if [ -f $PID ]
+&amp;nbsp;&amp;nbsp;&amp;nbsp; then rm $PID fi
+cd $ROOT
+exec $GUNICORN --bind 127.0.0.1:8001 -c $ROOT/gunicorn.conf.py --pid=$PID $ROOT/mobile_settings.py
+&lt;/pre&gt;
+&lt;p&gt;If my templates/content start to diverge more significantly between the
+mobile and desktop sites I may set the TEMPLATE_DIRS differently in the
+mobile_settings file. Or I can move to Dustin's approach and create a
+new application containing the urls.py and views.py specific to my
+mobile deployment. I would think diverging further would call for a
+refactoring of the common functionality to its own application which
+could be imported into separate code branches for each domain.&lt;/p&gt;
+</summary><category term="django"></category><category term="gunicorn"></category><category term="minidetector"></category><category term="mobile"></category></entry><entry><title>Debug Site for Website Redirects By Referer String</title><link href="http://tech.agilitynerd.com/debug-tool-for-mobile-website-selection-by-re.html" rel="alternate"></link><updated>2010-09-29T18:42:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-09-29:debug-tool-for-mobile-website-selection-by-re.html</id><summary type="html">&lt;p&gt;I'm adding an &amp;quot;m&amp;quot; subdomain to agilitycourses.com to provide a better
+mobile browsing experience. I'm using the referrer string in Django
+middleware (currently using &lt;a class="reference external" href="http://code.google.com/p/minidetector/"&gt;minidetector&lt;/a&gt;) to detect whether the
+client is mobile and redirect them to the mobile site. Since it is
+likely that some folks will/won't get appropriately redirected I was
+looking for an easy way for them to tell me when they were incorrectly
+redirected. I'd need to know their referer string.&lt;/p&gt;
+&lt;p&gt;A little googling turned up a nice one purpose website:
+&lt;a class="reference external" href="http://www.whatismyreferrer.com/"&gt;www.whatismyreferrer.com/&lt;/a&gt;&lt;/p&gt;
+</summary><category term="django"></category><category term="mobile"></category><category term="referrer"></category><category term="webdevelopment"></category></entry><entry><title>Configuring Runit for Gunicorn and Django Installed in a Virtualenv on Ubuntu</title><link href="http://tech.agilitynerd.com/configuring-runit-for-gunicorn-and-django-ins.html" rel="alternate"></link><updated>2010-09-08T03:08:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-09-08:configuring-runit-for-gunicorn-and-django-ins.html</id><summary type="html">&lt;p&gt;I couldn't find any documentation that covered all the pieces for
+configuring my latest Django site so I hope this helps someone else out.&lt;/p&gt;
+&lt;p&gt;I had used &lt;tt class="docutils literal"&gt;mod_wsgi&lt;/tt&gt; under Apache for my other Django sites. But now I'm
+using different python versions for the sites (until if/when I update
+the older sites) and I wasn't getting the correct versions of some
+python libraries (even though virtualenv apeared to be putting the
+appropriate python packages at the start of the sys.path). So I decided
+to configure Apache to ProxyPass to &lt;a class="reference external" href="http://gunicorn.org/"&gt;Gunicorn&lt;/a&gt; so I could run my
+Django app in its virtualenv without it getting any other python
+modules.&lt;/p&gt;
+&lt;div class="section" id="installing-gunicorn"&gt;
+&lt;h2&gt;Installing Gunicorn&lt;/h2&gt;
+&lt;p&gt;I installed Gunicorn into the virtualenv for my application, which
+simplifies using gunicorn from the command line. Assuming
+&lt;tt class="docutils literal"&gt;/home/user/virtualenvs/myapp&lt;/tt&gt; is the location of the virtualenv:&lt;/p&gt;
+&lt;pre class="code literal-block"&gt;
+$ source /home/user/virtualenvs/myapp/bin/activate
+$ pip install gunicorn
+
+# or
+$ easy_install gunicorn
+&lt;/pre&gt;
+&lt;p&gt;This copies &lt;tt class="docutils literal"&gt;gunicorn_django&lt;/tt&gt; to the &lt;tt class="docutils literal"&gt;/home/user/virtualenvs/myapp/bin&lt;/tt&gt;
+directory. Test gunicorn with your app, assuming your Django app is
+located at &lt;tt class="docutils literal"&gt;/home/user/source/myapp&lt;/tt&gt;, as follows:&lt;/p&gt;
+&lt;pre class="code literal-block"&gt;
+$ source /home/user/virtualenvs/myapp/bin/activate
+(myapp)$ cd /home/user/source/myapp
+(myapp)$ gunicorn_django
+&lt;/pre&gt;
+&lt;p&gt;Gunicorn starts myapp using the &lt;tt class="docutils literal"&gt;settings.py&lt;/tt&gt; file in the current
+directory on &lt;tt class="docutils literal"&gt;127.0.0.1:8000&lt;/tt&gt;. Ctrl-C to stop the process.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="installing-runit-on-ubuntu"&gt;
+&lt;h2&gt;Installing Runit on Ubuntu&lt;/h2&gt;
+&lt;p&gt;There are two &lt;a class="reference external" href="http://smarden.org/runit/index.html"&gt;runit&lt;/a&gt; packages. You want the one that only runs
+services you add to it:&lt;/p&gt;
+&lt;pre class="code literal-block"&gt;
+$ sudo apt-get install runit
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+Suggested packages:
+&amp;nbsp; runit-run socklog-run
+The following NEW packages will be installed:
+&amp;nbsp; runit0 upgraded, 1 newly installed, 0 to remove and 0 not upgraded.
+Need to get 0B/113kB of archives.After this operation, 537kB of additional disk space will be used.
+Selecting previously deselected package runit.
+(Reading database ... 209845 files and directories currently installed.)
+Unpacking runit (from .../runit_2.0.0-1ubuntu2_i386.deb) ...
+Processing triggers for man-db ...
+Setting up runit (2.0.0-1ubuntu2) ...
+runsvdir (start) waiting
+runsvdir (start) startingrunsvdir (start) pre-start
+runsvdir (start) spawned, process 9575
+runsvdir (start) post-start, (main) process 9575
+runsvdir (start) running, process 9575
+&lt;/pre&gt;
+&lt;p&gt;You'll want to create a directory for the application and a run script
+in &lt;tt class="docutils literal"&gt;/etc/service:&lt;/tt&gt;&lt;/p&gt;
+&lt;pre class="code literal-block"&gt;
+$ sudo mkdir /etc/service/myapp
+$ sudo vi /etc/service/myapp/run
+# enter the run script I'll show below
+$ sudo chmod +x /etc/service/myapp/run
+# stop runit from trying to run gunicorn until we are ready
+$ sudo sv stop myapp
+ok: down: myapp: 0s, normally up
+&lt;/pre&gt;
+&lt;p&gt;The example run script checked into Gunicorn had some syntax errors
+and wasn't quite what I wanted. Here's my version:&lt;/p&gt;
+&lt;pre class="code literal-block"&gt;
+#!/bin/sh
+GUNICORN=/home/user/virtualenvs/myapp/bin/gunicorn_django
+ROOT=/home/user/source/myapp
+PID=/var/run/myapp.pid
+
+if [ -f $PID ]
+&amp;nbsp;&amp;nbsp;&amp;nbsp; then rm $PID
+fi
+
+cd $ROOT
+exec $GUNICORN -c $ROOT/gunicorn.conf.py --pid=$PID
+&lt;/pre&gt;
+&lt;p&gt;You can create a &lt;a class="reference external" href="http://gunicorn.org/configure.html"&gt;configuration file for gunicorn&lt;/a&gt; to use or just
+create an empty file for now:&lt;/p&gt;
+&lt;pre class="code literal-block"&gt;
+$ touch /home/user/source/myapp/gunicorn.conf.py
+&lt;/pre&gt;
+&lt;p&gt;If you have multiple appserver you'll need to run gunicorn on
+different ports, you can put the configuration in the gunicorn.conf.py
+file:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+bind = &amp;quot;127.0.0.1:8111&amp;quot;
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div class="section" id="putting-it-together"&gt;
+&lt;h2&gt;Putting it Together&lt;/h2&gt;
+&lt;p&gt;Now you can test that the run script works when run as root:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+$ sudo /etc/service/myapp/run
+&lt;/pre&gt;
+&lt;p&gt;Gunicorn should start and start the appserver. If it fails you can
+debug the script via:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+$ sudo bash -x /etc/service/myapp/run
+&lt;/pre&gt;
+&lt;p&gt;Tell runit to start and keep gunicorn running:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+$ sudo sv start myapp
+ok: run: myapp: (pid 7540) 0s
+$ sudo sv status myapp
+run: myapp: (pid 7540) 1s
+&lt;/pre&gt;
+&lt;/div&gt;
+</summary><category term="apache"></category><category term="django"></category><category term="gunicorn"></category><category term="runit"></category><category term="ubuntu"></category><category term="virtualenv"></category></entry><entry><title>Confidently Refactoring Django URLs, Views, and Templates</title><link href="http://tech.agilitynerd.com/confidently-refactoring-django-urls-views-and.html" rel="alternate"></link><updated>2010-08-22T05:12:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-08-22:confidently-refactoring-django-urls-views-and.html</id><summary type="html">&lt;p&gt;&lt;a class="reference external" href="http://googility.com/"&gt;Googility.com&lt;/a&gt;is my first Django website and under the covers the
+oldest code looked like it. I had originally written it with the sole
+intent of allowing people to enter dog agility businesses and websites
+into a database that I could use to create a Dog Agility &lt;a class="reference external" href="http://www.google.com/cse/"&gt;Google Custom
+Search Engine&lt;/a&gt;. The primary mistake I made was making the &amp;quot;project&amp;quot; (in
+Django speak) effectively equivalent to the primary application. In
+other words I didn't divide the major features of the site into
+standalone applications (which would allow them to be more easily
+reused, extended and tested).&lt;/p&gt;
+&lt;p&gt;As I continued to work on it I learned more about organizing Django
+projects. When I added the periodical search to the website I created it
+as a standalone application. I recently split out my
+&lt;a class="reference external" href="http://github.com/saschwarz/django-stw"&gt;django-shrinktheweb&lt;/a&gt; application from the main code base.&lt;/p&gt;
+&lt;p&gt;The Custom Search Engine (CSE) functionality is a worthwhile application
+that I'm planning on releasing as its own reusable application. I had
+already created an application directory called &amp;quot;cse&amp;quot; into which I had
+placed my models, views, urls, and tests specific to the CSE
+functionality. But I wanted to make the following changes:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Move CSE templates into a cse template subdirectory&lt;/li&gt;
+&lt;li&gt;Name the templates to match the views that use them&lt;/li&gt;
+&lt;li&gt;Name the urls in the urls.py prefixed with the application name (&amp;quot;cse_&amp;quot;)&lt;/li&gt;
+&lt;li&gt;Covert all reverse() calls in the views and url template tags to use
+the named urls&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Those are enough changes that I was concerned that I might miss
+something that would fail either in the view code or in rendering of the
+templates.&lt;/p&gt;
+&lt;p&gt;The Django test client makes it easy to test the forward and reverse url
+matching, calling the view and rendering the template. It is kind of a
+coarse grained test but the changes I was making were perfect for this
+tool. Given a urls.py:&lt;/p&gt;
+&lt;pre class="code python literal-block"&gt;
+&lt;span class="n"&gt;urlpatterns&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;patterns&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;'cse.views'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                    &lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;r'^site/view/(?P&amp;lt;id&amp;gt;d+)/$'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;'view'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'cse_view'&lt;/span&gt;&lt;span class="p"&gt;),)&lt;/span&gt;&lt;span class="sb"&gt;``&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;and a view:&lt;/p&gt;
+&lt;pre class="code python literal-block"&gt;
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;view&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;request&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;id&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;template&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'cse/view.html'&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="sd"&gt;&amp;quot;&amp;quot;&amp;quot;Display an end user read only view of the site information&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;site&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;get_object_or_404&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Annotation&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;pk&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nb"&gt;id&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;render_to_response&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;template&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                          &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s"&gt;'site'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;site&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                           &lt;span class="s"&gt;'labels'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;get_labels_for&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;site&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;cap&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+                           &lt;span class="p"&gt;},&lt;/span&gt;
+                          &lt;span class="n"&gt;context_instance&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;RequestContext&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;request&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;&lt;span class="sb"&gt;``&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;I then wrote a test class to create the required test instances and
+tests for each url to verify that the url can be found by name (via
+reverse()), the url maps to a view, the view invokes the desired
+template(s), and the {% url %} calls within the template can all be
+resolved:&lt;/p&gt;
+&lt;pre class="code python literal-block"&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.test&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;TestCase&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.test.client&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Client&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.conf&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;settings&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;django.core.urlresolvers&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;reverse&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;cse.models&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Label&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;Annotation&lt;/span&gt;
+
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;ViewsTestCase&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;TestCase&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;setUp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;client&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Client&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ROOT_URLCONF&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ROOT_URLCONF&lt;/span&gt;
+        &lt;span class="c"&gt;# can provide a custom urls.py for testing so the tests can be run when&lt;/span&gt;
+        &lt;span class="c"&gt;# the application is incorporated into another project&lt;/span&gt;
+        &lt;span class="c"&gt;# settings.ROOT_URLCONF = 'cse.tests.cse_test_urls'&lt;/span&gt;
+        &lt;span class="c"&gt;# override the template context processors if there are special ones in place&lt;/span&gt;
+        &lt;span class="c"&gt;# that either you want to test or want to avoid&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;TEMPLATE_CONTEXT_PROCESSORS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;TEMPLATE_CONTEXT_PROCESSORS&lt;/span&gt;
+        &lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;TEMPLATE_CONTEXT_PROCESSORS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;()&lt;/span&gt;
+        &lt;span class="c"&gt;# Create some instances on which we can invoke views&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;label&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Label&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'name'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;description&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'description'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;label&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;save&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;annotation&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Annotation&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;comment&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'Site Name'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;original_url&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'http://example.com/'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;annotation&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;save&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;annotation&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;labels&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;add&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;label&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;annotation&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;save&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;tearDown&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="c"&gt;# put settings back so the next tests aren't effected&lt;/span&gt;
+        &lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ROOT_URLCONF&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ROOT_URLCONF&lt;/span&gt;
+        &lt;span class="n"&gt;settings&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;TEMPLATE_CONTEXT_PROCESSORS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;TEMPLATE_CONTEXT_PROCESSORS&lt;/span&gt;
+
+    &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;test_view&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;response&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;client&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;reverse&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;'cse_view'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;kwargs&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;id&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;annotation&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;id&lt;/span&gt;&lt;span class="p"&gt;}))&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;assertEquals&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;200&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;response&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;status_code&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;assertTemplateUsed&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;response&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;'cse/view.html'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;The normal unittest asserts are available in the tests. I'm using one of
+the &lt;a class="reference external" href="http://docs.djangoproject.com/en/dev/topics/testing/#assertions"&gt;special asserts provided by the Django test Client&lt;/a&gt; to verify that
+the template I expected was used. All the templates used (due to
+template inheritance) are collected by the client and can also be
+verified.&lt;/p&gt;
+&lt;p&gt;I used these tests in a TDD-ish manner, I wrote the test for a view, ran
+the tests and kept resolving errors in the templates as I made the
+changes in my bullet list. It made a tedious job simple and gave me good
+confidence that I'd found all the renamed urls, views, and templates.&lt;/p&gt;
+</summary><category term="django"></category><category term="googility"></category><category term="python"></category><category term="tdd"></category><category term="testing"></category></entry><entry><title>Haystack Search Result Ordering and Pre-Rendering Results</title><link href="http://tech.agilitynerd.com/haystack-search-result-ordering-and-pre-rende.html" rel="alternate"></link><updated>2010-08-10T03:41:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-08-10:haystack-search-result-ordering-and-pre-rende.html</id><summary type="html">&lt;p&gt;I use &lt;a class="reference external" href="http://haystacksearch.org/"&gt;Haystack&lt;/a&gt; and the Python &lt;a class="reference external" href="http://whoosh.ca/"&gt;Whoosh&lt;/a&gt; project to provide search
+over ~3400 articles in my &lt;a class="reference external" href="http://googility.com"&gt;Googility.com&lt;/a&gt; database. I had originally
+implemented the search in the &amp;quot;simplest way that works&amp;quot;. I was making
+some other enhancement to Googility and noticed the search result page
+had two undesirable&amp;nbsp; behaviors:&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;The ordering of results was basically random for all matching
+articles. For the domain of magazine article search having a bias
+toward the most recent publications would be more desirable.&lt;/li&gt;
+&lt;li&gt;Looking at the django-debug-toolbar output each element in the search
+results was hitting the database twice (once for the Article instance
+and again for its corresponding Periodical). So a single result page
+was making as many as 60 database selects.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Haystack provides mechanisms to help with both of these issues.&lt;/p&gt;
+&lt;p&gt;Imposing an Order on the SearchQuerySet&lt;/p&gt;
+&lt;p&gt;Haystack models search using an API based on Django's QuerySet. The
+only thing to remember is it performs its queries over the Haystack
+SearchIndex subclass(es) you create instead of over the Django ORM. So
+you define a SearchIndex subclass that contains the data from the
+application's model overwhich you'd like to search. You can also define
+additional fields that can be used to modify the results of the query.
+Here is my magazine Article search index:&lt;/p&gt;
+&lt;pre class="code python literal-block"&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;haystack.sites&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;site&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;haystack&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;indexes&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;periodicals.models&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Article&lt;/span&gt;
+
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;ArticleIndex&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;indexes&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;SearchIndex&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;text&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;indexes&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;CharField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;document&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;use_template&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;pub_date&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;indexes&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DateTimeField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;model_attr&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'issue__pub_date'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;site&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;register&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Article&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ArticleIndex&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="sb"&gt;``&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;The text field contains the &amp;quot;document&amp;quot; over which the search engine
+(Whoosh) will actually perform the search. I'm using the template
+feature that allows me to use Django templates to format the data
+presented to the search engine.&lt;/p&gt;
+&lt;p&gt;I added the pub_date field to the index to allow the matching search
+results to be ordered by the pub_date field. The 'issue__pub_date'
+syntax mirrors the Django QuerySet syntax and means extract the
+&amp;quot;pub_date&amp;quot; attribute of the Article's &amp;quot;issue&amp;quot; attribute (it joins
+Article to Publication and get's the Publication's published date).&lt;/p&gt;
+&lt;p&gt;Then the urls.py is modified to change the SearchQuerySet passed to
+the default haystacksearch view to order by the ArticleIndex's pub_date
+attribute:&lt;/p&gt;
+&lt;pre class="code python literal-block"&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;haystack.views&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;SearchView&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;haystack.query&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;SearchQuerySet&lt;/span&gt;
+
+&lt;span class="c"&gt;# query results with most recent publication date first&lt;/span&gt;
+&lt;span class="n"&gt;sqs&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;SearchQuerySet&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;order_by&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;'-pub_date'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;urlpatterns&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;patterns&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;''&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                       &lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;r'^search/'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                           &lt;span class="n"&gt;SearchView&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+                               &lt;span class="n"&gt;load_all&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                               &lt;span class="n"&gt;searchqueryset&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;sqs&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                               &lt;span class="p"&gt;),&lt;/span&gt;
+                           &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'haystack_search'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                           &lt;span class="p"&gt;),&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;snip&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="sb"&gt;``&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;Pre-Rendering Result HTML&lt;/p&gt;
+&lt;p&gt;Since I have only a few thousand records I decided to follow the
+&lt;a class="reference external" href="http://docs.haystacksearch.org/dev/best_practices.html#avoid-hitting-the-database"&gt;Haystack Best Practices for Not Hitting the Database&lt;/a&gt;. This solution
+trades space in the Whoosh index files by generating the HTML that will
+be displayed when each article matches along with the data used by
+Whoosh to match articles to search keywords. The changes were pretty
+simple. In the ArticleIndex:&lt;/p&gt;
+&lt;pre class="code python literal-block"&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;haystack.sites&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;site&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;haystack&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;indexes&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;periodicals.models&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Article&lt;/span&gt;
+
+&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;ArticleIndex&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;indexes&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;SearchIndex&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;text&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;indexes&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;CharField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;document&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;use_template&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;pub_date&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;indexes&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DateTimeField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;model_attr&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'issue__pub_date'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="c"&gt;# pregenerate the search result HTML for an Article&lt;/span&gt;
+    &lt;span class="c"&gt;# this avoids any database hits when results are processed&lt;/span&gt;
+    &lt;span class="c"&gt;# at the cost of storing all the data in the Haystack index&lt;/span&gt;
+    &lt;span class="n"&gt;result_text&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;indexes&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;CharField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;indexed&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;use_template&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="n"&gt;site&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;register&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Article&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ArticleIndex&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="sb"&gt;``&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;The use_template keyword requires you to create a Django template file
+that is used during index creation to build the HTML that will be
+displayed. The only peculiarity I found was figuring out where the
+template should live. On my system it was at
+templates/search/indexes/periodicals/article_result_text.txt. I
+understand the periodicals/article_result_text part but I haven't
+looked into where the search/indexes is generated from. I imagine a
+reverse() to find the url for the view and &amp;quot;indexes&amp;quot; is appended to
+that...&lt;/p&gt;
+&lt;p&gt;The final change is the template used to display the search results.
+In order to not hit the database the object list generated by the
+haystack SearchView is placed into the context used by the template and
+only the result_text attribute should be accessed:&lt;/p&gt;
+&lt;pre class="code xml literal-block"&gt;
+{% if page.object_list %}
+&lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;search-results-title&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;Results &lt;span class="nt"&gt;&amp;lt;b&amp;gt;&lt;/span&gt;{{page.start_index}}&lt;span class="nt"&gt;&amp;lt;/b&amp;gt;&lt;/span&gt;  - &lt;span class="nt"&gt;&amp;lt;b&amp;gt;&lt;/span&gt;{{page.end_index}}&lt;span class="nt"&gt;&amp;lt;/b&amp;gt;&lt;/span&gt; for &lt;span class="nt"&gt;&amp;lt;b&amp;gt;&lt;/span&gt;{{query}}&lt;span class="nt"&gt;&amp;lt;/b&amp;gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;search-results-list&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+{% for result in page.object_list %}
+  {{result.result_text|safe}}
+{% endfor %}
+&lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;pagination&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;span&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;step-links&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+      {% if page.has_previous %}
+          previous
+      {% endif %}
+      &lt;span class="nt"&gt;&amp;lt;span&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;current&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+          Page {{ page.number }} of {{ page.paginator.num_pages }}
+      &lt;span class="nt"&gt;&amp;lt;/span&amp;gt;&lt;/span&gt;
+      {% if page.has_next %}
+          next
+      {% endif %}
+    &lt;span class="nt"&gt;&amp;lt;/span&amp;gt;&lt;/span&gt;
+  &lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&amp;lt;/div&amp;gt;&lt;/span&gt;{% else %}&lt;span class="nt"&gt;&amp;lt;h2&amp;gt;&lt;/span&gt;No matching articles found.&lt;span class="nt"&gt;&amp;lt;/h2&amp;gt;&lt;/span&gt;
+{% endif %}
+&lt;/pre&gt;
+&lt;p&gt;The actual result is placed in the template via
+{{result.result_text|safe}} the safe filter is required since the HTML
+doesn't need to be escaped again - it was escaped by Django when it was
+placed into the SearchIndex.&lt;/p&gt;
+&lt;p&gt;So now my search results are in reverse chronological order and they
+render using only 3 database queries and at least 10x faster than
+before.&lt;/p&gt;
+</summary><category term="django"></category><category term="haystack"></category><category term="search"></category><category term="whoosh"></category></entry><entry><title>Improving Google Ads and Google Search Descriptions</title><link href="http://tech.agilitynerd.com/improving-google-ads-and-google-search-descri.html" rel="alternate"></link><updated>2010-08-03T01:46:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-08-03:improving-google-ads-and-google-search-descri.html</id><summary type="html">&lt;p&gt;I was looking at the google search results for my &lt;a class="reference external" href="http://googility.com/"&gt;Googility web site&lt;/a&gt;
+and noticed that the descriptions shown underneath the title often
+contained text from my navigation links instead of content from the body
+of the page:&lt;/p&gt;
+&lt;div class="thumbnail"&gt;&lt;p&gt;&lt;img alt="Google_description" src="/images/2010/08/13127405-google_description.jpg" /&gt;&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;I did some searching and found the Google Webmaster blog post about
+&lt;a class="reference external" href="http://googlewebmastercentral.blogspot.com/2007/09/improve-snippets-with-meta-description.html"&gt;description meta tags&lt;/a&gt;. Since almost all of the pages on Googility are
+generated by fewer than a dozen Django templates I edited the templates
+and inserted meta tags and filled the description in with data from each
+database entry. This avoids boilerplate information that would be
+ignored by Google and improves the descriptions shown to Google
+searchers. Some of my pages have already been reindexed:&lt;/p&gt;
+&lt;/p&gt;&lt;div class="p_embed p_image_embed"&gt;&lt;p&gt;&lt;img alt="Google_description_after" src="/images/2010/08/13127843-google_description_after.jpg" /&gt;&lt;/p&gt;
+&lt;/div&gt;&lt;/p&gt;&lt;p&gt;Yahoo and some other search sites use a &lt;a class="reference external" href="http://help.yahoo.com/l/us/yahoo/search/indexing/slurp-14.html"&gt;class robots-nocontent&lt;/a&gt; on any
+page elements it should ignore for it's index, Unfortunately, Google
+doesn't follow this standard. So I might end up making that edit to the
+templates also. Looking at my site's log files it appears the Yahoo
+spider is hitting my site more frequently than Google's and the Yahoo
+index is more up to date. Looking at my analytics reports though Google
+refers far more readers to my site than Yahoo...&lt;/p&gt;
+&lt;p&gt;I also noticed that the ads served on pages containing mostly links
+appeared to be using words in my navigation or other boilerplate instead
+of the few lines of valuable content. More searching to the rescue and I
+found this &lt;a class="reference external" href="https://www.google.com/adsense/support/bin/answer.py?answer=23168"&gt;Google Adsense article on section targeting&lt;/a&gt;. Once again
+editing the dozen or so templates I used were easy to edit to add in
+these HTML comment tags. Checking back a couple days later showed
+improvements in the ads being generated for those pages. I keep an eye
+on my Adsense click rate and see if there is any increase in ad clicks.&lt;/p&gt;
+&lt;p&gt;So a couple simple edits made noticeable improvements not bad for a
+couple hours investigation and implementation.&lt;/p&gt;
+&lt;/p&gt;</summary><category term="adsense"></category><category term="django"></category><category term="google"></category><category term="search"></category><category term="webdevelopment"></category></entry><entry><title>Initial Release of django-stw</title><link href="http://tech.agilitynerd.com/initial-release-of-django-stw.html" rel="alternate"></link><updated>2010-07-11T15:47:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-07-11:initial-release-of-django-stw.html</id><summary type="html">&lt;p&gt;I have been using the free website thumbnail service from &lt;a class="reference external" href="http://www.shrinktheweb.com?a=988"&gt;Shrink The
+Web&lt;/a&gt; on my dog agility search website &lt;a class="reference external" href="http://googility.com"&gt;Googility&lt;/a&gt; since I launched it.
+It is quick and easy to use and it adds a lot to the look of the pages.&lt;/p&gt;
+&lt;p&gt;I had created a simple &lt;a class="reference external" href="http://djangoproject.com/"&gt;Django&lt;/a&gt; template tag for inserting the little
+snippet of HTML needed by their service.&lt;/p&gt;
+&lt;p&gt;Recently they asked me to add support for their advanced features to my
+template tag. I used this opportunity to convert my templatetag to a
+Django application. This mostly makes it a lot easier to install but it
+also let me to bundle tests and an example template with the template
+tag.&lt;/p&gt;
+&lt;p&gt;I kept the existing &lt;tt class="docutils literal"&gt;shrinkthewebimage&lt;/tt&gt; template tag and added a new
+tag called &lt;tt class="docutils literal"&gt;stwimage&lt;/tt&gt; to enable the new features.&lt;/p&gt;
+&lt;p&gt;I'm hosting the example page included in the package &lt;a class="reference external" href="http://googility.com/django-stw/"&gt;here&lt;/a&gt; so you can
+see how the template tags work.&lt;/p&gt;
+&lt;p&gt;I've hosted the &lt;a class="reference external" href="http://github.com/saschwarz/django-stw"&gt;project source on github&lt;/a&gt; and uploaded the &lt;a class="reference external" href="http://pypi.python.org/pypi/django-stw/"&gt;initial
+release to the CheeseShop&lt;/a&gt; for easy installation.&lt;/p&gt;
+</summary><category term="django"></category><category term="github"></category><category term="googility"></category><category term="pypi"></category><category term="python"></category><category term="shrinktheweb"></category><category term="webdevelopment"></category></entry><entry><title>Django Shrink The Web Template Tag Updated</title><link href="http://tech.agilitynerd.com/django-shrink-the-web-template-tag-updated.html" rel="alternate"></link><updated>2010-07-01T23:00:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-07-01:django-shrink-the-web-template-tag-updated.html</id><summary type="html">&lt;p&gt;I recently updated my &lt;a class="reference external" href="http://djangoproject.com/"&gt;Django&lt;/a&gt; template tag for simplifying the use of
+&lt;a class="reference external" href="http://www.shrinktheweb.com/"&gt;Shrink The Web&lt;/a&gt; images. They recently announced a CDN based
+distribution of images and they took the opportunity to modify their
+API.&lt;/p&gt;
+&lt;p&gt;The updated template tag &lt;a class="reference external" href="http://djangosnippets.org/snippets/1744/"&gt;is on django snippets&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The STW folks have asked be to extend my template tag with support for
+&lt;a class="reference external" href="http://www.shrinktheweb.com/content/shrinktheweb-pagepix-documentation.html"&gt;their PRO features&lt;/a&gt;. With luck I'll make that available sometime this
+weekend.&lt;/p&gt;
+</summary><category term="django"></category><category term="python"></category><category term="shrinktheweb"></category><category term="webdevelopment"></category></entry><entry><title>Using django-sitemap with django-tagging</title><link href="http://tech.agilitynerd.com/using-django-sitemap-with-django-tagging.html" rel="alternate"></link><updated>2009-11-27T17:33:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2009-11-27:using-django-sitemap-with-django-tagging.html</id><summary type="html">&lt;p&gt;I was adding &lt;a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/sitemaps/"&gt;django-sitemap&lt;/a&gt; to &lt;a class="reference external" href="http://googility.com/"&gt;googility.com&lt;/a&gt; yesterday and found
+that Tags don't implement &lt;tt class="docutils literal"&gt;get_absolute_url()&lt;/tt&gt;. Which makes sense since
+the site developer would want to decide how to expose them in the URL
+space.&lt;/p&gt;
+&lt;p&gt;It is also arguable that links to pages displaying the tag view already
+exist in the page for models that are already in the sitemap so they
+don't need to be put in the sitemap explicitly. For example, a page for
+an Article might be at &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;/article/django-11-release&lt;/span&gt;&lt;/tt&gt; and that page would
+contain the links to pages linked with the tags for that article e.g.
+&lt;tt class="docutils literal"&gt;/tag/django/&lt;/tt&gt; and &lt;tt class="docutils literal"&gt;/tag/python/&lt;/tt&gt;&lt;/p&gt;
+&lt;p&gt;But I figured having the tag pages indexed by Google would be useful. It
+also allows a different priority to be specified for the pages. So I
+made a little class that derives from &lt;tt class="docutils literal"&gt;GenericSitemap&lt;/tt&gt; that allows the url
+and suffix for the Tag name to be specified:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+class SlugSitemap(GenericSitemap):
+&amp;quot;&amp;quot;&amp;quot;Use for objects that don't implement get_absolute_url
+   but have a slug field used in creating their url&amp;quot;&amp;quot;&amp;quot;
+
+def __init__(self, info_dict, priority=None, changefreq=None):
+    GenericSitemap.__init__(self, info_dict,
+                            priority=priority,
+                            changefreq=changefreq)
+    self.url = info_dict.get('url', '/')
+    self.slugfield = info_dict['slugfield']
+    self.suffix = info_dict.get('suffix', '')
+
+def location(self, obj):
+    return &amp;quot;%s%s%s&amp;quot; % (self.url,
+                       getattr(obj, self.slugfield),
+                       self.suffix)
+&lt;/pre&gt;
+&lt;p&gt;Here's how I use it:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+sitemaps = {'tag_detail': SlugSitemap({'queryset':Tag.objects,
+                                       'url':'/tag/',
+                                       'slugfield':'name',
+                                       'suffix':'/'},
+                                       changefreq='monthly',
+                                       priority='0.5'),
+}
+&lt;/pre&gt;
+&lt;p&gt;The urls for tags are at /tag/&lt;em&gt;slugname&lt;/em&gt;/ where /tag/ is prepended to
+tag.name and / is appended to the end&lt;/p&gt;
+&lt;p&gt;This class can be used to create sitemap entries for any url
+parameterized on a single field of an instance returned by the QuerySet.&lt;/p&gt;
+</summary><category term="django"></category><category term="djangositemap"></category><category term="djangotagging"></category><category term="python"></category><category term="webdevelopment"></category></entry><entry><title>reCAPTCHA in Django</title><link href="http://tech.agilitynerd.com/recaptcha-in-django-1.html" rel="alternate"></link><updated>2008-12-23T22:04:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2008-12-23:recaptcha-in-django-1.html</id><summary type="html">&lt;p&gt;I first read about &lt;a class="reference external" href="http://recaptcha.net/"&gt;ReCAPTCHA&lt;/a&gt; in &lt;a class="reference external" href="http://www.wired.com/techbiz/it/magazine/15-07/ff_humancomp?currentPage=all"&gt;this article in Wired magazine&lt;/a&gt;
+last year.&lt;/p&gt;
+&lt;p&gt;reCAPTCHA provides a free CAPTCHA web service that
+pairs together two words from OCR scanned books. One of the words is
+known and the other couldn't be recognized. The user types in both words
+not knowing which is unknown to the system. As reCAPTCHA collects the
+responses for the unknown word they get human verified character
+recognition. So the millions of users of the system are clearing up
+millions of unrecognized words. It is a very clever human &amp;quot;cloud
+computing&amp;quot; system using only seconds of human effort for each use of the
+system.&lt;/p&gt;
+&lt;div class="thumbnail" style="float:right;"&gt;&lt;p&gt;&lt;img alt="recaptchalogo" src="/images/2009/11/5014940-media_httpdataagilitynerdcomimagesrecaptchalogogif_IkgnpackrkjkaCy.gif" /&gt;&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;I'm using a &lt;a class="reference external" href="/comment-spam-and-wbcaptcha-plugin-enhancement-1.html"&gt;FIGLet based ASCII CAPTCHA&lt;/a&gt;on my websites since it was
+easy to integrate into the &lt;a class="reference external" href="http://blosxom.sourceforge.net/"&gt;Blosxom&lt;/a&gt; writeback plugin. But I wanted to
+give reCAPTCHA a try while converting my &lt;a class="reference external" href="http://googility.com/"&gt;Googility&lt;/a&gt; site to &lt;a class="reference external" href="http://www.djangoproject.com/"&gt;Django&lt;/a&gt;.
+&lt;a class="reference external" href="http://seeknuance.com/"&gt;John DeRosa&lt;/a&gt; made my job trivial by &lt;a class="reference external" href="http://seeknuance.com/2008/03/18/integrating-recaptcha-with-django/"&gt;writing up the steps with a clear example&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;So I followed his directions which involved installing the
+recaptcha-client python library on my dev and production systems and
+obtaining a free public/private license key from the reCAPTCHA site.
+Then I updated my Django view and template files for the one form that
+needed CAPTCHA protection. It was dead simple and working within
+minutes. The only minor addition I'd make to John's article is of course
+you need to pass the &lt;tt class="docutils literal"&gt;captcha_error&lt;/tt&gt; variable from your view to the
+template:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+return render_to_response('edit.html', {'form': form, 'captcha_error':captcha_error})
+&lt;/pre&gt;
+&lt;p&gt;So give reCAPTCHA a try for your next project. It was so easy to do I
+might even convert my Blosxom blogs to use it via Lars Engel's
+&lt;a class="reference external" href="http://blog.berlund.de/public/other/recaptcha"&gt;recaptcha plugin&lt;/a&gt;.&lt;/p&gt;
+</summary><category term="django"></category><category term="recaptcha"></category></entry></feed>
