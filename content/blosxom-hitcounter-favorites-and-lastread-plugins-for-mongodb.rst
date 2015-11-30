@@ -49,4 +49,4 @@ just requires updating the template's variables to the new plugin names.
 
 .. _Mongo: http://mongodb.org
 
-.. |Poweredmongodbgreen75| image:: /static/images/2010/05/9077760-PoweredMongoDBgreen75.png
+.. |Poweredmongodbgreen75| image:: /images/2010/05/9077760-PoweredMongoDBgreen75.png

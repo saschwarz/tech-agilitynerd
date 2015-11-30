@@ -35,11 +35,13 @@ So a few minutes and a few tests later I had tests that did exercise the full co
 So not only is Coveralls fully integrated with the GitHub - CI - Open Source infrastructure, and dead simple to use, it got this developer to push into all the corners of his code before releasing. And I now have the peace of mind that Travis *and* Coveralls will be watching my back.
 
 .. image:: https://badge.fury.io/py/django-periodicals.png
-    :target: http://badge.fury.io/py/django-periodicals
-    
+   :target: http://badge.fury.io/py/django-periodicals
+   :alt: badge image
+
 .. image:: https://travis-ci.org/saschwarz/django-periodicals.png?branch=master
-        :target: https://travis-ci.org/saschwarz/django-periodicals
+   :target: https://travis-ci.org/saschwarz/django-periodicals
+   :alt: badge image for travis
 
-.. image:: https://coveralls.io/repos/saschwarz/django-periodicals/badge.png?branch=master 
-        :target: https://coveralls.io/r/saschwarz/django-periodicals?branch=master
-
+.. image:: https://coveralls.io/repos/saschwarz/django-periodicals/badge.png?branch=master
+   :target: https://coveralls.io/r/saschwarz/django-periodicals?branch=master
+   :alt: badge image for coveralls

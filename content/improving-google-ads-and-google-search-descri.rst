@@ -77,5 +77,5 @@ couple hours investigation and implementation.
 .. _class robots-nocontent: http://help.yahoo.com/l/us/yahoo/search/indexing/slurp-14.html
 .. _Google Adsense article on section targeting: https://www.google.com/adsense/support/bin/answer.py?answer=23168
 
-.. |Google_description_after| image:: /static/images/2010/08/13127843-google_description_after.jpg
-.. |Google_description| image:: /static/images/2010/08/13127405-google_description.jpg
+.. |Google_description_after| image:: /images/2010/08/13127843-google_description_after.jpg
+.. |Google_description| image:: /images/2010/08/13127405-google_description.jpg

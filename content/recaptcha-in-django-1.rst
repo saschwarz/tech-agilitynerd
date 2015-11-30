@@ -59,4 +59,4 @@ might even convert my Blosxom blogs to use it via Lars Engel's
 .. _writing up the steps with a clear example: http://seeknuance.com/2008/03/18/integrating-recaptcha-with-django/
 .. _recaptcha plugin: http://blog.berlund.de/public/other/recaptcha
 
-.. |recaptchalogo| image:: /static/images/2009/11/5014940-media_httpdataagilitynerdcomimagesrecaptchalogogif_IkgnpackrkjkaCy.gif
+.. |recaptchalogo| image:: /images/2009/11/5014940-media_httpdataagilitynerdcomimagesrecaptchalogogif_IkgnpackrkjkaCy.gif

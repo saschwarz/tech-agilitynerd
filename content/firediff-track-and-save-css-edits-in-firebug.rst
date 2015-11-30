@@ -47,4 +47,4 @@ This is a great plugin that I'll continue to use regularly.
 
 .. _Firediff plugin: https://addons.mozilla.org/en-US/firefox/addon/13179/
 
-.. |Firediff| image:: /static/images/2010/07/12587332-firediff.png
+.. |Firediff| image:: /images/2010/07/12587332-firediff.png

@@ -116,6 +116,8 @@ to remove the primary_key, default and add null/blank parameters:
             preserve_default=False,
         ),
 
+3. Delete all the ``RemoveField`` entries in the migration. They'll be added in our final migration.
+
 If you want to see/validate/test the SQL that will be run you can use the ``sqlmigrate`` management command (just give it your app name and the number of the migration):
 
 .. code:: bash

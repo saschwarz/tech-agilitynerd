@@ -4,7 +4,7 @@
 AUTHOR = u'Steve Schwarz'
 SITENAME = u'tech.agilitynerd'
 SITESUBTITLE = u'scratching that itch'
-SITEURL = 'http://tech.agilitynerd.com'
+SITEURL = 'http://127.0.0.1:8000'
 
 TIMEZONE = 'America/Chicago'
 
@@ -25,7 +25,8 @@ SOCIAL = (('Linked in', 'http://www.linkedin.com/profile/view?id=10135443'),
 
 DEFAULT_PAGINATION = 10
 
-STATIC_PATHS = ['images']
+STATIC_PATHS = ['images', 'extra/CNAME']
+EXTRA_PATH_METADATA = {'extra/CNAME': {'path': 'CNAME'},}
 
 THEME = './themes/pelican-bootstrap-responsive-theme'
 
