@@ -108,13 +108,13 @@ Now I followed the instructions in the Pelican docs to generate the output and a
   pelican content -o output -s publishconf.py
   ghp-import output
 
-or if since I opted to have Pelican automation setup I did:
+or, since I opted to have Pelican automation setup, I did:
 
 .. code:: bash
 
   make github
 
-So now ``ghp-import`` has pushed the output to GitHub and I tested that files/images were correctly being served by going to the GitHub Pages URL in my browser.
+``ghp-import`` committed and pushed the output to GitHub and I tested that files/images were correctly being served by going to the GitHub Pages URL in my browser.
 
 Move Subdomain to GitHub Pages
 ==============================
@@ -125,14 +125,16 @@ On my VPS's DNS configuration screen I deleted my subdomain's ``A`` record point
 
 Then **don't followed these instructions:** `Adding a CNAME file to your repository <https://help.github.com/articles/adding-a-cname-file-to-your-repository/>`_ to setup a ``CNAME`` file in the ``gh-pages`` branch. The instructions work but ``ghp-import`` deletes the content of the ``gh-pages`` branch before re-adding files and that deletes the ``CNAME`` file you just added!
 
-After some googing I found Tip #2 in the `Pelican Tips <http://docs.getpelican.com/en/latest/tips.html#extra-tips>`_ and followed their instructions. I added the following to my ``publishconf.py``:
+After some googling I found Tip #2 in the `Pelican Tips <http://docs.getpelican.com/en/latest/tips.html#extra-tips>`_ and followed their instructions. I added the following to my ``publishconf.py``:
 
 .. code:: python
 
   STATIC_PATHS = ['images', 'extra/CNAME']
   EXTRA_PATH_METADATA = {'extra/CNAME': {'path': 'CNAME'},}
 
-Then I created the ``CNAME`` file in the new ``content/extra`` directory with the name of my subdomain in it ``steve.agilitynerd.com``.
+Then I created the ``CNAME`` file in the new ``content/extra`` directory with the name of my subdomain in it:
+
+``steve.agilitynerd.com``.
 
 Undo the edit to ``publishconf.py`` so it uses the subdomain name:
 
