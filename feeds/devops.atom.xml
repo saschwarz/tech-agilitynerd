@@ -70,23 +70,24 @@ git commit -a -m&lt;span class="s2"&gt;&amp;quot;Migration to GitHub Pages&amp;q
 pelican content -o output -s publishconf.py
 ghp-import output
 &lt;/pre&gt;
-&lt;p&gt;or if since I opted to have Pelican automation setup I did:&lt;/p&gt;
+&lt;p&gt;or, since I opted to have Pelican automation setup, I did:&lt;/p&gt;
 &lt;pre class="code bash literal-block"&gt;
 make github
 &lt;/pre&gt;
-&lt;p&gt;So now &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;ghp-import&lt;/span&gt;&lt;/tt&gt; has pushed the output to GitHub and I tested that files/images were correctly being served by going to the GitHub Pages URL in my browser.&lt;/p&gt;
+&lt;p&gt;&lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;ghp-import&lt;/span&gt;&lt;/tt&gt; committed and pushed the output to GitHub and I tested that files/images were correctly being served by going to the GitHub Pages URL in my browser.&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class="section" id="move-subdomain-to-github-pages"&gt;
 &lt;h2&gt;Move Subdomain to GitHub Pages&lt;/h2&gt;
 &lt;p&gt;This step is well documented in the GitHub help page: &lt;a class="reference external" href="https://help.github.com/articles/about-custom-domains-for-github-pages-sites/"&gt;About custom domains for GitHub Pages sites&lt;/a&gt;. In my case I was already using a subdomain for my Pelican blogs so I just followed their instructions.&lt;/p&gt;
 &lt;p&gt;On my VPS's DNS configuration screen I deleted my subdomain's &lt;tt class="docutils literal"&gt;A&lt;/tt&gt; record pointing to my VPS and added a &lt;tt class="docutils literal"&gt;CNAME&lt;/tt&gt; record pointing to my GitHub &lt;cite&gt;.io&lt;/cite&gt; account.&lt;/p&gt;
 &lt;p&gt;Then &lt;strong&gt;don't followed these instructions:&lt;/strong&gt; &lt;a class="reference external" href="https://help.github.com/articles/adding-a-cname-file-to-your-repository/"&gt;Adding a CNAME file to your repository&lt;/a&gt; to setup a &lt;tt class="docutils literal"&gt;CNAME&lt;/tt&gt; file in the &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;gh-pages&lt;/span&gt;&lt;/tt&gt; branch. The instructions work but &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;ghp-import&lt;/span&gt;&lt;/tt&gt; deletes the content of the &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;gh-pages&lt;/span&gt;&lt;/tt&gt; branch before re-adding files and that deletes the &lt;tt class="docutils literal"&gt;CNAME&lt;/tt&gt; file you just added!&lt;/p&gt;
-&lt;p&gt;After some googing I found Tip #2 in the &lt;a class="reference external" href="http://docs.getpelican.com/en/latest/tips.html#extra-tips"&gt;Pelican Tips&lt;/a&gt; and followed their instructions. I added the following to my &lt;tt class="docutils literal"&gt;publishconf.py&lt;/tt&gt;:&lt;/p&gt;
+&lt;p&gt;After some googling I found Tip #2 in the &lt;a class="reference external" href="http://docs.getpelican.com/en/latest/tips.html#extra-tips"&gt;Pelican Tips&lt;/a&gt; and followed their instructions. I added the following to my &lt;tt class="docutils literal"&gt;publishconf.py&lt;/tt&gt;:&lt;/p&gt;
 &lt;pre class="code python literal-block"&gt;
 &lt;span class="n"&gt;STATIC_PATHS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;'images'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;'extra/CNAME'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;span class="n"&gt;EXTRA_PATH_METADATA&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s"&gt;'extra/CNAME'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s"&gt;'path'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;'CNAME'&lt;/span&gt;&lt;span class="p"&gt;},}&lt;/span&gt;
 &lt;/pre&gt;
-&lt;p&gt;Then I created the &lt;tt class="docutils literal"&gt;CNAME&lt;/tt&gt; file in the new &lt;tt class="docutils literal"&gt;content/extra&lt;/tt&gt; directory with the name of my subdomain in it &lt;tt class="docutils literal"&gt;steve.agilitynerd.com&lt;/tt&gt;.&lt;/p&gt;
+&lt;p&gt;Then I created the &lt;tt class="docutils literal"&gt;CNAME&lt;/tt&gt; file in the new &lt;tt class="docutils literal"&gt;content/extra&lt;/tt&gt; directory with the name of my subdomain in it:&lt;/p&gt;
+&lt;p&gt;&lt;tt class="docutils literal"&gt;steve.agilitynerd.com&lt;/tt&gt;.&lt;/p&gt;
 &lt;p&gt;Undo the edit to &lt;tt class="docutils literal"&gt;publishconf.py&lt;/tt&gt; so it uses the subdomain name:&lt;/p&gt;
 &lt;pre class="code python literal-block"&gt;
 &lt;span class="n"&gt;SITEURL&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;'http://steve.agilitynerd.com'&lt;/span&gt;

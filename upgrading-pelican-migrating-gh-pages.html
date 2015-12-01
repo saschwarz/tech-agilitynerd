@@ -155,23 +155,24 @@ git commit -a -m<span class="s2">&quot;Migration to GitHub Pages&quot;</span>
 pelican content -o output -s publishconf.py
 ghp-import output
 </pre>
-<p>or if since I opted to have Pelican automation setup I did:</p>
+<p>or, since I opted to have Pelican automation setup, I did:</p>
 <pre class="code bash literal-block">
 make github
 </pre>
-<p>So now <tt class="docutils literal"><span class="pre">ghp-import</span></tt> has pushed the output to GitHub and I tested that files/images were correctly being served by going to the GitHub Pages URL in my browser.</p>
+<p><tt class="docutils literal"><span class="pre">ghp-import</span></tt> committed and pushed the output to GitHub and I tested that files/images were correctly being served by going to the GitHub Pages URL in my browser.</p>
 </div>
 <div class="section" id="move-subdomain-to-github-pages">
 <h2>Move Subdomain to GitHub Pages</h2>
 <p>This step is well documented in the GitHub help page: <a class="reference external" href="https://help.github.com/articles/about-custom-domains-for-github-pages-sites/">About custom domains for GitHub Pages sites</a>. In my case I was already using a subdomain for my Pelican blogs so I just followed their instructions.</p>
 <p>On my VPS's DNS configuration screen I deleted my subdomain's <tt class="docutils literal">A</tt> record pointing to my VPS and added a <tt class="docutils literal">CNAME</tt> record pointing to my GitHub <cite>.io</cite> account.</p>
 <p>Then <strong>don't followed these instructions:</strong> <a class="reference external" href="https://help.github.com/articles/adding-a-cname-file-to-your-repository/">Adding a CNAME file to your repository</a> to setup a <tt class="docutils literal">CNAME</tt> file in the <tt class="docutils literal"><span class="pre">gh-pages</span></tt> branch. The instructions work but <tt class="docutils literal"><span class="pre">ghp-import</span></tt> deletes the content of the <tt class="docutils literal"><span class="pre">gh-pages</span></tt> branch before re-adding files and that deletes the <tt class="docutils literal">CNAME</tt> file you just added!</p>
-<p>After some googing I found Tip #2 in the <a class="reference external" href="http://docs.getpelican.com/en/latest/tips.html#extra-tips">Pelican Tips</a> and followed their instructions. I added the following to my <tt class="docutils literal">publishconf.py</tt>:</p>
+<p>After some googling I found Tip #2 in the <a class="reference external" href="http://docs.getpelican.com/en/latest/tips.html#extra-tips">Pelican Tips</a> and followed their instructions. I added the following to my <tt class="docutils literal">publishconf.py</tt>:</p>
 <pre class="code python literal-block">
 <span class="n">STATIC_PATHS</span> <span class="o">=</span> <span class="p">[</span><span class="s">'images'</span><span class="p">,</span> <span class="s">'extra/CNAME'</span><span class="p">]</span>
 <span class="n">EXTRA_PATH_METADATA</span> <span class="o">=</span> <span class="p">{</span><span class="s">'extra/CNAME'</span><span class="p">:</span> <span class="p">{</span><span class="s">'path'</span><span class="p">:</span> <span class="s">'CNAME'</span><span class="p">},}</span>
 </pre>
-<p>Then I created the <tt class="docutils literal">CNAME</tt> file in the new <tt class="docutils literal">content/extra</tt> directory with the name of my subdomain in it <tt class="docutils literal">steve.agilitynerd.com</tt>.</p>
+<p>Then I created the <tt class="docutils literal">CNAME</tt> file in the new <tt class="docutils literal">content/extra</tt> directory with the name of my subdomain in it:</p>
+<p><tt class="docutils literal">steve.agilitynerd.com</tt>.</p>
 <p>Undo the edit to <tt class="docutils literal">publishconf.py</tt> so it uses the subdomain name:</p>
 <pre class="code python literal-block">
 <span class="n">SITEURL</span> <span class="o">=</span> <span class="s">'http://steve.agilitynerd.com'</span>
