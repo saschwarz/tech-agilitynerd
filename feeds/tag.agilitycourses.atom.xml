@@ -17,8 +17,8 @@
 &lt;h2&gt;First Schema Migration&lt;/h2&gt;
 &lt;p&gt;Now that the models are prepared I created the first database migration adding a default of &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;-1&lt;/span&gt;&lt;/tt&gt; for the foreign key from the existing child tables to their new concrete parent (which I'll remove manually):&lt;/p&gt;
 &lt;pre class="code bash literal-block"&gt;
-&lt;span class="nv"&gt;$ &lt;/span&gt;python ./manage.py makemigrations box --settings&lt;span class="o"&gt;=&lt;/span&gt;dev_settings
-You are trying to add a non-nullable field &lt;span class="s1"&gt;'course_ptr'&lt;/span&gt; to box without a default; we can&lt;span class="s1"&gt;'t do that (the database needs something to populate existing rows).
+$ python ./manage.py makemigrations box --settings&lt;span class="o"&gt;=&lt;/span&gt;dev_settings
+You are trying to add a non-nullable field &lt;span class="s1"&gt;'course_ptr'&lt;/span&gt; to box without a default&lt;span class="p"&gt;;&lt;/span&gt; we can&lt;span class="s1"&gt;'t do that (the database needs something to populate existing rows).
 Please select a fix:
  1) Provide a one-off default now (will be set on all existing rows)
  2) Quit, and let me add a default in models.py
@@ -26,15 +26,15 @@ Select an option: 1
 Please enter the default value now, as valid Python
 The datetime and django.utils.timezone modules are available, so you can do e.g. timezone.now()
 &amp;gt;&amp;gt;&amp;gt; -1
-You are trying to add a non-nullable field '&lt;/span&gt;course_ptr&lt;span class="s1"&gt;' to doublebox without a default; we can'&lt;/span&gt;t &lt;span class="k"&gt;do &lt;/span&gt;that &lt;span class="o"&gt;(&lt;/span&gt;the database needs something to populate existing rows&lt;span class="o"&gt;)&lt;/span&gt;.
-Please &lt;span class="k"&gt;select &lt;/span&gt;a fix:
- 1&lt;span class="o"&gt;)&lt;/span&gt; Provide a one-off default now &lt;span class="o"&gt;(&lt;/span&gt;will be &lt;span class="nb"&gt;set &lt;/span&gt;on all existing rows&lt;span class="o"&gt;)&lt;/span&gt;
- 2&lt;span class="o"&gt;)&lt;/span&gt; Quit, and &lt;span class="nb"&gt;let &lt;/span&gt;me add a default in models.py
+You are trying to add a non-nullable field '&lt;/span&gt;course_ptr&lt;span class="s1"&gt;' to doublebox without a default; we can'&lt;/span&gt;t &lt;span class="k"&gt;do&lt;/span&gt; that &lt;span class="o"&gt;(&lt;/span&gt;the database needs something to populate existing rows&lt;span class="o"&gt;)&lt;/span&gt;.
+Please &lt;span class="k"&gt;select&lt;/span&gt; a fix:
+ 1&lt;span class="o"&gt;)&lt;/span&gt; Provide a one-off default now &lt;span class="o"&gt;(&lt;/span&gt;will be &lt;span class="nb"&gt;set&lt;/span&gt; on all existing rows&lt;span class="o"&gt;)&lt;/span&gt;
+ 2&lt;span class="o"&gt;)&lt;/span&gt; Quit, and &lt;span class="nb"&gt;let&lt;/span&gt; me add a default in models.py
 Select an option: 1
 Please enter the default value now, as valid Python
-The datetime and django.utils.timezone modules are available, so you can &lt;span class="k"&gt;do &lt;/span&gt;e.g. timezone.now&lt;span class="o"&gt;()&lt;/span&gt;
+The datetime and django.utils.timezone modules are available, so you can &lt;span class="k"&gt;do&lt;/span&gt; e.g. timezone.now&lt;span class="o"&gt;()&lt;/span&gt;
 &amp;gt;&amp;gt;&amp;gt; -1
-You are trying to add a non-nullable field &lt;span class="s1"&gt;'course_ptr'&lt;/span&gt; to starbox without a default; we can&lt;span class="s1"&gt;'t do that (the database needs something to populate existing rows).
+You are trying to add a non-nullable field &lt;span class="s1"&gt;'course_ptr'&lt;/span&gt; to starbox without a default&lt;span class="p"&gt;;&lt;/span&gt; we can&lt;span class="s1"&gt;'t do that (the database needs something to populate existing rows).
 Please select a fix:
  1) Provide a one-off default now (will be set on all existing rows)
  2) Quit, and let me add a default in models.py
@@ -77,18 +77,18 @@ Migrations for '&lt;/span&gt;box&lt;span class="err"&gt;'&lt;/span&gt;:
 &lt;/ol&gt;
 &lt;pre class="code python literal-block"&gt;
 &lt;span class="n"&gt;migrations&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;AddField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
-    &lt;span class="n"&gt;model_name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'box'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'course_ptr'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="n"&gt;field&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;models&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;OneToOneField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;parent_link&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;auto_created&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;primary_key&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;default&lt;/span&gt;&lt;span class="o"&gt;=-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;serialize&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'box.Course'&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+    &lt;span class="n"&gt;model_name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;'box'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;'course_ptr'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="n"&gt;field&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;models&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;OneToOneField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;parent_link&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;auto_created&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;primary_key&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;default&lt;/span&gt;&lt;span class="o"&gt;=-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;serialize&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;'box.Course'&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
     &lt;span class="n"&gt;preserve_default&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
 &lt;span class="p"&gt;),&lt;/span&gt;
 &lt;/pre&gt;
 &lt;p&gt;to remove the primary_key, default and add null/blank parameters:&lt;/p&gt;
 &lt;pre class="code python literal-block"&gt;
 &lt;span class="n"&gt;migrations&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;AddField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
-    &lt;span class="n"&gt;model_name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'box'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'course_ptr'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="n"&gt;field&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;models&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;OneToOneField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;parent_link&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;auto_created&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;null&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;blank&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;serialize&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;'box.Course'&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+    &lt;span class="n"&gt;model_name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;'box'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;'course_ptr'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="n"&gt;field&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;models&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;OneToOneField&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;parent_link&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;auto_created&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;null&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;blank&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;serialize&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;'box.Course'&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
     &lt;span class="n"&gt;preserve_default&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
 &lt;span class="p"&gt;),&lt;/span&gt;
 &lt;/pre&gt;
@@ -97,29 +97,29 @@ Migrations for '&lt;/span&gt;box&lt;span class="err"&gt;'&lt;/span&gt;:
 &lt;/ol&gt;
 &lt;p&gt;If you want to see/validate/test the SQL that will be run you can use the &lt;tt class="docutils literal"&gt;sqlmigrate&lt;/tt&gt; management command (just give it your app name and the number of the migration):&lt;/p&gt;
 &lt;pre class="code bash literal-block"&gt;
-&lt;span class="nv"&gt;$ &lt;/span&gt;python ./manage.py sqlmigrate box 0004
-BEGIN;
-CREATE TABLE &lt;span class="s2"&gt;&amp;quot;box_course&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;id&amp;quot;&lt;/span&gt; serial NOT NULL PRIMARY KEY, &lt;span class="s2"&gt;&amp;quot;sequence&amp;quot;&lt;/span&gt; varchar&lt;span class="o"&gt;(&lt;/span&gt;64&lt;span class="o"&gt;)&lt;/span&gt; NOT NULL, &lt;span class="s2"&gt;&amp;quot;short_url&amp;quot;&lt;/span&gt; varchar&lt;span class="o"&gt;(&lt;/span&gt;64&lt;span class="o"&gt;)&lt;/span&gt; NOT NULL, &lt;span class="s2"&gt;&amp;quot;created&amp;quot;&lt;/span&gt; timestamp with &lt;span class="nb"&gt;time &lt;/span&gt;zone NOT NULL, &lt;span class="s2"&gt;&amp;quot;generator&amp;quot;&lt;/span&gt; varchar&lt;span class="o"&gt;(&lt;/span&gt;2&lt;span class="o"&gt;)&lt;/span&gt; NOT NULL, &lt;span class="s2"&gt;&amp;quot;subclass&amp;quot;&lt;/span&gt; integer NOT NULL, &lt;span class="s2"&gt;&amp;quot;subclassid&amp;quot;&lt;/span&gt; integer NOT NULL&lt;span class="o"&gt;)&lt;/span&gt;;
-CREATE TABLE &lt;span class="s2"&gt;&amp;quot;box_course_skills&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;id&amp;quot;&lt;/span&gt; serial NOT NULL PRIMARY KEY, &lt;span class="s2"&gt;&amp;quot;course_id&amp;quot;&lt;/span&gt; integer NOT NULL, &lt;span class="s2"&gt;&amp;quot;skill_id&amp;quot;&lt;/span&gt; integer NOT NULL, UNIQUE &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;course_id&amp;quot;&lt;/span&gt;, &lt;span class="s2"&gt;&amp;quot;skill_id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;))&lt;/span&gt;;
-ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_box&amp;quot;&lt;/span&gt; ADD COLUMN &lt;span class="s2"&gt;&amp;quot;course_ptr_id&amp;quot;&lt;/span&gt; integer NULL UNIQUE;
-ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_box&amp;quot;&lt;/span&gt; ALTER COLUMN &lt;span class="s2"&gt;&amp;quot;course_ptr_id&amp;quot;&lt;/span&gt; DROP DEFAULT;
-ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_doublebox&amp;quot;&lt;/span&gt; ADD COLUMN &lt;span class="s2"&gt;&amp;quot;course_ptr_id&amp;quot;&lt;/span&gt; integer NULL UNIQUE;
-ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_doublebox&amp;quot;&lt;/span&gt; ALTER COLUMN &lt;span class="s2"&gt;&amp;quot;course_ptr_id&amp;quot;&lt;/span&gt; DROP DEFAULT;
-ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_starbox&amp;quot;&lt;/span&gt; ADD COLUMN &lt;span class="s2"&gt;&amp;quot;course_ptr_id&amp;quot;&lt;/span&gt; integer NULL UNIQUE;
-ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_starbox&amp;quot;&lt;/span&gt; ALTER COLUMN &lt;span class="s2"&gt;&amp;quot;course_ptr_id&amp;quot;&lt;/span&gt; DROP DEFAULT;
-ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_course_skills&amp;quot;&lt;/span&gt; ADD CONSTRAINT &lt;span class="s2"&gt;&amp;quot;box_course_skills_course_id_4bbae33e06b494d4_fk_box_course_id&amp;quot;&lt;/span&gt; FOREIGN KEY &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;course_id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; REFERENCES &lt;span class="s2"&gt;&amp;quot;box_course&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; DEFERRABLE INITIALLY DEFERRED;
-ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_course_skills&amp;quot;&lt;/span&gt; ADD CONSTRAINT &lt;span class="s2"&gt;&amp;quot;box_course_skills_skill_id_35b3dcfd6d387281_fk_box_skill_id&amp;quot;&lt;/span&gt; FOREIGN KEY &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;skill_id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; REFERENCES &lt;span class="s2"&gt;&amp;quot;box_skill&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; DEFERRABLE INITIALLY DEFERRED;
-CREATE INDEX &lt;span class="s2"&gt;&amp;quot;box_course_skills_ea134da7&amp;quot;&lt;/span&gt; ON &lt;span class="s2"&gt;&amp;quot;box_course_skills&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;course_id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;;
-CREATE INDEX &lt;span class="s2"&gt;&amp;quot;box_course_skills_d38d4c39&amp;quot;&lt;/span&gt; ON &lt;span class="s2"&gt;&amp;quot;box_course_skills&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;skill_id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;;
-ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_box&amp;quot;&lt;/span&gt; ADD CONSTRAINT &lt;span class="s2"&gt;&amp;quot;box_box_course_ptr_id_9f73cfe60a5d542_fk_box_course_id&amp;quot;&lt;/span&gt; FOREIGN KEY &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;course_ptr_id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; REFERENCES &lt;span class="s2"&gt;&amp;quot;box_course&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; DEFERRABLE INITIALLY DEFERRED;
-ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_doublebox&amp;quot;&lt;/span&gt; ADD CONSTRAINT &lt;span class="s2"&gt;&amp;quot;box_doublebox_course_ptr_id_6b112382d489a445_fk_box_course_id&amp;quot;&lt;/span&gt; FOREIGN KEY &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;course_ptr_id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; REFERENCES &lt;span class="s2"&gt;&amp;quot;box_course&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; DEFERRABLE INITIALLY DEFERRED;
-ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_starbox&amp;quot;&lt;/span&gt; ADD CONSTRAINT &lt;span class="s2"&gt;&amp;quot;box_starbox_course_ptr_id_25fd8909f85eb93a_fk_box_course_id&amp;quot;&lt;/span&gt; FOREIGN KEY &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;course_ptr_id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; REFERENCES &lt;span class="s2"&gt;&amp;quot;box_course&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; DEFERRABLE INITIALLY DEFERRED;
+$ python ./manage.py sqlmigrate box 0004
+BEGIN&lt;span class="p"&gt;;&lt;/span&gt;
+CREATE TABLE &lt;span class="s2"&gt;&amp;quot;box_course&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;id&amp;quot;&lt;/span&gt; serial NOT NULL PRIMARY KEY, &lt;span class="s2"&gt;&amp;quot;sequence&amp;quot;&lt;/span&gt; varchar&lt;span class="o"&gt;(&lt;/span&gt;64&lt;span class="o"&gt;)&lt;/span&gt; NOT NULL, &lt;span class="s2"&gt;&amp;quot;short_url&amp;quot;&lt;/span&gt; varchar&lt;span class="o"&gt;(&lt;/span&gt;64&lt;span class="o"&gt;)&lt;/span&gt; NOT NULL, &lt;span class="s2"&gt;&amp;quot;created&amp;quot;&lt;/span&gt; timestamp with &lt;span class="nb"&gt;time&lt;/span&gt; zone NOT NULL, &lt;span class="s2"&gt;&amp;quot;generator&amp;quot;&lt;/span&gt; varchar&lt;span class="o"&gt;(&lt;/span&gt;2&lt;span class="o"&gt;)&lt;/span&gt; NOT NULL, &lt;span class="s2"&gt;&amp;quot;subclass&amp;quot;&lt;/span&gt; integer NOT NULL, &lt;span class="s2"&gt;&amp;quot;subclassid&amp;quot;&lt;/span&gt; integer NOT NULL&lt;span class="o"&gt;)&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+CREATE TABLE &lt;span class="s2"&gt;&amp;quot;box_course_skills&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;id&amp;quot;&lt;/span&gt; serial NOT NULL PRIMARY KEY, &lt;span class="s2"&gt;&amp;quot;course_id&amp;quot;&lt;/span&gt; integer NOT NULL, &lt;span class="s2"&gt;&amp;quot;skill_id&amp;quot;&lt;/span&gt; integer NOT NULL, UNIQUE &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;course_id&amp;quot;&lt;/span&gt;, &lt;span class="s2"&gt;&amp;quot;skill_id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;))&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_box&amp;quot;&lt;/span&gt; ADD COLUMN &lt;span class="s2"&gt;&amp;quot;course_ptr_id&amp;quot;&lt;/span&gt; integer NULL UNIQUE&lt;span class="p"&gt;;&lt;/span&gt;
+ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_box&amp;quot;&lt;/span&gt; ALTER COLUMN &lt;span class="s2"&gt;&amp;quot;course_ptr_id&amp;quot;&lt;/span&gt; DROP DEFAULT&lt;span class="p"&gt;;&lt;/span&gt;
+ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_doublebox&amp;quot;&lt;/span&gt; ADD COLUMN &lt;span class="s2"&gt;&amp;quot;course_ptr_id&amp;quot;&lt;/span&gt; integer NULL UNIQUE&lt;span class="p"&gt;;&lt;/span&gt;
+ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_doublebox&amp;quot;&lt;/span&gt; ALTER COLUMN &lt;span class="s2"&gt;&amp;quot;course_ptr_id&amp;quot;&lt;/span&gt; DROP DEFAULT&lt;span class="p"&gt;;&lt;/span&gt;
+ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_starbox&amp;quot;&lt;/span&gt; ADD COLUMN &lt;span class="s2"&gt;&amp;quot;course_ptr_id&amp;quot;&lt;/span&gt; integer NULL UNIQUE&lt;span class="p"&gt;;&lt;/span&gt;
+ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_starbox&amp;quot;&lt;/span&gt; ALTER COLUMN &lt;span class="s2"&gt;&amp;quot;course_ptr_id&amp;quot;&lt;/span&gt; DROP DEFAULT&lt;span class="p"&gt;;&lt;/span&gt;
+ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_course_skills&amp;quot;&lt;/span&gt; ADD CONSTRAINT &lt;span class="s2"&gt;&amp;quot;box_course_skills_course_id_4bbae33e06b494d4_fk_box_course_id&amp;quot;&lt;/span&gt; FOREIGN KEY &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;course_id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; REFERENCES &lt;span class="s2"&gt;&amp;quot;box_course&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; DEFERRABLE INITIALLY DEFERRED&lt;span class="p"&gt;;&lt;/span&gt;
+ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_course_skills&amp;quot;&lt;/span&gt; ADD CONSTRAINT &lt;span class="s2"&gt;&amp;quot;box_course_skills_skill_id_35b3dcfd6d387281_fk_box_skill_id&amp;quot;&lt;/span&gt; FOREIGN KEY &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;skill_id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; REFERENCES &lt;span class="s2"&gt;&amp;quot;box_skill&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; DEFERRABLE INITIALLY DEFERRED&lt;span class="p"&gt;;&lt;/span&gt;
+CREATE INDEX &lt;span class="s2"&gt;&amp;quot;box_course_skills_ea134da7&amp;quot;&lt;/span&gt; ON &lt;span class="s2"&gt;&amp;quot;box_course_skills&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;course_id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+CREATE INDEX &lt;span class="s2"&gt;&amp;quot;box_course_skills_d38d4c39&amp;quot;&lt;/span&gt; ON &lt;span class="s2"&gt;&amp;quot;box_course_skills&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;skill_id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_box&amp;quot;&lt;/span&gt; ADD CONSTRAINT &lt;span class="s2"&gt;&amp;quot;box_box_course_ptr_id_9f73cfe60a5d542_fk_box_course_id&amp;quot;&lt;/span&gt; FOREIGN KEY &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;course_ptr_id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; REFERENCES &lt;span class="s2"&gt;&amp;quot;box_course&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; DEFERRABLE INITIALLY DEFERRED&lt;span class="p"&gt;;&lt;/span&gt;
+ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_doublebox&amp;quot;&lt;/span&gt; ADD CONSTRAINT &lt;span class="s2"&gt;&amp;quot;box_doublebox_course_ptr_id_6b112382d489a445_fk_box_course_id&amp;quot;&lt;/span&gt; FOREIGN KEY &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;course_ptr_id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; REFERENCES &lt;span class="s2"&gt;&amp;quot;box_course&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; DEFERRABLE INITIALLY DEFERRED&lt;span class="p"&gt;;&lt;/span&gt;
+ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_starbox&amp;quot;&lt;/span&gt; ADD CONSTRAINT &lt;span class="s2"&gt;&amp;quot;box_starbox_course_ptr_id_25fd8909f85eb93a_fk_box_course_id&amp;quot;&lt;/span&gt; FOREIGN KEY &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;course_ptr_id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; REFERENCES &lt;span class="s2"&gt;&amp;quot;box_course&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; DEFERRABLE INITIALLY DEFERRED&lt;span class="p"&gt;;&lt;/span&gt;
 
-COMMIT;
+COMMIT&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;/pre&gt;
 &lt;p&gt;If you are happy then save and run the migration:&lt;/p&gt;
 &lt;pre class="code bash literal-block"&gt;
-&lt;span class="nv"&gt;$ &lt;/span&gt;python ./manage.py python migrate box
+$ python ./manage.py python migrate box
 &lt;/pre&gt;
 &lt;/div&gt;
 &lt;div class="section" id="data-migration"&gt;
@@ -133,22 +133,22 @@ COMMIT;
 &lt;/ol&gt;
 &lt;p&gt;Create an empty migration:&lt;/p&gt;
 &lt;pre class="code bash literal-block"&gt;
-&lt;span class="nv"&gt;$ &lt;/span&gt;python manage.py makemigrations --empty box
+$ python manage.py makemigrations --empty box
 &lt;/pre&gt;
 &lt;p&gt;Then add the migration queries to it (repeat the following for each of the subclasses giving each a different number):&lt;/p&gt;
 &lt;pre class="code python literal-block"&gt;
 &lt;span class="n"&gt;operations&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
-    &lt;span class="c"&gt;# insert data from subclass into parent class with subclass 'number' and primary key/id&lt;/span&gt;
-    &lt;span class="n"&gt;migrations&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;RunSQL&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&amp;quot;&amp;quot;INSERT INTO box_course (sequence, short_url, created, generator, subclass, subclassid)
+    &lt;span class="c1"&gt;# insert data from subclass into parent class with subclass 'number' and primary key/id&lt;/span&gt;
+    &lt;span class="n"&gt;migrations&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;RunSQL&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&amp;quot;&amp;quot;INSERT INTO box_course (sequence, short_url, created, generator, subclass, subclassid)
                       SELECT sequence, short_url, created, generator, 1, id
                       FROM box_box;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
 
     &lt;span class="p"&gt;),&lt;/span&gt;
-    &lt;span class="c"&gt;# update subclass primary key to point to parent class (notice composite key values):&lt;/span&gt;
-    &lt;span class="n"&gt;migrations&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;RunSQL&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;UPDATE box_box box SET course_ptr_id=course.id FROM box_course course WHERE course.subclassid=box.id AND course.subclass=1;&amp;quot;&lt;/span&gt;
+    &lt;span class="c1"&gt;# update subclass primary key to point to parent class (notice composite key values):&lt;/span&gt;
+    &lt;span class="n"&gt;migrations&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;RunSQL&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;UPDATE box_box box SET course_ptr_id=course.id FROM box_course course WHERE course.subclassid=box.id AND course.subclass=1;&amp;quot;&lt;/span&gt;
     &lt;span class="p"&gt;),&lt;/span&gt;
-    &lt;span class="c"&gt;# insert child's many-to-many foreign key references into it's parent's many-to-many table&lt;/span&gt;
-    &lt;span class="n"&gt;migrations&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;RunSQL&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;&amp;quot;&amp;quot;INSERT INTO box_course_skills (course_id, skill_id)
+    &lt;span class="c1"&gt;# insert child's many-to-many foreign key references into it's parent's many-to-many table&lt;/span&gt;
+    &lt;span class="n"&gt;migrations&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;RunSQL&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&amp;quot;&amp;quot;INSERT INTO box_course_skills (course_id, skill_id)
                       SELECT box.course_ptr_id, skills.id
                       FROM box_box box JOIN box_box_skills skills
                       ON box.id = skills.box_id&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
@@ -160,8 +160,8 @@ COMMIT;
 &lt;h2&gt;Final Schema Migration&lt;/h2&gt;
 &lt;p&gt;Then it is time to edit the &lt;tt class="docutils literal"&gt;models.py&lt;/tt&gt; file and remove the temporary members/fields in the parent class: &lt;tt class="docutils literal"&gt;subclass&lt;/tt&gt; and &lt;tt class="docutils literal"&gt;subclassid&lt;/tt&gt;. Then create the schema migration which will drop those columns and the migrated columns from the child tables:&lt;/p&gt;
 &lt;pre class="code bash literal-block"&gt;
-&lt;span class="nv"&gt;$ &lt;/span&gt;python manage.py makemigrations box
-  You are trying to add a non-nullable field &lt;span class="s1"&gt;'course_ptr'&lt;/span&gt; to doublebox without a default; we can&lt;span class="s1"&gt;'t do that (the database needs something to populate existing rows).
+$ python manage.py makemigrations box
+  You are trying to add a non-nullable field &lt;span class="s1"&gt;'course_ptr'&lt;/span&gt; to doublebox without a default&lt;span class="p"&gt;;&lt;/span&gt; we can&lt;span class="s1"&gt;'t do that (the database needs something to populate existing rows).
   Please select a fix:
    1) Provide a one-off default now (will be set on all existing rows)
    2) Quit, and let me add a default in models.py
@@ -169,15 +169,15 @@ COMMIT;
   Please enter the default value now, as valid Python
   The datetime and django.utils.timezone modules are available, so you can do e.g. timezone.now()
   &amp;gt;&amp;gt;&amp;gt; -1
-  You are trying to add a non-nullable field '&lt;/span&gt;course_ptr&lt;span class="s1"&gt;' to starbox without a default; we can'&lt;/span&gt;t &lt;span class="k"&gt;do &lt;/span&gt;that &lt;span class="o"&gt;(&lt;/span&gt;the database needs something to populate existing rows&lt;span class="o"&gt;)&lt;/span&gt;.
-  Please &lt;span class="k"&gt;select &lt;/span&gt;a fix:
-   1&lt;span class="o"&gt;)&lt;/span&gt; Provide a one-off default now &lt;span class="o"&gt;(&lt;/span&gt;will be &lt;span class="nb"&gt;set &lt;/span&gt;on all existing rows&lt;span class="o"&gt;)&lt;/span&gt;
-   2&lt;span class="o"&gt;)&lt;/span&gt; Quit, and &lt;span class="nb"&gt;let &lt;/span&gt;me add a default in models.py
+  You are trying to add a non-nullable field '&lt;/span&gt;course_ptr&lt;span class="s1"&gt;' to starbox without a default; we can'&lt;/span&gt;t &lt;span class="k"&gt;do&lt;/span&gt; that &lt;span class="o"&gt;(&lt;/span&gt;the database needs something to populate existing rows&lt;span class="o"&gt;)&lt;/span&gt;.
+  Please &lt;span class="k"&gt;select&lt;/span&gt; a fix:
+   1&lt;span class="o"&gt;)&lt;/span&gt; Provide a one-off default now &lt;span class="o"&gt;(&lt;/span&gt;will be &lt;span class="nb"&gt;set&lt;/span&gt; on all existing rows&lt;span class="o"&gt;)&lt;/span&gt;
+   2&lt;span class="o"&gt;)&lt;/span&gt; Quit, and &lt;span class="nb"&gt;let&lt;/span&gt; me add a default in models.py
   Select an option: 1
   Please enter the default value now, as valid Python
-  The datetime and django.utils.timezone modules are available, so you can &lt;span class="k"&gt;do &lt;/span&gt;e.g. timezone.now&lt;span class="o"&gt;()&lt;/span&gt;
+  The datetime and django.utils.timezone modules are available, so you can &lt;span class="k"&gt;do&lt;/span&gt; e.g. timezone.now&lt;span class="o"&gt;()&lt;/span&gt;
   &amp;gt;&amp;gt;&amp;gt; -1
-  You are trying to change the nullable field &lt;span class="s1"&gt;'course_ptr'&lt;/span&gt; on box to non-nullable without a default; we can&lt;span class="s1"&gt;'t do that (the database needs something to populate existing rows).
+  You are trying to change the nullable field &lt;span class="s1"&gt;'course_ptr'&lt;/span&gt; on box to non-nullable without a default&lt;span class="p"&gt;;&lt;/span&gt; we can&lt;span class="s1"&gt;'t do that (the database needs something to populate existing rows).
   Please select a fix:
    1) Provide a one-off default now (will be set on all existing rows)
    2) Ignore for now, and let me handle existing rows with NULL myself (e.g. adding a RunPython or RunSQL operation in the new migration file before the AlterField operation)
@@ -215,7 +215,7 @@ COMMIT;
 &lt;p&gt;You see management command detects that the child fields still haven't been deleted and that the default value for inserts of the children's parent reference still doesn't exist. Lastly the migration converts the &lt;tt class="docutils literal"&gt;OneToOne&lt;/tt&gt; field back to a primary key.&lt;/p&gt;
 &lt;p&gt;Then migrate a final time:&lt;/p&gt;
 &lt;pre class="code bash literal-block"&gt;
-&lt;span class="nv"&gt;$ &lt;/span&gt;python ./manage.py migrate box
+$ python ./manage.py migrate box
 &lt;/pre&gt;
 &lt;/div&gt;
 &lt;div class="section" id="wrap-up"&gt;
