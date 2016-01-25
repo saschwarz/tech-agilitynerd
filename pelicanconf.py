@@ -22,7 +22,6 @@ SOCIAL = (('Linked in', 'http://www.linkedin.com/profile/view?id=10135443'),
           ('Twitter', 'https://twitter.com/steveaschwarz'),
           )
 
-
 DEFAULT_PAGINATION = 10
 
 STATIC_PATHS = ['images', 'extra/CNAME']
@@ -48,3 +47,6 @@ TAG_FEED_ATOM = 'feeds/tag.%s.atom.xml'
 
 # GOOGLE_SEARCH = '001042720131993941673:rqdekl8sewe'
 GOOGLE_SEARCH = '001042720131993941673:szhtogqckem'
+
+PLUGIN_PATHS = ['/Users/saschwarz/dev/pelican-plugins']
+PLUGINS = ['tag_cloud']
