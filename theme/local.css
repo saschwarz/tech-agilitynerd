@@ -93,7 +93,15 @@ footer, .about {
 .pagination {
     text-align: center;
 }
-
+.align-center, .centered {
+    text-align: center;
+}
+.align-left {
+    text-align: left;
+}
+.align-right {
+    text-align: right;
+}
 .search {
     font-size: 14px;
     line-height: 20px;
