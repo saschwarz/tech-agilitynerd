@@ -1,5 +1,6 @@
-Taking Better Photos - Building a Light Box
-###########################################
+=============================================
+ Taking Better Photos - Building a Light Box
+=============================================
 :date: 2007-12-31 19:15
 :author: Steve Schwarz
 :category: misc
@@ -29,11 +30,11 @@ to easily make the box smaller if I over estimated the size I would
 need. It is a pretty sizeable box.
 
 Light Box with Backgrounds and Cover Sheet Pulled Back
-------------------------------------------------------
+======================================================
 
 .. raw:: html
 
-   <div class="thumbnail">
+   <div class="thumbnail centered">
 
 |image0|
 

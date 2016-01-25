@@ -34,7 +34,7 @@ SUMMARY_MAX_LENGTH = 50
 
 AUTHOR_ABOUT = """<p class="about">I'm Steve Schwarz a Chicago software developer and dog agility enthusiast. <a href="/pages/about.html">more</a></p>"""
 
-COPYRIGHT_DATE = "2015"
+COPYRIGHT_DATE = "2016"
 
 #TEMPLATE_PAGES = {"/Users/saschwarz/dev/tech-agilitynerd/content/about.html": "/Users/saschwarz/dev/tech-agilitynerd/output/about.html",                  }
 

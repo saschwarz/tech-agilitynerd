@@ -23,17 +23,17 @@ My Other Web Sites and Projects
 
 - Dog agility community search: `Googility <http://googility.com>`_
 
-  Python, Django, Haystack, Whoosh, google custom search, google mapping API, jQuery, JavaScript
+  Python, Django, Haystack, Whoosh, Google custom search, Google mapping API, jQuery, JavaScript
 
 - Dog agility course generators: `agilitycourses.com <http://agilitycourses.com>`_
 
-  Python, Django, Bootstrap, Bootcards, ReportLab (PDF generation), Rosetta (internationalization), SVG, Compass, Susy, jQuery, JavaScript, Disqus, AddThis
+  Python, Django, Bootstrap, Bootcards, ReactJS, ReportLab (PDF generation), Rosetta (internationalization), SVG, Compass, Sass, jQuery, JavaScript, Disqus, AddThis
 
 - Dog agility store: `AgilityNerd Store <http://store.agilitynerd.com>`_
 
   Zencart/Zazzle
 
-- Organize quarterly Dog Agility Blogger Action Days/Events and maintain `group blog <http://dogagilityblogevents.wordpress.com/>`_
+- Organizer of quarterly Dog Agility Blogger Action Days/Events and maintain `group blog <http://dogagilityblogevents.wordpress.com/>`_
 
   Wordpress, Google docs, JavaScript
 
