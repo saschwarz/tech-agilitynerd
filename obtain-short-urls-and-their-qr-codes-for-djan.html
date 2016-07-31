@@ -109,9 +109,9 @@ easy to shorten a long URL, obtain the QR Code PNG and store it using
     Parameters:
     - `long_url`: the url to supply to goo.gl to be shortened.
     &quot;&quot;&quot;</span>
-    <span class="n">params</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">urlencode</span><span class="p">({</span><span class="s1">'security_token'</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span> <span class="s1">'url'</span><span class="p">:</span> <span class="n">long_url</span><span class="p">})</span>
-    <span class="n">f</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="s1">'http://goo.gl/api/shorten'</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">simplejson</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())[</span><span class="s1">'short_url'</span><span class="p">]</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">urlencode</span><span class="p">({</span><span class="s">'security_token'</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span> <span class="s">'url'</span><span class="p">:</span> <span class="n">long_url</span><span class="p">})</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="s">'http://goo.gl/api/shorten'</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">simplejson</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())[</span><span class="s">'short_url'</span><span class="p">]</span>
 
 <span class="k">def</span> <span class="nf">googl_qrcode</span><span class="p">(</span><span class="n">googl_url</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;
@@ -119,9 +119,9 @@ easy to shorten a long URL, obtain the QR Code PNG and store it using
     Parameters:
     - `googl_url`: url from which to obtain the qr code.
     &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">urllib</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">googl_url</span> <span class="o">+</span> <span class="s1">'.qr'</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">urllib</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">googl_url</span> <span class="o">+</span> <span class="s">'.qr'</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">get_url_qr_code_image</span><span class="p">(</span><span class="n">long_url</span><span class="p">,</span> <span class="n">storage</span><span class="p">,</span> <span class="n">storage_image_file_path</span><span class="o">=</span><span class="s1">''</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">get_url_qr_code_image</span><span class="p">(</span><span class="n">long_url</span><span class="p">,</span> <span class="n">storage</span><span class="p">,</span> <span class="n">storage_image_file_path</span><span class="o">=</span><span class="s">''</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;
     Return goo.gl shortened url and storage name of qr code corresponding to
     the shortened url for the supplied full url. Contacts goo.gl to shorten
@@ -137,10 +137,10 @@ easy to shorten a long URL, obtain the QR Code PNG and store it using
     &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">googl_url</span> <span class="o">=</span> <span class="n">googl_shorten_url</span><span class="p">(</span><span class="n">long_url</span><span class="p">)</span>
-        <span class="n">qr_file_name</span> <span class="o">=</span> <span class="n">googl_url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'/'</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s1">'.qr'</span>
+        <span class="n">qr_file_name</span> <span class="o">=</span> <span class="n">googl_url</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'/'</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s">'.qr'</span>
         <span class="n">qr_code_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">storage_image_file_path</span><span class="p">,</span> <span class="n">qr_file_name</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">storage</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">qr_code_name</span><span class="p">):</span>
-            <span class="n">qr_buffer</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">qr_code_name</span><span class="p">,</span> <span class="s1">'wb'</span><span class="p">)</span>
+            <span class="n">qr_buffer</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">qr_code_name</span><span class="p">,</span> <span class="s">'wb'</span><span class="p">)</span>
             <span class="n">qr_buffer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">googl_qrcode</span><span class="p">(</span><span class="n">googl_url</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
             <span class="n">qr_buffer</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
     <span class="k">except</span><span class="p">:</span>
@@ -157,10 +157,10 @@ of its use (assuming you save the code in googl.py):</p>
 <pre class="code python literal-block">
 <span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">googl</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">django.core.files.storage</span> <span class="kn">import</span> <span class="n">default_storage</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">short_url</span><span class="p">,</span> <span class="n">qr_code_storage_name</span> <span class="o">=</span> <span class="n">googl</span><span class="o">.</span><span class="n">get_url_qr_code_image</span><span class="p">(</span><span class="s1">'http://google.com'</span><span class="p">,</span> <span class="n">default_storage</span><span class="p">)</span><span class="o">&gt;&gt;&gt;</span> <span class="n">short_urlu</span><span class="s1">'http://goo.gl/mR2d'</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">qr_code_storage_nameu</span><span class="s1">'mR2d.qr'</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">default_storage</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="n">qr_code_storage_name</span><span class="p">)</span><span class="s1">u'/home/dev/agilitycourses/static/mR2d.qr'</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">default_storage</span><span class="o">.</span><span class="n">url</span><span class="p">(</span><span class="n">qr_code_storage_name</span><span class="p">)</span><span class="s1">u'mR2d.qr'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">short_url</span><span class="p">,</span> <span class="n">qr_code_storage_name</span> <span class="o">=</span> <span class="n">googl</span><span class="o">.</span><span class="n">get_url_qr_code_image</span><span class="p">(</span><span class="s">'http://google.com'</span><span class="p">,</span> <span class="n">default_storage</span><span class="p">)</span><span class="o">&gt;&gt;&gt;</span> <span class="n">short_urlu</span><span class="s">'http://goo.gl/mR2d'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">qr_code_storage_nameu</span><span class="s">'mR2d.qr'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">default_storage</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="n">qr_code_storage_name</span><span class="p">)</span><span class="s">u'/home/dev/agilitycourses/static/mR2d.qr'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">default_storage</span><span class="o">.</span><span class="n">url</span><span class="p">(</span><span class="n">qr_code_storage_name</span><span class="p">)</span><span class="s">u'mR2d.qr'</span>
 <span class="o">&gt;&gt;&gt;</span>
 </pre>
 <p>Hope you find this useful.</p>

@@ -30,7 +30,7 @@
   var disqus_shortname = "techagilitynerd"; // required: replace example with your forum shortname
   var disqus_developer = 1;
   
-  var disqus_identifier = "python-dictgets-default-value-is-always-evalu.html";
+  var disqus_identifier = "nginx-cgi-parameter-gotcha.html";
   (function() {
   var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
   dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
@@ -59,10 +59,10 @@
       <a class="brand" href="http://tech.agilitynerd.com/index.html">tech.agilitynerd</a>
       <div class="nav-collapse collapse">
 	<ul class="nav">
-	  <li ><a href="http://tech.agilitynerd.com/category/devops.html">devops</a></li>
+	  <li class="active"><a href="http://tech.agilitynerd.com/category/devops.html">devops</a></li>
 	  <li ><a href="http://tech.agilitynerd.com/category/javascript.html">javascript</a></li>
 	  <li ><a href="http://tech.agilitynerd.com/category/misc.html">misc</a></li>
-	  <li class="active"><a href="http://tech.agilitynerd.com/category/programming.html">programming</a></li>
+	  <li ><a href="http://tech.agilitynerd.com/category/programming.html">programming</a></li>
 	  <li ><a href="http://tech.agilitynerd.com/category/python.html">python</a></li>
 	  <li ><a href="http://tech.agilitynerd.com/category/webdev.html">webdev</a></li>
 	</ul>
@@ -81,41 +81,44 @@
 	  <div class="row-fluid">
             <div class="span9">
 <div class='article'>
-  <div class="page-header"><h1>Python dict.get's Default Value is Always Evaluated</h1></div>
-  <div class="well small"><a class="more" href="http://tech.agilitynerd.com/python-dictgets-default-value-is-always-evalu.html">On 05 Apr 2011 at 1716</a>
-by <a class="url fn" href="http://tech.agilitynerd.com/author/steve-schwarz.html">Steve Schwarz</a> in <a href="http://tech.agilitynerd.com/category/programming.html">programming</a>
- | <a href="http://tech.agilitynerd.com/python-dictgets-default-value-is-always-evalu.html#disqus_thread">Comments</a></div>
-  <div><p>This is a gotcha I ran across in some production code that is obvious in
-retrospect.&nbsp;I was profiling the code to find places where we were
-calling <tt class="docutils literal">an_expensive_database_function</tt> and came across code like
-this:</p>
-<pre class="code python literal-block">
-<span class="k">def</span> <span class="nf">doit</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-     <span class="n">value</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'key'</span><span class="p">,</span> <span class="n">an_expensive_database_function</span><span class="p">())</span>
+  <div class="page-header"><h1>NGINX CGI Parameter Gotcha</h1></div>
+  <div class="well small"><a class="more" href="http://tech.agilitynerd.com/nginx-cgi-parameter-gotcha.html">On 31 Jul 2016 at 1202</a>
+by <a class="url fn" href="http://tech.agilitynerd.com/author/steve-schwarz.html">Steve Schwarz</a> in <a href="http://tech.agilitynerd.com/category/devops.html">devops</a>
+ | <a href="http://tech.agilitynerd.com/nginx-cgi-parameter-gotcha.html#disqus_thread">Comments</a></div>
+  <div><p>When I first started the <a class="reference external" href="http://agilitynerd.com">agilitynerd</a>  blog in 2004 I had my <a class="reference external" href="http://blosxom.sourceforge.net/">Blosxom</a> blogging CGI script running via <a class="reference external" href="http://httpd.apache.org/">Apache</a>. Later on I moved all my sites to <a class="reference external" href="https://nginx.org/en/">nginx</a> or took advantage of nginx's caching features to have it act as a proxy in front of Apache. I finally decided to remove Apache entirely and that meant solving running CGI scripts using nginx.</p>
+<p>After some googling I found FastCGI and <a class="reference external" href="https://www.nginx.com/resources/wiki/start/topics/examples/fcgiwrap/">fcgiwrap</a></p>
+<p>I'm on Ubuntu so installation was as easy as:</p>
+<pre class="literal-block">
+sudo apt-get install fcgiwrap
 </pre>
-<p>The original author probably assumed that if 'key' was present in the
-<tt class="docutils literal">kwargs</tt> dictionary <tt class="docutils literal">an_expensive_database_function</tt> wouldn't be called;
-that it would be short circuited in the same manner as Boolean
-expressions. But since get is a function the arguments are always
-evaluated on the way into the function. So in this case even if the
-value of <tt class="docutils literal">an_expensive_database_function</tt> was already present in the
-<tt class="docutils literal">kwargs</tt> dictionary the database function would be called again.</p>
-<p>Here is a &quot;look before you leap&quot; solution:</p>
-<pre class="code python literal-block">
-<span class="k">def</span> <span class="nf">doit</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="n">value</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'key'</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-         <span class="c"># assuming default value None isn't a valid value</span>
-         <span class="n">value</span> <span class="o">=</span> <span class="n">an_expensive_database_function</span><span class="p">()</span><span class="sb">``</span>
+<p>That setup the init script that starts the fcgi daemon. To run the cgi script(s) nginx has to be configured to parse apart the incoming URL, execute the appropriate script and pass along any arguments needed by the CGI script. Sounds easy.</p>
+<p>I only want to support running a single CGI script: <tt class="docutils literal">index.cgi</tt> and pass along the path after the root of URL as the argument to the script. Most examples are more generic and parse out any cgi script and any arguments.</p>
+<p>The key built-in to nginx to do the splitting is <tt class="docutils literal">fastcgi_split_path_info</tt> which takes a regex with two captured groups to parse out the script name and the arguments. These are stored in the <tt class="docutils literal">$fastcgi_script_name</tt> and the <tt class="docutils literal">$fastcgi_path_info</tt> variables respectively. This <a class="reference external" href="https://www.digitalocean.com/community/tutorials/understanding-and-implementing-fastcgi-proxying-in-nginx">Digital Ocean article</a> discusses FastCGI and has an excellent discussion of the variables available and also used by <tt class="docutils literal">fcgiwrap</tt>.</p>
+<p>So I created this configuration file that matches <tt class="docutils literal"><span class="pre">http://agilitynerd.com/blog/foo.html</span></tt> and invokes <tt class="docutils literal"><span class="pre">/home/agilitynerd/cgi-bin/index.cgi</span> foo.html</tt>:</p>
+<pre class="literal-block">
+location /blog/ {
+    root /home/agilitynerd/cgi-bin/;
+
+    fastcgi_split_path_info ^(/blog)(.*)$;
+    include /etc/nginx/fastcgi_params;
+    fastcgi_param DOCUMENT_ROOT /home/agilitynerd/cgi-bin/;
+    fastcgi_param SCRIPT_NAME index.cgi$fastcgi_path_info;
+
+    # Fastcgi socket
+    fastcgi_pass  unix:/var/run/fcgiwrap.socket;
+}
 </pre>
-<p>Here is the &quot;easier to ask forgiveness than permission&quot; solution:</p>
-<pre class="code python literal-block">
-<span class="k">def</span> <span class="nf">doit</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s">'key'</span><span class="p">]</span>
-    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="n">an_expensive_database_function</span><span class="p">()</span><span class="sb">``</span>
+<p>You'll notice: <tt class="docutils literal">include /etc/nginx/fastcgi_params</tt> is used to get default values for the <tt class="docutils literal">fastcgi_param</tt> variables.</p>
+<p>And it didn't work. I kept getting errors:</p>
+<pre class="literal-block">
+Cannot get script name, are DOCUMENT_ROOT and SCRIPT_NAME (or SCRIPT_FILENAME) set and is the script executable?&quot;
 </pre>
+<p>Clearly I'm setting <tt class="docutils literal">DOCUMENT_ROOT</tt> and <tt class="docutils literal">SCRIPT_NAME</tt>. After almost a day of googling and testing (during which I found this helpful article on <a class="reference external" href="https://blog.martinfjordvald.com/2013/06/debugging-nginx-errors/">nginx debugging</a>) I temporarily commented out <tt class="docutils literal">fastcgi_pass</tt>, and returned the variables.</p>
+<p>I found that they were being set as I expected... Strange!</p>
+<p>Then I came across this <a class="reference external" href="https://www.digitalocean.com/community/tutorials/understanding-and-implementing-fastcgi-proxying-in-nginx">Digital Ocean article</a> where they have a critical discussion on overriding variables in which they state:</p>
+<blockquote>
+This inconsistency and unpredictability means that you cannot and should not rely on the backend to correctly interpret your intentions when setting the same parameter more than one time. The only safe solution is to only declare each parameter once. This also means that there is no such thing as safely overriding a default value with the fastcgi_param directive.</blockquote>
+<p>So in my case I commented out <tt class="docutils literal">DOCUMENT_ROOT</tt> and <tt class="docutils literal">SCRIPT_FILENAME</tt> in the <tt class="docutils literal">/etc/nginx/fastcgi_params</tt> file, reloaded nginx, and voila! Everything worked. Hope this helps you if you run in to the same problem.</p>
 </div>
   <div>
     <h2>Comments</h2>

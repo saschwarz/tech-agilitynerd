@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:8000/feeds/tag.cgi.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2016-07-31T12:02:00-05:00</updated><entry><title>NGINX CGI Parameter Gotcha</title><link href="http://tech.agilitynerd.com/nginx-cgi-parameter-gotcha.html" rel="alternate"></link><updated>2016-07-31T12:02:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2016-07-31:nginx-cgi-parameter-gotcha.html</id><summary type="html">&lt;p&gt;When I first started the &lt;a class="reference external" href="http://agilitynerd.com"&gt;agilitynerd&lt;/a&gt;  blog in 2004 I had my &lt;a class="reference external" href="http://blosxom.sourceforge.net/"&gt;Blosxom&lt;/a&gt; blogging CGI script running via &lt;a class="reference external" href="http://httpd.apache.org/"&gt;Apache&lt;/a&gt;. Later on I moved all my sites to &lt;a class="reference external" href="https://nginx.org/en/"&gt;nginx&lt;/a&gt; or took advantage of nginx's caching features to have it act as a proxy in front of Apache. I finally decided to remove Apache entirely and that meant solving running CGI scripts using nginx.&lt;/p&gt;
+&lt;p&gt;After some googling I found FastCGI and &lt;a class="reference external" href="https://www.nginx.com/resources/wiki/start/topics/examples/fcgiwrap/"&gt;fcgiwrap&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;I'm on Ubuntu so installation was as easy as:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+sudo apt-get install fcgiwrap
+&lt;/pre&gt;
+&lt;p&gt;That setup the init script that starts the fcgi daemon. To run the cgi script(s) nginx has to be configured to parse apart the incoming URL, execute the appropriate script and pass along any arguments needed by the CGI script. Sounds easy.&lt;/p&gt;
+&lt;p&gt;I only want to support running a single CGI script: &lt;tt class="docutils literal"&gt;index.cgi&lt;/tt&gt; and pass along the path after the root of URL as the argument to the script. Most examples are more generic and parse out any cgi script and any arguments.&lt;/p&gt;
+&lt;p&gt;The key built-in to nginx to do the splitting is &lt;tt class="docutils literal"&gt;fastcgi_split_path_info&lt;/tt&gt; which takes a regex with two captured groups to parse out the script name and the arguments. These are stored in the &lt;tt class="docutils literal"&gt;$fastcgi_script_name&lt;/tt&gt; and the &lt;tt class="docutils literal"&gt;$fastcgi_path_info&lt;/tt&gt; variables respectively. This &lt;a class="reference external" href="https://www.digitalocean.com/community/tutorials/understanding-and-implementing-fastcgi-proxying-in-nginx"&gt;Digital Ocean article&lt;/a&gt; discusses FastCGI and has an excellent discussion of the variables available and also used by &lt;tt class="docutils literal"&gt;fcgiwrap&lt;/tt&gt;.&lt;/p&gt;
+&lt;p&gt;So I created this configuration file that matches &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;http://agilitynerd.com/blog/foo.html&lt;/span&gt;&lt;/tt&gt; and invokes &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;/home/agilitynerd/cgi-bin/index.cgi&lt;/span&gt; foo.html&lt;/tt&gt;:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+location /blog/ {
+    root /home/agilitynerd/cgi-bin/;
+
+    fastcgi_split_path_info ^(/blog)(.*)$;
+    include /etc/nginx/fastcgi_params;
+    fastcgi_param DOCUMENT_ROOT /home/agilitynerd/cgi-bin/;
+    fastcgi_param SCRIPT_NAME index.cgi$fastcgi_path_info;
+
+    # Fastcgi socket
+    fastcgi_pass  unix:/var/run/fcgiwrap.socket;
+}
+&lt;/pre&gt;
+&lt;p&gt;You'll notice: &lt;tt class="docutils literal"&gt;include /etc/nginx/fastcgi_params&lt;/tt&gt; is used to get default values for the &lt;tt class="docutils literal"&gt;fastcgi_param&lt;/tt&gt; variables.&lt;/p&gt;
+&lt;p&gt;And it didn't work. I kept getting errors:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+Cannot get script name, are DOCUMENT_ROOT and SCRIPT_NAME (or SCRIPT_FILENAME) set and is the script executable?&amp;quot;
+&lt;/pre&gt;
+&lt;p&gt;Clearly I'm setting &lt;tt class="docutils literal"&gt;DOCUMENT_ROOT&lt;/tt&gt; and &lt;tt class="docutils literal"&gt;SCRIPT_NAME&lt;/tt&gt;. After almost a day of googling and testing (during which I found this helpful article on &lt;a class="reference external" href="https://blog.martinfjordvald.com/2013/06/debugging-nginx-errors/"&gt;nginx debugging&lt;/a&gt;) I temporarily commented out &lt;tt class="docutils literal"&gt;fastcgi_pass&lt;/tt&gt;, and returned the variables.&lt;/p&gt;
+&lt;p&gt;I found that they were being set as I expected... Strange!&lt;/p&gt;
+&lt;p&gt;Then I came across this &lt;a class="reference external" href="https://www.digitalocean.com/community/tutorials/understanding-and-implementing-fastcgi-proxying-in-nginx"&gt;Digital Ocean article&lt;/a&gt; where they have a critical discussion on overriding variables in which they state:&lt;/p&gt;
+&lt;blockquote&gt;
+This inconsistency and unpredictability means that you cannot and should not rely on the backend to correctly interpret your intentions when setting the same parameter more than one time. The only safe solution is to only declare each parameter once. This also means that there is no such thing as safely overriding a default value with the fastcgi_param directive.&lt;/blockquote&gt;
+&lt;p&gt;So in my case I commented out &lt;tt class="docutils literal"&gt;DOCUMENT_ROOT&lt;/tt&gt; and &lt;tt class="docutils literal"&gt;SCRIPT_FILENAME&lt;/tt&gt; in the &lt;tt class="docutils literal"&gt;/etc/nginx/fastcgi_params&lt;/tt&gt; file, reloaded nginx, and voila! Everything worked. Hope this helps you if you run in to the same problem.&lt;/p&gt;
+</summary><category term="nginx"></category><category term="cgi"></category><category term="fcgiwrap"></category><category term="ubuntu"></category><category term="apache"></category></entry></feed>
