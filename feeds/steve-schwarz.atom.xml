@@ -64,9 +64,8 @@ server {
     }
     ...
 }
-
-So now I have an &amp;quot;A&amp;quot; score from `securityheaders.io`
 &lt;/pre&gt;
+&lt;p&gt;So now I have an &amp;quot;A&amp;quot; score from &lt;cite&gt;securityheaders.io&lt;/cite&gt;&lt;/p&gt;
 &lt;ol class="arabic" start="5"&gt;
 &lt;li&gt;&lt;p class="first"&gt;The Digital Ocean tutorial sets up a root crontab entry to automatically update the SSL Certificate. I decided to also update the letsencrypt client software automatically:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
