@@ -1,5 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:8000/feeds/devops.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2016-07-31T12:02:00-05:00</updated><entry><title>NGINX CGI Parameter Gotcha</title><link href="http://tech.agilitynerd.com/nginx-cgi-parameter-gotcha.html" rel="alternate"></link><updated>2016-07-31T12:02:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2016-07-31:nginx-cgi-parameter-gotcha.html</id><summary type="html">&lt;p&gt;When I first started the &lt;a class="reference external" href="http://agilitynerd.com"&gt;agilitynerd&lt;/a&gt;  blog in 2004 I had my &lt;a class="reference external" href="http://blosxom.sourceforge.net/"&gt;Blosxom&lt;/a&gt; blogging CGI script running via &lt;a class="reference external" href="http://httpd.apache.org/"&gt;Apache&lt;/a&gt;. Later on I moved all my sites to &lt;a class="reference external" href="https://nginx.org/en/"&gt;nginx&lt;/a&gt; or took advantage of nginx's caching features to have it act as a proxy in front of Apache. I finally decided to remove Apache entirely and that meant solving running CGI scripts using nginx.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:8000/feeds/devops.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2016-09-04T12:02:00-05:00</updated><entry><title>NGINX, HTTPS, Let's Encrypt, and Django</title><link href="http://tech.agilitynerd.com/nginx-https-lets-encrypt-and-django.html" rel="alternate"></link><published>2016-09-04T12:02:00-05:00</published><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2016-09-04:nginx-https-lets-encrypt-and-django.html</id><summary type="html">&lt;p&gt;My &lt;a class="reference external" href="https://agilitycourses.com"&gt;agilitycourses.com&lt;/a&gt; website is served by &lt;a class="reference external" href="https://nginx.org/en/"&gt;nginx&lt;/a&gt; proxying to &lt;a class="reference external" href="http://gunicorn.org/"&gt;gunicorn&lt;/a&gt; running my &lt;a class="reference external" href="https://www.djangoproject.com/"&gt;Django&lt;/a&gt; application. I'll be adding user accounts soon so I wanted to convert the site to be more secure by using HTTPS encryption. Also &lt;a class="reference external" href="https://webmasters.googleblog.com/2014/08/https-as-ranking-signal.html"&gt;Google has announced it will likely prefer sites using HTTPS&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The site is running on Ubuntu 14.04 LTS. I won't recount the whole process, I followed some great resources and made a couple adjustments that might be helpful to others.&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;I basically followed the instructions in this excellent Digital Ocean tutorial: &lt;a class="reference external" href="https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-14-04"&gt;How To Secure Nginx with Let's Encrypt on Ubuntu 14.04&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;I confirmed via the &lt;a class="reference external" href="https://www.ssllabs.com/ssltest/analyze.html"&gt;SSL Labs SSL Server Test&lt;/a&gt; that my IPv4 and IPv6 server configurations had &amp;quot;A+&amp;quot; ratings.&lt;/li&gt;
+&lt;li&gt;While looking for other SSL testing sites I came across &lt;a class="reference external" href="https://securityheaders.io/"&gt;securityheaders.io&lt;/a&gt; developed by &lt;a class="reference external" href="https://scotthelme.co.uk/"&gt;Scott Helme&lt;/a&gt;. My initial score was a sad &amp;quot;D&amp;quot;. The site has snippets for NGINX and Apache configuration changes and in depth articles describing the how and the why.&lt;/li&gt;
+&lt;li&gt;While investigating the changes to the HTTP Headers to improve my test score I came across this &lt;a class="reference external" href="https://github.com/jonnybarnes/nginx-conf"&gt;nginx-conf GitHub repository&lt;/a&gt;. Specifically the idea of putting the header settings into an &lt;a class="reference external" href="https://github.com/jonnybarnes/nginx-conf/blob/master/conf/includes/security-headers.conf"&gt;NGINX include file&lt;/a&gt;. I have several other domains on the same server and will also be converting them. I used that idea to include ssl and header configurations into any virtual host.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Here's my &lt;cite&gt;/etc/nginx/ssl.conf&lt;/cite&gt; file:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+# From https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-14-04
+ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+ssl_prefer_server_ciphers on;
+ssl_dhparam /etc/ssl/certs/dhparam.pem;
+ssl_ciphers 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA';
+ssl_session_timeout 1d;
+ssl_session_cache shared:SSL:50m;
+ssl_stapling on;
+ssl_stapling_verify on;
+&lt;/pre&gt;
+&lt;p&gt;And my &lt;cite&gt;/etc/nginx/security_headers.conf&lt;/cite&gt; file:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+# See https://github.com/jonnybarnes/nginx-conf/blob/master/conf/includes/security-headers.conf
+add_header X-Xss-Protection &amp;quot;1; mode=block&amp;quot;;
+add_header X-Content-Type-Options &amp;quot;nosniff&amp;quot;;
+add_header Content-Security-Policy &amp;quot;default-src https: data: 'unsafe-inline' 'unsafe-eval'&amp;quot;;
+add_header Strict-Transport-Security max-age=15768000;
+&lt;/pre&gt;
+&lt;p&gt;So my server blocks with all these edits are now:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+# redirect http://tld to https://www.tld
+server {
+    listen 80;
+    listen [::]:80;
+    server_name agilitycourses.com;
+    return 301 https://www.agilitycourses.com$request_uri;
+}
+# redirect http://www.tld to https://www.tld
+server {
+    listen 80;
+    listen [::]:80;
+    server_name www.agilitycourses.com;
+    return 301 https://www.agilitycourses.com$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    listen [::]:443 ipv6only=on ssl;
+
+    server_name www.agilitycourses.com;
+    root /home/agilitycourses/production/current/;
+
+    ssl_certificate /etc/letsencrypt/live/agilitycourses.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/agilitycourses.com/privkey.pem;
+
+    include /etc/nginx/ssl.conf;
+    include /etc/nginx/security_headers.conf;
+
+    # letsencrypt location
+    location ^~ /.well-known/ {
+        allow all;
+        root /usr/share/nginx/html/;
+    }
+    ...
+}
+
+So now I have an &amp;quot;A&amp;quot; score from `securityheaders.io`
+&lt;/pre&gt;
+&lt;ol class="arabic" start="5"&gt;
+&lt;li&gt;&lt;p class="first"&gt;The Digital Ocean tutorial sets up a root crontab entry to automatically update the SSL Certificate. I decided to also update the letsencrypt client software automatically:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+# m h  dom mon dow   command
+20 2 * * 1 cd /opt/letsencrypt &amp;amp;&amp;amp; git pull
+30 2 * * 1 /opt/letsencrypt/letsencrypt-auto renew &amp;gt;&amp;gt; /var/log/le-renew.log
+35 2 * * 1 /etc/init.d/nginx reload
+&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;The last change I made was to pass along the presence/absence of HTTPS from NGINX to Gunicorn/Django via the &lt;cite&gt;X-Forwarded-Proto&lt;/cite&gt; header as &lt;a class="reference external" href="https://docs.djangoproject.com/en/1.10/topics/security/#ssl-https"&gt;described in the Django SSL/HTTPS docs&lt;/a&gt;&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+location &amp;#64;proxy-to-app {
+    proxy_pass http://agilitycourses-production-gunicorn;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_set_header Accept-Encoding &amp;quot;&amp;quot;;
+    proxy_read_timeout 120;
+    proxy_send_timeout 120;
+    ...
+}
+&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;Based on the Django recommendations I also made these changes in my &lt;cite&gt;settings.py&lt;/cite&gt;:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+# SSL settings
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_BROWSER_XSS_FILTER = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Even with a lot of web browsing to learn about these settings the whole process only took a couple hours.
+Now that I've done it once (and updated my Fabric fabfile.py) it will be easier to convert my other domains.&lt;/p&gt;
+</summary><category term="nginx"></category><category term="ubuntu"></category><category term="https"></category><category term="ssl"></category><category term="django"></category><category term="gunicorn"></category><category term="letsencrypt"></category></entry><entry><title>NGINX CGI Parameter Gotcha</title><link href="http://tech.agilitynerd.com/nginx-cgi-parameter-gotcha.html" rel="alternate"></link><published>2016-07-31T12:02:00-05:00</published><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2016-07-31:nginx-cgi-parameter-gotcha.html</id><summary type="html">&lt;p&gt;When I first started the &lt;a class="reference external" href="http://agilitynerd.com"&gt;agilitynerd&lt;/a&gt;  blog in 2004 I had my &lt;a class="reference external" href="http://blosxom.sourceforge.net/"&gt;Blosxom&lt;/a&gt; blogging CGI script running via &lt;a class="reference external" href="http://httpd.apache.org/"&gt;Apache&lt;/a&gt;. Later on I moved all my sites to &lt;a class="reference external" href="https://nginx.org/en/"&gt;nginx&lt;/a&gt; or took advantage of nginx's caching features to have it act as a proxy in front of Apache. I finally decided to remove Apache entirely and that meant solving running CGI scripts using nginx.&lt;/p&gt;
 &lt;p&gt;After some googling I found FastCGI and &lt;a class="reference external" href="https://www.nginx.com/resources/wiki/start/topics/examples/fcgiwrap/"&gt;fcgiwrap&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;I'm on Ubuntu so installation was as easy as:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
@@ -33,7 +137,7 @@ Cannot get script name, are DOCUMENT_ROOT and SCRIPT_NAME (or SCRIPT_FILENAME) s
 &lt;blockquote&gt;
 This inconsistency and unpredictability means that you cannot and should not rely on the backend to correctly interpret your intentions when setting the same parameter more than one time. The only safe solution is to only declare each parameter once. This also means that there is no such thing as safely overriding a default value with the fastcgi_param directive.&lt;/blockquote&gt;
 &lt;p&gt;So in my case I commented out &lt;tt class="docutils literal"&gt;DOCUMENT_ROOT&lt;/tt&gt; and &lt;tt class="docutils literal"&gt;SCRIPT_FILENAME&lt;/tt&gt; in the &lt;tt class="docutils literal"&gt;/etc/nginx/fastcgi_params&lt;/tt&gt; file, reloaded nginx, and voila! Everything worked. Hope this helps you if you run in to the same problem.&lt;/p&gt;
-</summary><category term="nginx"></category><category term="cgi"></category><category term="fcgiwrap"></category><category term="ubuntu"></category><category term="apache"></category></entry><entry><title>Upgrading Pelican and Migrating to GitHub Pages</title><link href="http://tech.agilitynerd.com/upgrading-pelican-migrating-gh-pages.html" rel="alternate"></link><updated>2015-11-29T15:00:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2015-11-29:upgrading-pelican-migrating-gh-pages.html</id><summary type="html">&lt;p&gt;I've been using &lt;a class="reference external" href="http://blog.getpelican.com/"&gt;Pelican&lt;/a&gt; for this blog for almost three years with source and output stored in a GitHub repository. The output files were then checked out and hosted as static content behind an &lt;a class="reference external" href="http://www.nginx.com/"&gt;NGINX web server&lt;/a&gt; on my VPS. Since I set that up GitHub introduced &lt;a class="reference external" href="https://pages.github.com/"&gt;GitHub Pages&lt;/a&gt; with support for custom domains and all the &amp;quot;cool kids&amp;quot; started hosting their static web sites right on GitHub.&lt;/p&gt;
+</summary><category term="nginx"></category><category term="cgi"></category><category term="fcgiwrap"></category><category term="ubuntu"></category><category term="apache"></category></entry><entry><title>Upgrading Pelican and Migrating to GitHub Pages</title><link href="http://tech.agilitynerd.com/upgrading-pelican-migrating-gh-pages.html" rel="alternate"></link><published>2015-11-29T15:00:00-06:00</published><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2015-11-29:upgrading-pelican-migrating-gh-pages.html</id><summary type="html">&lt;p&gt;I've been using &lt;a class="reference external" href="http://blog.getpelican.com/"&gt;Pelican&lt;/a&gt; for this blog for almost three years with source and output stored in a GitHub repository. The output files were then checked out and hosted as static content behind an &lt;a class="reference external" href="http://www.nginx.com/"&gt;NGINX web server&lt;/a&gt; on my VPS. Since I set that up GitHub introduced &lt;a class="reference external" href="https://pages.github.com/"&gt;GitHub Pages&lt;/a&gt; with support for custom domains and all the &amp;quot;cool kids&amp;quot; started hosting their static web sites right on GitHub.&lt;/p&gt;
 &lt;p&gt;I had some free time this weekend and decided to see what it would take to upgrade my Pelican version to the latest (3.6.3) and host my files on GitHub Pages. I had four steps to perform:&lt;/p&gt;
 &lt;ol class="arabic simple"&gt;
 &lt;li&gt;Create a new environment with the latest Pelican&lt;/li&gt;
@@ -45,9 +149,9 @@ This inconsistency and unpredictability means that you cannot and should not rel
 &lt;h2&gt;Create New Environment&lt;/h2&gt;
 &lt;p&gt;I didn't want to screw up my existing/working virtual environment so I created a new one containing Pelican and &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;ghp-import&lt;/span&gt;&lt;/tt&gt; which does all the work of updating the &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;gh-pages&lt;/span&gt;&lt;/tt&gt; branch with the output:&lt;/p&gt;
 &lt;pre class="code bash literal-block"&gt;
-&lt;span class="c"&gt;# Create a new virtualenv
+&lt;span class="c1"&gt;# Create a new virtualenv
 &lt;/span&gt;mkvirtualenv pelican-new
-&lt;span class="c"&gt;# Install pelican and ghp-import:
+&lt;span class="c1"&gt;# Install pelican and ghp-import:
 &lt;/span&gt;pip install pelican ghp-import
 &lt;/pre&gt;
 &lt;/div&gt;
@@ -85,11 +189,11 @@ rm -rf output
 &lt;p&gt;Then I edited the &lt;tt class="docutils literal"&gt;.gitignore&lt;/tt&gt; file to exclude the &lt;tt class="docutils literal"&gt;output&lt;/tt&gt; directory.&lt;/p&gt;
 &lt;p&gt;I wanted to keep my existing blog working until I worked out all the kinks in the migration. So I delayed pointing DNS to the GitHub pages. That meant I needed to temporarily change the URL of the blog to match where it will be hosted on GitHub pages. So I edited the &lt;tt class="docutils literal"&gt;publishconf.py&lt;/tt&gt; configuration file and changed the &lt;tt class="docutils literal"&gt;SITEURL&lt;/tt&gt; temporarily from:&lt;/p&gt;
 &lt;pre class="code python literal-block"&gt;
-&lt;span class="n"&gt;SITEURL&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;'http://steve.agilitynerd.com'&lt;/span&gt;
+&lt;span class="n"&gt;SITEURL&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;'http://steve.agilitynerd.com'&lt;/span&gt;
 &lt;/pre&gt;
 &lt;p&gt;to it's location on GitHub Pages:&lt;/p&gt;
 &lt;pre class="code python literal-block"&gt;
-&lt;span class="n"&gt;SITEURL&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;'http://saschwarz.github.io/steve-agilitynerd'&lt;/span&gt;
+&lt;span class="n"&gt;SITEURL&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;'http://saschwarz.github.io/steve-agilitynerd'&lt;/span&gt;
 &lt;/pre&gt;
 &lt;p&gt;Get the URL by clicking on the Settings tab for the GitHub repository:&lt;/p&gt;
 &lt;div class="thumbnail figure"&gt;
@@ -117,14 +221,14 @@ make github
 &lt;p&gt;Then &lt;strong&gt;don't followed these instructions:&lt;/strong&gt; &lt;a class="reference external" href="https://help.github.com/articles/adding-a-cname-file-to-your-repository/"&gt;Adding a CNAME file to your repository&lt;/a&gt; to setup a &lt;tt class="docutils literal"&gt;CNAME&lt;/tt&gt; file in the &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;gh-pages&lt;/span&gt;&lt;/tt&gt; branch. The instructions work but &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;ghp-import&lt;/span&gt;&lt;/tt&gt; deletes the content of the &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;gh-pages&lt;/span&gt;&lt;/tt&gt; branch before re-adding files and that deletes the &lt;tt class="docutils literal"&gt;CNAME&lt;/tt&gt; file you just added!&lt;/p&gt;
 &lt;p&gt;After some googling I found Tip #2 in the &lt;a class="reference external" href="http://docs.getpelican.com/en/latest/tips.html#extra-tips"&gt;Pelican Tips&lt;/a&gt; and followed their instructions. I added the following to my &lt;tt class="docutils literal"&gt;publishconf.py&lt;/tt&gt;:&lt;/p&gt;
 &lt;pre class="code python literal-block"&gt;
-&lt;span class="n"&gt;STATIC_PATHS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;'images'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;'extra/CNAME'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-&lt;span class="n"&gt;EXTRA_PATH_METADATA&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s"&gt;'extra/CNAME'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s"&gt;'path'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;'CNAME'&lt;/span&gt;&lt;span class="p"&gt;},}&lt;/span&gt;
+&lt;span class="n"&gt;STATIC_PATHS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'images'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'extra/CNAME'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;EXTRA_PATH_METADATA&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;'extra/CNAME'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;'path'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'CNAME'&lt;/span&gt;&lt;span class="p"&gt;},}&lt;/span&gt;
 &lt;/pre&gt;
 &lt;p&gt;Then I created the &lt;tt class="docutils literal"&gt;CNAME&lt;/tt&gt; file in the new &lt;tt class="docutils literal"&gt;content/extra&lt;/tt&gt; directory with the name of my subdomain in it:&lt;/p&gt;
 &lt;p&gt;&lt;tt class="docutils literal"&gt;steve.agilitynerd.com&lt;/tt&gt;.&lt;/p&gt;
 &lt;p&gt;Undo the edit to &lt;tt class="docutils literal"&gt;publishconf.py&lt;/tt&gt; so it uses the subdomain name:&lt;/p&gt;
 &lt;pre class="code python literal-block"&gt;
-&lt;span class="n"&gt;SITEURL&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;'http://steve.agilitynerd.com'&lt;/span&gt;
+&lt;span class="n"&gt;SITEURL&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;'http://steve.agilitynerd.com'&lt;/span&gt;
 &lt;/pre&gt;
 &lt;p&gt;Commit that edit to the &lt;tt class="docutils literal"&gt;master&lt;/tt&gt; branch and then regenerate the output and commit it to &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;gh-pages&lt;/span&gt;&lt;/tt&gt; branches:&lt;/p&gt;
 &lt;pre class="code bash literal-block"&gt;
@@ -134,7 +238,7 @@ make github
 &lt;/pre&gt;
 &lt;p&gt;Opened the browser to my subdomain and verified that images and links within the site were working correctly. I went back to my VPS and disabled the subdomains from NGINX and deleted the blog check outs to free some resources.  Two fewer websites to maintain on my VPS!&lt;/p&gt;
 &lt;/div&gt;
-</summary><category term="pelican"></category><category term="github"></category><category term="python"></category></entry><entry><title>Notes on Configuring Postfix on Ubuntu Gutsy to Send Email via Google Apps</title><link href="http://tech.agilitynerd.com/notes-on-configuring-postfix-on-ubuntu-gutsy-1.html" rel="alternate"></link><updated>2008-01-05T23:53:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2008-01-05:notes-on-configuring-postfix-on-ubuntu-gutsy-1.html</id><summary type="html">&lt;p&gt;Here are some notes I took on configuring my &lt;a class="reference external" href="http://www.slicehost.com/"&gt;Slicehost&lt;/a&gt; Ubuntu Gutsy
+</summary><category term="pelican"></category><category term="github"></category><category term="python"></category></entry><entry><title>Notes on Configuring Postfix on Ubuntu Gutsy to Send Email via Google Apps</title><link href="http://tech.agilitynerd.com/notes-on-configuring-postfix-on-ubuntu-gutsy-1.html" rel="alternate"></link><published>2008-01-05T23:53:00-06:00</published><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2008-01-05:notes-on-configuring-postfix-on-ubuntu-gutsy-1.html</id><summary type="html">&lt;p&gt;Here are some notes I took on configuring my &lt;a class="reference external" href="http://www.slicehost.com/"&gt;Slicehost&lt;/a&gt; Ubuntu Gutsy
 installation to use Postfix to send emails via Google Apps. I am far
 from an expert on postfix configuration but maybe these notes will be
 helpful to others needing this configuration.&lt;/p&gt;
@@ -191,7 +295,7 @@ sudo tail /var/log/mail.\*
 &lt;/pre&gt;
 &lt;p&gt;I hope these notes might help folks &amp;quot;get over the hump&amp;quot; if they are
 setting up the same configuration.&lt;/p&gt;
-</summary><category term="postfix"></category><category term="slicehost"></category><category term="ubuntu"></category></entry><entry><title>Backup Your Data Lately?</title><link href="http://tech.agilitynerd.com/backup-your-data-lately-1.html" rel="alternate"></link><updated>2004-08-20T19:00:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2004-08-20:backup-your-data-lately-1.html</id><summary type="html">&lt;p&gt;A few weeks ago I bought a &lt;a class="reference external" href="http://www.ximeta.com/products/network_drives/netdisk/index.php"&gt;Ximeta NetDisk&lt;/a&gt; 120 GB external hard drive
+</summary><category term="postfix"></category><category term="slicehost"></category><category term="ubuntu"></category></entry><entry><title>Backup Your Data Lately?</title><link href="http://tech.agilitynerd.com/backup-your-data-lately-1.html" rel="alternate"></link><published>2004-08-20T19:00:00-05:00</published><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2004-08-20:backup-your-data-lately-1.html</id><summary type="html">&lt;p&gt;A few weeks ago I bought a &lt;a class="reference external" href="http://www.ximeta.com/products/network_drives/netdisk/index.php"&gt;Ximeta NetDisk&lt;/a&gt; 120 GB external hard drive
 to back up the data on my home computers. There are a number of vendors
 making hard drives that support USB connections; this model is unique in
 that it also supports direct ethernet connections. Unlike more expensive

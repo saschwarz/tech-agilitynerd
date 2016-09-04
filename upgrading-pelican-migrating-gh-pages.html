@@ -97,9 +97,9 @@ by <a class="url fn" href="http://tech.agilitynerd.com/author/steve-schwarz.html
 <h2>Create New Environment</h2>
 <p>I didn't want to screw up my existing/working virtual environment so I created a new one containing Pelican and <tt class="docutils literal"><span class="pre">ghp-import</span></tt> which does all the work of updating the <tt class="docutils literal"><span class="pre">gh-pages</span></tt> branch with the output:</p>
 <pre class="code bash literal-block">
-<span class="c"># Create a new virtualenv
+<span class="c1"># Create a new virtualenv
 </span>mkvirtualenv pelican-new
-<span class="c"># Install pelican and ghp-import:
+<span class="c1"># Install pelican and ghp-import:
 </span>pip install pelican ghp-import
 </pre>
 </div>
@@ -137,11 +137,11 @@ rm -rf output
 <p>Then I edited the <tt class="docutils literal">.gitignore</tt> file to exclude the <tt class="docutils literal">output</tt> directory.</p>
 <p>I wanted to keep my existing blog working until I worked out all the kinks in the migration. So I delayed pointing DNS to the GitHub pages. That meant I needed to temporarily change the URL of the blog to match where it will be hosted on GitHub pages. So I edited the <tt class="docutils literal">publishconf.py</tt> configuration file and changed the <tt class="docutils literal">SITEURL</tt> temporarily from:</p>
 <pre class="code python literal-block">
-<span class="n">SITEURL</span> <span class="o">=</span> <span class="s">'http://steve.agilitynerd.com'</span>
+<span class="n">SITEURL</span> <span class="o">=</span> <span class="s1">'http://steve.agilitynerd.com'</span>
 </pre>
 <p>to it's location on GitHub Pages:</p>
 <pre class="code python literal-block">
-<span class="n">SITEURL</span> <span class="o">=</span> <span class="s">'http://saschwarz.github.io/steve-agilitynerd'</span>
+<span class="n">SITEURL</span> <span class="o">=</span> <span class="s1">'http://saschwarz.github.io/steve-agilitynerd'</span>
 </pre>
 <p>Get the URL by clicking on the Settings tab for the GitHub repository:</p>
 <div class="thumbnail figure">
@@ -169,14 +169,14 @@ make github
 <p>Then <strong>don't followed these instructions:</strong> <a class="reference external" href="https://help.github.com/articles/adding-a-cname-file-to-your-repository/">Adding a CNAME file to your repository</a> to setup a <tt class="docutils literal">CNAME</tt> file in the <tt class="docutils literal"><span class="pre">gh-pages</span></tt> branch. The instructions work but <tt class="docutils literal"><span class="pre">ghp-import</span></tt> deletes the content of the <tt class="docutils literal"><span class="pre">gh-pages</span></tt> branch before re-adding files and that deletes the <tt class="docutils literal">CNAME</tt> file you just added!</p>
 <p>After some googling I found Tip #2 in the <a class="reference external" href="http://docs.getpelican.com/en/latest/tips.html#extra-tips">Pelican Tips</a> and followed their instructions. I added the following to my <tt class="docutils literal">publishconf.py</tt>:</p>
 <pre class="code python literal-block">
-<span class="n">STATIC_PATHS</span> <span class="o">=</span> <span class="p">[</span><span class="s">'images'</span><span class="p">,</span> <span class="s">'extra/CNAME'</span><span class="p">]</span>
-<span class="n">EXTRA_PATH_METADATA</span> <span class="o">=</span> <span class="p">{</span><span class="s">'extra/CNAME'</span><span class="p">:</span> <span class="p">{</span><span class="s">'path'</span><span class="p">:</span> <span class="s">'CNAME'</span><span class="p">},}</span>
+<span class="n">STATIC_PATHS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'images'</span><span class="p">,</span> <span class="s1">'extra/CNAME'</span><span class="p">]</span>
+<span class="n">EXTRA_PATH_METADATA</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'extra/CNAME'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'path'</span><span class="p">:</span> <span class="s1">'CNAME'</span><span class="p">},}</span>
 </pre>
 <p>Then I created the <tt class="docutils literal">CNAME</tt> file in the new <tt class="docutils literal">content/extra</tt> directory with the name of my subdomain in it:</p>
 <p><tt class="docutils literal">steve.agilitynerd.com</tt>.</p>
 <p>Undo the edit to <tt class="docutils literal">publishconf.py</tt> so it uses the subdomain name:</p>
 <pre class="code python literal-block">
-<span class="n">SITEURL</span> <span class="o">=</span> <span class="s">'http://steve.agilitynerd.com'</span>
+<span class="n">SITEURL</span> <span class="o">=</span> <span class="s1">'http://steve.agilitynerd.com'</span>
 </pre>
 <p>Commit that edit to the <tt class="docutils literal">master</tt> branch and then regenerate the output and commit it to <tt class="docutils literal"><span class="pre">gh-pages</span></tt> branches:</p>
 <pre class="code bash literal-block">

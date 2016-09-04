@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:8000/feeds/programming.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2011-04-05T17:16:00-05:00</updated><entry><title>Python dict.get's Default Value is Always Evaluated</title><link href="http://tech.agilitynerd.com/python-dictgets-default-value-is-always-evalu.html" rel="alternate"></link><updated>2011-04-05T17:16:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2011-04-05:python-dictgets-default-value-is-always-evalu.html</id><summary type="html">&lt;p&gt;This is a gotcha I ran across in some production code that is obvious in
+<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:8000/feeds/programming.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2011-04-05T17:16:00-05:00</updated><entry><title>Python dict.get's Default Value is Always Evaluated</title><link href="http://tech.agilitynerd.com/python-dictgets-default-value-is-always-evalu.html" rel="alternate"></link><published>2011-04-05T17:16:00-05:00</published><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2011-04-05:python-dictgets-default-value-is-always-evalu.html</id><summary type="html">&lt;p&gt;This is a gotcha I ran across in some production code that is obvious in
 retrospect.&amp;nbsp;I was profiling the code to find places where we were
 calling &lt;tt class="docutils literal"&gt;an_expensive_database_function&lt;/tt&gt; and came across code like
 this:&lt;/p&gt;
 &lt;pre class="code python literal-block"&gt;
 &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;doit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-     &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;kwargs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;'key'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;an_expensive_database_function&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
+     &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;kwargs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'key'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;an_expensive_database_function&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
 &lt;/pre&gt;
 &lt;p&gt;The original author probably assumed that if 'key' was present in the
 &lt;tt class="docutils literal"&gt;kwargs&lt;/tt&gt; dictionary &lt;tt class="docutils literal"&gt;an_expensive_database_function&lt;/tt&gt; wouldn't be called;
@@ -17,20 +17,20 @@ value of &lt;tt class="docutils literal"&gt;an_expensive_database_function&lt;/t
 &lt;p&gt;Here is a &amp;quot;look before you leap&amp;quot; solution:&lt;/p&gt;
 &lt;pre class="code python literal-block"&gt;
 &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;doit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-    &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;kwargs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;'key'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;kwargs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'key'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
     &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="bp"&gt;None&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-         &lt;span class="c"&gt;# assuming default value None isn't a valid value&lt;/span&gt;
+         &lt;span class="c1"&gt;# assuming default value None isn't a valid value&lt;/span&gt;
          &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;an_expensive_database_function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="sb"&gt;``&lt;/span&gt;
 &lt;/pre&gt;
 &lt;p&gt;Here is the &amp;quot;easier to ask forgiveness than permission&amp;quot; solution:&lt;/p&gt;
 &lt;pre class="code python literal-block"&gt;
 &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;doit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="n"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="k"&gt;try&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-        &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;'key'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+        &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'key'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
     &lt;span class="k"&gt;except&lt;/span&gt; &lt;span class="ne"&gt;KeyError&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
         &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;an_expensive_database_function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="sb"&gt;``&lt;/span&gt;
 &lt;/pre&gt;
-</summary><category term="python"></category></entry><entry><title>MOTD</title><link href="http://tech.agilitynerd.com/motd.html" rel="alternate"></link><updated>2010-08-31T20:21:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-08-31:motd.html</id><summary type="html">&lt;p&gt;I've always preferred maintainable code over clever code:&lt;/p&gt;
+</summary><category term="python"></category></entry><entry><title>MOTD</title><link href="http://tech.agilitynerd.com/motd.html" rel="alternate"></link><published>2010-08-31T20:21:00-05:00</published><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-08-31:motd.html</id><summary type="html">&lt;p&gt;I've always preferred maintainable code over clever code:&lt;/p&gt;
 &lt;blockquote&gt;
 Debugging is twice as hard as writing the code in the first place.
 Therefore, if you write the code as cleverly as possible, you are,
