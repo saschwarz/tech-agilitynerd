@@ -1,0 +1,9 @@
+===========
+ Not Found
+===========
+:date: 2010-10-12 03:02
+:status: hidden
+:save_as: 404.html
+
+The requested item could not be located. Perhaps you might want to check
+the `Archives </archives.html>`_.
