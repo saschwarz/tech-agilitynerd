@@ -79,7 +79,7 @@ So my server blocks with all these edits are now::
         ...
     }
 
-    So now I have an "A" score from `securityheaders.io`
+So now I have an "A" score from `securityheaders.io`
 
 5. The Digital Ocean tutorial sets up a root crontab entry to automatically update the SSL Certificate. I decided to also update the letsencrypt client software automatically::
 
