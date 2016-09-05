@@ -43,18 +43,17 @@ And my `/etc/nginx/security_headers.conf` file::
 
 So my server blocks with all these edits are now::
 
-    # redirect http://tld to https://www.tld
+    # redirect http://www.tld and http://tld to https://www.tld
     server {
         listen 80;
         listen [::]:80;
-        server_name agilitycourses.com;
-        return 301 https://www.agilitycourses.com$request_uri;
-    }
-    # redirect http://www.tld to https://www.tld
-    server {
-        listen 80;
-        listen [::]:80;
-        server_name www.agilitycourses.com;
+        server_name www.agilitycourses.com agilitycourses.com;
+
+        # letsencrypt location
+        location ^~ /.well-known/ {
+            allow all;
+            root /usr/share/nginx/html/;
+        }
         return 301 https://www.agilitycourses.com$request_uri;
     }
 
@@ -70,12 +69,6 @@ So my server blocks with all these edits are now::
 
         include /etc/nginx/ssl.conf;
         include /etc/nginx/security_headers.conf;
-
-        # letsencrypt location
-        location ^~ /.well-known/ {
-            allow all;
-            root /usr/share/nginx/html/;
-        }
         ...
     }
 
