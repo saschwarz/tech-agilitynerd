@@ -54,12 +54,26 @@ So my server blocks with all these edits are now::
             allow all;
             root /usr/share/nginx/html/;
         }
+        location / {
+            return 301 https://www.agilitycourses.com$request_uri;
+        }
+    }
+
+    # redirect https://tld to https://www.tld
+    server {
+        listen 443 ssl;
+        listen [::]:443 ipv6only=on ssl;
+
+        server_name agilitycourses.com;
+        # certificates are needed here too
+        ssl_certificate /etc/letsencrypt/live/agilitycourses.com/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/agilitycourses.com/privkey.pem;
         return 301 https://www.agilitycourses.com$request_uri;
     }
 
     server {
         listen 443 ssl;
-        listen [::]:443 ipv6only=on ssl;
+        listen [::]:443 ssl;
 
         server_name www.agilitycourses.com;
         root /home/agilitycourses/production/current/;
