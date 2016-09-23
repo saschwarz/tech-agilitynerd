@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <title>tech.agilitynerd</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Steve Schwarz">
+    <!-- <link href="http://127.0.0.1:8000/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" /> -->
+    <link href="http://feeds.feedburner.com/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" />
+    <!-- Le styles -->
+    <link href="http://tech.agilitynerd.com/theme/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+      padding-top: 60px;
+      padding-bottom: 40px;
+      }
+      .sidebar-nav {
+      padding: 9px 0;
+      }
+    </style>
+    <link href="http://tech.agilitynerd.com/theme/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="http://tech.agilitynerd.com/theme/local.css" rel="stylesheet">
+    <link href="http://tech.agilitynerd.com/theme/pygments.css" rel="stylesheet">
+<script>var _gaq=[['_setAccount','UA-1127677-3'],['_trackPageview']];(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.src='//www.google-analytics.com/ga.js';s.parentNode.insertBefore(g,s)}(document,'script'))</script>
+<script type="text/javascript">
+  var disqus_shortname = "techagilitynerd"; // required: replace example with your forum shortname
+  var disqus_developer = 1;
+  
+  var disqus_identifier = "http2-a-quick-and-easy-website-speed-up.html";
+  (function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+
+  (function () {
+  var s = document.createElement('script'); s.async = true;
+  s.type = 'text/javascript';
+  s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+  }());
+</script>
+  </head>
+  <body>
+<!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+    
+<div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container-fluid">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+      </a>
+      <a class="brand" href="http://tech.agilitynerd.com/index.html">tech.agilitynerd</a>
+      <div class="nav-collapse collapse">
+	<ul class="nav">
+	  <li class="active"><a href="http://tech.agilitynerd.com/category/devops.html">devops</a></li>
+	  <li ><a href="http://tech.agilitynerd.com/category/javascript.html">javascript</a></li>
+	  <li ><a href="http://tech.agilitynerd.com/category/misc.html">misc</a></li>
+	  <li ><a href="http://tech.agilitynerd.com/category/programming.html">programming</a></li>
+	  <li ><a href="http://tech.agilitynerd.com/category/python.html">python</a></li>
+	  <li ><a href="http://tech.agilitynerd.com/category/webdev.html">webdev</a></li>
+	</ul>
+	<p class="navbar-text pull-right">
+	  <a class="navbar-link" href="http://tech.agilitynerd.com/archives.html">[archives]</a>
+	  <a class="navbar-link" href="http://tech.agilitynerd.com/tags.html">[tags]</a>
+	</p>
+      </div><!--/.nav-collapse -->
+    </div>
+  </div>
+</div>
+    <div class="container-fluid">
+      <div class="row-fluid">
+	<div class="span1">&nbsp;</div>
+	<div class="span10">
+	  <div class="row-fluid">
+            <div class="span9">
+<div class='article'>
+  <div class="page-header"><h1>HTTP/2: A Quick and Easy Website Speed Up</h1></div>
+  <div class="well small"><a class="more" href="http://tech.agilitynerd.com/http2-a-quick-and-easy-website-speed-up.html">On 23 Sep 2016 at 1800</a>
+by <a class="url fn" href="http://tech.agilitynerd.com/author/steve-schwarz.html">Steve Schwarz</a> in <a href="http://tech.agilitynerd.com/category/devops.html">devops</a>
+ | <a href="http://tech.agilitynerd.com/http2-a-quick-and-easy-website-speed-up.html#disqus_thread">Comments</a></div>
+  <div><p>I always want my websites to be secure and fast. <a class="reference external" href="https://http2.github.io/">HTTP/2</a> is the latest enhancement to the HTTP protocol that can provide significant performance improvements:</p>
+<blockquote class="epigraph">
+<p>The primary goals for HTTP/2 are to reduce latency by enabling full request and response multiplexing, minimize protocol overhead via efficient compression of HTTP header fields, and add support for request prioritization and server push.</p>
+<p class="attribution">&mdash;<a class="reference external" href="https://hpbn.co/http2/">High Performance Browser Networking - O'Reilly</a>:</p>
+</blockquote>
+<p>It turns out all browsers that support HTTP/2 <a class="reference external" href="http://caniuse.com/#feat=http2">also require TLS (HTTPS)</a>. So my first step was <a class="reference external" href="http://tech.agilitynerd.com/nginx-https-lets-encrypt-and-django.html">adding HTTPS support to agilitycourses.com</a> which also provides a backbone on which I'll implement secure user profiles. Then I wanted to enable HTTP/2 to see if it improved the speed of pages served to end users.</p>
+<div class="section" id="but-first-an-os-upgrade">
+<h2>But First an OS Upgrade</h2>
+<p>After a little research I found that recent releases of <a class="reference external" href="https://nginx.org/en/">NGINX</a> support HTTP/2 and those versions are packaged with Ubuntu 16.04 LTS. That made upgrading to this latest long term support OS version a better approach than just upgrading NGINX on my older OS. I basically went through the <a class="reference external" href="https://www.digitalocean.com/community/tutorials/how-to-upgrade-to-ubuntu-16-04-lts">standard upgrade process</a>.</p>
+<p>While I had to work through a number of small issues upgrading my older websites; the biggest change was converting my upstart scripts to systemd scripts. But the beauty of hosting with virtual servers is it was trivial to create an image of my existing server, spin up a temporary server using that image, and then practice the ugprade/migration on the temporary server. I was able to move some configuration changes back to my live server and test out the changes to my sites' <a class="reference external" href="http://www.fabfile.org/">Fabric</a> deployment scripts.</p>
+<p>Once everything was working I configured my websites that contain user modifiable data into maintenance mode on my temporary server. Then I pointed the DNS for all my domains to the temporary server. After DNS propagated I shutdown Postgres and the webserver on my original server and created a backup image. Then I went through the upgrade process. Once I validated the migration was successful I switched the DNS back to my original server and shutdown the temporary server. After a couple days I deleted the temporary server and the pre-migration backup image.</p>
+</div>
+<div class="section" id="enabling-http-2">
+<h2>Enabling HTTP/2</h2>
+<p>Once I was on NGINX version 1.10 the change to the website to enable HTTP/2 was as simple as changing the virtual server from:</p>
+<pre class="literal-block">
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+...
+}
+</pre>
+<p>to:</p>
+<pre class="literal-block">
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+...
+}
+</pre>
+<p>Then I just reloaded the Nginx configuration: <tt class="docutils literal">sudo systemctl reload nginx</tt>. That was it!</p>
+</div>
+<div class="section" id="testing">
+<h2>Testing</h2>
+<p>Here's the network view of the timing of requests for a page using HTTP/1.1 over HTTPS in Chrome:</p>
+<img alt="Diagram of HTTP requests for a page showing requests being delayed by previous requests for the same domain." class="thumbnail" src="/images/agilitycourses-http1.png" />
+<p>Here's the same page using HTTP/2 over HTTPS:</p>
+<img alt="Diagram of HTTP requests for a page showing requests being multiplexed with previous requests for the same domain." class="thumbnail" src="/images/agilitycourses-http2.png" />
+<p>The obvious difference is in the <em>Timeline - Start Time</em> column. In the first diagram you can see the &quot;waterfall&quot; queueing up of requests for images as all the open sockets to the domain were in use. In the second diagram you can see them all interleaved as they are multiplexed across the same connection.</p>
+<p>Also the bottom line is the page is fully loaded in 1.73 sec using HTTP/1.1 and in 1.16 sec using HTTP/2 for a <strong>33% end user page load improvement!</strong></p>
+</div>
+<div class="section" id="next-steps">
+<h2>Next Steps</h2>
+<p>So that was a nice free speed up and there are plenty of areas I can still investigate to further improve the performance of this web site:</p>
+<ul>
+<li><p class="first">Bring 3rd party resources back to my domain to save DNS lookups and see how that affects overall performance. This may hurt performance for HTTP/1.1 clients who are limited to the number of connections per domain.</p>
+</li>
+<li><p class="first">Change multiple SVG files (which are all steps in a progression) into a single file and use CSS to hide/show appropriate steps using a single image. This will greatly reduce the number of individual files downloaded and save some duplicated data within those files.</p>
+</li>
+<li><p class="first">Move Google Analytics locally. GA has a number of problems (short cache times and multiple files downloaded) so at the cost of periodically updating the files I could host them all locally and save some time.</p>
+</li>
+<li><p class="first">Disqus is even worse than GA when it comes to many file downloads, redirects, short cache times etc. I might change to have Disqus data loaded on user demand.</p>
+</li>
+<li><dl class="first docutils">
+<dt>Experiment with other HTTP/2 features:</dt>
+<dd><ul class="first last simple">
+<li><a class="reference external" href="https://www.igvita.com/2015/08/17/eliminating-roundtrips-with-preconnect/">preconnect</a> might help reduce the cost of DNS look ups that result from redirects like those used by Google Analytics, Google Fonts, and Disqus resources.</li>
+<li><a class="reference external" href="https://www.smashingmagazine.com/2016/02/preload-what-is-it-good-for/">preload</a> to load resources before they are accessed by JS during <tt class="docutils literal">onload</tt> or via user actions.</li>
+<li><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Link_prefetching_FAQ">prefetch</a> to load JS/images for future pages. There are some common workflows on this site that could benefit from prefetching the JS for subsequent pages.</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+</div>
+  <div>
+    <h2>Comments</h2>
+    <div id="disqus_thread"></div>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  </div>
+</div>	
+            </div><!--/span-->
+
+	    <div class="span3">
+<div class="author">
+<h4>About</h4>
+<div class="author-about">
+  <p class="about">I'm Steve Schwarz a Chicago software developer and dog agility enthusiast. <a href="/pages/about.html">more</a></p>
+</div>
+</div>
+<div class="well sidebar-nav">
+  <ul class="nav nav-list">
+    <li class="nav-header">Blogroll</li>
+    <li><a href="http://agilitynerd.com/blog/">agilitynerd.com</a></li>
+    <li><a href="http://agilitycourses.com/">agilitycourses.com</a></li>
+    <li><a href="http://googility.com/">googility.com</a></li>
+  </ul>
+  <ul class="nav nav-list social">
+    <li class="nav-header">Elsewhere</li>
+    <li><a href="http://www.linkedin.com/profile/view?id=10135443">Linked in</a></li>
+    <li><a href="https://github.com/saschwarz">GitHub</a></li>
+    <li><a href="https://twitter.com/steveaschwarz">Twitter</a></li>
+  </ul>
+</div><!--/.well -->
+ <script>
+  (function() {
+    var cx = '001042720131993941673:szhtogqckem';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+        '//www.google.com/cse/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+<div class="search">
+    <gcse:search></gcse:search>
+</div>
+            </div><!--/span-->
+
+	  </div>
+	</div>
+      </div><!--/row-->
+
+      <hr>
+
+      <footer>
+        <p>Powered by <a href="http://blog.getpelican.com/">Pelican</a></p>
+	<p>&copy; Steve Schwarz 2016</p>
+      </footer>
+
+    </div><!--/.fluid-container-->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="http://tech.agilitynerd.com/theme/js/jquery-1.7.2.min.js"><\/script>')</script>
+      <script src="http://tech.agilitynerd.com/theme/bootstrap/js/bootstrap.min.js"></script>
+      <script src="http://tech.agilitynerd.com/theme/js/modernizr-2.5.3-respond-1.1.0.min.js"></script>
+
+  </body>
+</html>

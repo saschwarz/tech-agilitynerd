@@ -86,7 +86,7 @@
 by <a class="url fn" href="http://tech.agilitynerd.com/author/steve-schwarz.html">Steve Schwarz</a> in <a href="http://tech.agilitynerd.com/category/devops.html">devops</a>
  | <a href="http://tech.agilitynerd.com/nginx-https-lets-encrypt-and-django.html#disqus_thread">Comments</a></div>
   <div><p>My <a class="reference external" href="https://agilitycourses.com">agilitycourses.com</a> website is served by <a class="reference external" href="https://nginx.org/en/">nginx</a> proxying to <a class="reference external" href="http://gunicorn.org/">gunicorn</a> running my <a class="reference external" href="https://www.djangoproject.com/">Django</a> application. I'll be adding user accounts soon so I wanted to convert the site to be more secure by using HTTPS encryption. Also <a class="reference external" href="https://webmasters.googleblog.com/2014/08/https-as-ranking-signal.html">Google has announced it will likely prefer sites using HTTPS</a>.</p>
-<p>The site is running on Ubuntu 14.04 LTS. I won't recount the whole process, I followed some great resources and made a couple adjustments that might be helpful to others.</p>
+<p>The site is running on Ubuntu 14.04 LTS. I won't recount the whole process, I followed some great resources and I'll discuss a couple adjustments that might be helpful to others.</p>
 <ol class="arabic simple">
 <li>I basically followed the instructions in this excellent Digital Ocean tutorial: <a class="reference external" href="https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-14-04">How To Secure Nginx with Let's Encrypt on Ubuntu 14.04</a>.</li>
 <li>I confirmed via the <a class="reference external" href="https://www.ssllabs.com/ssltest/analyze.html">SSL Labs SSL Server Test</a> that my IPv4 and IPv6 server configurations had &quot;A+&quot; ratings.</li>
@@ -194,7 +194,7 @@ CSRF_COOKIE_SECURE = True
 </li>
 </ol>
 <p>Even with a lot of web browsing to learn about these settings the whole process only took a couple hours.
-Now that I've done it once (and updated my Fabric fabfile.py) it will be easier to convert my other domains.</p>
+Now that I've done it once (and updated my <a class="reference external" href="http://www.fabfile.org/">Fabric fabfile.py</a>) it will be easier to convert my other domains.</p>
 </div>
   <div>
     <h2>Comments</h2>

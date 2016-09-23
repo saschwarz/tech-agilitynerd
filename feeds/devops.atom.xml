@@ -1,6 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:8000/feeds/devops.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2016-09-04T12:02:00-05:00</updated><entry><title>NGINX, HTTPS, Let's Encrypt, and Django</title><link href="http://tech.agilitynerd.com/nginx-https-lets-encrypt-and-django.html" rel="alternate"></link><published>2016-09-04T12:02:00-05:00</published><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2016-09-04:nginx-https-lets-encrypt-and-django.html</id><summary type="html">&lt;p&gt;My &lt;a class="reference external" href="https://agilitycourses.com"&gt;agilitycourses.com&lt;/a&gt; website is served by &lt;a class="reference external" href="https://nginx.org/en/"&gt;nginx&lt;/a&gt; proxying to &lt;a class="reference external" href="http://gunicorn.org/"&gt;gunicorn&lt;/a&gt; running my &lt;a class="reference external" href="https://www.djangoproject.com/"&gt;Django&lt;/a&gt; application. I'll be adding user accounts soon so I wanted to convert the site to be more secure by using HTTPS encryption. Also &lt;a class="reference external" href="https://webmasters.googleblog.com/2014/08/https-as-ranking-signal.html"&gt;Google has announced it will likely prefer sites using HTTPS&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;The site is running on Ubuntu 14.04 LTS. I won't recount the whole process, I followed some great resources and made a couple adjustments that might be helpful to others.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:8000/feeds/devops.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2016-09-23T18:00:00-05:00</updated><entry><title>HTTP/2: A Quick and Easy Website Speed Up</title><link href="http://tech.agilitynerd.com/http2-a-quick-and-easy-website-speed-up.html" rel="alternate"></link><updated>2016-09-23T18:00:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2016-09-23:http2-a-quick-and-easy-website-speed-up.html</id><summary type="html">&lt;p&gt;I always want my websites to be secure and fast. &lt;a class="reference external" href="https://http2.github.io/"&gt;HTTP/2&lt;/a&gt; is the latest enhancement to the HTTP protocol that can provide significant performance improvements:&lt;/p&gt;
+&lt;blockquote class="epigraph"&gt;
+&lt;p&gt;The primary goals for HTTP/2 are to reduce latency by enabling full request and response multiplexing, minimize protocol overhead via efficient compression of HTTP header fields, and add support for request prioritization and server push.&lt;/p&gt;
+&lt;p class="attribution"&gt;&amp;mdash;&lt;a class="reference external" href="https://hpbn.co/http2/"&gt;High Performance Browser Networking - O'Reilly&lt;/a&gt;:&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;It turns out all browsers that support HTTP/2 &lt;a class="reference external" href="http://caniuse.com/#feat=http2"&gt;also require TLS (HTTPS)&lt;/a&gt;. So my first step was &lt;a class="reference external" href="http://tech.agilitynerd.com/nginx-https-lets-encrypt-and-django.html"&gt;adding HTTPS support to agilitycourses.com&lt;/a&gt; which also provides a backbone on which I'll implement secure user profiles. Then I wanted to enable HTTP/2 to see if it improved the speed of pages served to end users.&lt;/p&gt;
+&lt;div class="section" id="but-first-an-os-upgrade"&gt;
+&lt;h2&gt;But First an OS Upgrade&lt;/h2&gt;
+&lt;p&gt;After a little research I found that recent releases of &lt;a class="reference external" href="https://nginx.org/en/"&gt;NGINX&lt;/a&gt; support HTTP/2 and those versions are packaged with Ubuntu 16.04 LTS. That made upgrading to this latest long term support OS version a better approach than just upgrading NGINX on my older OS. I basically went through the &lt;a class="reference external" href="https://www.digitalocean.com/community/tutorials/how-to-upgrade-to-ubuntu-16-04-lts"&gt;standard upgrade process&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;While I had to work through a number of small issues upgrading my older websites; the biggest change was converting my upstart scripts to systemd scripts. But the beauty of hosting with virtual servers is it was trivial to create an image of my existing server, spin up a temporary server using that image, and then practice the ugprade/migration on the temporary server. I was able to move some configuration changes back to my live server and test out the changes to my sites' &lt;a class="reference external" href="http://www.fabfile.org/"&gt;Fabric&lt;/a&gt; deployment scripts.&lt;/p&gt;
+&lt;p&gt;Once everything was working I configured my websites that contain user modifiable data into maintenance mode on my temporary server. Then I pointed the DNS for all my domains to the temporary server. After DNS propagated I shutdown Postgres and the webserver on my original server and created a backup image. Then I went through the upgrade process. Once I validated the migration was successful I switched the DNS back to my original server and shutdown the temporary server. After a couple days I deleted the temporary server and the pre-migration backup image.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="enabling-http-2"&gt;
+&lt;h2&gt;Enabling HTTP/2&lt;/h2&gt;
+&lt;p&gt;Once I was on NGINX version 1.10 the change to the website to enable HTTP/2 was as simple as changing the virtual server from:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+...
+}
+&lt;/pre&gt;
+&lt;p&gt;to:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+...
+}
+&lt;/pre&gt;
+&lt;p&gt;Then I just reloaded the Nginx configuration: &lt;tt class="docutils literal"&gt;sudo systemctl reload nginx&lt;/tt&gt;. That was it!&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="testing"&gt;
+&lt;h2&gt;Testing&lt;/h2&gt;
+&lt;p&gt;Here's the network view of the timing of requests for a page using HTTP/1.1 over HTTPS in Chrome:&lt;/p&gt;
+&lt;img alt="Diagram of HTTP requests for a page showing requests being delayed by previous requests for the same domain." class="thumbnail" src="/images/agilitycourses-http1.png" /&gt;
+&lt;p&gt;Here's the same page using HTTP/2 over HTTPS:&lt;/p&gt;
+&lt;img alt="Diagram of HTTP requests for a page showing requests being multiplexed with previous requests for the same domain." class="thumbnail" src="/images/agilitycourses-http2.png" /&gt;
+&lt;p&gt;The obvious difference is in the &lt;em&gt;Timeline - Start Time&lt;/em&gt; column. In the first diagram you can see the &amp;quot;waterfall&amp;quot; queueing up of requests for images as all the open sockets to the domain were in use. In the second diagram you can see them all interleaved as they are multiplexed across the same connection.&lt;/p&gt;
+&lt;p&gt;Also the bottom line is the page is fully loaded in 1.73 sec using HTTP/1.1 and in 1.16 sec using HTTP/2 for a &lt;strong&gt;33% end user page load improvement!&lt;/strong&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="next-steps"&gt;
+&lt;h2&gt;Next Steps&lt;/h2&gt;
+&lt;p&gt;So that was a nice free speed up and there are plenty of areas I can still investigate to further improve the performance of this web site:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p class="first"&gt;Bring 3rd party resources back to my domain to save DNS lookups and see how that affects overall performance. This may hurt performance for HTTP/1.1 clients who are limited to the number of connections per domain.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;Change multiple SVG files (which are all steps in a progression) into a single file and use CSS to hide/show appropriate steps using a single image. This will greatly reduce the number of individual files downloaded and save some duplicated data within those files.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;Move Google Analytics locally. GA has a number of problems (short cache times and multiple files downloaded) so at the cost of periodically updating the files I could host them all locally and save some time.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;Disqus is even worse than GA when it comes to many file downloads, redirects, short cache times etc. I might change to have Disqus data loaded on user demand.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;dl class="first docutils"&gt;
+&lt;dt&gt;Experiment with other HTTP/2 features:&lt;/dt&gt;
+&lt;dd&gt;&lt;ul class="first last simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://www.igvita.com/2015/08/17/eliminating-roundtrips-with-preconnect/"&gt;preconnect&lt;/a&gt; might help reduce the cost of DNS look ups that result from redirects like those used by Google Analytics, Google Fonts, and Disqus resources.&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://www.smashingmagazine.com/2016/02/preload-what-is-it-good-for/"&gt;preload&lt;/a&gt; to load resources before they are accessed by JS during &lt;tt class="docutils literal"&gt;onload&lt;/tt&gt; or via user actions.&lt;/li&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Link_prefetching_FAQ"&gt;prefetch&lt;/a&gt; to load JS/images for future pages. There are some common workflows on this site that could benefit from prefetching the JS for subsequent pages.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</summary><category term="nginx"></category><category term="ubuntu"></category><category term="https"></category><category term="ssl"></category><category term="http2"></category><category term="performance"></category></entry><entry><title>NGINX, HTTPS, Let's Encrypt, and Django</title><link href="http://tech.agilitynerd.com/nginx-https-lets-encrypt-and-django.html" rel="alternate"></link><updated>2016-09-04T12:02:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2016-09-04:nginx-https-lets-encrypt-and-django.html</id><summary type="html">&lt;p&gt;My &lt;a class="reference external" href="https://agilitycourses.com"&gt;agilitycourses.com&lt;/a&gt; website is served by &lt;a class="reference external" href="https://nginx.org/en/"&gt;nginx&lt;/a&gt; proxying to &lt;a class="reference external" href="http://gunicorn.org/"&gt;gunicorn&lt;/a&gt; running my &lt;a class="reference external" href="https://www.djangoproject.com/"&gt;Django&lt;/a&gt; application. I'll be adding user accounts soon so I wanted to convert the site to be more secure by using HTTPS encryption. Also &lt;a class="reference external" href="https://webmasters.googleblog.com/2014/08/https-as-ranking-signal.html"&gt;Google has announced it will likely prefer sites using HTTPS&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The site is running on Ubuntu 14.04 LTS. I won't recount the whole process, I followed some great resources and I'll discuss a couple adjustments that might be helpful to others.&lt;/p&gt;
 &lt;ol class="arabic simple"&gt;
 &lt;li&gt;I basically followed the instructions in this excellent Digital Ocean tutorial: &lt;a class="reference external" href="https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-14-04"&gt;How To Secure Nginx with Let's Encrypt on Ubuntu 14.04&lt;/a&gt;.&lt;/li&gt;
 &lt;li&gt;I confirmed via the &lt;a class="reference external" href="https://www.ssllabs.com/ssltest/analyze.html"&gt;SSL Labs SSL Server Test&lt;/a&gt; that my IPv4 and IPv6 server configurations had &amp;quot;A+&amp;quot; ratings.&lt;/li&gt;
@@ -108,8 +173,8 @@ CSRF_COOKIE_SECURE = True
 &lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;Even with a lot of web browsing to learn about these settings the whole process only took a couple hours.
-Now that I've done it once (and updated my Fabric fabfile.py) it will be easier to convert my other domains.&lt;/p&gt;
-</summary><category term="nginx"></category><category term="ubuntu"></category><category term="https"></category><category term="ssl"></category><category term="django"></category><category term="gunicorn"></category><category term="letsencrypt"></category></entry><entry><title>NGINX CGI Parameter Gotcha</title><link href="http://tech.agilitynerd.com/nginx-cgi-parameter-gotcha.html" rel="alternate"></link><published>2016-07-31T12:02:00-05:00</published><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2016-07-31:nginx-cgi-parameter-gotcha.html</id><summary type="html">&lt;p&gt;When I first started the &lt;a class="reference external" href="http://agilitynerd.com"&gt;agilitynerd&lt;/a&gt;  blog in 2004 I had my &lt;a class="reference external" href="http://blosxom.sourceforge.net/"&gt;Blosxom&lt;/a&gt; blogging CGI script running via &lt;a class="reference external" href="http://httpd.apache.org/"&gt;Apache&lt;/a&gt;. Later on I moved all my sites to &lt;a class="reference external" href="https://nginx.org/en/"&gt;nginx&lt;/a&gt; or took advantage of nginx's caching features to have it act as a proxy in front of Apache. I finally decided to remove Apache entirely and that meant solving running CGI scripts using nginx.&lt;/p&gt;
+Now that I've done it once (and updated my &lt;a class="reference external" href="http://www.fabfile.org/"&gt;Fabric fabfile.py&lt;/a&gt;) it will be easier to convert my other domains.&lt;/p&gt;
+</summary><category term="nginx"></category><category term="ubuntu"></category><category term="https"></category><category term="ssl"></category><category term="django"></category><category term="gunicorn"></category><category term="letsencrypt"></category></entry><entry><title>NGINX CGI Parameter Gotcha</title><link href="http://tech.agilitynerd.com/nginx-cgi-parameter-gotcha.html" rel="alternate"></link><updated>2016-07-31T12:02:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2016-07-31:nginx-cgi-parameter-gotcha.html</id><summary type="html">&lt;p&gt;When I first started the &lt;a class="reference external" href="http://agilitynerd.com"&gt;agilitynerd&lt;/a&gt;  blog in 2004 I had my &lt;a class="reference external" href="http://blosxom.sourceforge.net/"&gt;Blosxom&lt;/a&gt; blogging CGI script running via &lt;a class="reference external" href="http://httpd.apache.org/"&gt;Apache&lt;/a&gt;. Later on I moved all my sites to &lt;a class="reference external" href="https://nginx.org/en/"&gt;nginx&lt;/a&gt; or took advantage of nginx's caching features to have it act as a proxy in front of Apache. I finally decided to remove Apache entirely and that meant solving running CGI scripts using nginx.&lt;/p&gt;
 &lt;p&gt;After some googling I found FastCGI and &lt;a class="reference external" href="https://www.nginx.com/resources/wiki/start/topics/examples/fcgiwrap/"&gt;fcgiwrap&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;I'm on Ubuntu so installation was as easy as:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
@@ -143,7 +208,7 @@ Cannot get script name, are DOCUMENT_ROOT and SCRIPT_NAME (or SCRIPT_FILENAME) s
 &lt;blockquote&gt;
 This inconsistency and unpredictability means that you cannot and should not rely on the backend to correctly interpret your intentions when setting the same parameter more than one time. The only safe solution is to only declare each parameter once. This also means that there is no such thing as safely overriding a default value with the fastcgi_param directive.&lt;/blockquote&gt;
 &lt;p&gt;So in my case I commented out &lt;tt class="docutils literal"&gt;DOCUMENT_ROOT&lt;/tt&gt; and &lt;tt class="docutils literal"&gt;SCRIPT_FILENAME&lt;/tt&gt; in the &lt;tt class="docutils literal"&gt;/etc/nginx/fastcgi_params&lt;/tt&gt; file, reloaded nginx, and voila! Everything worked. Hope this helps you if you run in to the same problem.&lt;/p&gt;
-</summary><category term="nginx"></category><category term="cgi"></category><category term="fcgiwrap"></category><category term="ubuntu"></category><category term="apache"></category></entry><entry><title>Upgrading Pelican and Migrating to GitHub Pages</title><link href="http://tech.agilitynerd.com/upgrading-pelican-migrating-gh-pages.html" rel="alternate"></link><published>2015-11-29T15:00:00-06:00</published><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2015-11-29:upgrading-pelican-migrating-gh-pages.html</id><summary type="html">&lt;p&gt;I've been using &lt;a class="reference external" href="http://blog.getpelican.com/"&gt;Pelican&lt;/a&gt; for this blog for almost three years with source and output stored in a GitHub repository. The output files were then checked out and hosted as static content behind an &lt;a class="reference external" href="http://www.nginx.com/"&gt;NGINX web server&lt;/a&gt; on my VPS. Since I set that up GitHub introduced &lt;a class="reference external" href="https://pages.github.com/"&gt;GitHub Pages&lt;/a&gt; with support for custom domains and all the &amp;quot;cool kids&amp;quot; started hosting their static web sites right on GitHub.&lt;/p&gt;
+</summary><category term="nginx"></category><category term="cgi"></category><category term="fcgiwrap"></category><category term="ubuntu"></category><category term="apache"></category></entry><entry><title>Upgrading Pelican and Migrating to GitHub Pages</title><link href="http://tech.agilitynerd.com/upgrading-pelican-migrating-gh-pages.html" rel="alternate"></link><updated>2015-11-29T15:00:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2015-11-29:upgrading-pelican-migrating-gh-pages.html</id><summary type="html">&lt;p&gt;I've been using &lt;a class="reference external" href="http://blog.getpelican.com/"&gt;Pelican&lt;/a&gt; for this blog for almost three years with source and output stored in a GitHub repository. The output files were then checked out and hosted as static content behind an &lt;a class="reference external" href="http://www.nginx.com/"&gt;NGINX web server&lt;/a&gt; on my VPS. Since I set that up GitHub introduced &lt;a class="reference external" href="https://pages.github.com/"&gt;GitHub Pages&lt;/a&gt; with support for custom domains and all the &amp;quot;cool kids&amp;quot; started hosting their static web sites right on GitHub.&lt;/p&gt;
 &lt;p&gt;I had some free time this weekend and decided to see what it would take to upgrade my Pelican version to the latest (3.6.3) and host my files on GitHub Pages. I had four steps to perform:&lt;/p&gt;
 &lt;ol class="arabic simple"&gt;
 &lt;li&gt;Create a new environment with the latest Pelican&lt;/li&gt;
@@ -155,9 +220,9 @@ This inconsistency and unpredictability means that you cannot and should not rel
 &lt;h2&gt;Create New Environment&lt;/h2&gt;
 &lt;p&gt;I didn't want to screw up my existing/working virtual environment so I created a new one containing Pelican and &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;ghp-import&lt;/span&gt;&lt;/tt&gt; which does all the work of updating the &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;gh-pages&lt;/span&gt;&lt;/tt&gt; branch with the output:&lt;/p&gt;
 &lt;pre class="code bash literal-block"&gt;
-&lt;span class="c1"&gt;# Create a new virtualenv
+&lt;span class="c"&gt;# Create a new virtualenv
 &lt;/span&gt;mkvirtualenv pelican-new
-&lt;span class="c1"&gt;# Install pelican and ghp-import:
+&lt;span class="c"&gt;# Install pelican and ghp-import:
 &lt;/span&gt;pip install pelican ghp-import
 &lt;/pre&gt;
 &lt;/div&gt;
@@ -195,11 +260,11 @@ rm -rf output
 &lt;p&gt;Then I edited the &lt;tt class="docutils literal"&gt;.gitignore&lt;/tt&gt; file to exclude the &lt;tt class="docutils literal"&gt;output&lt;/tt&gt; directory.&lt;/p&gt;
 &lt;p&gt;I wanted to keep my existing blog working until I worked out all the kinks in the migration. So I delayed pointing DNS to the GitHub pages. That meant I needed to temporarily change the URL of the blog to match where it will be hosted on GitHub pages. So I edited the &lt;tt class="docutils literal"&gt;publishconf.py&lt;/tt&gt; configuration file and changed the &lt;tt class="docutils literal"&gt;SITEURL&lt;/tt&gt; temporarily from:&lt;/p&gt;
 &lt;pre class="code python literal-block"&gt;
-&lt;span class="n"&gt;SITEURL&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;'http://steve.agilitynerd.com'&lt;/span&gt;
+&lt;span class="n"&gt;SITEURL&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;'http://steve.agilitynerd.com'&lt;/span&gt;
 &lt;/pre&gt;
 &lt;p&gt;to it's location on GitHub Pages:&lt;/p&gt;
 &lt;pre class="code python literal-block"&gt;
-&lt;span class="n"&gt;SITEURL&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;'http://saschwarz.github.io/steve-agilitynerd'&lt;/span&gt;
+&lt;span class="n"&gt;SITEURL&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;'http://saschwarz.github.io/steve-agilitynerd'&lt;/span&gt;
 &lt;/pre&gt;
 &lt;p&gt;Get the URL by clicking on the Settings tab for the GitHub repository:&lt;/p&gt;
 &lt;div class="thumbnail figure"&gt;
@@ -227,14 +292,14 @@ make github
 &lt;p&gt;Then &lt;strong&gt;don't followed these instructions:&lt;/strong&gt; &lt;a class="reference external" href="https://help.github.com/articles/adding-a-cname-file-to-your-repository/"&gt;Adding a CNAME file to your repository&lt;/a&gt; to setup a &lt;tt class="docutils literal"&gt;CNAME&lt;/tt&gt; file in the &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;gh-pages&lt;/span&gt;&lt;/tt&gt; branch. The instructions work but &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;ghp-import&lt;/span&gt;&lt;/tt&gt; deletes the content of the &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;gh-pages&lt;/span&gt;&lt;/tt&gt; branch before re-adding files and that deletes the &lt;tt class="docutils literal"&gt;CNAME&lt;/tt&gt; file you just added!&lt;/p&gt;
 &lt;p&gt;After some googling I found Tip #2 in the &lt;a class="reference external" href="http://docs.getpelican.com/en/latest/tips.html#extra-tips"&gt;Pelican Tips&lt;/a&gt; and followed their instructions. I added the following to my &lt;tt class="docutils literal"&gt;publishconf.py&lt;/tt&gt;:&lt;/p&gt;
 &lt;pre class="code python literal-block"&gt;
-&lt;span class="n"&gt;STATIC_PATHS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;'images'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'extra/CNAME'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-&lt;span class="n"&gt;EXTRA_PATH_METADATA&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;'extra/CNAME'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;'path'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;'CNAME'&lt;/span&gt;&lt;span class="p"&gt;},}&lt;/span&gt;
+&lt;span class="n"&gt;STATIC_PATHS&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;'images'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;'extra/CNAME'&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;EXTRA_PATH_METADATA&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s"&gt;'extra/CNAME'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s"&gt;'path'&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;'CNAME'&lt;/span&gt;&lt;span class="p"&gt;},}&lt;/span&gt;
 &lt;/pre&gt;
 &lt;p&gt;Then I created the &lt;tt class="docutils literal"&gt;CNAME&lt;/tt&gt; file in the new &lt;tt class="docutils literal"&gt;content/extra&lt;/tt&gt; directory with the name of my subdomain in it:&lt;/p&gt;
 &lt;p&gt;&lt;tt class="docutils literal"&gt;steve.agilitynerd.com&lt;/tt&gt;.&lt;/p&gt;
 &lt;p&gt;Undo the edit to &lt;tt class="docutils literal"&gt;publishconf.py&lt;/tt&gt; so it uses the subdomain name:&lt;/p&gt;
 &lt;pre class="code python literal-block"&gt;
-&lt;span class="n"&gt;SITEURL&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;'http://steve.agilitynerd.com'&lt;/span&gt;
+&lt;span class="n"&gt;SITEURL&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;'http://steve.agilitynerd.com'&lt;/span&gt;
 &lt;/pre&gt;
 &lt;p&gt;Commit that edit to the &lt;tt class="docutils literal"&gt;master&lt;/tt&gt; branch and then regenerate the output and commit it to &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;gh-pages&lt;/span&gt;&lt;/tt&gt; branches:&lt;/p&gt;
 &lt;pre class="code bash literal-block"&gt;
@@ -244,7 +309,7 @@ make github
 &lt;/pre&gt;
 &lt;p&gt;Opened the browser to my subdomain and verified that images and links within the site were working correctly. I went back to my VPS and disabled the subdomains from NGINX and deleted the blog check outs to free some resources.  Two fewer websites to maintain on my VPS!&lt;/p&gt;
 &lt;/div&gt;
-</summary><category term="pelican"></category><category term="github"></category><category term="python"></category></entry><entry><title>Notes on Configuring Postfix on Ubuntu Gutsy to Send Email via Google Apps</title><link href="http://tech.agilitynerd.com/notes-on-configuring-postfix-on-ubuntu-gutsy-1.html" rel="alternate"></link><published>2008-01-05T23:53:00-06:00</published><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2008-01-05:notes-on-configuring-postfix-on-ubuntu-gutsy-1.html</id><summary type="html">&lt;p&gt;Here are some notes I took on configuring my &lt;a class="reference external" href="http://www.slicehost.com/"&gt;Slicehost&lt;/a&gt; Ubuntu Gutsy
+</summary><category term="pelican"></category><category term="github"></category><category term="python"></category></entry><entry><title>Notes on Configuring Postfix on Ubuntu Gutsy to Send Email via Google Apps</title><link href="http://tech.agilitynerd.com/notes-on-configuring-postfix-on-ubuntu-gutsy-1.html" rel="alternate"></link><updated>2008-01-05T23:53:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2008-01-05:notes-on-configuring-postfix-on-ubuntu-gutsy-1.html</id><summary type="html">&lt;p&gt;Here are some notes I took on configuring my &lt;a class="reference external" href="http://www.slicehost.com/"&gt;Slicehost&lt;/a&gt; Ubuntu Gutsy
 installation to use Postfix to send emails via Google Apps. I am far
 from an expert on postfix configuration but maybe these notes will be
 helpful to others needing this configuration.&lt;/p&gt;
@@ -301,7 +366,7 @@ sudo tail /var/log/mail.\*
 &lt;/pre&gt;
 &lt;p&gt;I hope these notes might help folks &amp;quot;get over the hump&amp;quot; if they are
 setting up the same configuration.&lt;/p&gt;
-</summary><category term="postfix"></category><category term="slicehost"></category><category term="ubuntu"></category></entry><entry><title>Backup Your Data Lately?</title><link href="http://tech.agilitynerd.com/backup-your-data-lately-1.html" rel="alternate"></link><published>2004-08-20T19:00:00-05:00</published><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2004-08-20:backup-your-data-lately-1.html</id><summary type="html">&lt;p&gt;A few weeks ago I bought a &lt;a class="reference external" href="http://www.ximeta.com/products/network_drives/netdisk/index.php"&gt;Ximeta NetDisk&lt;/a&gt; 120 GB external hard drive
+</summary><category term="postfix"></category><category term="slicehost"></category><category term="ubuntu"></category></entry><entry><title>Backup Your Data Lately?</title><link href="http://tech.agilitynerd.com/backup-your-data-lately-1.html" rel="alternate"></link><updated>2004-08-20T19:00:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2004-08-20:backup-your-data-lately-1.html</id><summary type="html">&lt;p&gt;A few weeks ago I bought a &lt;a class="reference external" href="http://www.ximeta.com/products/network_drives/netdisk/index.php"&gt;Ximeta NetDisk&lt;/a&gt; 120 GB external hard drive
 to back up the data on my home computers. There are a number of vendors
 making hard drives that support USB connections; this model is unique in
 that it also supports direct ethernet connections. Unlike more expensive
