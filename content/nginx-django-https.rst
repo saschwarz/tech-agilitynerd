@@ -9,7 +9,7 @@ NGINX, HTTPS, Let's Encrypt, and Django
 
 My `agilitycourses.com <https://agilitycourses.com>`_ website is served by `nginx <https://nginx.org/en/>`_ proxying to `gunicorn <http://gunicorn.org/>`_ running my `Django <https://www.djangoproject.com/>`_ application. I'll be adding user accounts soon so I wanted to convert the site to be more secure by using HTTPS encryption. Also `Google has announced it will likely prefer sites using HTTPS <https://webmasters.googleblog.com/2014/08/https-as-ranking-signal.html>`_.
 
-The site is running on Ubuntu 14.04 LTS. I won't recount the whole process, I followed some great resources and made a couple adjustments that might be helpful to others.
+The site is running on Ubuntu 14.04 LTS. I won't recount the whole process, I followed some great resources and I'll discuss a couple adjustments that might be helpful to others.
 
 #. I basically followed the instructions in this excellent Digital Ocean tutorial: `How To Secure Nginx with Let's Encrypt on Ubuntu 14.04 <https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-14-04>`_.
 
@@ -119,4 +119,4 @@ So now I have an "A" score from `securityheaders.io`
      CSRF_COOKIE_SECURE = True
 
 Even with a lot of web browsing to learn about these settings the whole process only took a couple hours.
-Now that I've done it once (and updated my Fabric fabfile.py) it will be easier to convert my other domains.
+Now that I've done it once (and updated my `Fabric fabfile.py <http://www.fabfile.org/>`_) it will be easier to convert my other domains.
