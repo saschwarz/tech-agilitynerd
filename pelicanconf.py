@@ -4,7 +4,7 @@
 AUTHOR = u'Steve Schwarz'
 SITENAME = u'tech.agilitynerd'
 SITESUBTITLE = u'scratching that itch'
-SITEURL = 'http://127.0.0.1:8000'
+SITEURL = 'http://127.0.0.1:5500'
 
 TIMEZONE = 'America/Chicago'
 
