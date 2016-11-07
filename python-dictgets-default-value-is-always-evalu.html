@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
     <meta name="description" content="">
     <meta name="author" content="Steve Schwarz">
-    <!-- <link href="http://127.0.0.1:8000/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" /> -->
+    <!-- <link href="http://127.0.0.1:5500/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" /> -->
     <link href="http://feeds.feedburner.com/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" />
     <!-- Le styles -->
     <link href="http://tech.agilitynerd.com/theme/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -91,7 +91,7 @@ calling <tt class="docutils literal">an_expensive_database_function</tt> and cam
 this:</p>
 <pre class="code python literal-block">
 <span class="k">def</span> <span class="nf">doit</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-     <span class="n">value</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'key'</span><span class="p">,</span> <span class="n">an_expensive_database_function</span><span class="p">())</span>
+     <span class="n">value</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'key'</span><span class="p">,</span> <span class="n">an_expensive_database_function</span><span class="p">())</span>
 </pre>
 <p>The original author probably assumed that if 'key' was present in the
 <tt class="docutils literal">kwargs</tt> dictionary <tt class="docutils literal">an_expensive_database_function</tt> wouldn't be called;
@@ -103,16 +103,16 @@ value of <tt class="docutils literal">an_expensive_database_function</tt> was al
 <p>Here is a &quot;look before you leap&quot; solution:</p>
 <pre class="code python literal-block">
 <span class="k">def</span> <span class="nf">doit</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="n">value</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'key'</span><span class="p">)</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'key'</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-         <span class="c"># assuming default value None isn't a valid value</span>
+         <span class="c1"># assuming default value None isn't a valid value</span>
          <span class="n">value</span> <span class="o">=</span> <span class="n">an_expensive_database_function</span><span class="p">()</span><span class="sb">``</span>
 </pre>
 <p>Here is the &quot;easier to ask forgiveness than permission&quot; solution:</p>
 <pre class="code python literal-block">
 <span class="k">def</span> <span class="nf">doit</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s">'key'</span><span class="p">]</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">'key'</span><span class="p">]</span>
     <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
         <span class="n">value</span> <span class="o">=</span> <span class="n">an_expensive_database_function</span><span class="p">()</span><span class="sb">``</span>
 </pre>

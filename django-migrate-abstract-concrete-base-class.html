@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
     <meta name="description" content="">
     <meta name="author" content="Steve Schwarz">
-    <!-- <link href="http://127.0.0.1:8000/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" /> -->
+    <!-- <link href="http://127.0.0.1:5500/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" /> -->
     <link href="http://feeds.feedburner.com/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" />
     <!-- Le styles -->
     <link href="http://tech.agilitynerd.com/theme/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -103,7 +103,7 @@ by <a class="url fn" href="http://tech.agilitynerd.com/author/steve-schwarz.html
 <h2>First Schema Migration</h2>
 <p>Now that the models are prepared I created the first database migration adding a default of <tt class="docutils literal"><span class="pre">-1</span></tt> for the foreign key from the existing child tables to their new concrete parent (which I'll remove manually):</p>
 <pre class="code bash literal-block">
-<span class="nv">$ </span>python ./manage.py makemigrations box --settings<span class="o">=</span>dev_settings
+$ python ./manage.py makemigrations box --settings<span class="o">=</span>dev_settings
 You are trying to add a non-nullable field <span class="s1">'course_ptr'</span> to box without a default<span class="p">;</span> we can<span class="s1">'t do that (the database needs something to populate existing rows).
 Please select a fix:
  1) Provide a one-off default now (will be set on all existing rows)
@@ -114,8 +114,8 @@ The datetime and django.utils.timezone modules are available, so you can do e.g.
 &gt;&gt;&gt; -1
 You are trying to add a non-nullable field '</span>course_ptr<span class="s1">' to doublebox without a default; we can'</span>t <span class="k">do</span> that <span class="o">(</span>the database needs something to populate existing rows<span class="o">)</span>.
 Please <span class="k">select</span> a fix:
- 1<span class="o">)</span> Provide a one-off default now <span class="o">(</span>will be <span class="nb">set </span>on all existing rows<span class="o">)</span>
- 2<span class="o">)</span> Quit, and <span class="nb">let </span>me add a default in models.py
+ 1<span class="o">)</span> Provide a one-off default now <span class="o">(</span>will be <span class="nb">set</span> on all existing rows<span class="o">)</span>
+ 2<span class="o">)</span> Quit, and <span class="nb">let</span> me add a default in models.py
 Select an option: 1
 Please enter the default value now, as valid Python
 The datetime and django.utils.timezone modules are available, so you can <span class="k">do</span> e.g. timezone.now<span class="o">()</span>
@@ -163,18 +163,18 @@ Migrations for '</span>box<span class="err">'</span>:
 </ol>
 <pre class="code python literal-block">
 <span class="n">migrations</span><span class="o">.</span><span class="n">AddField</span><span class="p">(</span>
-    <span class="n">model_name</span><span class="o">=</span><span class="s">'box'</span><span class="p">,</span>
-    <span class="n">name</span><span class="o">=</span><span class="s">'course_ptr'</span><span class="p">,</span>
-    <span class="n">field</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">OneToOneField</span><span class="p">(</span><span class="n">parent_link</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">auto_created</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">serialize</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="s">'box.Course'</span><span class="p">),</span>
+    <span class="n">model_name</span><span class="o">=</span><span class="s1">'box'</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">'course_ptr'</span><span class="p">,</span>
+    <span class="n">field</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">OneToOneField</span><span class="p">(</span><span class="n">parent_link</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">auto_created</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">serialize</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="s1">'box.Course'</span><span class="p">),</span>
     <span class="n">preserve_default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
 <span class="p">),</span>
 </pre>
 <p>to remove the primary_key, default and add null/blank parameters:</p>
 <pre class="code python literal-block">
 <span class="n">migrations</span><span class="o">.</span><span class="n">AddField</span><span class="p">(</span>
-    <span class="n">model_name</span><span class="o">=</span><span class="s">'box'</span><span class="p">,</span>
-    <span class="n">name</span><span class="o">=</span><span class="s">'course_ptr'</span><span class="p">,</span>
-    <span class="n">field</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">OneToOneField</span><span class="p">(</span><span class="n">parent_link</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">auto_created</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">serialize</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="s">'box.Course'</span><span class="p">),</span>
+    <span class="n">model_name</span><span class="o">=</span><span class="s1">'box'</span><span class="p">,</span>
+    <span class="n">name</span><span class="o">=</span><span class="s1">'course_ptr'</span><span class="p">,</span>
+    <span class="n">field</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">OneToOneField</span><span class="p">(</span><span class="n">parent_link</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">auto_created</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">serialize</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">to</span><span class="o">=</span><span class="s1">'box.Course'</span><span class="p">),</span>
     <span class="n">preserve_default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
 <span class="p">),</span>
 </pre>
@@ -183,9 +183,9 @@ Migrations for '</span>box<span class="err">'</span>:
 </ol>
 <p>If you want to see/validate/test the SQL that will be run you can use the <tt class="docutils literal">sqlmigrate</tt> management command (just give it your app name and the number of the migration):</p>
 <pre class="code bash literal-block">
-<span class="nv">$ </span>python ./manage.py sqlmigrate box 0004
+$ python ./manage.py sqlmigrate box 0004
 BEGIN<span class="p">;</span>
-CREATE TABLE <span class="s2">&quot;box_course&quot;</span> <span class="o">(</span><span class="s2">&quot;id&quot;</span> serial NOT NULL PRIMARY KEY, <span class="s2">&quot;sequence&quot;</span> varchar<span class="o">(</span>64<span class="o">)</span> NOT NULL, <span class="s2">&quot;short_url&quot;</span> varchar<span class="o">(</span>64<span class="o">)</span> NOT NULL, <span class="s2">&quot;created&quot;</span> timestamp with <span class="nb">time </span>zone NOT NULL, <span class="s2">&quot;generator&quot;</span> varchar<span class="o">(</span>2<span class="o">)</span> NOT NULL, <span class="s2">&quot;subclass&quot;</span> integer NOT NULL, <span class="s2">&quot;subclassid&quot;</span> integer NOT NULL<span class="o">)</span><span class="p">;</span>
+CREATE TABLE <span class="s2">&quot;box_course&quot;</span> <span class="o">(</span><span class="s2">&quot;id&quot;</span> serial NOT NULL PRIMARY KEY, <span class="s2">&quot;sequence&quot;</span> varchar<span class="o">(</span>64<span class="o">)</span> NOT NULL, <span class="s2">&quot;short_url&quot;</span> varchar<span class="o">(</span>64<span class="o">)</span> NOT NULL, <span class="s2">&quot;created&quot;</span> timestamp with <span class="nb">time</span> zone NOT NULL, <span class="s2">&quot;generator&quot;</span> varchar<span class="o">(</span>2<span class="o">)</span> NOT NULL, <span class="s2">&quot;subclass&quot;</span> integer NOT NULL, <span class="s2">&quot;subclassid&quot;</span> integer NOT NULL<span class="o">)</span><span class="p">;</span>
 CREATE TABLE <span class="s2">&quot;box_course_skills&quot;</span> <span class="o">(</span><span class="s2">&quot;id&quot;</span> serial NOT NULL PRIMARY KEY, <span class="s2">&quot;course_id&quot;</span> integer NOT NULL, <span class="s2">&quot;skill_id&quot;</span> integer NOT NULL, UNIQUE <span class="o">(</span><span class="s2">&quot;course_id&quot;</span>, <span class="s2">&quot;skill_id&quot;</span><span class="o">))</span><span class="p">;</span>
 ALTER TABLE <span class="s2">&quot;box_box&quot;</span> ADD COLUMN <span class="s2">&quot;course_ptr_id&quot;</span> integer NULL UNIQUE<span class="p">;</span>
 ALTER TABLE <span class="s2">&quot;box_box&quot;</span> ALTER COLUMN <span class="s2">&quot;course_ptr_id&quot;</span> DROP DEFAULT<span class="p">;</span>
@@ -205,7 +205,7 @@ COMMIT<span class="p">;</span>
 </pre>
 <p>If you are happy then save and run the migration:</p>
 <pre class="code bash literal-block">
-<span class="nv">$ </span>python ./manage.py python migrate box
+$ python ./manage.py python migrate box
 </pre>
 </div>
 <div class="section" id="data-migration">
@@ -219,22 +219,22 @@ COMMIT<span class="p">;</span>
 </ol>
 <p>Create an empty migration:</p>
 <pre class="code bash literal-block">
-<span class="nv">$ </span>python manage.py makemigrations --empty box
+$ python manage.py makemigrations --empty box
 </pre>
 <p>Then add the migration queries to it (repeat the following for each of the subclasses giving each a different number):</p>
 <pre class="code python literal-block">
 <span class="n">operations</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="c"># insert data from subclass into parent class with subclass 'number' and primary key/id</span>
-    <span class="n">migrations</span><span class="o">.</span><span class="n">RunSQL</span><span class="p">(</span><span class="s">&quot;&quot;&quot;INSERT INTO box_course (sequence, short_url, created, generator, subclass, subclassid)
+    <span class="c1"># insert data from subclass into parent class with subclass 'number' and primary key/id</span>
+    <span class="n">migrations</span><span class="o">.</span><span class="n">RunSQL</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;INSERT INTO box_course (sequence, short_url, created, generator, subclass, subclassid)
                       SELECT sequence, short_url, created, generator, 1, id
                       FROM box_box;&quot;&quot;&quot;</span>
 
     <span class="p">),</span>
-    <span class="c"># update subclass primary key to point to parent class (notice composite key values):</span>
-    <span class="n">migrations</span><span class="o">.</span><span class="n">RunSQL</span><span class="p">(</span><span class="s">&quot;UPDATE box_box box SET course_ptr_id=course.id FROM box_course course WHERE course.subclassid=box.id AND course.subclass=1;&quot;</span>
+    <span class="c1"># update subclass primary key to point to parent class (notice composite key values):</span>
+    <span class="n">migrations</span><span class="o">.</span><span class="n">RunSQL</span><span class="p">(</span><span class="s2">&quot;UPDATE box_box box SET course_ptr_id=course.id FROM box_course course WHERE course.subclassid=box.id AND course.subclass=1;&quot;</span>
     <span class="p">),</span>
-    <span class="c"># insert child's many-to-many foreign key references into it's parent's many-to-many table</span>
-    <span class="n">migrations</span><span class="o">.</span><span class="n">RunSQL</span><span class="p">(</span><span class="s">&quot;&quot;&quot;INSERT INTO box_course_skills (course_id, skill_id)
+    <span class="c1"># insert child's many-to-many foreign key references into it's parent's many-to-many table</span>
+    <span class="n">migrations</span><span class="o">.</span><span class="n">RunSQL</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;INSERT INTO box_course_skills (course_id, skill_id)
                       SELECT box.course_ptr_id, skills.id
                       FROM box_box box JOIN box_box_skills skills
                       ON box.id = skills.box_id&quot;&quot;&quot;</span>
@@ -246,7 +246,7 @@ COMMIT<span class="p">;</span>
 <h2>Final Schema Migration</h2>
 <p>Then it is time to edit the <tt class="docutils literal">models.py</tt> file and remove the temporary members/fields in the parent class: <tt class="docutils literal">subclass</tt> and <tt class="docutils literal">subclassid</tt>. Then create the schema migration which will drop those columns and the migrated columns from the child tables:</p>
 <pre class="code bash literal-block">
-<span class="nv">$ </span>python manage.py makemigrations box
+$ python manage.py makemigrations box
   You are trying to add a non-nullable field <span class="s1">'course_ptr'</span> to doublebox without a default<span class="p">;</span> we can<span class="s1">'t do that (the database needs something to populate existing rows).
   Please select a fix:
    1) Provide a one-off default now (will be set on all existing rows)
@@ -257,8 +257,8 @@ COMMIT<span class="p">;</span>
   &gt;&gt;&gt; -1
   You are trying to add a non-nullable field '</span>course_ptr<span class="s1">' to starbox without a default; we can'</span>t <span class="k">do</span> that <span class="o">(</span>the database needs something to populate existing rows<span class="o">)</span>.
   Please <span class="k">select</span> a fix:
-   1<span class="o">)</span> Provide a one-off default now <span class="o">(</span>will be <span class="nb">set </span>on all existing rows<span class="o">)</span>
-   2<span class="o">)</span> Quit, and <span class="nb">let </span>me add a default in models.py
+   1<span class="o">)</span> Provide a one-off default now <span class="o">(</span>will be <span class="nb">set</span> on all existing rows<span class="o">)</span>
+   2<span class="o">)</span> Quit, and <span class="nb">let</span> me add a default in models.py
   Select an option: 1
   Please enter the default value now, as valid Python
   The datetime and django.utils.timezone modules are available, so you can <span class="k">do</span> e.g. timezone.now<span class="o">()</span>
@@ -301,7 +301,7 @@ COMMIT<span class="p">;</span>
 <p>You see management command detects that the child fields still haven't been deleted and that the default value for inserts of the children's parent reference still doesn't exist. Lastly the migration converts the <tt class="docutils literal">OneToOne</tt> field back to a primary key.</p>
 <p>Then migrate a final time:</p>
 <pre class="code bash literal-block">
-<span class="nv">$ </span>python ./manage.py migrate box
+$ python ./manage.py migrate box
 </pre>
 </div>
 <div class="section" id="wrap-up">

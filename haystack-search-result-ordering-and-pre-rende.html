@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
     <meta name="description" content="">
     <meta name="author" content="Steve Schwarz">
-    <!-- <link href="http://127.0.0.1:8000/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" /> -->
+    <!-- <link href="http://127.0.0.1:5500/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" /> -->
     <link href="http://feeds.feedburner.com/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" />
     <!-- Le styles -->
     <link href="http://tech.agilitynerd.com/theme/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -115,7 +115,7 @@ Here is my magazine Article search index:</p>
 
 <span class="k">class</span> <span class="nc">ArticleIndex</span><span class="p">(</span><span class="n">indexes</span><span class="o">.</span><span class="n">SearchIndex</span><span class="p">):</span>
     <span class="n">text</span> <span class="o">=</span> <span class="n">indexes</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">document</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">use_template</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-    <span class="n">pub_date</span> <span class="o">=</span> <span class="n">indexes</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">model_attr</span><span class="o">=</span><span class="s">'issue__pub_date'</span><span class="p">)</span>
+    <span class="n">pub_date</span> <span class="o">=</span> <span class="n">indexes</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">model_attr</span><span class="o">=</span><span class="s1">'issue__pub_date'</span><span class="p">)</span>
 
 <span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Article</span><span class="p">,</span> <span class="n">ArticleIndex</span><span class="p">)</span><span class="sb">``</span>
 </pre>
@@ -135,15 +135,15 @@ attribute:</p>
 <span class="kn">from</span> <span class="nn">haystack.views</span> <span class="kn">import</span> <span class="n">SearchView</span>
 <span class="kn">from</span> <span class="nn">haystack.query</span> <span class="kn">import</span> <span class="n">SearchQuerySet</span>
 
-<span class="c"># query results with most recent publication date first</span>
-<span class="n">sqs</span> <span class="o">=</span> <span class="n">SearchQuerySet</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">'-pub_date'</span><span class="p">)</span>
-<span class="n">urlpatterns</span> <span class="o">=</span> <span class="n">patterns</span><span class="p">(</span><span class="s">''</span><span class="p">,</span>
-                       <span class="n">url</span><span class="p">(</span><span class="s">r'^search/'</span><span class="p">,</span>
+<span class="c1"># query results with most recent publication date first</span>
+<span class="n">sqs</span> <span class="o">=</span> <span class="n">SearchQuerySet</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">'-pub_date'</span><span class="p">)</span>
+<span class="n">urlpatterns</span> <span class="o">=</span> <span class="n">patterns</span><span class="p">(</span><span class="s1">''</span><span class="p">,</span>
+                       <span class="n">url</span><span class="p">(</span><span class="s1">r'^search/'</span><span class="p">,</span>
                            <span class="n">SearchView</span><span class="p">(</span>
                                <span class="n">load_all</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
                                <span class="n">searchqueryset</span><span class="o">=</span><span class="n">sqs</span><span class="p">,</span>
                                <span class="p">),</span>
-                           <span class="n">name</span><span class="o">=</span><span class="s">'haystack_search'</span><span class="p">,</span>
+                           <span class="n">name</span><span class="o">=</span><span class="s1">'haystack_search'</span><span class="p">,</span>
                            <span class="p">),</span><span class="o">&lt;</span><span class="n">snip</span><span class="o">&gt;</span><span class="sb">``</span>
 </pre>
 <p>Pre-Rendering Result HTML</p>
@@ -160,10 +160,10 @@ simple. In the ArticleIndex:</p>
 
 <span class="k">class</span> <span class="nc">ArticleIndex</span><span class="p">(</span><span class="n">indexes</span><span class="o">.</span><span class="n">SearchIndex</span><span class="p">):</span>
     <span class="n">text</span> <span class="o">=</span> <span class="n">indexes</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">document</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">use_template</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-    <span class="n">pub_date</span> <span class="o">=</span> <span class="n">indexes</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">model_attr</span><span class="o">=</span><span class="s">'issue__pub_date'</span><span class="p">)</span>
-    <span class="c"># pregenerate the search result HTML for an Article</span>
-    <span class="c"># this avoids any database hits when results are processed</span>
-    <span class="c"># at the cost of storing all the data in the Haystack index</span>
+    <span class="n">pub_date</span> <span class="o">=</span> <span class="n">indexes</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">model_attr</span><span class="o">=</span><span class="s1">'issue__pub_date'</span><span class="p">)</span>
+    <span class="c1"># pregenerate the search result HTML for an Article</span>
+    <span class="c1"># this avoids any database hits when results are processed</span>
+    <span class="c1"># at the cost of storing all the data in the Haystack index</span>
     <span class="n">result_text</span> <span class="o">=</span> <span class="n">indexes</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">indexed</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">use_template</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Article</span><span class="p">,</span> <span class="n">ArticleIndex</span><span class="p">)</span><span class="sb">``</span>
 </pre>
 <p>The use_template keyword requires you to create a Django template file

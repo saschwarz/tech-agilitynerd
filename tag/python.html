@@ -9,10 +9,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
     <meta name="description" content="">
     <meta name="author" content="Steve Schwarz">
-    <!-- <link href="http://127.0.0.1:8000/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" /> -->
+    <!-- <link href="http://127.0.0.1:5500/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" /> -->
     <link href="http://feeds.feedburner.com/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" />
 
-    <link href="http://127.0.0.1:8000/feeds/tag.python.atom.xml" type="application/atom+xml" rel="alternate" title="tech.agilitynerd python tag Atom Feed" />
+    <link href="http://127.0.0.1:5500/feeds/tag.python.atom.xml" type="application/atom+xml" rel="alternate" title="tech.agilitynerd python tag Atom Feed" />
     <!-- Le styles -->
     <link href="http://tech.agilitynerd.com/theme/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
@@ -81,6 +81,14 @@
 	      </div>
 
 <div class='article'>
+  <h2><a href="http://tech.agilitynerd.com/livereload-with-pelican.html">LiveReload with Pelican</a></h2>
+  <div class="well small"><a class="more" href="http://tech.agilitynerd.com/livereload-with-pelican.html">On 06 Nov 2016 at 0000</a>
+by <a class="url fn" href="http://tech.agilitynerd.com/author/steve-schwarz.html">Steve Schwarz</a> in <a href="http://tech.agilitynerd.com/category/webdev.html">webdev</a>
+ | <a href="http://tech.agilitynerd.com/livereload-with-pelican.html#disqus_thread">Comments</a></div>
+  <div class="summary"><p>I was looking to use <a class="reference external" href="http://livereload.com/">LiveReload</a> while developing using  <a class="reference external" href="http://getpelican.com">Pelican</a> and I came across this <a class="reference external" href="https://merlijn.vandeen.nl/2015/pelican-livereload.html">nice simple solution</a> by <a class="reference external" href="https://merlijn.vandeen.nl/">Merlijn van Deen</a>.</p>
+<p>In my use case I also wanted to watch the <tt class="docutils literal">pelicanconf.py</tt> file and <tt class="docutils literal">themes</tt> directory for changes and then regenerate the output and reload the browser. Lastly ...</p></div>
+<div class="tags">Tagged as: <a href="http://tech.agilitynerd.com/tag/python.html">python</a> <a href="http://tech.agilitynerd.com/tag/webdev.html">webdev</a> <a href="http://tech.agilitynerd.com/tag/pelican.html">pelican</a> </div></div>
+<div class='article'>
   <h2><a href="http://tech.agilitynerd.com/upgrading-pelican-migrating-gh-pages.html">Upgrading Pelican and Migrating to GitHub Pages</a></h2>
   <div class="well small"><a class="more" href="http://tech.agilitynerd.com/upgrading-pelican-migrating-gh-pages.html">On 29 Nov 2015 at 1500</a>
 by <a class="url fn" href="http://tech.agilitynerd.com/author/steve-schwarz.html">Steve Schwarz</a> in <a href="http://tech.agilitynerd.com/category/devops.html">devops</a>
@@ -142,7 +150,7 @@ calling <tt class="docutils literal">an_expensive_database_function</tt> and cam
 this:</p>
 <pre class="code python literal-block">
 <span class="k">def</span> <span class="nf">doit</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-     <span class="n">value</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'key'</span><span class="p">,</span> <span class="n">an_expensive_database_function</span><span class="p">())</span>
+     <span class="n">value</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'key'</span><span class="p">,</span> <span class="n">an_expensive_database_function</span><span class="p">())</span>
 </pre>
 <p>The original author probably assumed that ...</p></div>
 <div class="tags">Tagged as: <a href="http://tech.agilitynerd.com/tag/python.html">python</a> </div></div>
@@ -168,16 +176,6 @@ packages in the system installation. My application uses <a class="reference ext
 it is installed by default as a system package. Consequently I had to
 link the shared libraries it installs (w ...</p></div>
 <div class="tags">Tagged as: <a href="http://tech.agilitynerd.com/tag/python.html">python</a> <a href="http://tech.agilitynerd.com/tag/rsvg.html">rsvg</a> <a href="http://tech.agilitynerd.com/tag/virtualenv.html">virtualenv</a> </div></div>
-<div class='article'>
-  <h2><a href="http://tech.agilitynerd.com/confidently-refactoring-django-urls-views-and.html">Confidently Refactoring Django URLs, Views, and Templates</a></h2>
-  <div class="well small"><a class="more" href="http://tech.agilitynerd.com/confidently-refactoring-django-urls-views-and.html">On 22 Aug 2010 at 0512</a>
-by <a class="url fn" href="http://tech.agilitynerd.com/author/steve-schwarz.html">Steve Schwarz</a> in <a href="http://tech.agilitynerd.com/category/webdev.html">webdev</a>
- | <a href="http://tech.agilitynerd.com/confidently-refactoring-django-urls-views-and.html#disqus_thread">Comments</a></div>
-  <div class="summary"><p><a class="reference external" href="http://googility.com/">Googility.com</a>is my first Django website and under the covers the
-oldest code looked like it. I had originally written it with the sole
-intent of allowing people to enter dog agility businesses and websites
-into a database that I could use to create a Dog Agility <a class="reference external" href="http://www.google.com/cse/">Google Custom ...</a></p></div>
-<div class="tags">Tagged as: <a href="http://tech.agilitynerd.com/tag/django.html">django</a> <a href="http://tech.agilitynerd.com/tag/googility.html">googility</a> <a href="http://tech.agilitynerd.com/tag/python.html">python</a> <a href="http://tech.agilitynerd.com/tag/tdd.html">tdd</a> <a href="http://tech.agilitynerd.com/tag/testing.html">testing</a> </div></div>
 
 <div class="pagination">
 <ul>
