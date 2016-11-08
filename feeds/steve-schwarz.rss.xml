@@ -1,5 +1,194 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0"><channel><title>tech.agilitynerd</title><link>http://tech.agilitynerd.com/</link><description>scratching that itch</description><lastBuildDate>Sun, 06 Nov 2016 00:00:00 -0500</lastBuildDate><item><title>LiveReload with Pelican</title><link>http://tech.agilitynerd.com/livereload-with-pelican.html</link><description>&lt;p&gt;I was looking to use &lt;a class="reference external" href="http://livereload.com/"&gt;LiveReload&lt;/a&gt; while developing using  &lt;a class="reference external" href="http://getpelican.com"&gt;Pelican&lt;/a&gt; and I came across this &lt;a class="reference external" href="https://merlijn.vandeen.nl/2015/pelican-livereload.html"&gt;nice simple solution&lt;/a&gt; by &lt;a class="reference external" href="https://merlijn.vandeen.nl/"&gt;Merlijn van Deen&lt;/a&gt;.&lt;/p&gt;
+<rss version="2.0"><channel><title>tech.agilitynerd</title><link>http://tech.agilitynerd.com/</link><description>scratching that itch</description><lastBuildDate>Tue, 08 Nov 2016 13:00:00 -0600</lastBuildDate><item><title>Pelican For Fast Site/Project Development</title><link>http://tech.agilitynerd.com/pelican-for-fast-siteproject-development.html</link><description>&lt;p&gt;I was working on a simple single page website for &lt;a class="reference external" href="http://www.agilitynerd.com/jumpheights/"&gt;calculating dog agility jump heights&lt;/a&gt; and was really missing the tool chain I normally use in Flask and Django web sites for bundling, compressing, and versioning CSS and JS files and a mechanism for putting the bundled/versioned file names in the HTML files. I was searching for what I needed and was about to write a little script to do it and then it occurred to me that &lt;a class="reference external" href="http://getpelican.com"&gt;Pelican&lt;/a&gt; already has just what I needed!&lt;/p&gt;
+&lt;p&gt;Pelican is known for making static generation of blogs easy. But it also has a lot of powerful features that can be easily leveraged to create small web sites and web sites for projects:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="https://webassets.readthedocs.io/en/latest/"&gt;webassets&lt;/a&gt; integration to SASS/LESS, minify, bundle, and version CSS and JavaScript. It automatically inserts versioned bundled names in the HTML.&lt;/li&gt;
+&lt;li&gt;Dozens of &lt;a class="reference external" href="https://github.com/getpelican/pelican-themes"&gt;themes&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Themes are implemented using &lt;a class="reference external" href="http://jinja.pocoo.org/"&gt;Jinja2 templates&lt;/a&gt; and allow sharing page layouts across your project's pages. You can also have custom templates per page.&lt;/li&gt;
+&lt;li&gt;Theme templates already contain useful integrations which can be used in you templates:&lt;ul&gt;
+&lt;li&gt;Navigation&lt;/li&gt;
+&lt;li&gt;Analytics&lt;/li&gt;
+&lt;li&gt;Disqus&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Dozens of &lt;a class="reference external" href="https://github.com/getpelican/pelican-plugins"&gt;Pelican plugins&lt;/a&gt; can be installed to add new features.&lt;/li&gt;
+&lt;li&gt;During development regeneration of files is automatic when you save files.&lt;/li&gt;
+&lt;li&gt;Many deployment options are also available:&lt;ul&gt;
+&lt;li&gt;GitHub pages&lt;/li&gt;
+&lt;li&gt;FTP/SSH to your own server&lt;/li&gt;
+&lt;li&gt;Dropbox&lt;/li&gt;
+&lt;li&gt;S3&lt;/li&gt;
+&lt;li&gt;Rackspace Cloud Files&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="section" id="overview"&gt;
+&lt;h2&gt;Overview&lt;/h2&gt;
+&lt;p&gt;I've written a lot of detail on every step but it is actually very easy use Pelican for non-blog web sites. Here's how it works:&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;Create a virtualenv and install Pelican and webassets Python packages (I use the same venv for all my Pelican projects).&lt;/li&gt;
+&lt;li&gt;Checkout pelican-plugins.&lt;/li&gt;
+&lt;li&gt;Edit the Pelican theme's &lt;tt class="docutils literal"&gt;base.html&lt;/tt&gt; Jinja template to include the CSS and JavaScript files you need.&lt;/li&gt;
+&lt;li&gt;Create your pages' body content in files in &lt;tt class="docutils literal"&gt;content/pages&lt;/tt&gt; in HTML, Markdown or reStructuredText.&lt;/li&gt;
+&lt;li&gt;Run &lt;tt class="docutils literal"&gt;make devserver&lt;/tt&gt; and refresh your browser to see your changes or use this &lt;a class="reference external" href="http://tech.agilitynerd.com/livereload-with-pelican.html"&gt;LiveReload script&lt;/a&gt; to automatically reload your browser.&lt;/li&gt;
+&lt;li&gt;Repeat steps 3 and 4 until you are done.&lt;/li&gt;
+&lt;li&gt;Deploy to GitHub Pages: &lt;tt class="docutils literal"&gt;make github&lt;/tt&gt;. Or deploy to your own server.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;div class="section" id="setup-the-environment"&gt;
+&lt;h2&gt;Setup the Environment&lt;/h2&gt;
+&lt;p&gt;Install and configure Pelican for creating non-blog web sites:&lt;/p&gt;
+&lt;ol class="arabic"&gt;
+&lt;li&gt;&lt;p class="first"&gt;Create a virtualenv and install pelican, webassets, cssmin, and jsmin (or any other &lt;a class="reference external" href="http://webassets.readthedocs.io/en/latest/builtin_filters.html"&gt;CSS/JS filters supported by webassets&lt;/a&gt;):&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+virtualenv ~/virtualenvs/pelican
+source ~/virtualenvs/pelican/bin/activate
+pip install pelican webassets cssmin jsmin
+&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;Check out the pelican plugins repository outside of your project (plugins are only used during the build process):&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+git checkout https://github.com/getpelican/pelican-plugins.git
+&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;Create your project directory, run &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;pelican-quickstart&lt;/span&gt;&lt;/tt&gt; and answer the questions just like for a blog site:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+mkdir myproject &amp;amp;&amp;amp; cd $_
+pelican-quickstart
+
+Welcome to pelican-quickstart v3.6.3.
+
+This script will help you create a new Pelican-based website.
+
+Please answer the following questions so this script can generate the files
+needed by Pelican.
+
+&amp;gt; Where do you want to create your new web site? [.]
+&amp;gt; What will be the title of this web site? Dog Agility Jump Height Calculator
+&amp;gt; Who will be the author of this web site? Steve Schwarz
+&amp;gt; What will be the default language of this web site? [en]
+&amp;gt; Do you want to specify a URL prefix? e.g., http://example.com   (Y/n) y
+&amp;gt; /agility-jump-heights           &amp;lt;-- enter the name of your GitHub repository
+&amp;gt; Do you want to enable article pagination? (Y/n) n
+&amp;gt; What is your time zone? [Europe/Paris] America/Chicago
+&amp;gt; Do you want to generate a Fabfile/Makefile to automate generation and publishing? (Y/n) y
+&amp;gt; Do you want an auto-reload &amp;amp; simpleHTTP script to assist with theme and site development? (Y/n) y
+&amp;gt; Do you want to upload your website using FTP? (y/N) n
+&amp;gt; Do you want to upload your website using SSH? (y/N) n
+&amp;gt; Do you want to upload your website using Dropbox? (y/N) n
+&amp;gt; Do you want to upload your website using S3? (y/N) n
+&amp;gt; Do you want to upload your website using Rackspace Cloud Files? (y/N) n
+&amp;gt; Do you want to upload your website using GitHub Pages? (y/N) y
+&amp;gt; Is this your personal page (username.github.io)? (y/N) n
+Done. Your new project is available at /home/dev/agility-jump-heights
+&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;Paste the following at the end of your &lt;tt class="docutils literal"&gt;pelican.conf&lt;/tt&gt;:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+STATIC_PATHS = ['images']  # put page specific assets here
+PLUGIN_PATHS = ['../pelican-plugins']  # set this to the location of your plugins checkout
+PLUGINS = ['assets']
+THEME = './theme'          # All CSS/JS files go in directories under here
+# I only want to generate Pages so I disable all &amp;quot;blog-like&amp;quot; pages see Note in:
+# http://docs.getpelican.com/en/stable/settings.html?highlight=url_for#url-settings
+TAGS_SAVE_AS = ''          # Don't generate Tags pages
+TAG_SAVE_AS = ''
+CATEGORY_SAVE_AS = ''      # Don't generate Category pages
+AUTHOR_SAVE_AS = ''        # Don't generate Author pages
+DIRECT_TEMPLATES = ['index']  # Don't generate tag, category, or author output for some themes
+# In the generated output directory move files to the root and adjust their URLs to match:
+PAGE_URL = '{slug}.html'
+PAGE_SAVE_AS = '{slug}.html'
+INDEX_SAVE_AS = &amp;quot;/ignore/index.html&amp;quot;  # don't create normal index.html which lists all articles and pages
+&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;Copy any theme from &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;pelican-themes&lt;/span&gt;&lt;/tt&gt; into &lt;tt class="docutils literal"&gt;.theme&lt;/tt&gt; or I just copy the &lt;tt class="docutils literal"&gt;notmyidea&lt;/tt&gt; theme installed with Pelican from the virtualenv:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+cp -pR $VIRTUAL_ENV/lib/python*/site-packages/pelican/themes/notmyidea/ theme
+&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;Have Git ignore the output directory:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+echo &amp;quot;/output&amp;quot; &amp;gt;&amp;gt; .gitignore
+&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;div class="section" id="create-your-project-web-site"&gt;
+&lt;h2&gt;Create Your Project Web Site&lt;/h2&gt;
+&lt;div class="section" id="setup-templates"&gt;
+&lt;h3&gt;Setup Templates&lt;/h3&gt;
+&lt;p&gt;Edit &lt;tt class="docutils literal"&gt;./templates/base.html&lt;/tt&gt; and delete/add any sections, stylesheets and javascript you like. Your pages only need to define content that goes in the &lt;cite&gt;content&lt;/cite&gt; block of the Jinja templates. Of course you can define your own templates and use the full power of Jinja templating &lt;a class="reference external" href="http://docs.getpelican.com/en/stable/settings.html?highlight=url_for#template-pages"&gt;even for individual pages&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;For small projects it is easiest to serve the same JS/CSS on all pages so I put them in the &lt;tt class="docutils literal"&gt;base.html&lt;/tt&gt; file. Using Jinja template inheritance you can also create and serve separate bundles for individual pages.&lt;/p&gt;
+&lt;p&gt;I use &lt;tt class="docutils literal"&gt;webassets&lt;/tt&gt; right in the template to define how to combine JS/CSS files into bundles, minify and version them. For CSS files in the &lt;tt class="docutils literal"&gt;head&lt;/tt&gt; of my &lt;tt class="docutils literal"&gt;base.html&lt;/tt&gt;:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+ {% assets filters=&amp;quot;cssmin&amp;quot;, output=&amp;quot;css/style.%(version)s.min.css&amp;quot;, &amp;quot;css/normalize.css&amp;quot;, &amp;quot;css/skeleton.css&amp;quot;, &amp;quot;css/style.css&amp;quot; %}
+&amp;lt;link rel=&amp;quot;stylesheet&amp;quot; href=&amp;quot;{{ SITEURL }}/{{ ASSET_URL }}&amp;quot;&amp;gt;
+ {% endassets %}
+&lt;/pre&gt;
+&lt;p&gt;For JavaScript the bundled, versioned, compressed &lt;tt class="docutils literal"&gt;script&lt;/tt&gt; tag(s) is defined similarly just before the end of the HTML &lt;tt class="docutils literal"&gt;body&lt;/tt&gt; tag:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+{% assets filters=&amp;quot;jsmin&amp;quot;, output=&amp;quot;js/main.%(version)s.min.js&amp;quot;, &amp;quot;js/main.js&amp;quot; %}
+&amp;lt;script src=&amp;quot;{{ SITEURL }}/{{ ASSET_URL }}&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+{% endassets %}
+&lt;/pre&gt;
+&lt;p&gt;For more options &lt;a class="reference external" href="https://github.com/getpelican/pelican-plugins/blob/master/assets/Readme.rst"&gt;see the webassets README&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Edit &lt;tt class="docutils literal"&gt;theme/templates/page.html&lt;/tt&gt; to suite your needs. I just put in a wrapper &lt;tt class="docutils literal"&gt;div&lt;/tt&gt; around the content:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+{% extends &amp;quot;base.html&amp;quot; %}
+{% block title %}{{ page.title }}{% endblock %}
+
+{% block content %}
+&amp;lt;div class=&amp;quot;container&amp;quot;&amp;gt;
+{{ page.content }}
+&amp;lt;/div&amp;gt;
+{% endblock %}
+&lt;/pre&gt;
+&lt;p&gt;You can also delete any CSS, JS, images, and unused Jinja templates from your copied theme.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="write-the-pages"&gt;
+&lt;h3&gt;Write the Pages&lt;/h3&gt;
+&lt;p&gt;Create the &lt;tt class="docutils literal"&gt;pages&lt;/tt&gt; directory:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+mkdir content/pages
+&lt;/pre&gt;
+&lt;p&gt;Lastly put each page's body content in a file in the &lt;tt class="docutils literal"&gt;content/pages&lt;/tt&gt; directory. I like to write the body content in HTML. You put the Pelican metadata in &lt;tt class="docutils literal"&gt;meta&lt;/tt&gt; elements in the &lt;tt class="docutils literal"&gt;head&lt;/tt&gt; element as &lt;a class="reference external" href="http://docs.getpelican.com/en/stable/content.html#file-metadata"&gt;shown the Pelican docs&lt;/a&gt;. Here's &lt;tt class="docutils literal"&gt;index.html&lt;/tt&gt; and I recommend specifying the &lt;tt class="docutils literal"&gt;title&lt;/tt&gt; and &lt;tt class="docutils literal"&gt;save_as&lt;/tt&gt;:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+&amp;lt;html&amp;gt;
+    &amp;lt;head&amp;gt;
+        &amp;lt;!-- By default used to create the URL slug --&amp;gt;
+        &amp;lt;title&amp;gt;Dog Agility Jump Height Calculator&amp;lt;/title&amp;gt;
+        &amp;lt;!-- Override the default URL made up of the slug; needed for the index.html --&amp;gt;
+        &amp;lt;meta name=&amp;quot;save_as&amp;quot; content=&amp;quot;index.html&amp;quot;/&amp;gt;
+        &amp;lt;!-- any other metadata attributes as meta tags; none normally needed --&amp;gt;
+    &amp;lt;/head&amp;gt;
+    &amp;lt;body&amp;gt;
+        &amp;lt;!-- all  markup goes here. e.g. --&amp;gt;
+        &amp;lt;h1&amp;gt;Hello World!&amp;lt;/h1&amp;gt;
+    &amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/pre&gt;
+&lt;p&gt;You can use any input syntax supported by Pelican e.g. ReStructuredText, Markdown, or even write a Reader class for your own custom input file format.&lt;/p&gt;
+&lt;p&gt;Start up the Pelican development server to watch for file changes and regenerate changed files:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+make devserver
+&lt;/pre&gt;
+&lt;p&gt;Point your browser to &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;http://localhost:8000/&lt;/span&gt;&lt;/tt&gt;.&lt;/p&gt;
+&lt;p&gt;I recommend using this &lt;a class="reference external" href="http://tech.agilitynerd.com/livereload-with-pelican.html"&gt;LiveReload script&lt;/a&gt; as it also watches for changes to the &lt;tt class="docutils literal"&gt;themes&lt;/tt&gt; directory and automatically reloads your browser on &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;http://localhost:5500&lt;/span&gt;&lt;/tt&gt;.&lt;/p&gt;
+&lt;p&gt;Once you are setup just edit your templates, JS, and CSS under the &lt;tt class="docutils literal"&gt;theme&lt;/tt&gt; directory and add/edit pages in your &lt;tt class="docutils literal"&gt;content/pages&lt;/tt&gt; directory.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="deploy"&gt;
+&lt;h3&gt;Deploy&lt;/h3&gt;
+&lt;p&gt;I like to deploy small projects to GitHub Pages and it's this easy:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+make github
+&lt;/pre&gt;
+&lt;p&gt;Then on GitHub enable GitHub Pages in your project's settings.&lt;/p&gt;
+&lt;p&gt;To see this whole setup in action take a look at this &lt;a class="reference external" href="https://github.com/saschwarz/agility-jump-heights"&gt;single page calculator application with one JS and HTML file&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The next step to make this even easier would be to use &lt;a class="reference external" href="https://github.com/audreyr/cookiecutter"&gt;Cookiecutter&lt;/a&gt; to make setting this up via one command.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Steve Schwarz</dc:creator><pubDate>Tue, 08 Nov 2016 13:00:00 -0600</pubDate><guid isPermaLink="false">tag:tech.agilitynerd.com,2016-11-08:pelican-for-fast-siteproject-development.html</guid><category>python</category><category>webdev</category><category>webops</category><category>pelican</category><category>CSS</category><category>JavaScript</category></item><item><title>LiveReload with Pelican</title><link>http://tech.agilitynerd.com/livereload-with-pelican.html</link><description>&lt;p&gt;I was looking to use &lt;a class="reference external" href="http://livereload.com/"&gt;LiveReload&lt;/a&gt; while developing using  &lt;a class="reference external" href="http://getpelican.com"&gt;Pelican&lt;/a&gt; and I came across this &lt;a class="reference external" href="https://merlijn.vandeen.nl/2015/pelican-livereload.html"&gt;nice simple solution&lt;/a&gt; by &lt;a class="reference external" href="https://merlijn.vandeen.nl/"&gt;Merlijn van Deen&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;In my use case I also wanted to watch the &lt;tt class="docutils literal"&gt;pelicanconf.py&lt;/tt&gt; file and &lt;tt class="docutils literal"&gt;themes&lt;/tt&gt; directory for changes and then regenerate the output and reload the browser. Lastly I wanted to use the host/port defined in my &lt;tt class="docutils literal"&gt;pelicanconf.py&lt;/tt&gt;. So I made some small edits to his script named &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;pelican-livereload.py&lt;/span&gt;&lt;/tt&gt;:&lt;/p&gt;
 &lt;script src="https://gist.github.com/saschwarz/8eff30f5ea5d468f0b86bd0bb149a186.js"&gt;&lt;/script&gt;&lt;p&gt;Just copy it into your Pelican top level directory and execute it:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;

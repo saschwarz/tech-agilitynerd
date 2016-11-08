@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <title>tech.agilitynerd</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Steve Schwarz">
+    <!-- <link href="http://127.0.0.1:5500/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" /> -->
+    <link href="http://feeds.feedburner.com/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" />
+    <!-- Le styles -->
+    <link href="http://tech.agilitynerd.com/theme/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+      padding-top: 60px;
+      padding-bottom: 40px;
+      }
+      .sidebar-nav {
+      padding: 9px 0;
+      }
+    </style>
+    <link href="http://tech.agilitynerd.com/theme/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="http://tech.agilitynerd.com/theme/local.css" rel="stylesheet">
+    <link href="http://tech.agilitynerd.com/theme/pygments.css" rel="stylesheet">
+<script>var _gaq=[['_setAccount','UA-1127677-3'],['_trackPageview']];(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.src='//www.google-analytics.com/ga.js';s.parentNode.insertBefore(g,s)}(document,'script'))</script>
+<script type="text/javascript">
+  var disqus_shortname = "techagilitynerd"; // required: replace example with your forum shortname
+  var disqus_developer = 1;
+  
+  var disqus_identifier = "pelican-for-fast-siteproject-development.html";
+  (function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+
+  (function () {
+  var s = document.createElement('script'); s.async = true;
+  s.type = 'text/javascript';
+  s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+  (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+  }());
+</script>
+  </head>
+  <body>
+<!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+    
+<div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container-fluid">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+      </a>
+      <a class="brand" href="http://tech.agilitynerd.com/index.html">tech.agilitynerd</a>
+      <div class="nav-collapse collapse">
+	<ul class="nav">
+	  <li ><a href="http://tech.agilitynerd.com/category/devops.html">devops</a></li>
+	  <li ><a href="http://tech.agilitynerd.com/category/javascript.html">javascript</a></li>
+	  <li ><a href="http://tech.agilitynerd.com/category/misc.html">misc</a></li>
+	  <li ><a href="http://tech.agilitynerd.com/category/programming.html">programming</a></li>
+	  <li ><a href="http://tech.agilitynerd.com/category/python.html">python</a></li>
+	  <li class="active"><a href="http://tech.agilitynerd.com/category/webdev.html">webdev</a></li>
+	</ul>
+	<p class="navbar-text pull-right">
+	  <a class="navbar-link" href="http://tech.agilitynerd.com/archives.html">[archives]</a>
+	  <a class="navbar-link" href="http://tech.agilitynerd.com/tags.html">[tags]</a>
+	</p>
+      </div><!--/.nav-collapse -->
+    </div>
+  </div>
+</div>
+    <div class="container-fluid">
+      <div class="row-fluid">
+	<div class="span1">&nbsp;</div>
+	<div class="span10">
+	  <div class="row-fluid">
+            <div class="span9">
+<div class='article'>
+  <div class="page-header"><h1>Pelican For Fast Site/Project Development</h1></div>
+  <div class="well small"><a class="more" href="http://tech.agilitynerd.com/pelican-for-fast-siteproject-development.html">On 08 Nov 2016 at 1300</a>
+by <a class="url fn" href="http://tech.agilitynerd.com/author/steve-schwarz.html">Steve Schwarz</a> in <a href="http://tech.agilitynerd.com/category/webdev.html">webdev</a>
+ | <a href="http://tech.agilitynerd.com/pelican-for-fast-siteproject-development.html#disqus_thread">Comments</a></div>
+  <div><p>I was working on a simple single page website for <a class="reference external" href="http://www.agilitynerd.com/jumpheights/">calculating dog agility jump heights</a> and was really missing the tool chain I normally use in Flask and Django web sites for bundling, compressing, and versioning CSS and JS files and a mechanism for putting the bundled/versioned file names in the HTML files. I was searching for what I needed and was about to write a little script to do it and then it occurred to me that <a class="reference external" href="http://getpelican.com">Pelican</a> already has just what I needed!</p>
+<p>Pelican is known for making static generation of blogs easy. But it also has a lot of powerful features that can be easily leveraged to create small web sites and web sites for projects:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://webassets.readthedocs.io/en/latest/">webassets</a> integration to SASS/LESS, minify, bundle, and version CSS and JavaScript. It automatically inserts versioned bundled names in the HTML.</li>
+<li>Dozens of <a class="reference external" href="https://github.com/getpelican/pelican-themes">themes</a>.</li>
+<li>Themes are implemented using <a class="reference external" href="http://jinja.pocoo.org/">Jinja2 templates</a> and allow sharing page layouts across your project's pages. You can also have custom templates per page.</li>
+<li>Theme templates already contain useful integrations which can be used in you templates:<ul>
+<li>Navigation</li>
+<li>Analytics</li>
+<li>Disqus</li>
+</ul>
+</li>
+<li>Dozens of <a class="reference external" href="https://github.com/getpelican/pelican-plugins">Pelican plugins</a> can be installed to add new features.</li>
+<li>During development regeneration of files is automatic when you save files.</li>
+<li>Many deployment options are also available:<ul>
+<li>GitHub pages</li>
+<li>FTP/SSH to your own server</li>
+<li>Dropbox</li>
+<li>S3</li>
+<li>Rackspace Cloud Files</li>
+</ul>
+</li>
+</ul>
+<div class="section" id="overview">
+<h2>Overview</h2>
+<p>I've written a lot of detail on every step but it is actually very easy use Pelican for non-blog web sites. Here's how it works:</p>
+<ol class="arabic simple">
+<li>Create a virtualenv and install Pelican and webassets Python packages (I use the same venv for all my Pelican projects).</li>
+<li>Checkout pelican-plugins.</li>
+<li>Edit the Pelican theme's <tt class="docutils literal">base.html</tt> Jinja template to include the CSS and JavaScript files you need.</li>
+<li>Create your pages' body content in files in <tt class="docutils literal">content/pages</tt> in HTML, Markdown or reStructuredText.</li>
+<li>Run <tt class="docutils literal">make devserver</tt> and refresh your browser to see your changes or use this <a class="reference external" href="http://tech.agilitynerd.com/livereload-with-pelican.html">LiveReload script</a> to automatically reload your browser.</li>
+<li>Repeat steps 3 and 4 until you are done.</li>
+<li>Deploy to GitHub Pages: <tt class="docutils literal">make github</tt>. Or deploy to your own server.</li>
+</ol>
+</div>
+<div class="section" id="setup-the-environment">
+<h2>Setup the Environment</h2>
+<p>Install and configure Pelican for creating non-blog web sites:</p>
+<ol class="arabic">
+<li><p class="first">Create a virtualenv and install pelican, webassets, cssmin, and jsmin (or any other <a class="reference external" href="http://webassets.readthedocs.io/en/latest/builtin_filters.html">CSS/JS filters supported by webassets</a>):</p>
+<pre class="literal-block">
+virtualenv ~/virtualenvs/pelican
+source ~/virtualenvs/pelican/bin/activate
+pip install pelican webassets cssmin jsmin
+</pre>
+</li>
+<li><p class="first">Check out the pelican plugins repository outside of your project (plugins are only used during the build process):</p>
+<pre class="literal-block">
+git checkout https://github.com/getpelican/pelican-plugins.git
+</pre>
+</li>
+<li><p class="first">Create your project directory, run <tt class="docutils literal"><span class="pre">pelican-quickstart</span></tt> and answer the questions just like for a blog site:</p>
+<pre class="literal-block">
+mkdir myproject &amp;&amp; cd $_
+pelican-quickstart
+
+Welcome to pelican-quickstart v3.6.3.
+
+This script will help you create a new Pelican-based website.
+
+Please answer the following questions so this script can generate the files
+needed by Pelican.
+
+&gt; Where do you want to create your new web site? [.]
+&gt; What will be the title of this web site? Dog Agility Jump Height Calculator
+&gt; Who will be the author of this web site? Steve Schwarz
+&gt; What will be the default language of this web site? [en]
+&gt; Do you want to specify a URL prefix? e.g., http://example.com   (Y/n) y
+&gt; /agility-jump-heights           &lt;-- enter the name of your GitHub repository
+&gt; Do you want to enable article pagination? (Y/n) n
+&gt; What is your time zone? [Europe/Paris] America/Chicago
+&gt; Do you want to generate a Fabfile/Makefile to automate generation and publishing? (Y/n) y
+&gt; Do you want an auto-reload &amp; simpleHTTP script to assist with theme and site development? (Y/n) y
+&gt; Do you want to upload your website using FTP? (y/N) n
+&gt; Do you want to upload your website using SSH? (y/N) n
+&gt; Do you want to upload your website using Dropbox? (y/N) n
+&gt; Do you want to upload your website using S3? (y/N) n
+&gt; Do you want to upload your website using Rackspace Cloud Files? (y/N) n
+&gt; Do you want to upload your website using GitHub Pages? (y/N) y
+&gt; Is this your personal page (username.github.io)? (y/N) n
+Done. Your new project is available at /home/dev/agility-jump-heights
+</pre>
+</li>
+<li><p class="first">Paste the following at the end of your <tt class="docutils literal">pelican.conf</tt>:</p>
+<pre class="literal-block">
+STATIC_PATHS = ['images']  # put page specific assets here
+PLUGIN_PATHS = ['../pelican-plugins']  # set this to the location of your plugins checkout
+PLUGINS = ['assets']
+THEME = './theme'          # All CSS/JS files go in directories under here
+# I only want to generate Pages so I disable all &quot;blog-like&quot; pages see Note in:
+# http://docs.getpelican.com/en/stable/settings.html?highlight=url_for#url-settings
+TAGS_SAVE_AS = ''          # Don't generate Tags pages
+TAG_SAVE_AS = ''
+CATEGORY_SAVE_AS = ''      # Don't generate Category pages
+AUTHOR_SAVE_AS = ''        # Don't generate Author pages
+DIRECT_TEMPLATES = ['index']  # Don't generate tag, category, or author output for some themes
+# In the generated output directory move files to the root and adjust their URLs to match:
+PAGE_URL = '{slug}.html'
+PAGE_SAVE_AS = '{slug}.html'
+INDEX_SAVE_AS = &quot;/ignore/index.html&quot;  # don't create normal index.html which lists all articles and pages
+</pre>
+</li>
+<li><p class="first">Copy any theme from <tt class="docutils literal"><span class="pre">pelican-themes</span></tt> into <tt class="docutils literal">.theme</tt> or I just copy the <tt class="docutils literal">notmyidea</tt> theme installed with Pelican from the virtualenv:</p>
+<pre class="literal-block">
+cp -pR $VIRTUAL_ENV/lib/python*/site-packages/pelican/themes/notmyidea/ theme
+</pre>
+</li>
+<li><p class="first">Have Git ignore the output directory:</p>
+<pre class="literal-block">
+echo &quot;/output&quot; &gt;&gt; .gitignore
+</pre>
+</li>
+</ol>
+</div>
+<div class="section" id="create-your-project-web-site">
+<h2>Create Your Project Web Site</h2>
+<div class="section" id="setup-templates">
+<h3>Setup Templates</h3>
+<p>Edit <tt class="docutils literal">./templates/base.html</tt> and delete/add any sections, stylesheets and javascript you like. Your pages only need to define content that goes in the <cite>content</cite> block of the Jinja templates. Of course you can define your own templates and use the full power of Jinja templating <a class="reference external" href="http://docs.getpelican.com/en/stable/settings.html?highlight=url_for#template-pages">even for individual pages</a>.</p>
+<p>For small projects it is easiest to serve the same JS/CSS on all pages so I put them in the <tt class="docutils literal">base.html</tt> file. Using Jinja template inheritance you can also create and serve separate bundles for individual pages.</p>
+<p>I use <tt class="docutils literal">webassets</tt> right in the template to define how to combine JS/CSS files into bundles, minify and version them. For CSS files in the <tt class="docutils literal">head</tt> of my <tt class="docutils literal">base.html</tt>:</p>
+<pre class="literal-block">
+ {% assets filters=&quot;cssmin&quot;, output=&quot;css/style.%(version)s.min.css&quot;, &quot;css/normalize.css&quot;, &quot;css/skeleton.css&quot;, &quot;css/style.css&quot; %}
+&lt;link rel=&quot;stylesheet&quot; href=&quot;{{ SITEURL }}/{{ ASSET_URL }}&quot;&gt;
+ {% endassets %}
+</pre>
+<p>For JavaScript the bundled, versioned, compressed <tt class="docutils literal">script</tt> tag(s) is defined similarly just before the end of the HTML <tt class="docutils literal">body</tt> tag:</p>
+<pre class="literal-block">
+{% assets filters=&quot;jsmin&quot;, output=&quot;js/main.%(version)s.min.js&quot;, &quot;js/main.js&quot; %}
+&lt;script src=&quot;{{ SITEURL }}/{{ ASSET_URL }}&quot;&gt;&lt;/script&gt;
+{% endassets %}
+</pre>
+<p>For more options <a class="reference external" href="https://github.com/getpelican/pelican-plugins/blob/master/assets/Readme.rst">see the webassets README</a>.</p>
+<p>Edit <tt class="docutils literal">theme/templates/page.html</tt> to suite your needs. I just put in a wrapper <tt class="docutils literal">div</tt> around the content:</p>
+<pre class="literal-block">
+{% extends &quot;base.html&quot; %}
+{% block title %}{{ page.title }}{% endblock %}
+
+{% block content %}
+&lt;div class=&quot;container&quot;&gt;
+{{ page.content }}
+&lt;/div&gt;
+{% endblock %}
+</pre>
+<p>You can also delete any CSS, JS, images, and unused Jinja templates from your copied theme.</p>
+</div>
+<div class="section" id="write-the-pages">
+<h3>Write the Pages</h3>
+<p>Create the <tt class="docutils literal">pages</tt> directory:</p>
+<pre class="literal-block">
+mkdir content/pages
+</pre>
+<p>Lastly put each page's body content in a file in the <tt class="docutils literal">content/pages</tt> directory. I like to write the body content in HTML. You put the Pelican metadata in <tt class="docutils literal">meta</tt> elements in the <tt class="docutils literal">head</tt> element as <a class="reference external" href="http://docs.getpelican.com/en/stable/content.html#file-metadata">shown the Pelican docs</a>. Here's <tt class="docutils literal">index.html</tt> and I recommend specifying the <tt class="docutils literal">title</tt> and <tt class="docutils literal">save_as</tt>:</p>
+<pre class="literal-block">
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;!-- By default used to create the URL slug --&gt;
+        &lt;title&gt;Dog Agility Jump Height Calculator&lt;/title&gt;
+        &lt;!-- Override the default URL made up of the slug; needed for the index.html --&gt;
+        &lt;meta name=&quot;save_as&quot; content=&quot;index.html&quot;/&gt;
+        &lt;!-- any other metadata attributes as meta tags; none normally needed --&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;!-- all  markup goes here. e.g. --&gt;
+        &lt;h1&gt;Hello World!&lt;/h1&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+<p>You can use any input syntax supported by Pelican e.g. ReStructuredText, Markdown, or even write a Reader class for your own custom input file format.</p>
+<p>Start up the Pelican development server to watch for file changes and regenerate changed files:</p>
+<pre class="literal-block">
+make devserver
+</pre>
+<p>Point your browser to <tt class="docutils literal"><span class="pre">http://localhost:8000/</span></tt>.</p>
+<p>I recommend using this <a class="reference external" href="http://tech.agilitynerd.com/livereload-with-pelican.html">LiveReload script</a> as it also watches for changes to the <tt class="docutils literal">themes</tt> directory and automatically reloads your browser on <tt class="docutils literal"><span class="pre">http://localhost:5500</span></tt>.</p>
+<p>Once you are setup just edit your templates, JS, and CSS under the <tt class="docutils literal">theme</tt> directory and add/edit pages in your <tt class="docutils literal">content/pages</tt> directory.</p>
+</div>
+<div class="section" id="deploy">
+<h3>Deploy</h3>
+<p>I like to deploy small projects to GitHub Pages and it's this easy:</p>
+<pre class="literal-block">
+make github
+</pre>
+<p>Then on GitHub enable GitHub Pages in your project's settings.</p>
+<p>To see this whole setup in action take a look at this <a class="reference external" href="https://github.com/saschwarz/agility-jump-heights">single page calculator application with one JS and HTML file</a>.</p>
+<p>The next step to make this even easier would be to use <a class="reference external" href="https://github.com/audreyr/cookiecutter">Cookiecutter</a> to make setting this up via one command.</p>
+</div>
+</div>
+</div>
+  <div>
+    <h2>Comments</h2>
+    <div id="disqus_thread"></div>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  </div>
+</div>	
+            </div><!--/span-->
+
+	    <div class="span3">
+<div class="author">
+<h4>About</h4>
+<div class="author-about">
+  <p class="about">I'm Steve Schwarz a Chicago software developer and dog agility enthusiast. <a href="/pages/about.html">more</a></p>
+</div>
+</div>
+<div class="well sidebar-nav">
+  <ul class="nav nav-list">
+    <li class="nav-header">Blogroll</li>
+    <li><a href="http://agilitynerd.com/blog/">agilitynerd.com</a></li>
+    <li><a href="http://agilitycourses.com/">agilitycourses.com</a></li>
+    <li><a href="http://googility.com/">googility.com</a></li>
+  </ul>
+  <ul class="nav nav-list social">
+    <li class="nav-header">Elsewhere</li>
+    <li><a href="http://www.linkedin.com/profile/view?id=10135443">Linked in</a></li>
+    <li><a href="https://github.com/saschwarz">GitHub</a></li>
+    <li><a href="https://twitter.com/steveaschwarz">Twitter</a></li>
+  </ul>
+</div><!--/.well -->
+ <script>
+  (function() {
+    var cx = '001042720131993941673:szhtogqckem';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+        '//www.google.com/cse/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+<div class="search">
+    <gcse:search></gcse:search>
+</div>
+            </div><!--/span-->
+
+	  </div>
+	</div>
+      </div><!--/row-->
+
+      <hr>
+
+      <footer>
+        <p>Powered by <a href="http://blog.getpelican.com/">Pelican</a></p>
+	<p>&copy; Steve Schwarz 2016</p>
+      </footer>
+
+    </div><!--/.fluid-container-->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="http://tech.agilitynerd.com/theme/js/jquery-1.7.2.min.js"><\/script>')</script>
+      <script src="http://tech.agilitynerd.com/theme/bootstrap/js/bootstrap.min.js"></script>
+      <script src="http://tech.agilitynerd.com/theme/js/modernizr-2.5.3-respond-1.1.0.min.js"></script>
+
+  </body>
+</html>
