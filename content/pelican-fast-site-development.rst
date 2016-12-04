@@ -34,7 +34,7 @@ Pelican is known for making static generation of blogs easy. But it also has a l
 Overview
 ========
 
-I've written a lot of detail on every step but it is actually very easy use Pelican for non-blog web sites. Here's how it works:
+I've written a lot of detail on every step but it is actually very easy to use Pelican for non-blog web sites. Here's how it works:
 
 #. Create a virtualenv and install Pelican and webassets Python packages (I use the same venv for all my Pelican projects).
 
@@ -44,9 +44,7 @@ I've written a lot of detail on every step but it is actually very easy use Peli
 
 #. Create your pages' body content in files in ``content/pages`` in HTML, Markdown or reStructuredText.
 
-#. Run ``make devserver`` and refresh your browser to see your changes or use this `LiveReload script <|filename|pelican-livereload.rst>`_ to automatically reload your browser.
-
-#. Repeat steps 3 and 4 until you are done.
+#. Run ``make devserver`` and refresh your browser to see your changes or use this `LiveReload script <|filename|pelican-livereload.rst>`_ to automatically reload your browser. Repeat steps 3 and 4 until you are done.
 
 #. Deploy to GitHub Pages: ``make github``. Or deploy to your own server.
 
