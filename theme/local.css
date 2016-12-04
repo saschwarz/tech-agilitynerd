@@ -105,10 +105,7 @@ footer, .about {
 .search {
     font-size: 14px;
     line-height: 20px;
-}
-
-.author {
-    margin-top: 110px;
+    margin-bottom: 43px;
 }
 /* fix up nav on mobile */
 @media (max-width: 767px) {
@@ -127,6 +124,9 @@ footer, .about {
 .docutils.literal {
     font-size: 18px;
 }
-.gsc-control-cse {
+.search .gsc-control-cse {
     padding: 0;
+}
+.search .gsc-search-box-tools .gsc-search-box .gsc-input {
+    padding-right: 2px;
 }
