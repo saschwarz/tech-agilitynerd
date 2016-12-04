@@ -12,8 +12,8 @@ for a lightning talk at the December `Northwest Chicago JavaScript <https://www.
 I found the code sections just weren't large enough. So I threw together a little JavaScript to add "+" and "-"
 buttons next to each code section that maximizes/restores the code blocks for easier viewing during the presentation:
 
-.. image:: images/max-min-screenshot.png
-    :align: center
+.. class:: thumbnail
+.. figure:: {filename}/images/max-min-screenshot.png
     :alt: Screenshot of slide showing plus sign to right of code section
 
 Just copy/paste the following into your ``index.html`` file:
