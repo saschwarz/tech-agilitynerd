@@ -24,14 +24,13 @@
 &lt;/ul&gt;
 &lt;div class="section" id="overview"&gt;
 &lt;h2&gt;Overview&lt;/h2&gt;
-&lt;p&gt;I've written a lot of detail on every step but it is actually very easy use Pelican for non-blog web sites. Here's how it works:&lt;/p&gt;
+&lt;p&gt;I've written a lot of detail on every step but it is actually very easy to use Pelican for non-blog web sites. Here's how it works:&lt;/p&gt;
 &lt;ol class="arabic simple"&gt;
 &lt;li&gt;Create a virtualenv and install Pelican and webassets Python packages (I use the same venv for all my Pelican projects).&lt;/li&gt;
 &lt;li&gt;Checkout pelican-plugins.&lt;/li&gt;
 &lt;li&gt;Edit the Pelican theme's &lt;tt class="docutils literal"&gt;base.html&lt;/tt&gt; Jinja template to include the CSS and JavaScript files you need.&lt;/li&gt;
 &lt;li&gt;Create your pages' body content in files in &lt;tt class="docutils literal"&gt;content/pages&lt;/tt&gt; in HTML, Markdown or reStructuredText.&lt;/li&gt;
-&lt;li&gt;Run &lt;tt class="docutils literal"&gt;make devserver&lt;/tt&gt; and refresh your browser to see your changes or use this &lt;a class="reference external" href="http://tech.agilitynerd.com/livereload-with-pelican.html"&gt;LiveReload script&lt;/a&gt; to automatically reload your browser.&lt;/li&gt;
-&lt;li&gt;Repeat steps 3 and 4 until you are done.&lt;/li&gt;
+&lt;li&gt;Run &lt;tt class="docutils literal"&gt;make devserver&lt;/tt&gt; and refresh your browser to see your changes or use this &lt;a class="reference external" href="http://tech.agilitynerd.com/livereload-with-pelican.html"&gt;LiveReload script&lt;/a&gt; to automatically reload your browser. Repeat steps 3 and 4 until you are done.&lt;/li&gt;
 &lt;li&gt;Deploy to GitHub Pages: &lt;tt class="docutils literal"&gt;make github&lt;/tt&gt;. Or deploy to your own server.&lt;/li&gt;
 &lt;/ol&gt;
 &lt;/div&gt;
