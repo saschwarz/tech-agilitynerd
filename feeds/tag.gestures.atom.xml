@@ -6,8 +6,8 @@ for a lightning talk that I gave at the December &lt;a class="reference external
 &lt;/div&gt;
 &lt;p&gt;I converted the &lt;a class="reference external" href="http://lab.hakim.se/reveal-js/#/"&gt;Reveal.js&lt;/a&gt; slides checkout to use the
 &lt;a class="reference external" href="https://cli.angular.io/"&gt;Angular 2 CLI&lt;/a&gt;. That let me include two small Angular 2 components within the slides themselves.
-Which allowed me to demonstrate using the &lt;tt class="docutils literal"&gt;pan&lt;/tt&gt; gesture without leaving the presentation. The Angular CLI also made it easy to
-generate and publish the presentation to the GitHub pages associated with the slides via &lt;cite&gt;ng github-pages:deploy&lt;/cite&gt;.
+Which also allowed me to demonstrate using the &lt;tt class="docutils literal"&gt;pan&lt;/tt&gt; gesture without leaving the presentation. The Angular CLI also made it easy to
+generate and publish the presentation to the GitHub pages associated with the slides via &lt;tt class="docutils literal"&gt;ng &lt;span class="pre"&gt;github-pages:deploy&lt;/span&gt;&lt;/tt&gt;.
 Here's the &lt;a class="reference external" href="https://github.com/saschwarz/angular2-gestures-slides"&gt;source code for the slides/components&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;I have more examples of using gestures in the larger demo app I showed at the beginning of the talk:
 &lt;a class="reference external" href="https://github.com/saschwarz/angular2-image-crop"&gt;Angular 2 TypeScript Virtual Image Cropping repository&lt;/a&gt;.&lt;/p&gt;
