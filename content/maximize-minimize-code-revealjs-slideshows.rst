@@ -21,4 +21,3 @@ Just copy/paste the following into your ``index.html`` file:
 .. raw:: html
 
     <script src="https://gist.github.com/saschwarz/ee02786cd1a64c33611fafd70c0df900.js"></script>
-
