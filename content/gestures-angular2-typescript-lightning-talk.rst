@@ -14,8 +14,8 @@ for a lightning talk that I gave at the December `Northwest Chicago JavaScript <
 
 I converted the `Reveal.js <http://lab.hakim.se/reveal-js/#/>`_ slides checkout to use the
 `Angular 2 CLI <https://cli.angular.io/>`_. That let me include two small Angular 2 components within the slides themselves.
-Which allowed me to demonstrate using the ``pan`` gesture without leaving the presentation. The Angular CLI also made it easy to
-generate and publish the presentation to the GitHub pages associated with the slides via `ng github-pages:deploy`.
+Which also allowed me to demonstrate using the ``pan`` gesture without leaving the presentation. The Angular CLI also made it easy to
+generate and publish the presentation to the GitHub pages associated with the slides via ``ng github-pages:deploy``.
 Here's the `source code for the slides/components <https://github.com/saschwarz/angular2-gestures-slides>`_.
 
 I have more examples of using gestures in the larger demo app I showed at the beginning of the talk:
