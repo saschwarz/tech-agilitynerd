@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:5500/feeds/tag.typescript.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2016-12-14T14:00:00-06:00</updated><entry><title>Using Gestures in Angular 2 with TypeScript Lightning Talk</title><link href="http://tech.agilitynerd.com/using-gestures-in-angular-2-with-typescript-lightning-talk.html" rel="alternate"></link><published>2016-12-14T14:00:00-06:00</published><updated>2016-12-14T14:00:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2016-12-14:using-gestures-in-angular-2-with-typescript-lightning-talk.html</id><summary type="html">&lt;p&gt;Here are my &lt;a class="reference external" href="https://saschwarz.github.io/angular2-gestures-slides/#/"&gt;slides about Using Gestures in Angular 2 Components&lt;/a&gt;
+for a lightning talk that I gave at the December &lt;a class="reference external" href="https://www.meetup.com/Northwest-Chicago-JavaScript/"&gt;Northwest Chicago JavaScript&lt;/a&gt; meetup.&lt;/p&gt;
+&lt;div class="thumbnail figure"&gt;
+&lt;img alt="Screenshot of first slide of my presentation" src="http://tech.agilitynerd.com/images/GesturesAngularTypeScriptSlides.png" /&gt;
+&lt;/div&gt;
+&lt;p&gt;The slides contain the TypeScript for two small Angular 2 components that demonstrate using the &lt;tt class="docutils literal"&gt;pan&lt;/tt&gt; gesture to move a div around the screen,
+allowing me to show the demo within the presentation itself.
+Here's the &lt;a class="reference external" href="https://github.com/saschwarz/angular2-gestures-slides"&gt;source code for the slides/components&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I have more examples of using gestures in the larger demo app I showed at the beginning of the talk:
+&lt;a class="reference external" href="https://github.com/saschwarz/angular2-image-crop"&gt;Angular 2 TypeScript Virtual Image Cropping repository&lt;/a&gt;.&lt;/p&gt;
+</summary><category term="angular"></category><category term="typescript"></category><category term="talks"></category><category term="gestures"></category></entry></feed>
