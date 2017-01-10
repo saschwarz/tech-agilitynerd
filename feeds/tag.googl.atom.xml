@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:5500/feeds/tag.googl.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2010-10-22T04:00:00-05:00</updated><entry><title>Obtain Short URLs and QR-Codes for Django Apps</title><link href="http://tech.agilitynerd.com/obtain-short-urls-and-their-qr-codes-for-djan.html" rel="alternate"></link><published>2010-10-22T04:00:00-05:00</published><updated>2010-10-22T04:00:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-10-22:obtain-short-urls-and-their-qr-codes-for-djan.html</id><summary type="html">&lt;p&gt;Lately I've been interested in improving the interaction of my
+<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd - googl</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:5500/feeds/tag.googl.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2010-10-22T04:00:00-05:00</updated><entry><title>Obtain Short URLs and QR-Codes for Django Apps</title><link href="http://tech.agilitynerd.com/obtain-short-urls-and-their-qr-codes-for-djan.html" rel="alternate"></link><published>2010-10-22T04:00:00-05:00</published><updated>2010-10-22T04:00:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-10-22:/obtain-short-urls-and-their-qr-codes-for-djan.html</id><summary type="html">&lt;p&gt;Lately I've been interested in improving the interaction of my
+&lt;a class="reference external" href="http://agilitycourses.com"&gt;agilitycourses&lt;/a&gt; website for mobile users. One such improvement is to add
+&lt;a class="reference external" href="http://en.wikipedia.org/wiki/QR_Code"&gt;QR Codes&lt;/a&gt; (aka 2D barcodes) representing the page URLs to the printed
+representations of pages served as PDFs.&lt;/p&gt;
+&lt;p&gt;I found that developers have reverse engineered the &amp;quot;api&amp;quot; of the …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Lately I've been interested in improving the interaction of my
 &lt;a class="reference external" href="http://agilitycourses.com"&gt;agilitycourses&lt;/a&gt; website for mobile users. One such improvement is to add
 &lt;a class="reference external" href="http://en.wikipedia.org/wiki/QR_Code"&gt;QR Codes&lt;/a&gt; (aka 2D barcodes) representing the page URLs to the printed
 representations of pages served as PDFs.&lt;/p&gt;
@@ -78,4 +82,4 @@ of its use (assuming you save the code in googl.py):&lt;/p&gt;
 &lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt;
 &lt;/pre&gt;
 &lt;p&gt;Hope you find this useful.&lt;/p&gt;
-</summary><category term="django"></category><category term="googl"></category><category term="python"></category><category term="qrcode"></category></entry></feed>
+</content><category term="django"></category><category term="googl"></category><category term="python"></category><category term="qrcode"></category></entry></feed>

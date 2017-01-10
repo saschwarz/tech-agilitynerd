@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:5500/feeds/tag.adsense.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2010-08-03T01:46:00-05:00</updated><entry><title>Improving Google Ads and Google Search Descriptions</title><link href="http://tech.agilitynerd.com/improving-google-ads-and-google-search-descri.html" rel="alternate"></link><published>2010-08-03T01:46:00-05:00</published><updated>2010-08-03T01:46:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-08-03:improving-google-ads-and-google-search-descri.html</id><summary type="html">&lt;p&gt;I was looking at the google search results for my &lt;a class="reference external" href="http://googility.com/"&gt;Googility web site&lt;/a&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd - adsense</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:5500/feeds/tag.adsense.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2010-08-03T01:46:00-05:00</updated><entry><title>Improving Google Ads and Google Search Descriptions</title><link href="http://tech.agilitynerd.com/improving-google-ads-and-google-search-descri.html" rel="alternate"></link><published>2010-08-03T01:46:00-05:00</published><updated>2010-08-03T01:46:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-08-03:/improving-google-ads-and-google-search-descri.html</id><summary type="html">&lt;p&gt;I was looking at the google search results for my &lt;a class="reference external" href="http://googility.com/"&gt;Googility web site&lt;/a&gt;
+and noticed that the descriptions shown underneath the title often
+contained text from my navigation links instead of content from the body
+of the page:&lt;/p&gt;
+&lt;div class="thumbnail"&gt;&lt;p&gt;&lt;img alt="Google_description" src="/images/2010/08/13127405-google_description.jpg" /&gt;&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;I did some searching and found the Google Webmaster blog post about …&lt;/p&gt;</summary><content type="html">&lt;p&gt;I was looking at the google search results for my &lt;a class="reference external" href="http://googility.com/"&gt;Googility web site&lt;/a&gt;
 and noticed that the descriptions shown underneath the title often
 contained text from my navigation links instead of content from the body
 of the page:&lt;/p&gt;
@@ -29,4 +34,4 @@ improvements in the ads being generated for those pages. I keep an eye
 on my Adsense click rate and see if there is any increase in ad clicks.&lt;/p&gt;
 &lt;p&gt;So a couple simple edits made noticeable improvements not bad for a
 couple hours investigation and implementation.&lt;/p&gt;
-&lt;/p&gt;</summary><category term="adsense"></category><category term="django"></category><category term="google"></category><category term="search"></category><category term="webdevelopment"></category></entry></feed>
+&lt;/p&gt;</content><category term="adsense"></category><category term="django"></category><category term="google"></category><category term="search"></category><category term="webdevelopment"></category></entry></feed>

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:5500/feeds/tag.google.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2012-05-12T23:57:00-05:00</updated><entry><title>Create Posterous Posts from Google Forms</title><link href="http://tech.agilitynerd.com/create-posterous-posts-from-google-forms.html" rel="alternate"></link><published>2012-05-12T23:57:00-05:00</published><updated>2012-05-12T23:57:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2012-05-12:create-posterous-posts-from-google-forms.html</id><summary type="html">&lt;p&gt;I've been organizing dog agility bloggers for&amp;nbsp;&lt;a class="reference external" href="http://dog-agility-blog-events.posterous.com/"&gt;Dog Agility Blog Action
+<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd - google</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:5500/feeds/tag.google.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2012-05-12T23:57:00-05:00</updated><entry><title>Create Posterous Posts from Google Forms</title><link href="http://tech.agilitynerd.com/create-posterous-posts-from-google-forms.html" rel="alternate"></link><published>2012-05-12T23:57:00-05:00</published><updated>2012-05-12T23:57:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2012-05-12:/create-posterous-posts-from-google-forms.html</id><summary type="html">&lt;p&gt;I've been organizing dog agility bloggers for&amp;nbsp;&lt;a class="reference external" href="http://dog-agility-blog-events.posterous.com/"&gt;Dog Agility Blog Action
+Days&lt;/a&gt;&amp;nbsp;and wanted to automate updating our group's blog when each
+blogger posted their article on the event/action days. For past events I
+had the bloggers email me with the information and manually created each
+entry in the …&lt;/p&gt;</summary><content type="html">&lt;p&gt;I've been organizing dog agility bloggers for&amp;nbsp;&lt;a class="reference external" href="http://dog-agility-blog-events.posterous.com/"&gt;Dog Agility Blog Action
 Days&lt;/a&gt;&amp;nbsp;and wanted to automate updating our group's blog when each
 blogger posted their article on the event/action days. For past events I
 had the bloggers email me with the information and manually created each
@@ -54,7 +58,12 @@ entries similar &lt;a class="reference external" href="http://dogagilityblogeven
 &lt;p&gt;So now I can just send the link to the Google form to participants and
 they'll create drafts that I can tweak and/or just submit. It took
 longer to write this post than it took to modify and test the script!&lt;/p&gt;
-</summary><category term="email"></category><category term="google"></category><category term="posterous"></category></entry><entry><title>Improving Google Ads and Google Search Descriptions</title><link href="http://tech.agilitynerd.com/improving-google-ads-and-google-search-descri.html" rel="alternate"></link><published>2010-08-03T01:46:00-05:00</published><updated>2010-08-03T01:46:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-08-03:improving-google-ads-and-google-search-descri.html</id><summary type="html">&lt;p&gt;I was looking at the google search results for my &lt;a class="reference external" href="http://googility.com/"&gt;Googility web site&lt;/a&gt;
+</content><category term="email"></category><category term="google"></category><category term="posterous"></category></entry><entry><title>Improving Google Ads and Google Search Descriptions</title><link href="http://tech.agilitynerd.com/improving-google-ads-and-google-search-descri.html" rel="alternate"></link><published>2010-08-03T01:46:00-05:00</published><updated>2010-08-03T01:46:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-08-03:/improving-google-ads-and-google-search-descri.html</id><summary type="html">&lt;p&gt;I was looking at the google search results for my &lt;a class="reference external" href="http://googility.com/"&gt;Googility web site&lt;/a&gt;
+and noticed that the descriptions shown underneath the title often
+contained text from my navigation links instead of content from the body
+of the page:&lt;/p&gt;
+&lt;div class="thumbnail"&gt;&lt;p&gt;&lt;img alt="Google_description" src="/images/2010/08/13127405-google_description.jpg" /&gt;&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;I did some searching and found the Google Webmaster blog post about …&lt;/p&gt;</summary><content type="html">&lt;p&gt;I was looking at the google search results for my &lt;a class="reference external" href="http://googility.com/"&gt;Googility web site&lt;/a&gt;
 and noticed that the descriptions shown underneath the title often
 contained text from my navigation links instead of content from the body
 of the page:&lt;/p&gt;
@@ -84,7 +93,11 @@ improvements in the ads being generated for those pages. I keep an eye
 on my Adsense click rate and see if there is any increase in ad clicks.&lt;/p&gt;
 &lt;p&gt;So a couple simple edits made noticeable improvements not bad for a
 couple hours investigation and implementation.&lt;/p&gt;
-&lt;/p&gt;</summary><category term="adsense"></category><category term="django"></category><category term="google"></category><category term="search"></category><category term="webdevelopment"></category></entry><entry><title>New Scheme Using YouTube to Get "Google Juice"?</title><link href="http://tech.agilitynerd.com/new-scheme-using-youtube-to-get-google-juice-1.html" rel="alternate"></link><published>2008-02-15T04:32:00-06:00</published><updated>2008-02-15T04:32:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2008-02-15:new-scheme-using-youtube-to-get-google-juice-1.html</id><summary type="html">&lt;p&gt;In the last couple days my YouTube account has fallen victim to a new
+&lt;/p&gt;</content><category term="adsense"></category><category term="django"></category><category term="google"></category><category term="search"></category><category term="webdevelopment"></category></entry><entry><title>New Scheme Using YouTube to Get "Google Juice"?</title><link href="http://tech.agilitynerd.com/new-scheme-using-youtube-to-get-google-juice-1.html" rel="alternate"></link><published>2008-02-15T04:32:00-06:00</published><updated>2008-02-15T04:32:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2008-02-15:/new-scheme-using-youtube-to-get-google-juice-1.html</id><summary type="html">&lt;p&gt;In the last couple days my YouTube account has fallen victim to a new
+scheme by porn websites attempting to garner Google Juice. It is pretty
+straightforward. A generic YouTube account is created with a user name
+like &amp;quot;babiegirl123xyz&amp;quot; and the &amp;quot;user&amp;quot; has a single line profile with the
+line …&lt;/p&gt;</summary><content type="html">&lt;p&gt;In the last couple days my YouTube account has fallen victim to a new
 scheme by porn websites attempting to garner Google Juice. It is pretty
 straightforward. A generic YouTube account is created with a user name
 like &amp;quot;babiegirl123xyz&amp;quot; and the &amp;quot;user&amp;quot; has a single line profile with the
@@ -111,4 +124,4 @@ in response to the subscription email. If only a few end up becoming
 members of the adult sites it could make this a worthwhile means for
 these sites to get more page hits/subscribers.&lt;/p&gt;
 &lt;p&gt;Sigh...&lt;/p&gt;
-&lt;/p&gt;</summary><category term="google"></category><category term="youtube"></category></entry></feed>
+&lt;/p&gt;</content><category term="google"></category><category term="youtube"></category></entry></feed>

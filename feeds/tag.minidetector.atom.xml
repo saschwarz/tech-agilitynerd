@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:5500/feeds/tag.minidetector.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2010-10-05T14:34:00-05:00</updated><entry><title>Mobile Web Site Redirects in Django</title><link href="http://tech.agilitynerd.com/conditional-mobile-web-site-redirect-in-djang.html" rel="alternate"></link><published>2010-10-05T14:34:00-05:00</published><updated>2010-10-05T14:34:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-10-05:conditional-mobile-web-site-redirect-in-djang.html</id><summary type="html">&lt;p&gt;For the mobile version of agilitycourses.com I wanted to follow the
+<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd - minidetector</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:5500/feeds/tag.minidetector.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2010-10-05T14:34:00-05:00</updated><entry><title>Mobile Web Site Redirects in Django</title><link href="http://tech.agilitynerd.com/conditional-mobile-web-site-redirect-in-djang.html" rel="alternate"></link><published>2010-10-05T14:34:00-05:00</published><updated>2010-10-05T14:34:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-10-05:/conditional-mobile-web-site-redirect-in-djang.html</id><summary type="html">&lt;p&gt;For the mobile version of agilitycourses.com I wanted to follow the
+approach Google appears to be using on some of its sites:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;If the user views agilitycourses.com from a desktop browser they
+should see the standard/desktop version of the site.&lt;/li&gt;
+&lt;li&gt;If the user views agilitycourses.com from …&lt;/li&gt;&lt;/ul&gt;</summary><content type="html">&lt;p&gt;For the mobile version of agilitycourses.com I wanted to follow the
 approach Google appears to be using on some of its sites:&lt;/p&gt;
 &lt;ul class="simple"&gt;
 &lt;li&gt;If the user views agilitycourses.com from a desktop browser they
@@ -61,4 +66,4 @@ new application containing the urls.py and views.py specific to my
 mobile deployment. I would think diverging further would call for a
 refactoring of the common functionality to its own application which
 could be imported into separate code branches for each domain.&lt;/p&gt;
-</summary><category term="django"></category><category term="gunicorn"></category><category term="minidetector"></category><category term="mobile"></category></entry></feed>
+</content><category term="django"></category><category term="gunicorn"></category><category term="minidetector"></category><category term="mobile"></category></entry></feed>

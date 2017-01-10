@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:5500/feeds/tag.mongodb.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2010-05-17T10:48:00-05:00</updated><entry><title>Blosxom hitcounter, favorites and lastread plugins for MongoDB</title><link href="http://tech.agilitynerd.com/blosxom-hitcounter-favorites-and-lastread-plugins-for-mongodb.html" rel="alternate"></link><published>2010-05-17T10:48:00-05:00</published><updated>2010-05-17T10:48:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-05-17:blosxom-hitcounter-favorites-and-lastread-plugins-for-mongodb.html</id><summary type="html">&lt;p&gt;When I wrote my plugins for tracking the visits to each page
+<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd - mongodb</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:5500/feeds/tag.mongodb.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2010-05-17T10:48:00-05:00</updated><entry><title>Blosxom hitcounter, favorites and lastread plugins for MongoDB</title><link href="http://tech.agilitynerd.com/blosxom-hitcounter-favorites-and-lastread-plugins-for-mongodb.html" rel="alternate"></link><published>2010-05-17T10:48:00-05:00</published><updated>2010-05-17T10:48:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-05-17:/blosxom-hitcounter-favorites-and-lastread-plugins-for-mongodb.html</id><summary type="html">&lt;p&gt;When I wrote my plugins for tracking the visits to each page
+(&lt;tt class="docutils literal"&gt;hitcounter&lt;/tt&gt;), presenting the counts by popularity (&lt;tt class="docutils literal"&gt;favorites&lt;/tt&gt;), and
+displaying the most recently read posts (&lt;tt class="docutils literal"&gt;lastread&lt;/tt&gt;) I used Perl's
+&lt;tt class="docutils literal"&gt;Storable&lt;/tt&gt; module as a simple way to serialize the data structure to and
+from disk. At the time I wasn't …&lt;/p&gt;</summary><content type="html">&lt;p&gt;When I wrote my plugins for tracking the visits to each page
 (&lt;tt class="docutils literal"&gt;hitcounter&lt;/tt&gt;), presenting the counts by popularity (&lt;tt class="docutils literal"&gt;favorites&lt;/tt&gt;), and
 displaying the most recently read posts (&lt;tt class="docutils literal"&gt;lastread&lt;/tt&gt;) I used Perl's
 &lt;tt class="docutils literal"&gt;Storable&lt;/tt&gt; module as a simple way to serialize the data structure to and
@@ -26,4 +30,4 @@ running the agilitynerd blog very low.&lt;/p&gt;
 plugin can be configured to automatically import existing count data
 from the hitcounter plugin's Storable. So conversion to the new plugins
 just requires updating the template's variables to the new plugin names.&lt;/p&gt;
-</summary><category term="blosxom"></category><category term="mongodb"></category><category term="perl"></category><category term="webdevelopment"></category></entry></feed>
+</content><category term="blosxom"></category><category term="mongodb"></category><category term="perl"></category><category term="webdevelopment"></category></entry></feed>

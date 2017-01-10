@@ -2,31 +2,43 @@
 <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
 <!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
 <!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
-  <head>
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+
+<head>
     <meta charset="utf-8">
     <title>tech.agilitynerd</title>
     <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
     <meta name="description" content="">
-    <meta name="author" content="Steve Schwarz">
-    <!-- <link href="http://127.0.0.1:5500/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" /> -->
-    <link href="http://feeds.feedburner.com/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" />
-    <!-- Le styles -->
+    <meta name="author" content="Steve Schwarz">      <!-- <link href="http://127.0.0.1:5500/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" /> -->
+    <link href="http://feeds.feedburner.com/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" />       <!-- Le styles -->
     <link href="http://tech.agilitynerd.com/theme/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
-      body {
-      padding-top: 60px;
-      padding-bottom: 40px;
-      }
-      .sidebar-nav {
-      padding: 9px 0;
-      }
+        body {
+            padding-top: 60px;
+            padding-bottom: 40px;
+        }
+
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+
+        @media (max-width: 767px) {
+            .sidebar {
+                margin-top: 2em;
+                border-top: 1px solid #e3e3e3;
+                padding-top: 1em;
+            }
+            .sidebar .search {
+                margin-bottom: 0;
+            }
+        }
     </style>
     <link href="http://tech.agilitynerd.com/theme/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
     <link href="http://tech.agilitynerd.com/theme/local.css" rel="stylesheet">
-    <link href="http://tech.agilitynerd.com/theme/pygments.css" rel="stylesheet">
-<script>var _gaq=[['_setAccount','UA-1127677-3'],['_trackPageview']];(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.src='//www.google-analytics.com/ga.js';s.parentNode.insertBefore(g,s)}(document,'script'))</script>
-<script type="text/javascript">
+    <link href="http://tech.agilitynerd.com/theme/pygments.css" rel="stylesheet"> <script>var _gaq=[['_setAccount','UA-1127677-3'],['_trackPageview']];(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.src='//www.google-analytics.com/ga.js';s.parentNode.insertBefore(g,s)}(document,'script'))</script>
+ <script type="text/javascript">
   var disqus_shortname = "techagilitynerd"; // required: replace example with your forum shortname
   var disqus_developer = 1;
   
@@ -38,11 +50,11 @@
   (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
   }());
 </script>
-  </head>
-  <body>
-<!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+</head>
 
-<div class="navbar navbar-inverse navbar-fixed-top">
+<body>
+    <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+  <div class="navbar navbar-inverse navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container-fluid">
       <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -69,15 +81,27 @@
   </div>
 </div>
     <div class="container-fluid">
-      <div class="row-fluid">
-	<div class="span1">&nbsp;</div>
-	<div class="span10">
-	  <div class="row-fluid">
-            <div class="span9">
-	      <div class="page-header">
-		<h1> tech.agilitynerd </h1>
-	      </div>
-
+        <div class="row-fluid">
+            <div class="span1">&nbsp;</div>
+            <div class="span10">
+                <div class="row-fluid">
+                    <div class="span9">
+                        <div class="page-header">
+                            <h1> tech.agilitynerd </h1>
+                        </div>
+ 
+<div class='article'>
+  <h2><a href="http://tech.agilitynerd.com/recaptcha-in-django-1.html">reCAPTCHA in Django</a></h2>
+  <div class="well small"><a class="more" href="http://tech.agilitynerd.com/recaptcha-in-django-1.html">On 23 Dec 2008 at 2204</a>
+by <a class="url fn" href="http://tech.agilitynerd.com/author/steve-schwarz.html">Steve Schwarz</a> in <a href="http://tech.agilitynerd.com/category/webdev.html">webdev</a>
+ | <a href="http://tech.agilitynerd.com/recaptcha-in-django-1.html#disqus_thread">Comments</a></div>
+  <div class="summary"><p>I first read about <a class="reference external" href="http://recaptcha.net/">ReCAPTCHA</a> in <a class="reference external" href="http://www.wired.com/techbiz/it/magazine/15-07/ff_humancomp?currentPage=all">this article in Wired magazine</a>
+last year.</p>
+<p>reCAPTCHA provides a free CAPTCHA web service that
+pairs together two words from OCR scanned books. One of the words is
+known and the other couldn't be recognized. The user types in both words
+not knowing which …</p></div>
+<div class="tags">Tagged as: <a href="http://tech.agilitynerd.com/tag/django.html">django</a> <a href="http://tech.agilitynerd.com/tag/recaptcha.html">recaptcha</a> </div></div>
 <div class='article'>
   <h2><a href="http://tech.agilitynerd.com/improving-site-navigation-add-titles-to-blosx-1.html">Improving Site Navigation - Add Titles to Blosxom Pages With storytitle</a></h2>
   <div class="well small"><a class="more" href="http://tech.agilitynerd.com/improving-site-navigation-add-titles-to-blosx-1.html">On 20 Jun 2008 at 2203</a>
@@ -87,7 +111,7 @@ by <a class="url fn" href="http://tech.agilitynerd.com/author/steve-schwarz.html
 interesting dog agility subjects. Consequently, I'm interested in making
 it as easy as possible for readers to locate, explore, and learn more
 about the sport. So improving navigation is a strong interest to me.</p>
-<p>I have ...</p></div>
+<p>I have been reading …</p></div>
 <div class="tags">Tagged as: <a href="http://tech.agilitynerd.com/tag/agilitynerd.html">agilitynerd</a> <a href="http://tech.agilitynerd.com/tag/blosxom.html">blosxom</a> <a href="http://tech.agilitynerd.com/tag/googleanalytics.html">googleanalytics</a> </div></div>
 <div class='article'>
   <h2><a href="http://tech.agilitynerd.com/blosxom-plugin-lastcommented-enhancement-1.html">Blosxom Plugin lastcommented Enhancement</a></h2>
@@ -99,7 +123,7 @@ subsequently deleted and of course my <tt class="docutils literal">lastcommented
 the comment as the most recent comment. Since the plugin uses
 <tt class="docutils literal">Storable</tt> to store the data I couldn't manually edit the file to
 remove the entry.</p>
-<p>So I ...</p></div>
+<p>So I modified …</p></div>
 <div class="tags">Tagged as: <a href="http://tech.agilitynerd.com/tag/blosxom.html">blosxom</a> <a href="http://tech.agilitynerd.com/tag/plugin.html">plugin</a> </div></div>
 <div class='article'>
   <h2><a href="http://tech.agilitynerd.com/minor-additional-mods-to-blosxom-moreenties-p-1.html">Minor Additional Mods to Blosxom moreenties Plugin</a></h2>
@@ -109,7 +133,7 @@ by <a class="url fn" href="http://tech.agilitynerd.com/author/steve-schwarz.html
   <div class="summary"><p>I had previously extended Jason Clark's <a class="reference external" href="http://jclark.org/weblog/WebDev/Blosxom/plugins/moreentries">moreentries</a> plugin for
 <a class="reference external" href="http://blosxom.sourceforge.net/">Blosxom</a> to allow adding images to links to the previous and next
 group of articles/entries in the head or foot of a Blosxom weblog. While
-attempting to have valid HTML on my blogs I found that I had left ...</p></div>
+attempting to have valid HTML on my blogs I found that I had left an …</p></div>
 <div class="tags">Tagged as: <a href="http://tech.agilitynerd.com/tag/blosxom.html">blosxom</a> <a href="http://tech.agilitynerd.com/tag/plugin.html">plugin</a> </div></div>
 <div class='article'>
   <h2><a href="http://tech.agilitynerd.com/new-scheme-using-youtube-to-get-google-juice-1.html">New Scheme Using YouTube to Get &quot;Google Juice&quot;?</a></h2>
@@ -120,7 +144,7 @@ by <a class="url fn" href="http://tech.agilitynerd.com/author/steve-schwarz.html
 scheme by porn websites attempting to garner Google Juice. It is pretty
 straightforward. A generic YouTube account is created with a user name
 like &quot;babiegirl123xyz&quot; and the &quot;user&quot; has a single line profile with the
-line ...</p></div>
+line …</p></div>
 <div class="tags">Tagged as: <a href="http://tech.agilitynerd.com/tag/google.html">google</a> <a href="http://tech.agilitynerd.com/tag/youtube.html">youtube</a> </div></div>
 <div class='article'>
   <h2><a href="http://tech.agilitynerd.com/web-site-themes-for-techies-1.html">Web Site Themes for Techies</a></h2>
@@ -133,7 +157,7 @@ tools and tips that might help other non artists create reasonable
 looking websites.</p>
 <p>Here's the general approach:</p>
 <ul class="simple">
-<li>Select an ...</li></ul></div>
+<li>Select an existing template or …</li></ul></div>
 <div class="tags">Tagged as: <a href="http://tech.agilitynerd.com/tag/sitedesign.html">sitedesign</a> </div></div>
 <div class='article'>
   <h2><a href="http://tech.agilitynerd.com/stockxchng-free-stock-photos-1.html">Stock.XCHNG - Free Stock Photos</a></h2>
@@ -144,7 +168,7 @@ by <a class="url fn" href="http://tech.agilitynerd.com/author/steve-schwarz.html
 that use images from <a class="reference external" href="http://www.sxc.hu/">Stock.XCHNG</a>. Over an hour ago I started browsing
 the images and am really impressed with the quality and breadth of
 photos that artists are making available for free use.</p>
-<p>I'll definitely use ...</p></div>
+<p>I'll definitely use some …</p></div>
 <div class="tags">Tagged as: <a href="http://tech.agilitynerd.com/tag/sitedesign.html">sitedesign</a> </div></div>
 <div class='article'>
   <h2><a href="http://tech.agilitynerd.com/feed2js-adding-agilitynerd-headlines-to-your-1.html">Feed2JS - Adding AgilityNerd Headlines to Your Website</a></h2>
@@ -155,7 +179,7 @@ by <a class="url fn" href="http://tech.agilitynerd.com/author/steve-schwarz.html
 <p>I never thought anyone would want me to <a class="reference external" href="http://en.wikipedia.org/wiki/Web_syndication">syndicate</a> my blog and put
 links to my latest articles on their website. But Marj Kibby in
 Australia with her very nice dog raising and training blog <a class="reference external" href="http://marjkibby.blogspot.com/">Choose and
-Raise a ...</a></p></div>
+Raise a Puppy …</a></p></div>
 <div class="tags">Tagged as: <a href="http://tech.agilitynerd.com/tag/syndication.html">syndication</a> </div></div>
 <div class='article'>
   <h2><a href="http://tech.agilitynerd.com/new-hitcounter-favorites-blosxom-plugin-featu-1.html">New hitcounter, favorites Blosxom Plugin Features</a></h2>
@@ -167,7 +191,7 @@ by <a class="url fn" href="http://tech.agilitynerd.com/author/steve-schwarz.html
 <li>The links generated by the favorites plugin used to display the path
 and filename of each popular article. It now displays the article
 title and the filename is displayed when hovering over the link. This
-makes ...</li></ul></div>
+makes …</li></ul></div>
 <div class="tags">Tagged as: <a href="http://tech.agilitynerd.com/tag/blosxom.html">blosxom</a> <a href="http://tech.agilitynerd.com/tag/plugin.html">plugin</a> </div></div>
 <div class='article'>
   <h2><a href="http://tech.agilitynerd.com/notes-on-configuring-postfix-on-ubuntu-gutsy-1.html">Notes on Configuring Postfix on Ubuntu Gutsy to Send Email via Google Apps</a></h2>
@@ -180,19 +204,8 @@ from an expert on postfix configuration but maybe these notes will be
 helpful to others needing this configuration.</p>
 <p>These sites contain the key information:</p>
 <ul class="simple">
-<li><a class="reference external" href="http://behindmyscreen.newsvine.com/_news/2006/12/31/501615-configuringubuntu-postfix-and-gmail-in-101-easy-steps">Behind ...</a></li></ul></div>
+<li><a class="reference external" href="http://behindmyscreen.newsvine.com/_news/2006/12/31/501615-configuringubuntu-postfix-and-gmail-in-101-easy-steps">Behind …</a></li></ul></div>
 <div class="tags">Tagged as: <a href="http://tech.agilitynerd.com/tag/postfix.html">postfix</a> <a href="http://tech.agilitynerd.com/tag/slicehost.html">slicehost</a> <a href="http://tech.agilitynerd.com/tag/ubuntu.html">ubuntu</a> </div></div>
-<div class='article'>
-  <h2><a href="http://tech.agilitynerd.com/hitcounter-favorites-lastcommented-and-lastre-1.html">hitcounter, favorites, lastcommented and lastread Blosxom Plugin Updates</a></h2>
-  <div class="well small"><a class="more" href="http://tech.agilitynerd.com/hitcounter-favorites-lastcommented-and-lastre-1.html">On 01 Jan 2008 at 1844</a>
-by <a class="url fn" href="http://tech.agilitynerd.com/author/steve-schwarz.html">Steve Schwarz</a> in <a href="http://tech.agilitynerd.com/category/webdev.html">webdev</a>
- | <a href="http://tech.agilitynerd.com/hitcounter-favorites-lastcommented-and-lastre-1.html#disqus_thread">Comments</a></div>
-  <div class="summary"><p>I found a bug in my hitcounter, favorites, lastread and lastcommented
-plugins due to my not using the correct Perl Storable functions. For
-some reason I didn't use the locking versions of retrieve() and
-nstore(). So when my old webhost had some problem causing long page load
-times (and ...</p></div>
-<div class="tags">Tagged as: <a href="http://tech.agilitynerd.com/tag/blosxom.html">blosxom</a> <a href="http://tech.agilitynerd.com/tag/plugin.html">plugin</a> </div></div>
 
 <div class="pagination">
 <ul>
@@ -209,9 +222,10 @@ times (and ...</p></div>
 </ul>
 </div>
 
-        </div><!--/span-->
+                    </div>
+                    <!--/span-->
 
-	    <div class="span3">
+                    <div class="span3 sidebar">
  <script>
   (function() {
     var cx = '001042720131993941673:szhtogqckem';
@@ -227,7 +241,7 @@ times (and ...</p></div>
 <div class="search">
     <gcse:search></gcse:search>
 </div>
-<hr>
+ <hr>
 <div class="author">
 <h4>About</h4>
 <div class="author-about">
@@ -248,24 +262,30 @@ times (and ...</p></div>
     <li><a href="https://twitter.com/steveaschwarz">Twitter</a></li>
   </ul>
 </div><!--/.well -->
-      </div><!--/span-->
+                    </div>
+                    <!--/span-->
 
-	  </div>
-	</div>
-      </div><!--/row-->
+                </div>
+            </div>
+        </div>
+        <!--/row-->
 
-      <hr>
+        <hr>
 
-      <footer>
-        <p>Powered by <a href="http://blog.getpelican.com/">Pelican</a></p>
-	<p>&copy; Steve Schwarz 2016</p>
-      </footer>
+        <footer>
+            <p>Powered by <a href="http://blog.getpelican.com/">Pelican</a></p>
+            <p>&copy; Steve Schwarz 2016</p>
+        </footer>
 
-    </div><!--/.fluid-container-->
+    </div>
+    <!--/.fluid-container-->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="http://tech.agilitynerd.com/theme/js/jquery-1.7.2.min.js"><\/script>')</script>
-      <script src="http://tech.agilitynerd.com/theme/bootstrap/js/bootstrap.min.js"></script>
-      <script src="http://tech.agilitynerd.com/theme/js/modernizr-2.5.3-respond-1.1.0.min.js"></script>
+    <script>
+        window.jQuery || document.write('<script src="http://tech.agilitynerd.com/theme/js/jquery-1.7.2.min.js"><\/script>')
+    </script>
+    <script src="http://tech.agilitynerd.com/theme/bootstrap/js/bootstrap.min.js"></script>
+    <script src="http://tech.agilitynerd.com/theme/js/modernizr-2.5.3-respond-1.1.0.min.js"></script>
 
-  </body>
+</body>
+
 </html>

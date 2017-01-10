@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:5500/feeds/tag.googleanalytics.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2013-01-21T02:00:00-06:00</updated><entry><title>Google Analytics for JQuery Mobile With Internal and AJAX Pages</title><link href="http://tech.agilitynerd.com/google-analytics-for-jquery-mobile-withwithou.html" rel="alternate"></link><published>2013-01-21T02:00:00-06:00</published><updated>2013-01-21T02:00:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2013-01-21:google-analytics-for-jquery-mobile-withwithou.html</id><summary type="html">&lt;p&gt;I added google analytics to my &lt;a class="reference external" href="http://agilitycourses.com"&gt;agilitycourses.com&lt;/a&gt;&amp;nbsp;website and was
+<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd - googleanalytics</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:5500/feeds/tag.googleanalytics.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2013-01-21T02:00:00-06:00</updated><entry><title>Google Analytics for JQuery Mobile With Internal and AJAX Pages</title><link href="http://tech.agilitynerd.com/google-analytics-for-jquery-mobile-withwithou.html" rel="alternate"></link><published>2013-01-21T02:00:00-06:00</published><updated>2013-01-21T02:00:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2013-01-21:/google-analytics-for-jquery-mobile-withwithou.html</id><summary type="html">&lt;p&gt;I added google analytics to my &lt;a class="reference external" href="http://agilitycourses.com"&gt;agilitycourses.com&lt;/a&gt;&amp;nbsp;website and was
+having problems getting the mobile version of the site to log analytics
+data after the first page. Google found this very helpful blog
+post:&amp;nbsp;&lt;a class="reference external" href="http://www.jongales.com/blog/2011/01/10/google-analytics-and-jquery-mobile/"&gt;Using Google Analytics with jQuery Mobile&lt;/a&gt;&amp;nbsp;and it got me very
+close to my final …&lt;/p&gt;</summary><content type="html">&lt;p&gt;I added google analytics to my &lt;a class="reference external" href="http://agilitycourses.com"&gt;agilitycourses.com&lt;/a&gt;&amp;nbsp;website and was
 having problems getting the mobile version of the site to log analytics
 data after the first page. Google found this very helpful blog
 post:&amp;nbsp;&lt;a class="reference external" href="http://www.jongales.com/blog/2011/01/10/google-analytics-and-jquery-mobile/"&gt;Using Google Analytics with jQuery Mobile&lt;/a&gt;&amp;nbsp;and it got me very
@@ -43,7 +47,11 @@ name. I also enabled client side page load and site speed settings.&lt;/p&gt;
 &lt;p&gt;So I put the code in the head of the original post in the head of my
 pages and the code snippet above in the foot of the pages.&lt;/p&gt;
 &lt;p&gt;Hope this is helpful for others.&lt;/p&gt;
-</summary><category term="ajax"></category><category term="googleanalytics"></category><category term="jquery"></category><category term="jquerymobile"></category></entry><entry><title>Improving Site Navigation - Add Titles to Blosxom Pages With storytitle</title><link href="http://tech.agilitynerd.com/improving-site-navigation-add-titles-to-blosx-1.html" rel="alternate"></link><published>2008-06-20T22:03:00-05:00</published><updated>2008-06-20T22:03:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2008-06-20:improving-site-navigation-add-titles-to-blosx-1.html</id><summary type="html">&lt;p&gt;I've always wanted my &lt;a class="reference external" href="http://agilitynerd.com/blog/"&gt;AgilityNerd&lt;/a&gt; blog to serve as a reference for
+</content><category term="ajax"></category><category term="googleanalytics"></category><category term="jquery"></category><category term="jquerymobile"></category></entry><entry><title>Improving Site Navigation - Add Titles to Blosxom Pages With storytitle</title><link href="http://tech.agilitynerd.com/improving-site-navigation-add-titles-to-blosx-1.html" rel="alternate"></link><published>2008-06-20T22:03:00-05:00</published><updated>2008-06-20T22:03:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2008-06-20:/improving-site-navigation-add-titles-to-blosx-1.html</id><summary type="html">&lt;p&gt;I've always wanted my &lt;a class="reference external" href="http://agilitynerd.com/blog/"&gt;AgilityNerd&lt;/a&gt; blog to serve as a reference for
+interesting dog agility subjects. Consequently, I'm interested in making
+it as easy as possible for readers to locate, explore, and learn more
+about the sport. So improving navigation is a strong interest to me.&lt;/p&gt;
+&lt;p&gt;I have been reading …&lt;/p&gt;</summary><content type="html">&lt;p&gt;I've always wanted my &lt;a class="reference external" href="http://agilitynerd.com/blog/"&gt;AgilityNerd&lt;/a&gt; blog to serve as a reference for
 interesting dog agility subjects. Consequently, I'm interested in making
 it as easy as possible for readers to locate, explore, and learn more
 about the sport. So improving navigation is a strong interest to me.&lt;/p&gt;
@@ -72,4 +80,4 @@ minutes.&lt;/p&gt;
 &lt;p&gt;So if you are a Blosxom user just grab this plugin. Otherwise, take the
 time to set your page title sections so you can help your readers and
 help analyzing your own site's statistics&lt;/p&gt;
-</summary><category term="agilitynerd"></category><category term="blosxom"></category><category term="googleanalytics"></category></entry></feed>
+</content><category term="agilitynerd"></category><category term="blosxom"></category><category term="googleanalytics"></category></entry></feed>

@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:5500/feeds/tag.djangositemap.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2009-11-27T17:33:00-06:00</updated><entry><title>Using django-sitemap with django-tagging</title><link href="http://tech.agilitynerd.com/using-django-sitemap-with-django-tagging.html" rel="alternate"></link><published>2009-11-27T17:33:00-06:00</published><updated>2009-11-27T17:33:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2009-11-27:using-django-sitemap-with-django-tagging.html</id><summary type="html">&lt;p&gt;I was adding &lt;a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/sitemaps/"&gt;django-sitemap&lt;/a&gt; to &lt;a class="reference external" href="http://googility.com/"&gt;googility.com&lt;/a&gt; yesterday and found
+<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd - djangositemap</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:5500/feeds/tag.djangositemap.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2009-11-27T17:33:00-06:00</updated><entry><title>Using django-sitemap with django-tagging</title><link href="http://tech.agilitynerd.com/using-django-sitemap-with-django-tagging.html" rel="alternate"></link><published>2009-11-27T17:33:00-06:00</published><updated>2009-11-27T17:33:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2009-11-27:/using-django-sitemap-with-django-tagging.html</id><summary type="html">&lt;p&gt;I was adding &lt;a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/sitemaps/"&gt;django-sitemap&lt;/a&gt; to &lt;a class="reference external" href="http://googility.com/"&gt;googility.com&lt;/a&gt; yesterday and found
+that Tags don't implement &lt;tt class="docutils literal"&gt;get_absolute_url()&lt;/tt&gt;. Which makes sense since
+the site developer would want to decide how to expose them in the URL
+space.&lt;/p&gt;
+&lt;p&gt;It is also arguable that links to pages displaying the tag view already
+exist in the …&lt;/p&gt;</summary><content type="html">&lt;p&gt;I was adding &lt;a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/sitemaps/"&gt;django-sitemap&lt;/a&gt; to &lt;a class="reference external" href="http://googility.com/"&gt;googility.com&lt;/a&gt; yesterday and found
 that Tags don't implement &lt;tt class="docutils literal"&gt;get_absolute_url()&lt;/tt&gt;. Which makes sense since
 the site developer would want to decide how to expose them in the URL
 space.&lt;/p&gt;
@@ -45,4 +50,4 @@ sitemaps = {'tag_detail': SlugSitemap({'queryset':Tag.objects,
 tag.name and / is appended to the end&lt;/p&gt;
 &lt;p&gt;This class can be used to create sitemap entries for any url
 parameterized on a single field of an instance returned by the QuerySet.&lt;/p&gt;
-</summary><category term="django"></category><category term="djangositemap"></category><category term="djangotagging"></category><category term="python"></category><category term="webdevelopment"></category></entry></feed>
+</content><category term="django"></category><category term="djangositemap"></category><category term="djangotagging"></category><category term="python"></category><category term="webdevelopment"></category></entry></feed>

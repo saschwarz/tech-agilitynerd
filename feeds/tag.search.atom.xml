@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:5500/feeds/tag.search.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2010-08-10T03:41:00-05:00</updated><entry><title>Haystack Search Result Ordering and Pre-Rendering Results</title><link href="http://tech.agilitynerd.com/haystack-search-result-ordering-and-pre-rende.html" rel="alternate"></link><published>2010-08-10T03:41:00-05:00</published><updated>2010-08-10T03:41:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-08-10:haystack-search-result-ordering-and-pre-rende.html</id><summary type="html">&lt;p&gt;I use &lt;a class="reference external" href="http://haystacksearch.org/"&gt;Haystack&lt;/a&gt; and the Python &lt;a class="reference external" href="http://whoosh.ca/"&gt;Whoosh&lt;/a&gt; project to provide search
+<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd - search</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:5500/feeds/tag.search.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2010-08-10T03:41:00-05:00</updated><entry><title>Haystack Search Result Ordering and Pre-Rendering Results</title><link href="http://tech.agilitynerd.com/haystack-search-result-ordering-and-pre-rende.html" rel="alternate"></link><published>2010-08-10T03:41:00-05:00</published><updated>2010-08-10T03:41:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-08-10:/haystack-search-result-ordering-and-pre-rende.html</id><summary type="html">&lt;p&gt;I use &lt;a class="reference external" href="http://haystacksearch.org/"&gt;Haystack&lt;/a&gt; and the Python &lt;a class="reference external" href="http://whoosh.ca/"&gt;Whoosh&lt;/a&gt; project to provide search
+over ~3400 articles in my &lt;a class="reference external" href="http://googility.com"&gt;Googility.com&lt;/a&gt; database. I had originally
+implemented the search in the &amp;quot;simplest way that works&amp;quot;. I was making
+some other enhancement to Googility and noticed the search result page
+had two undesirable&amp;nbsp; behaviors:&lt;/p&gt;
+&lt;ol class="arabic simple"&gt;
+&lt;li&gt;The …&lt;/li&gt;&lt;/ol&gt;</summary><content type="html">&lt;p&gt;I use &lt;a class="reference external" href="http://haystacksearch.org/"&gt;Haystack&lt;/a&gt; and the Python &lt;a class="reference external" href="http://whoosh.ca/"&gt;Whoosh&lt;/a&gt; project to provide search
 over ~3400 articles in my &lt;a class="reference external" href="http://googility.com"&gt;Googility.com&lt;/a&gt; database. I had originally
 implemented the search in the &amp;quot;simplest way that works&amp;quot;. I was making
 some other enhancement to Googility and noticed the search result page
@@ -122,7 +128,12 @@ placed into the SearchIndex.&lt;/p&gt;
 &lt;p&gt;So now my search results are in reverse chronological order and they
 render using only 3 database queries and at least 10x faster than
 before.&lt;/p&gt;
-</summary><category term="django"></category><category term="haystack"></category><category term="search"></category><category term="whoosh"></category></entry><entry><title>Improving Google Ads and Google Search Descriptions</title><link href="http://tech.agilitynerd.com/improving-google-ads-and-google-search-descri.html" rel="alternate"></link><published>2010-08-03T01:46:00-05:00</published><updated>2010-08-03T01:46:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-08-03:improving-google-ads-and-google-search-descri.html</id><summary type="html">&lt;p&gt;I was looking at the google search results for my &lt;a class="reference external" href="http://googility.com/"&gt;Googility web site&lt;/a&gt;
+</content><category term="django"></category><category term="haystack"></category><category term="search"></category><category term="whoosh"></category></entry><entry><title>Improving Google Ads and Google Search Descriptions</title><link href="http://tech.agilitynerd.com/improving-google-ads-and-google-search-descri.html" rel="alternate"></link><published>2010-08-03T01:46:00-05:00</published><updated>2010-08-03T01:46:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-08-03:/improving-google-ads-and-google-search-descri.html</id><summary type="html">&lt;p&gt;I was looking at the google search results for my &lt;a class="reference external" href="http://googility.com/"&gt;Googility web site&lt;/a&gt;
+and noticed that the descriptions shown underneath the title often
+contained text from my navigation links instead of content from the body
+of the page:&lt;/p&gt;
+&lt;div class="thumbnail"&gt;&lt;p&gt;&lt;img alt="Google_description" src="/images/2010/08/13127405-google_description.jpg" /&gt;&lt;/p&gt;
+&lt;/div&gt;&lt;p&gt;I did some searching and found the Google Webmaster blog post about …&lt;/p&gt;</summary><content type="html">&lt;p&gt;I was looking at the google search results for my &lt;a class="reference external" href="http://googility.com/"&gt;Googility web site&lt;/a&gt;
 and noticed that the descriptions shown underneath the title often
 contained text from my navigation links instead of content from the body
 of the page:&lt;/p&gt;
@@ -152,4 +163,4 @@ improvements in the ads being generated for those pages. I keep an eye
 on my Adsense click rate and see if there is any increase in ad clicks.&lt;/p&gt;
 &lt;p&gt;So a couple simple edits made noticeable improvements not bad for a
 couple hours investigation and implementation.&lt;/p&gt;
-&lt;/p&gt;</summary><category term="adsense"></category><category term="django"></category><category term="google"></category><category term="search"></category><category term="webdevelopment"></category></entry></feed>
+&lt;/p&gt;</content><category term="adsense"></category><category term="django"></category><category term="google"></category><category term="search"></category><category term="webdevelopment"></category></entry></feed>

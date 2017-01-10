@@ -2,33 +2,45 @@
 <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
 <!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
 <!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
-  <head>
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+
+<head>
     <meta charset="utf-8">
     <title>tech.agilitynerd</title>
     <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
     <meta name="description" content="">
-    <meta name="author" content="Steve Schwarz">
-    <!-- <link href="http://127.0.0.1:5500/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" /> -->
-    <link href="http://feeds.feedburner.com/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" />
-
+    <meta name="author" content="Steve Schwarz">      <!-- <link href="http://127.0.0.1:5500/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" /> -->
+    <link href="http://feeds.feedburner.com/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" />   
     <link href="http://127.0.0.1:5500/feeds/tag.webdevelopment.atom.xml" type="application/atom+xml" rel="alternate" title="tech.agilitynerd webdevelopment tag Atom Feed" />
     <!-- Le styles -->
     <link href="http://tech.agilitynerd.com/theme/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
-      body {
-      padding-top: 60px;
-      padding-bottom: 40px;
-      }
-      .sidebar-nav {
-      padding: 9px 0;
-      }
+        body {
+            padding-top: 60px;
+            padding-bottom: 40px;
+        }
+
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+
+        @media (max-width: 767px) {
+            .sidebar {
+                margin-top: 2em;
+                border-top: 1px solid #e3e3e3;
+                padding-top: 1em;
+            }
+            .sidebar .search {
+                margin-bottom: 0;
+            }
+        }
     </style>
     <link href="http://tech.agilitynerd.com/theme/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
     <link href="http://tech.agilitynerd.com/theme/local.css" rel="stylesheet">
-    <link href="http://tech.agilitynerd.com/theme/pygments.css" rel="stylesheet">
-<script>var _gaq=[['_setAccount','UA-1127677-3'],['_trackPageview']];(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.src='//www.google-analytics.com/ga.js';s.parentNode.insertBefore(g,s)}(document,'script'))</script>
-<script type="text/javascript">
+    <link href="http://tech.agilitynerd.com/theme/pygments.css" rel="stylesheet"> <script>var _gaq=[['_setAccount','UA-1127677-3'],['_trackPageview']];(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.src='//www.google-analytics.com/ga.js';s.parentNode.insertBefore(g,s)}(document,'script'))</script>
+ <script type="text/javascript">
   var disqus_shortname = "techagilitynerd"; // required: replace example with your forum shortname
   var disqus_developer = 1;
   
@@ -40,11 +52,11 @@
   (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
   }());
 </script>
-  </head>
-  <body>
-<!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+</head>
 
-<div class="navbar navbar-inverse navbar-fixed-top">
+<body>
+    <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+  <div class="navbar navbar-inverse navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container-fluid">
       <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -71,22 +83,22 @@
   </div>
 </div>
     <div class="container-fluid">
-      <div class="row-fluid">
-	<div class="span1">&nbsp;</div>
-	<div class="span10">
-	  <div class="row-fluid">
-            <div class="span9">
-	      <div class="page-header">
-		<h1>tech.agilitynerd <small>webdevelopment</small></h1>
-	      </div>
-
+        <div class="row-fluid">
+            <div class="span1">&nbsp;</div>
+            <div class="span10">
+                <div class="row-fluid">
+                    <div class="span9">
+                        <div class="page-header">
+                            <h1>tech.agilitynerd <small>webdevelopment</small></h1>
+                        </div>
+ 
 <div class='article'>
   <h2><a href="http://tech.agilitynerd.com/coverage-analysis-with-coveralls.html">Integrated Coverage Analysis with Coveralls</a></h2>
   <div class="well small"><a class="more" href="http://tech.agilitynerd.com/coverage-analysis-with-coveralls.html">On 15 Dec 2013 at 1700</a>
 by <a class="url fn" href="http://tech.agilitynerd.com/author/steve-schwarz.html">Steve Schwarz</a> in <a href="http://tech.agilitynerd.com/category/webdev.html">webdev</a>
  | <a href="http://tech.agilitynerd.com/coverage-analysis-with-coveralls.html#disqus_thread">Comments</a></div>
   <div class="summary"><p>When I converted <a class="reference external" href="https://github.com/saschwarz/django-periodicals">django-periodicals</a> to use <a class="reference external" href="http://tech.agilitynerd.com/cookiecutter-django-do-the-right-thing.html">cookiecutter-djangopackage</a> I was running <a class="reference external" href="https://pypi.python.org/pypi/coverage">coverage.py</a> in my <a class="reference external" href="https://travis-ci.org">Travis-CI</a> <tt class="docutils literal">.travis.yml</tt> to report the coverage results to the command line log. The coverage results were interesting but didn't really alter my development practice much.</p>
-<p>Over the years I've had differing options about ...</p></div>
+<p>Over the years I've had differing options about coverage testing …</p></div>
 <div class="tags">Tagged as: <a href="http://tech.agilitynerd.com/tag/coverage.html">coverage</a> <a href="http://tech.agilitynerd.com/tag/webdevelopment.html">webdevelopment</a> <a href="http://tech.agilitynerd.com/tag/github.html">github</a> <a href="http://tech.agilitynerd.com/tag/django.html">django</a> <a href="http://tech.agilitynerd.com/tag/testing.html">testing</a> <a href="http://tech.agilitynerd.com/tag/travis.html">travis</a> <a href="http://tech.agilitynerd.com/tag/python.html">python</a> </div></div>
 <div class='article'>
   <h2><a href="http://tech.agilitynerd.com/cookiecutter-django-do-the-right-thing.html">cookiecutter-djangopackage - Do the Right Thing</a></h2>
@@ -97,7 +109,7 @@ by <a class="url fn" href="http://tech.agilitynerd.com/author/steve-schwarz.html
 <ul class="simple">
 <li>A full set of tests.</li>
 <li>Near 100% code coverage.</li>
-<li>Continuous Integration ...</li></ul></div>
+<li>Continuous Integration running …</li></ul></div>
 <div class="tags">Tagged as: <a href="http://tech.agilitynerd.com/tag/python.html">python</a> <a href="http://tech.agilitynerd.com/tag/django.html">django</a> <a href="http://tech.agilitynerd.com/tag/googility.html">googility</a> <a href="http://tech.agilitynerd.com/tag/development.html">development</a> <a href="http://tech.agilitynerd.com/tag/testing.html">testing</a> <a href="http://tech.agilitynerd.com/tag/travis.html">travis</a> <a href="http://tech.agilitynerd.com/tag/rtd.html">rtd</a> <a href="http://tech.agilitynerd.com/tag/pypi.html">pypi</a> <a href="http://tech.agilitynerd.com/tag/tox.html">tox</a> <a href="http://tech.agilitynerd.com/tag/virtualenv.html">virtualenv</a> <a href="http://tech.agilitynerd.com/tag/webdevelopment.html">webdevelopment</a> <a href="http://tech.agilitynerd.com/tag/github.html">github</a> </div></div>
 <div class='article'>
   <h2><a href="http://tech.agilitynerd.com/reducing-the-impact-of-client-side-analytics.html">Reducing the Cost of Client Side Analytics</a></h2>
@@ -107,7 +119,7 @@ by <a class="url fn" href="http://tech.agilitynerd.com/author/steve-schwarz.html
   <div class="summary"><p>I read&nbsp;<a class="reference external" href="http://blog.mozilla.com/webdev/2012/01/06/timing-amo-user-experience/">Andy McKay's blog post on timing user experience</a>&nbsp;on the
 <a class="reference external" href="http://blog.mozilla.com/webdev">Mozilla Webdev blog</a>&nbsp;the other day and it reminded me of an idea I was
 thinking about for measuring client side timings at work. I had been
-toying with the idea of rolling our own library to ...</p></div>
+toying with the idea of rolling our own library to capture …</p></div>
 <div class="tags">Tagged as: <a href="http://tech.agilitynerd.com/tag/analytics.html">analytics</a> <a href="http://tech.agilitynerd.com/tag/boomerang.html">boomerang</a> <a href="http://tech.agilitynerd.com/tag/javascript.html">javascript</a> <a href="http://tech.agilitynerd.com/tag/sessionstorage.html">sessionstorage</a> <a href="http://tech.agilitynerd.com/tag/webdevelopment.html">webdevelopment</a> </div></div>
 <div class='article'>
   <h2><a href="http://tech.agilitynerd.com/debug-tool-for-mobile-website-selection-by-re.html">Debug Site for Website Redirects By Referer String</a></h2>
@@ -118,7 +130,7 @@ by <a class="url fn" href="http://tech.agilitynerd.com/author/steve-schwarz.html
 mobile browsing experience. I'm using the referrer string in Django
 middleware (currently using <a class="reference external" href="http://code.google.com/p/minidetector/">minidetector</a>) to detect whether the
 client is mobile and redirect them to the mobile site. Since it is
-likely that some folks will ...</p></div>
+likely that some folks will/won't get …</p></div>
 <div class="tags">Tagged as: <a href="http://tech.agilitynerd.com/tag/django.html">django</a> <a href="http://tech.agilitynerd.com/tag/mobile.html">mobile</a> <a href="http://tech.agilitynerd.com/tag/referrer.html">referrer</a> <a href="http://tech.agilitynerd.com/tag/webdevelopment.html">webdevelopment</a> </div></div>
 <div class='article'>
   <h2><a href="http://tech.agilitynerd.com/improving-google-ads-and-google-search-descri.html">Improving Google Ads and Google Search Descriptions</a></h2>
@@ -130,7 +142,7 @@ and noticed that the descriptions shown underneath the title often
 contained text from my navigation links instead of content from the body
 of the page:</p>
 <div class="thumbnail"><p><img alt="Google_description" src="/images/2010/08/13127405-google_description.jpg" /></p>
-</div><p>I did some searching and found the Google Webmaster blog post about ...</p></div>
+</div><p>I did some searching and found the Google Webmaster blog post about …</p></div>
 <div class="tags">Tagged as: <a href="http://tech.agilitynerd.com/tag/adsense.html">adsense</a> <a href="http://tech.agilitynerd.com/tag/django.html">django</a> <a href="http://tech.agilitynerd.com/tag/google.html">google</a> <a href="http://tech.agilitynerd.com/tag/search.html">search</a> <a href="http://tech.agilitynerd.com/tag/webdevelopment.html">webdevelopment</a> </div></div>
 <div class='article'>
   <h2><a href="http://tech.agilitynerd.com/firediff-track-and-save-css-edits-in-firebug.html">Firediff: track and save CSS edits in Firebug</a></h2>
@@ -140,7 +152,7 @@ by <a class="url fn" href="http://tech.agilitynerd.com/author/steve-schwarz.html
   <div class="summary"><p>When I'm making fiddly changes to a web page I like to tweak the CSS
 using the Firefox Firebug plugin. It has the advantage of letting you
 try changes quickly and see the effect. The downside has always been
-that you had to then change the source CSS file ...</p></div>
+that you had to then change the source CSS file to …</p></div>
 <div class="tags">Tagged as: <a href="http://tech.agilitynerd.com/tag/css.html">css</a> <a href="http://tech.agilitynerd.com/tag/firefoxaddon.html">firefoxaddon</a> <a href="http://tech.agilitynerd.com/tag/webdevelopment.html">webdevelopment</a> </div></div>
 <div class='article'>
   <h2><a href="http://tech.agilitynerd.com/initial-release-of-django-stw.html">Initial Release of django-stw</a></h2>
@@ -150,7 +162,7 @@ by <a class="url fn" href="http://tech.agilitynerd.com/author/steve-schwarz.html
   <div class="summary"><p>I have been using the free website thumbnail service from <a class="reference external" href="http://www.shrinktheweb.com?a=988">Shrink The
 Web</a> on my dog agility search website <a class="reference external" href="http://googility.com">Googility</a> since I launched it.
 It is quick and easy to use and it adds a lot to the look of the pages.</p>
-<p>I had created a simple <a class="reference external" href="http://djangoproject.com/">Django</a> template tag ...</p></div>
+<p>I had created a simple <a class="reference external" href="http://djangoproject.com/">Django</a> template tag …</p></div>
 <div class="tags">Tagged as: <a href="http://tech.agilitynerd.com/tag/django.html">django</a> <a href="http://tech.agilitynerd.com/tag/github.html">github</a> <a href="http://tech.agilitynerd.com/tag/googility.html">googility</a> <a href="http://tech.agilitynerd.com/tag/pypi.html">pypi</a> <a href="http://tech.agilitynerd.com/tag/python.html">python</a> <a href="http://tech.agilitynerd.com/tag/shrinktheweb.html">shrinktheweb</a> <a href="http://tech.agilitynerd.com/tag/webdevelopment.html">webdevelopment</a> </div></div>
 <div class='article'>
   <h2><a href="http://tech.agilitynerd.com/embedding-json-within-generated-html.html">Embedding JSON Within Generated HTML</a></h2>
@@ -160,7 +172,8 @@ by <a class="url fn" href="http://tech.agilitynerd.com/author/steve-schwarz.html
   <div class="summary"><p>Ran into an interesting problem at work this past week that had a simple
 and pleasing resolution. We have an in house developed JavaScript grid
 on some of our pages and when users entered some text strings we'd
-generate invalid <a class="reference external" href="http://www.json.org/js.html">JSON</a> payloads that would give the user an error ...</p></div>
+generate invalid <a class="reference external" href="http://www.json.org/js.html">JSON</a> payloads that would give the user an error
+page …</p></div>
 <div class="tags">Tagged as: <a href="http://tech.agilitynerd.com/tag/html.html">html</a> <a href="http://tech.agilitynerd.com/tag/javascript.html">javascript</a> <a href="http://tech.agilitynerd.com/tag/json.html">json</a> <a href="http://tech.agilitynerd.com/tag/python.html">python</a> <a href="http://tech.agilitynerd.com/tag/webdevelopment.html">webdevelopment</a> </div></div>
 <div class='article'>
   <h2><a href="http://tech.agilitynerd.com/django-shrink-the-web-template-tag-updated.html">Django Shrink The Web Template Tag Updated</a></h2>
@@ -172,7 +185,7 @@ by <a class="url fn" href="http://tech.agilitynerd.com/author/steve-schwarz.html
 distribution of images and they took the opportunity to modify their
 API.</p>
 <p>The updated template tag <a class="reference external" href="http://djangosnippets.org/snippets/1744/">is on django snippets</a>.</p>
-<p>The STW folks have asked be to extend ...</p></div>
+<p>The STW folks have asked be to extend …</p></div>
 <div class="tags">Tagged as: <a href="http://tech.agilitynerd.com/tag/django.html">django</a> <a href="http://tech.agilitynerd.com/tag/python.html">python</a> <a href="http://tech.agilitynerd.com/tag/shrinktheweb.html">shrinktheweb</a> <a href="http://tech.agilitynerd.com/tag/webdevelopment.html">webdevelopment</a> </div></div>
 <div class='article'>
   <h2><a href="http://tech.agilitynerd.com/multiple-youtube-videos-per-page-using-videol.html">Multiple YouTube Videos per page using VideoLightBox</a></h2>
@@ -183,7 +196,7 @@ by <a class="url fn" href="http://tech.agilitynerd.com/author/steve-schwarz.html
 posts on my <a class="reference external" href="http://agilitynerd.com/">AgilityNerd blog</a> and I started looking for a light boxed
 player. Their were two main reasons. The smallest video playback window
 provided by YouTube for HD videos is too wide for my two column layout
-and ...</p></div>
+and …</p></div>
 <div class="tags">Tagged as: <a href="http://tech.agilitynerd.com/tag/css.html">css</a> <a href="http://tech.agilitynerd.com/tag/html.html">html</a> <a href="http://tech.agilitynerd.com/tag/javascript.html">javascript</a> <a href="http://tech.agilitynerd.com/tag/jquery.html">jquery</a> <a href="http://tech.agilitynerd.com/tag/video.html">video</a> <a href="http://tech.agilitynerd.com/tag/visuallightbox.html">visuallightbox</a> <a href="http://tech.agilitynerd.com/tag/webdevelopment.html">webdevelopment</a> <a href="http://tech.agilitynerd.com/tag/youtube.html">youtube</a> </div></div>
 
 <div class="pagination">
@@ -195,9 +208,10 @@ and ...</p></div>
 </ul>
 </div>
 
-        </div><!--/span-->
+                    </div>
+                    <!--/span-->
 
-	    <div class="span3">
+                    <div class="span3 sidebar">
  <script>
   (function() {
     var cx = '001042720131993941673:szhtogqckem';
@@ -213,7 +227,7 @@ and ...</p></div>
 <div class="search">
     <gcse:search></gcse:search>
 </div>
-<hr>
+ <hr>
 <div class="author">
 <h4>About</h4>
 <div class="author-about">
@@ -234,24 +248,30 @@ and ...</p></div>
     <li><a href="https://twitter.com/steveaschwarz">Twitter</a></li>
   </ul>
 </div><!--/.well -->
-      </div><!--/span-->
+                    </div>
+                    <!--/span-->
 
-	  </div>
-	</div>
-      </div><!--/row-->
+                </div>
+            </div>
+        </div>
+        <!--/row-->
 
-      <hr>
+        <hr>
 
-      <footer>
-        <p>Powered by <a href="http://blog.getpelican.com/">Pelican</a></p>
-	<p>&copy; Steve Schwarz 2016</p>
-      </footer>
+        <footer>
+            <p>Powered by <a href="http://blog.getpelican.com/">Pelican</a></p>
+            <p>&copy; Steve Schwarz 2016</p>
+        </footer>
 
-    </div><!--/.fluid-container-->
+    </div>
+    <!--/.fluid-container-->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="http://tech.agilitynerd.com/theme/js/jquery-1.7.2.min.js"><\/script>')</script>
-      <script src="http://tech.agilitynerd.com/theme/bootstrap/js/bootstrap.min.js"></script>
-      <script src="http://tech.agilitynerd.com/theme/js/modernizr-2.5.3-respond-1.1.0.min.js"></script>
+    <script>
+        window.jQuery || document.write('<script src="http://tech.agilitynerd.com/theme/js/jquery-1.7.2.min.js"><\/script>')
+    </script>
+    <script src="http://tech.agilitynerd.com/theme/bootstrap/js/bootstrap.min.js"></script>
+    <script src="http://tech.agilitynerd.com/theme/js/modernizr-2.5.3-respond-1.1.0.min.js"></script>
 
-  </body>
+</body>
+
 </html>

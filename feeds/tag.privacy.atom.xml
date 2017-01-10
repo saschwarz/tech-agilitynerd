@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:5500/feeds/tag.privacy.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2005-06-23T19:00:00-05:00</updated><entry><title>How Safe is Your Personal Information in the Hands of Website Developers?</title><link href="http://tech.agilitynerd.com/how-safe-is-your-personal-information-in-the-1.html" rel="alternate"></link><published>2005-06-23T19:00:00-05:00</published><updated>2005-06-23T19:00:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2005-06-23:how-safe-is-your-personal-information-in-the-1.html</id><summary type="html">&lt;p&gt;I was going through the webserver statistics for this site to see if any
+<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd - privacy</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:5500/feeds/tag.privacy.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2005-06-23T19:00:00-05:00</updated><entry><title>How Safe is Your Personal Information in the Hands of Website Developers?</title><link href="http://tech.agilitynerd.com/how-safe-is-your-personal-information-in-the-1.html" rel="alternate"></link><published>2005-06-23T19:00:00-05:00</published><updated>2005-06-23T19:00:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2005-06-23:/how-safe-is-your-personal-information-in-the-1.html</id><summary type="html">&lt;p&gt;I was going through the webserver statistics for this site to see if any
+new sites had linked to any of my articles (it is always nice to see
+that what I have to say is useful to someone). Anyway, I ran across
+someone who had come to my site …&lt;/p&gt;</summary><content type="html">&lt;p&gt;I was going through the webserver statistics for this site to see if any
 new sites had linked to any of my articles (it is always nice to see
 that what I have to say is useful to someone). Anyway, I ran across
 someone who had come to my site through a Google query (I won't mention
@@ -30,4 +33,4 @@ an egregious privacy violation. So this experience makes me wonder about
 all the online systems into which we type our personal information. All
 it takes is one careless developer (not even a malicious one) to expose
 our private information to a much wider audience...&lt;/p&gt;
-</summary><category term="development"></category><category term="privacy"></category></entry></feed>
+</content><category term="development"></category><category term="privacy"></category></entry></feed>

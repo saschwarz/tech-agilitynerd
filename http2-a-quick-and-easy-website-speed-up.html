@@ -2,31 +2,43 @@
 <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
 <!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
 <!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
-  <head>
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+
+<head>
     <meta charset="utf-8">
     <title>tech.agilitynerd</title>
     <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
     <meta name="description" content="">
-    <meta name="author" content="Steve Schwarz">
-    <!-- <link href="http://127.0.0.1:5500/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" /> -->
-    <link href="http://feeds.feedburner.com/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" />
-    <!-- Le styles -->
+    <meta name="author" content="Steve Schwarz">      <!-- <link href="http://127.0.0.1:5500/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" /> -->
+    <link href="http://feeds.feedburner.com/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" />       <!-- Le styles -->
     <link href="http://tech.agilitynerd.com/theme/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
-      body {
-      padding-top: 60px;
-      padding-bottom: 40px;
-      }
-      .sidebar-nav {
-      padding: 9px 0;
-      }
+        body {
+            padding-top: 60px;
+            padding-bottom: 40px;
+        }
+
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+
+        @media (max-width: 767px) {
+            .sidebar {
+                margin-top: 2em;
+                border-top: 1px solid #e3e3e3;
+                padding-top: 1em;
+            }
+            .sidebar .search {
+                margin-bottom: 0;
+            }
+        }
     </style>
     <link href="http://tech.agilitynerd.com/theme/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
     <link href="http://tech.agilitynerd.com/theme/local.css" rel="stylesheet">
-    <link href="http://tech.agilitynerd.com/theme/pygments.css" rel="stylesheet">
-<script>var _gaq=[['_setAccount','UA-1127677-3'],['_trackPageview']];(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.src='//www.google-analytics.com/ga.js';s.parentNode.insertBefore(g,s)}(document,'script'))</script>
-<script type="text/javascript">
+    <link href="http://tech.agilitynerd.com/theme/pygments.css" rel="stylesheet"> <script>var _gaq=[['_setAccount','UA-1127677-3'],['_trackPageview']];(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.src='//www.google-analytics.com/ga.js';s.parentNode.insertBefore(g,s)}(document,'script'))</script>
+ <script type="text/javascript">
   var disqus_shortname = "techagilitynerd"; // required: replace example with your forum shortname
   var disqus_developer = 1;
   
@@ -44,11 +56,11 @@
   (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
   }());
 </script>
-  </head>
-  <body>
-<!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+</head>
 
-<div class="navbar navbar-inverse navbar-fixed-top">
+<body>
+    <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+  <div class="navbar navbar-inverse navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container-fluid">
       <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -75,12 +87,12 @@
   </div>
 </div>
     <div class="container-fluid">
-      <div class="row-fluid">
-	<div class="span1">&nbsp;</div>
-	<div class="span10">
-	  <div class="row-fluid">
-            <div class="span9">
-<div class='article'>
+        <div class="row-fluid">
+            <div class="span1">&nbsp;</div>
+            <div class="span10">
+                <div class="row-fluid">
+                    <div class="span9">
+ <div class='article'>
   <div class="page-header"><h1>HTTP/2: A Quick and Easy Website Speed Up</h1></div>
   <div class="well small"><a class="more" href="http://tech.agilitynerd.com/http2-a-quick-and-easy-website-speed-up.html">On 23 Sep 2016 at 1800</a>
 by <a class="url fn" href="http://tech.agilitynerd.com/author/steve-schwarz.html">Steve Schwarz</a> in <a href="http://tech.agilitynerd.com/category/devops.html">devops</a>
@@ -129,18 +141,14 @@ server {
 <div class="section" id="next-steps">
 <h2>Next Steps</h2>
 <p>So that was a nice free speed up and there are plenty of areas I can still investigate to further improve the performance of this web site:</p>
-<ul>
-<li><p class="first">Bring 3rd party resources back to my domain to save DNS lookups and see how that affects overall performance. This may hurt performance for HTTP/1.1 clients who are limited to the number of connections per domain.</p>
-</li>
-<li><p class="first">Change multiple SVG files (which are all steps in a progression) into a single file and use CSS to hide/show appropriate steps using a single image. This will greatly reduce the number of individual files downloaded and save some duplicated data within those files.</p>
-</li>
-<li><p class="first">Move Google Analytics locally. GA has a number of problems (short cache times and multiple files downloaded) so at the cost of periodically updating the files I could host them all locally and save some time.</p>
-</li>
-<li><p class="first">Disqus is even worse than GA when it comes to many file downloads, redirects, short cache times etc. I might change to have Disqus data loaded on user demand.</p>
-</li>
+<ul class="simple">
+<li>Bring 3rd party resources back to my domain to save DNS lookups and see how that affects overall performance. This may hurt performance for HTTP/1.1 clients who are limited to the number of connections per domain.</li>
+<li>Change multiple SVG files (which are all steps in a progression) into a single file and use CSS to hide/show appropriate steps using a single image. This will greatly reduce the number of individual files downloaded and save some duplicated data within those files.</li>
+<li>Move Google Analytics locally. GA has a number of problems (short cache times and multiple files downloaded) so at the cost of periodically updating the files I could host them all locally and save some time.</li>
+<li>Disqus is even worse than GA when it comes to many file downloads, redirects, short cache times etc. I might change to have Disqus data loaded on user demand.</li>
 <li><dl class="first docutils">
 <dt>Experiment with other HTTP/2 features:</dt>
-<dd><ul class="first last simple">
+<dd><ul class="first last">
 <li><a class="reference external" href="https://www.igvita.com/2015/08/17/eliminating-roundtrips-with-preconnect/">preconnect</a> might help reduce the cost of DNS look ups that result from redirects like those used by Google Analytics, Google Fonts, and Disqus resources.</li>
 <li><a class="reference external" href="https://www.smashingmagazine.com/2016/02/preload-what-is-it-good-for/">preload</a> to load resources before they are accessed by JS during <tt class="docutils literal">onload</tt> or via user actions.</li>
 <li><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Link_prefetching_FAQ">prefetch</a> to load JS/images for future pages. There are some common workflows on this site that could benefit from prefetching the JS for subsequent pages.</li>
@@ -158,9 +166,10 @@ server {
     <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
   </div>
 </div>	
-        </div><!--/span-->
+                    </div>
+                    <!--/span-->
 
-	    <div class="span3">
+                    <div class="span3 sidebar">
  <script>
   (function() {
     var cx = '001042720131993941673:szhtogqckem';
@@ -176,7 +185,7 @@ server {
 <div class="search">
     <gcse:search></gcse:search>
 </div>
-<hr>
+ <hr>
 <div class="author">
 <h4>About</h4>
 <div class="author-about">
@@ -197,24 +206,30 @@ server {
     <li><a href="https://twitter.com/steveaschwarz">Twitter</a></li>
   </ul>
 </div><!--/.well -->
-      </div><!--/span-->
+                    </div>
+                    <!--/span-->
 
-	  </div>
-	</div>
-      </div><!--/row-->
+                </div>
+            </div>
+        </div>
+        <!--/row-->
 
-      <hr>
+        <hr>
 
-      <footer>
-        <p>Powered by <a href="http://blog.getpelican.com/">Pelican</a></p>
-	<p>&copy; Steve Schwarz 2016</p>
-      </footer>
+        <footer>
+            <p>Powered by <a href="http://blog.getpelican.com/">Pelican</a></p>
+            <p>&copy; Steve Schwarz 2016</p>
+        </footer>
 
-    </div><!--/.fluid-container-->
+    </div>
+    <!--/.fluid-container-->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="http://tech.agilitynerd.com/theme/js/jquery-1.7.2.min.js"><\/script>')</script>
-      <script src="http://tech.agilitynerd.com/theme/bootstrap/js/bootstrap.min.js"></script>
-      <script src="http://tech.agilitynerd.com/theme/js/modernizr-2.5.3-respond-1.1.0.min.js"></script>
+    <script>
+        window.jQuery || document.write('<script src="http://tech.agilitynerd.com/theme/js/jquery-1.7.2.min.js"><\/script>')
+    </script>
+    <script src="http://tech.agilitynerd.com/theme/bootstrap/js/bootstrap.min.js"></script>
+    <script src="http://tech.agilitynerd.com/theme/js/modernizr-2.5.3-respond-1.1.0.min.js"></script>
 
-  </body>
+</body>
+
 </html>

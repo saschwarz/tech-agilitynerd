@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:5500/feeds/tag.slicehost.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2008-01-05T23:53:00-06:00</updated><entry><title>Notes on Configuring Postfix on Ubuntu Gutsy to Send Email via Google Apps</title><link href="http://tech.agilitynerd.com/notes-on-configuring-postfix-on-ubuntu-gutsy-1.html" rel="alternate"></link><published>2008-01-05T23:53:00-06:00</published><updated>2008-01-05T23:53:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2008-01-05:notes-on-configuring-postfix-on-ubuntu-gutsy-1.html</id><summary type="html">&lt;p&gt;Here are some notes I took on configuring my &lt;a class="reference external" href="http://www.slicehost.com/"&gt;Slicehost&lt;/a&gt; Ubuntu Gutsy
+<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd - slicehost</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:5500/feeds/tag.slicehost.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2008-01-05T23:53:00-06:00</updated><entry><title>Notes on Configuring Postfix on Ubuntu Gutsy to Send Email via Google Apps</title><link href="http://tech.agilitynerd.com/notes-on-configuring-postfix-on-ubuntu-gutsy-1.html" rel="alternate"></link><published>2008-01-05T23:53:00-06:00</published><updated>2008-01-05T23:53:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2008-01-05:/notes-on-configuring-postfix-on-ubuntu-gutsy-1.html</id><summary type="html">&lt;p&gt;Here are some notes I took on configuring my &lt;a class="reference external" href="http://www.slicehost.com/"&gt;Slicehost&lt;/a&gt; Ubuntu Gutsy
+installation to use Postfix to send emails via Google Apps. I am far
+from an expert on postfix configuration but maybe these notes will be
+helpful to others needing this configuration.&lt;/p&gt;
+&lt;p&gt;These sites contain the key information:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;&lt;a class="reference external" href="http://behindmyscreen.newsvine.com/_news/2006/12/31/501615-configuringubuntu-postfix-and-gmail-in-101-easy-steps"&gt;Behind …&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;</summary><content type="html">&lt;p&gt;Here are some notes I took on configuring my &lt;a class="reference external" href="http://www.slicehost.com/"&gt;Slicehost&lt;/a&gt; Ubuntu Gutsy
 installation to use Postfix to send emails via Google Apps. I am far
 from an expert on postfix configuration but maybe these notes will be
 helpful to others needing this configuration.&lt;/p&gt;
@@ -56,4 +62,4 @@ sudo tail /var/log/mail.\*
 &lt;/pre&gt;
 &lt;p&gt;I hope these notes might help folks &amp;quot;get over the hump&amp;quot; if they are
 setting up the same configuration.&lt;/p&gt;
-</summary><category term="postfix"></category><category term="slicehost"></category><category term="ubuntu"></category></entry></feed>
+</content><category term="postfix"></category><category term="slicehost"></category><category term="ubuntu"></category></entry></feed>

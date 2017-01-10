@@ -1,5 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:5500/feeds/tag.shrinktheweb.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2011-04-23T13:32:00-05:00</updated><entry><title>Django Shrink The Web django-stw 0.2.0 Released</title><link href="http://tech.agilitynerd.com/django-shrink-the-web-django-stw-020-released.html" rel="alternate"></link><published>2011-04-23T13:32:00-05:00</published><updated>2011-04-23T13:32:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2011-04-23:django-shrink-the-web-django-stw-020-released.html</id><summary type="html">&lt;p&gt;&lt;a class="reference external" href="http://www.shrinktheweb.com/"&gt;Shrink The Web&lt;/a&gt; has announced a new API for free users using their new
+<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd - shrinktheweb</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:5500/feeds/tag.shrinktheweb.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2017-01-10T13:00:00-06:00</updated><entry><title>Django Shrink The Web django-stw 1.0 Released</title><link href="http://tech.agilitynerd.com/django-shrink-the-web-10-released.html" rel="alternate"></link><published>2017-01-10T13:00:00-06:00</published><updated>2017-01-10T13:00:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2017-01-10:/django-shrink-the-web-10-released.html</id><summary type="html">&lt;p&gt;It has been several years since I've worked on my &lt;a class="reference external" href="https://www.djangoproject.com/"&gt;Django&lt;/a&gt; driven website that uses &lt;a class="reference external" href="http://www.shrinktheweb.com/"&gt;Shrink The Web&lt;/a&gt; (STW) screen shots.
+During that time STW has simplified their feature set and their API.&lt;/p&gt;
+&lt;p&gt;As I upgraded my site (&lt;a class="reference external" href="https://www.googility.com/"&gt;Googility.com&lt;/a&gt;) I took
+some time to modernize the &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;django-stw&lt;/span&gt;&lt;/tt&gt; template tag …&lt;/p&gt;</summary><content type="html">&lt;p&gt;It has been several years since I've worked on my &lt;a class="reference external" href="https://www.djangoproject.com/"&gt;Django&lt;/a&gt; driven website that uses &lt;a class="reference external" href="http://www.shrinktheweb.com/"&gt;Shrink The Web&lt;/a&gt; (STW) screen shots.
+During that time STW has simplified their feature set and their API.&lt;/p&gt;
+&lt;p&gt;As I upgraded my site (&lt;a class="reference external" href="https://www.googility.com/"&gt;Googility.com&lt;/a&gt;) I took
+some time to modernize the &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;django-stw&lt;/span&gt;&lt;/tt&gt; template tag and support API changes for the latest Django and Python versions.&lt;/p&gt;
+&lt;p&gt;I also tested the package when deployed using HTTP and HTTPS.&lt;/p&gt;
+&lt;p&gt;Here are the changes (from the &lt;a class="reference external" href="https://github.com/saschwarz/django-stw/blob/master/CHANGELOG.txt"&gt;CHANGELOG.txt&lt;/a&gt;):&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+1.0.1 Use https for all requests to shrinktheweb.com
+- Stops browser warnings when used on https websites while not interferring with sites running on http.
+
+1.0.0 Updates for Django 1.9/1.10 and Python 2.7/3.5
+- Old versions of Django/Python are no longer supported.
+- Removed ``shrinkthewebimage`` template tag since there is no longer an API distinction between free and Pro accounts.
+&lt;/pre&gt;
+&lt;p&gt;You can the template tag in action on this &lt;a class="reference external" href="https://www.googility.com/django-stw/"&gt;demo page&lt;/a&gt; in a nicer &lt;a class="reference external" href="http://getbootstrap.com/"&gt;&amp;quot;Bootstrap-ified&amp;quot;&lt;/a&gt; UI:&lt;/p&gt;
+&lt;div class="thumbnail figure"&gt;
+&lt;img alt="Screenshot of first slide of my presentation" src="http://tech.agilitynerd.com/images/DjangoSTWDemoScreenshot.png" /&gt;
+&lt;/div&gt;
+&lt;p&gt;The latest package is &lt;a class="reference external" href="http://pypi.python.org/pypi?:action=display&amp;amp;name=django-stw"&gt;available on PyPi&lt;/a&gt;:&lt;/p&gt;
+&lt;pre class="code python literal-block"&gt;
+&lt;span class="n"&gt;pip&lt;/span&gt; &lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="n"&gt;django&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;stw&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;Or as a &lt;a class="reference external" href="https://github.com/saschwarz/django-stw/releases"&gt;source download on github&lt;/a&gt;, or via &lt;a class="reference external" href="https://github.com/saschwarz/django-stw"&gt;git clone&lt;/a&gt;.&lt;/p&gt;
+</content><category term="django"></category><category term="shrinktheweb"></category><category term="python"></category><category term="images"></category><category term="bootstrap"></category></entry><entry><title>Django Shrink The Web django-stw 0.2.0 Released</title><link href="http://tech.agilitynerd.com/django-shrink-the-web-django-stw-020-released.html" rel="alternate"></link><published>2011-04-23T13:32:00-05:00</published><updated>2011-04-23T13:32:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2011-04-23:/django-shrink-the-web-django-stw-020-released.html</id><summary type="html">&lt;p&gt;&lt;a class="reference external" href="http://www.shrinktheweb.com/"&gt;Shrink The Web&lt;/a&gt; has announced a new API for free users using their new
+&lt;a class="reference external" href="http://www.shrinktheweb.com/content/what-stw-preview-verification.html"&gt;preview verification&lt;/a&gt; feature. This change required changes to my
+django-stw package.&lt;/p&gt;
+&lt;p&gt;The changes (lifted from the &lt;a class="reference external" href="https://github.com/saschwarz/django-stw/blob/master/CHANGELOG.txt"&gt;CHANGELOG.txt&lt;/a&gt;):&lt;/p&gt;
+&lt;p&gt;Changes to the &lt;tt class="docutils literal"&gt;shrinkthewebimage&lt;/tt&gt; template tag:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;The &lt;tt class="docutils literal"&gt;shrinkthewebimage&lt;/tt&gt; template tag is NOT backward compatible with
+version 0.0 …&lt;/li&gt;&lt;/ul&gt;</summary><content type="html">&lt;p&gt;&lt;a class="reference external" href="http://www.shrinktheweb.com/"&gt;Shrink The Web&lt;/a&gt; has announced a new API for free users using their new
 &lt;a class="reference external" href="http://www.shrinktheweb.com/content/what-stw-preview-verification.html"&gt;preview verification&lt;/a&gt; feature. This change required changes to my
 django-stw package.&lt;/p&gt;
 &lt;p&gt;The changes (lifted from the &lt;a class="reference external" href="https://github.com/saschwarz/django-stw/blob/master/CHANGELOG.txt"&gt;CHANGELOG.txt&lt;/a&gt;):&lt;/p&gt;
@@ -32,7 +65,10 @@ implemented by the STW web service.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;The v 0.2.0 package is &lt;a class="reference external" href="http://pypi.python.org/pypi?:action=display&amp;amp;name=django-stw&amp;amp;version=0.2.0"&gt;available on PyPi&lt;/a&gt;, as a &lt;a class="reference external" href="https://github.com/saschwarz/django-stw/archives/v0.2.0"&gt;source download on
 github&lt;/a&gt;, or via &lt;a class="reference external" href="https://github.com/saschwarz/django-stw"&gt;git clone&lt;/a&gt;.&lt;/p&gt;
-</summary><category term="django"></category><category term="shrinktheweb"></category></entry><entry><title>Initial Release of django-stw</title><link href="http://tech.agilitynerd.com/initial-release-of-django-stw.html" rel="alternate"></link><published>2010-07-11T15:47:00-05:00</published><updated>2010-07-11T15:47:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-07-11:initial-release-of-django-stw.html</id><summary type="html">&lt;p&gt;I have been using the free website thumbnail service from &lt;a class="reference external" href="http://www.shrinktheweb.com?a=988"&gt;Shrink The
+</content><category term="django"></category><category term="shrinktheweb"></category></entry><entry><title>Initial Release of django-stw</title><link href="http://tech.agilitynerd.com/initial-release-of-django-stw.html" rel="alternate"></link><published>2010-07-11T15:47:00-05:00</published><updated>2010-07-11T15:47:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-07-11:/initial-release-of-django-stw.html</id><summary type="html">&lt;p&gt;I have been using the free website thumbnail service from &lt;a class="reference external" href="http://www.shrinktheweb.com?a=988"&gt;Shrink The
+Web&lt;/a&gt; on my dog agility search website &lt;a class="reference external" href="http://googility.com"&gt;Googility&lt;/a&gt; since I launched it.
+It is quick and easy to use and it adds a lot to the look of the pages.&lt;/p&gt;
+&lt;p&gt;I had created a simple &lt;a class="reference external" href="http://djangoproject.com/"&gt;Django&lt;/a&gt; template tag …&lt;/p&gt;</summary><content type="html">&lt;p&gt;I have been using the free website thumbnail service from &lt;a class="reference external" href="http://www.shrinktheweb.com?a=988"&gt;Shrink The
 Web&lt;/a&gt; on my dog agility search website &lt;a class="reference external" href="http://googility.com"&gt;Googility&lt;/a&gt; since I launched it.
 It is quick and easy to use and it adds a lot to the look of the pages.&lt;/p&gt;
 &lt;p&gt;I had created a simple &lt;a class="reference external" href="http://djangoproject.com/"&gt;Django&lt;/a&gt; template tag for inserting the little
@@ -48,7 +84,12 @@ tag called &lt;tt class="docutils literal"&gt;stwimage&lt;/tt&gt; to enable the 
 see how the template tags work.&lt;/p&gt;
 &lt;p&gt;I've hosted the &lt;a class="reference external" href="http://github.com/saschwarz/django-stw"&gt;project source on github&lt;/a&gt; and uploaded the &lt;a class="reference external" href="http://pypi.python.org/pypi/django-stw/"&gt;initial
 release to the CheeseShop&lt;/a&gt; for easy installation.&lt;/p&gt;
-</summary><category term="django"></category><category term="github"></category><category term="googility"></category><category term="pypi"></category><category term="python"></category><category term="shrinktheweb"></category><category term="webdevelopment"></category></entry><entry><title>Django Shrink The Web Template Tag Updated</title><link href="http://tech.agilitynerd.com/django-shrink-the-web-template-tag-updated.html" rel="alternate"></link><published>2010-07-01T23:00:00-05:00</published><updated>2010-07-01T23:00:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-07-01:django-shrink-the-web-template-tag-updated.html</id><summary type="html">&lt;p&gt;I recently updated my &lt;a class="reference external" href="http://djangoproject.com/"&gt;Django&lt;/a&gt; template tag for simplifying the use of
+</content><category term="django"></category><category term="github"></category><category term="googility"></category><category term="pypi"></category><category term="python"></category><category term="shrinktheweb"></category><category term="webdevelopment"></category></entry><entry><title>Django Shrink The Web Template Tag Updated</title><link href="http://tech.agilitynerd.com/django-shrink-the-web-template-tag-updated.html" rel="alternate"></link><published>2010-07-01T23:00:00-05:00</published><updated>2010-07-01T23:00:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-07-01:/django-shrink-the-web-template-tag-updated.html</id><summary type="html">&lt;p&gt;I recently updated my &lt;a class="reference external" href="http://djangoproject.com/"&gt;Django&lt;/a&gt; template tag for simplifying the use of
+&lt;a class="reference external" href="http://www.shrinktheweb.com/"&gt;Shrink The Web&lt;/a&gt; images. They recently announced a CDN based
+distribution of images and they took the opportunity to modify their
+API.&lt;/p&gt;
+&lt;p&gt;The updated template tag &lt;a class="reference external" href="http://djangosnippets.org/snippets/1744/"&gt;is on django snippets&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The STW folks have asked be to extend …&lt;/p&gt;</summary><content type="html">&lt;p&gt;I recently updated my &lt;a class="reference external" href="http://djangoproject.com/"&gt;Django&lt;/a&gt; template tag for simplifying the use of
 &lt;a class="reference external" href="http://www.shrinktheweb.com/"&gt;Shrink The Web&lt;/a&gt; images. They recently announced a CDN based
 distribution of images and they took the opportunity to modify their
 API.&lt;/p&gt;
@@ -56,4 +97,4 @@ API.&lt;/p&gt;
 &lt;p&gt;The STW folks have asked be to extend my template tag with support for
 &lt;a class="reference external" href="http://www.shrinktheweb.com/content/shrinktheweb-pagepix-documentation.html"&gt;their PRO features&lt;/a&gt;. With luck I'll make that available sometime this
 weekend.&lt;/p&gt;
-</summary><category term="django"></category><category term="python"></category><category term="shrinktheweb"></category><category term="webdevelopment"></category></entry></feed>
+</content><category term="django"></category><category term="python"></category><category term="shrinktheweb"></category><category term="webdevelopment"></category></entry></feed>

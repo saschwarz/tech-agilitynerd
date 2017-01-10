@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:5500/feeds/tag.http2.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2016-09-23T18:00:00-05:00</updated><entry><title>HTTP/2: A Quick and Easy Website Speed Up</title><link href="http://tech.agilitynerd.com/http2-a-quick-and-easy-website-speed-up.html" rel="alternate"></link><published>2016-09-23T18:00:00-05:00</published><updated>2016-09-23T18:00:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2016-09-23:http2-a-quick-and-easy-website-speed-up.html</id><summary type="html">&lt;p&gt;I always want my websites to be secure and fast. &lt;a class="reference external" href="https://http2.github.io/"&gt;HTTP/2&lt;/a&gt; is the latest enhancement to the HTTP protocol that can provide significant performance improvements:&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd - http2</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:5500/feeds/tag.http2.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2016-09-23T18:00:00-05:00</updated><entry><title>HTTP/2: A Quick and Easy Website Speed Up</title><link href="http://tech.agilitynerd.com/http2-a-quick-and-easy-website-speed-up.html" rel="alternate"></link><published>2016-09-23T18:00:00-05:00</published><updated>2016-09-23T18:00:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2016-09-23:/http2-a-quick-and-easy-website-speed-up.html</id><summary type="html">&lt;p&gt;I always want my websites to be secure and fast. &lt;a class="reference external" href="https://http2.github.io/"&gt;HTTP/2&lt;/a&gt; is the latest enhancement to the HTTP protocol that can provide significant performance improvements:&lt;/p&gt;
+&lt;blockquote class="epigraph"&gt;
+&lt;p&gt;The primary goals for HTTP/2 are to reduce latency by enabling full request and response multiplexing, minimize protocol overhead via efficient compression of …&lt;/p&gt;&lt;/blockquote&gt;</summary><content type="html">&lt;p&gt;I always want my websites to be secure and fast. &lt;a class="reference external" href="https://http2.github.io/"&gt;HTTP/2&lt;/a&gt; is the latest enhancement to the HTTP protocol that can provide significant performance improvements:&lt;/p&gt;
 &lt;blockquote class="epigraph"&gt;
 &lt;p&gt;The primary goals for HTTP/2 are to reduce latency by enabling full request and response multiplexing, minimize protocol overhead via efficient compression of HTTP header fields, and add support for request prioritization and server push.&lt;/p&gt;
 &lt;p class="attribution"&gt;&amp;mdash;&lt;a class="reference external" href="https://hpbn.co/http2/"&gt;High Performance Browser Networking - O'Reilly&lt;/a&gt;:&lt;/p&gt;
@@ -43,18 +45,14 @@ server {
 &lt;div class="section" id="next-steps"&gt;
 &lt;h2&gt;Next Steps&lt;/h2&gt;
 &lt;p&gt;So that was a nice free speed up and there are plenty of areas I can still investigate to further improve the performance of this web site:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p class="first"&gt;Bring 3rd party resources back to my domain to save DNS lookups and see how that affects overall performance. This may hurt performance for HTTP/1.1 clients who are limited to the number of connections per domain.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p class="first"&gt;Change multiple SVG files (which are all steps in a progression) into a single file and use CSS to hide/show appropriate steps using a single image. This will greatly reduce the number of individual files downloaded and save some duplicated data within those files.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p class="first"&gt;Move Google Analytics locally. GA has a number of problems (short cache times and multiple files downloaded) so at the cost of periodically updating the files I could host them all locally and save some time.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p class="first"&gt;Disqus is even worse than GA when it comes to many file downloads, redirects, short cache times etc. I might change to have Disqus data loaded on user demand.&lt;/p&gt;
-&lt;/li&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Bring 3rd party resources back to my domain to save DNS lookups and see how that affects overall performance. This may hurt performance for HTTP/1.1 clients who are limited to the number of connections per domain.&lt;/li&gt;
+&lt;li&gt;Change multiple SVG files (which are all steps in a progression) into a single file and use CSS to hide/show appropriate steps using a single image. This will greatly reduce the number of individual files downloaded and save some duplicated data within those files.&lt;/li&gt;
+&lt;li&gt;Move Google Analytics locally. GA has a number of problems (short cache times and multiple files downloaded) so at the cost of periodically updating the files I could host them all locally and save some time.&lt;/li&gt;
+&lt;li&gt;Disqus is even worse than GA when it comes to many file downloads, redirects, short cache times etc. I might change to have Disqus data loaded on user demand.&lt;/li&gt;
 &lt;li&gt;&lt;dl class="first docutils"&gt;
 &lt;dt&gt;Experiment with other HTTP/2 features:&lt;/dt&gt;
-&lt;dd&gt;&lt;ul class="first last simple"&gt;
+&lt;dd&gt;&lt;ul class="first last"&gt;
 &lt;li&gt;&lt;a class="reference external" href="https://www.igvita.com/2015/08/17/eliminating-roundtrips-with-preconnect/"&gt;preconnect&lt;/a&gt; might help reduce the cost of DNS look ups that result from redirects like those used by Google Analytics, Google Fonts, and Disqus resources.&lt;/li&gt;
 &lt;li&gt;&lt;a class="reference external" href="https://www.smashingmagazine.com/2016/02/preload-what-is-it-good-for/"&gt;preload&lt;/a&gt; to load resources before they are accessed by JS during &lt;tt class="docutils literal"&gt;onload&lt;/tt&gt; or via user actions.&lt;/li&gt;
 &lt;li&gt;&lt;a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Link_prefetching_FAQ"&gt;prefetch&lt;/a&gt; to load JS/images for future pages. There are some common workflows on this site that could benefit from prefetching the JS for subsequent pages.&lt;/li&gt;
@@ -64,4 +62,4 @@ server {
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/div&gt;
-</summary><category term="nginx"></category><category term="ubuntu"></category><category term="https"></category><category term="ssl"></category><category term="http2"></category><category term="performance"></category></entry></feed>
+</content><category term="nginx"></category><category term="ubuntu"></category><category term="https"></category><category term="ssl"></category><category term="http2"></category><category term="performance"></category></entry></feed>

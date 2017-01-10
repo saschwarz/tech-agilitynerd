@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:5500/feeds/misc.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2007-12-31T19:15:00-06:00</updated><entry><title>Taking Better Photos - Building a Light Box</title><link href="http://tech.agilitynerd.com/taking-better-photos-building-a-light-box-1.html" rel="alternate"></link><published>2007-12-31T19:15:00-06:00</published><updated>2007-12-31T19:15:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2007-12-31:taking-better-photos-building-a-light-box-1.html</id><summary type="html">&lt;p&gt;I have often been disappointed with the quality of photos of objects
+<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd - misc</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:5500/feeds/misc.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2007-12-31T19:15:00-06:00</updated><entry><title>Taking Better Photos - Building a Light Box</title><link href="http://tech.agilitynerd.com/taking-better-photos-building-a-light-box-1.html" rel="alternate"></link><published>2007-12-31T19:15:00-06:00</published><updated>2007-12-31T19:15:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2007-12-31:/taking-better-photos-building-a-light-box-1.html</id><summary type="html">&lt;p&gt;I have often been disappointed with the quality of photos of objects
+I've posted on my site. My biggest problems have been providing good
+lighting and a nice background (&lt;a class="reference external" href="http://agilitynerd.com/blog/agility/equipment/PVCCutter.html"&gt;see this for example&lt;/a&gt;). So I was
+Googling to find a photographer's light box to build when I found &lt;a class="reference external" href="http://www.pbase.com/wlhuber/light_box_light_tent"&gt;Bill
+Huber's …&lt;/a&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;I have often been disappointed with the quality of photos of objects
 I've posted on my site. My biggest problems have been providing good
 lighting and a nice background (&lt;a class="reference external" href="http://agilitynerd.com/blog/agility/equipment/PVCCutter.html"&gt;see this for example&lt;/a&gt;). So I was
 Googling to find a photographer's light box to build when I found &lt;a class="reference external" href="http://www.pbase.com/wlhuber/light_box_light_tent"&gt;Bill
@@ -25,4 +29,4 @@ need. It is a pretty sizeable box.&lt;/p&gt;
 on eBay this is a simple and inexpensive project. We'll see if it helps
 my photos look nicer.&lt;/p&gt;
 &lt;/div&gt;
-</summary><category term="project"></category></entry></feed>
+</content><category term="project"></category></entry></feed>
