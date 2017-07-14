@@ -123,15 +123,15 @@ encoded URL can be placed in the story.html template:</p>
 <span class="c1"># into $urlencode::url without any params# use this in fb.comments xid to give the same xid</span>
 <span class="c1"># even when query params are provided</span>
 <span class="c1"># -------------------</span>
-<span class="k">use</span> <span class="n">CGI</span> <span class="sx">qw/:standard/</span><span class="p">;</span>
-<span class="k">use</span> <span class="n"></span><span class="nn">URI::</span><span class="n">Escape</span><span class="p">;</span>
+<span class="k">use</span> <span class="nn">CGI</span> <span class="sx">qw/:standard/</span><span class="p">;</span>
+<span class="k">use</span> <span class="nn">URI::Escape</span><span class="p">;</span>
 
-<span class="k">sub </span><span class="nf">start</span> <span class="p">{</span>
+<span class="k">sub</span> <span class="nf">start</span> <span class="p">{</span>
     <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
 <span class="p">}</span>
 <span class="nv">$url</span> <span class="o">=</span> <span class="s">''</span><span class="p">;</span>
 
-<span class="k">sub </span><span class="nf">story</span> <span class="p">{</span>
+<span class="k">sub</span> <span class="nf">story</span> <span class="p">{</span>
     <span class="k">my</span> <span class="p">(</span><span class="nv">$pkg</span><span class="p">,</span> <span class="nv">$path</span><span class="p">,</span> <span class="nv">$filename</span><span class="p">,</span> <span class="nv">$story_ref</span><span class="p">,</span> <span class="nv">$title_ref</span><span class="p">,</span> <span class="nv">$body_ref</span><span class="p">)</span> <span class="o">=</span> <span class="nv">&#64;_</span><span class="p">;</span>
     <span class="nv">$</span><span class="nn">urlencode::</span><span class="nv">url</span> <span class="o">=</span> <span class="n">uri_escape</span><span class="p">(</span><span class="s">&quot;$blosxom::url/${blosxom::path_info}&quot;</span><span class="p">);</span>
     <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>

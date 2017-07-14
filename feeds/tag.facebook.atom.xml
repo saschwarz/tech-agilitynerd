@@ -28,15 +28,15 @@ encoded URL can be placed in the story.html template:&lt;/p&gt;
 &lt;span class="c1"&gt;# into $urlencode::url without any params# use this in fb.comments xid to give the same xid&lt;/span&gt;
 &lt;span class="c1"&gt;# even when query params are provided&lt;/span&gt;
 &lt;span class="c1"&gt;# -------------------&lt;/span&gt;
-&lt;span class="k"&gt;use&lt;/span&gt; &lt;span class="n"&gt;CGI&lt;/span&gt; &lt;span class="sx"&gt;qw/:standard/&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="k"&gt;use&lt;/span&gt; &lt;span class="n"&gt;&lt;/span&gt;&lt;span class="nn"&gt;URI::&lt;/span&gt;&lt;span class="n"&gt;Escape&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;use&lt;/span&gt; &lt;span class="nn"&gt;CGI&lt;/span&gt; &lt;span class="sx"&gt;qw/:standard/&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;use&lt;/span&gt; &lt;span class="nn"&gt;URI::Escape&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 
-&lt;span class="k"&gt;sub &lt;/span&gt;&lt;span class="nf"&gt;start&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="k"&gt;sub&lt;/span&gt; &lt;span class="nf"&gt;start&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
 &lt;span class="nv"&gt;$url&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;''&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 
-&lt;span class="k"&gt;sub &lt;/span&gt;&lt;span class="nf"&gt;story&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="k"&gt;sub&lt;/span&gt; &lt;span class="nf"&gt;story&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
     &lt;span class="k"&gt;my&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;$pkg&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nv"&gt;$path&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nv"&gt;$filename&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nv"&gt;$story_ref&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nv"&gt;$title_ref&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nv"&gt;$body_ref&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nv"&gt;&amp;#64;_&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
     &lt;span class="nv"&gt;$&lt;/span&gt;&lt;span class="nn"&gt;urlencode::&lt;/span&gt;&lt;span class="nv"&gt;url&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;uri_escape&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;$blosxom::url/${blosxom::path_info}&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;

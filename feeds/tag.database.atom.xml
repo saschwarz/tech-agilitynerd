@@ -28,9 +28,9 @@ The datetime and django.utils.timezone modules are available, so you can do e.g.
 &amp;gt;&amp;gt;&amp;gt; -1
 You are trying to add a non-nullable field '&lt;/span&gt;course_ptr&lt;span class="s1"&gt;' to doublebox without a default; we can'&lt;/span&gt;t &lt;span class="k"&gt;do&lt;/span&gt; that &lt;span class="o"&gt;(&lt;/span&gt;the database needs something to populate existing rows&lt;span class="o"&gt;)&lt;/span&gt;.
 Please &lt;span class="k"&gt;select&lt;/span&gt; a fix:
- 1&lt;span class="o"&gt;)&lt;/span&gt; Provide a one-off default now &lt;span class="o"&gt;(&lt;/span&gt;will be &lt;span class="nb"&gt;set&lt;/span&gt; on all existing rows&lt;span class="o"&gt;)&lt;/span&gt;
- 2&lt;span class="o"&gt;)&lt;/span&gt; Quit, and &lt;span class="nb"&gt;let&lt;/span&gt; me add a default in models.py
-Select an option: 1
+ &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; Provide a one-off default now &lt;span class="o"&gt;(&lt;/span&gt;will be &lt;span class="nb"&gt;set&lt;/span&gt; on all existing rows&lt;span class="o"&gt;)&lt;/span&gt;
+ &lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; Quit, and &lt;span class="nb"&gt;let&lt;/span&gt; me add a default in models.py
+Select an option: &lt;span class="m"&gt;1&lt;/span&gt;
 Please enter the default value now, as valid Python
 The datetime and django.utils.timezone modules are available, so you can &lt;span class="k"&gt;do&lt;/span&gt; e.g. timezone.now&lt;span class="o"&gt;()&lt;/span&gt;
 &amp;gt;&amp;gt;&amp;gt; -1
@@ -97,9 +97,9 @@ Migrations for '&lt;/span&gt;box&lt;span class="err"&gt;'&lt;/span&gt;:
 &lt;/ol&gt;
 &lt;p&gt;If you want to see/validate/test the SQL that will be run you can use the &lt;tt class="docutils literal"&gt;sqlmigrate&lt;/tt&gt; management command (just give it your app name and the number of the migration):&lt;/p&gt;
 &lt;pre class="code bash literal-block"&gt;
-$ python ./manage.py sqlmigrate box 0004
+$ python ./manage.py sqlmigrate box &lt;span class="m"&gt;0004&lt;/span&gt;
 BEGIN&lt;span class="p"&gt;;&lt;/span&gt;
-CREATE TABLE &lt;span class="s2"&gt;&amp;quot;box_course&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;id&amp;quot;&lt;/span&gt; serial NOT NULL PRIMARY KEY, &lt;span class="s2"&gt;&amp;quot;sequence&amp;quot;&lt;/span&gt; varchar&lt;span class="o"&gt;(&lt;/span&gt;64&lt;span class="o"&gt;)&lt;/span&gt; NOT NULL, &lt;span class="s2"&gt;&amp;quot;short_url&amp;quot;&lt;/span&gt; varchar&lt;span class="o"&gt;(&lt;/span&gt;64&lt;span class="o"&gt;)&lt;/span&gt; NOT NULL, &lt;span class="s2"&gt;&amp;quot;created&amp;quot;&lt;/span&gt; timestamp with &lt;span class="nb"&gt;time&lt;/span&gt; zone NOT NULL, &lt;span class="s2"&gt;&amp;quot;generator&amp;quot;&lt;/span&gt; varchar&lt;span class="o"&gt;(&lt;/span&gt;2&lt;span class="o"&gt;)&lt;/span&gt; NOT NULL, &lt;span class="s2"&gt;&amp;quot;subclass&amp;quot;&lt;/span&gt; integer NOT NULL, &lt;span class="s2"&gt;&amp;quot;subclassid&amp;quot;&lt;/span&gt; integer NOT NULL&lt;span class="o"&gt;)&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+CREATE TABLE &lt;span class="s2"&gt;&amp;quot;box_course&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;id&amp;quot;&lt;/span&gt; serial NOT NULL PRIMARY KEY, &lt;span class="s2"&gt;&amp;quot;sequence&amp;quot;&lt;/span&gt; varchar&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="m"&gt;64&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; NOT NULL, &lt;span class="s2"&gt;&amp;quot;short_url&amp;quot;&lt;/span&gt; varchar&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="m"&gt;64&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; NOT NULL, &lt;span class="s2"&gt;&amp;quot;created&amp;quot;&lt;/span&gt; timestamp with &lt;span class="nb"&gt;time&lt;/span&gt; zone NOT NULL, &lt;span class="s2"&gt;&amp;quot;generator&amp;quot;&lt;/span&gt; varchar&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; NOT NULL, &lt;span class="s2"&gt;&amp;quot;subclass&amp;quot;&lt;/span&gt; integer NOT NULL, &lt;span class="s2"&gt;&amp;quot;subclassid&amp;quot;&lt;/span&gt; integer NOT NULL&lt;span class="o"&gt;)&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 CREATE TABLE &lt;span class="s2"&gt;&amp;quot;box_course_skills&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;id&amp;quot;&lt;/span&gt; serial NOT NULL PRIMARY KEY, &lt;span class="s2"&gt;&amp;quot;course_id&amp;quot;&lt;/span&gt; integer NOT NULL, &lt;span class="s2"&gt;&amp;quot;skill_id&amp;quot;&lt;/span&gt; integer NOT NULL, UNIQUE &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;course_id&amp;quot;&lt;/span&gt;, &lt;span class="s2"&gt;&amp;quot;skill_id&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;))&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_box&amp;quot;&lt;/span&gt; ADD COLUMN &lt;span class="s2"&gt;&amp;quot;course_ptr_id&amp;quot;&lt;/span&gt; integer NULL UNIQUE&lt;span class="p"&gt;;&lt;/span&gt;
 ALTER TABLE &lt;span class="s2"&gt;&amp;quot;box_box&amp;quot;&lt;/span&gt; ALTER COLUMN &lt;span class="s2"&gt;&amp;quot;course_ptr_id&amp;quot;&lt;/span&gt; DROP DEFAULT&lt;span class="p"&gt;;&lt;/span&gt;
@@ -171,9 +171,9 @@ $ python manage.py makemigrations box
   &amp;gt;&amp;gt;&amp;gt; -1
   You are trying to add a non-nullable field '&lt;/span&gt;course_ptr&lt;span class="s1"&gt;' to starbox without a default; we can'&lt;/span&gt;t &lt;span class="k"&gt;do&lt;/span&gt; that &lt;span class="o"&gt;(&lt;/span&gt;the database needs something to populate existing rows&lt;span class="o"&gt;)&lt;/span&gt;.
   Please &lt;span class="k"&gt;select&lt;/span&gt; a fix:
-   1&lt;span class="o"&gt;)&lt;/span&gt; Provide a one-off default now &lt;span class="o"&gt;(&lt;/span&gt;will be &lt;span class="nb"&gt;set&lt;/span&gt; on all existing rows&lt;span class="o"&gt;)&lt;/span&gt;
-   2&lt;span class="o"&gt;)&lt;/span&gt; Quit, and &lt;span class="nb"&gt;let&lt;/span&gt; me add a default in models.py
-  Select an option: 1
+   &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; Provide a one-off default now &lt;span class="o"&gt;(&lt;/span&gt;will be &lt;span class="nb"&gt;set&lt;/span&gt; on all existing rows&lt;span class="o"&gt;)&lt;/span&gt;
+   &lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; Quit, and &lt;span class="nb"&gt;let&lt;/span&gt; me add a default in models.py
+  Select an option: &lt;span class="m"&gt;1&lt;/span&gt;
   Please enter the default value now, as valid Python
   The datetime and django.utils.timezone modules are available, so you can &lt;span class="k"&gt;do&lt;/span&gt; e.g. timezone.now&lt;span class="o"&gt;()&lt;/span&gt;
   &amp;gt;&amp;gt;&amp;gt; -1

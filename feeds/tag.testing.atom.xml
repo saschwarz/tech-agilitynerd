@@ -81,7 +81,7 @@ coarse grained test but the changes I was making were perfect for this
 tool. Given a urls.py:&lt;/p&gt;
 &lt;pre class="code python literal-block"&gt;
 &lt;span class="n"&gt;urlpatterns&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;patterns&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'cse.views'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-                    &lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;r'^site/view/(?P&amp;lt;id&amp;gt;d+)/$'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'view'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;'cse_view'&lt;/span&gt;&lt;span class="p"&gt;),)&lt;/span&gt;&lt;span class="sb"&gt;``&lt;/span&gt;
+                    &lt;span class="n"&gt;url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;r&lt;/span&gt;&lt;span class="s1"&gt;'^site/view/(?P&amp;lt;id&amp;gt;d+)/$'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'view'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;'cse_view'&lt;/span&gt;&lt;span class="p"&gt;),)&lt;/span&gt;&lt;span class="sb"&gt;``&lt;/span&gt;
 &lt;/pre&gt;
 &lt;p&gt;and a view:&lt;/p&gt;
 &lt;pre class="code python literal-block"&gt;

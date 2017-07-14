@@ -150,7 +150,7 @@ attribute:</p>
 <span class="c1"># query results with most recent publication date first</span>
 <span class="n">sqs</span> <span class="o">=</span> <span class="n">SearchQuerySet</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">'-pub_date'</span><span class="p">)</span>
 <span class="n">urlpatterns</span> <span class="o">=</span> <span class="n">patterns</span><span class="p">(</span><span class="s1">''</span><span class="p">,</span>
-                       <span class="n">url</span><span class="p">(</span><span class="s1">r'^search/'</span><span class="p">,</span>
+                       <span class="n">url</span><span class="p">(</span><span class="sa">r</span><span class="s1">'^search/'</span><span class="p">,</span>
                            <span class="n">SearchView</span><span class="p">(</span>
                                <span class="n">load_all</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
                                <span class="n">searchqueryset</span><span class="o">=</span><span class="n">sqs</span><span class="p">,</span>

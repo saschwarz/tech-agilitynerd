@@ -171,8 +171,8 @@ of its use (assuming you save the code in googl.py):</p>
 <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">django.core.files.storage</span> <span class="kn">import</span> <span class="n">default_storage</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">short_url</span><span class="p">,</span> <span class="n">qr_code_storage_name</span> <span class="o">=</span> <span class="n">googl</span><span class="o">.</span><span class="n">get_url_qr_code_image</span><span class="p">(</span><span class="s1">'http://google.com'</span><span class="p">,</span> <span class="n">default_storage</span><span class="p">)</span><span class="o">&gt;&gt;&gt;</span> <span class="n">short_urlu</span><span class="s1">'http://goo.gl/mR2d'</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">qr_code_storage_nameu</span><span class="s1">'mR2d.qr'</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">default_storage</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="n">qr_code_storage_name</span><span class="p">)</span><span class="s1">u'/home/dev/agilitycourses/static/mR2d.qr'</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">default_storage</span><span class="o">.</span><span class="n">url</span><span class="p">(</span><span class="n">qr_code_storage_name</span><span class="p">)</span><span class="s1">u'mR2d.qr'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">default_storage</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="n">qr_code_storage_name</span><span class="p">)</span><span class="sa">u</span><span class="s1">'/home/dev/agilitycourses/static/mR2d.qr'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">default_storage</span><span class="o">.</span><span class="n">url</span><span class="p">(</span><span class="n">qr_code_storage_name</span><span class="p">)</span><span class="sa">u</span><span class="s1">'mR2d.qr'</span>
 <span class="o">&gt;&gt;&gt;</span>
 </pre>
 <p>Hope you find this useful.</p>

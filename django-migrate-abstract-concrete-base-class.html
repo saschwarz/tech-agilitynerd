@@ -126,9 +126,9 @@ The datetime and django.utils.timezone modules are available, so you can do e.g.
 &gt;&gt;&gt; -1
 You are trying to add a non-nullable field '</span>course_ptr<span class="s1">' to doublebox without a default; we can'</span>t <span class="k">do</span> that <span class="o">(</span>the database needs something to populate existing rows<span class="o">)</span>.
 Please <span class="k">select</span> a fix:
- 1<span class="o">)</span> Provide a one-off default now <span class="o">(</span>will be <span class="nb">set</span> on all existing rows<span class="o">)</span>
- 2<span class="o">)</span> Quit, and <span class="nb">let</span> me add a default in models.py
-Select an option: 1
+ <span class="m">1</span><span class="o">)</span> Provide a one-off default now <span class="o">(</span>will be <span class="nb">set</span> on all existing rows<span class="o">)</span>
+ <span class="m">2</span><span class="o">)</span> Quit, and <span class="nb">let</span> me add a default in models.py
+Select an option: <span class="m">1</span>
 Please enter the default value now, as valid Python
 The datetime and django.utils.timezone modules are available, so you can <span class="k">do</span> e.g. timezone.now<span class="o">()</span>
 &gt;&gt;&gt; -1
@@ -195,9 +195,9 @@ Migrations for '</span>box<span class="err">'</span>:
 </ol>
 <p>If you want to see/validate/test the SQL that will be run you can use the <tt class="docutils literal">sqlmigrate</tt> management command (just give it your app name and the number of the migration):</p>
 <pre class="code bash literal-block">
-$ python ./manage.py sqlmigrate box 0004
+$ python ./manage.py sqlmigrate box <span class="m">0004</span>
 BEGIN<span class="p">;</span>
-CREATE TABLE <span class="s2">&quot;box_course&quot;</span> <span class="o">(</span><span class="s2">&quot;id&quot;</span> serial NOT NULL PRIMARY KEY, <span class="s2">&quot;sequence&quot;</span> varchar<span class="o">(</span>64<span class="o">)</span> NOT NULL, <span class="s2">&quot;short_url&quot;</span> varchar<span class="o">(</span>64<span class="o">)</span> NOT NULL, <span class="s2">&quot;created&quot;</span> timestamp with <span class="nb">time</span> zone NOT NULL, <span class="s2">&quot;generator&quot;</span> varchar<span class="o">(</span>2<span class="o">)</span> NOT NULL, <span class="s2">&quot;subclass&quot;</span> integer NOT NULL, <span class="s2">&quot;subclassid&quot;</span> integer NOT NULL<span class="o">)</span><span class="p">;</span>
+CREATE TABLE <span class="s2">&quot;box_course&quot;</span> <span class="o">(</span><span class="s2">&quot;id&quot;</span> serial NOT NULL PRIMARY KEY, <span class="s2">&quot;sequence&quot;</span> varchar<span class="o">(</span><span class="m">64</span><span class="o">)</span> NOT NULL, <span class="s2">&quot;short_url&quot;</span> varchar<span class="o">(</span><span class="m">64</span><span class="o">)</span> NOT NULL, <span class="s2">&quot;created&quot;</span> timestamp with <span class="nb">time</span> zone NOT NULL, <span class="s2">&quot;generator&quot;</span> varchar<span class="o">(</span><span class="m">2</span><span class="o">)</span> NOT NULL, <span class="s2">&quot;subclass&quot;</span> integer NOT NULL, <span class="s2">&quot;subclassid&quot;</span> integer NOT NULL<span class="o">)</span><span class="p">;</span>
 CREATE TABLE <span class="s2">&quot;box_course_skills&quot;</span> <span class="o">(</span><span class="s2">&quot;id&quot;</span> serial NOT NULL PRIMARY KEY, <span class="s2">&quot;course_id&quot;</span> integer NOT NULL, <span class="s2">&quot;skill_id&quot;</span> integer NOT NULL, UNIQUE <span class="o">(</span><span class="s2">&quot;course_id&quot;</span>, <span class="s2">&quot;skill_id&quot;</span><span class="o">))</span><span class="p">;</span>
 ALTER TABLE <span class="s2">&quot;box_box&quot;</span> ADD COLUMN <span class="s2">&quot;course_ptr_id&quot;</span> integer NULL UNIQUE<span class="p">;</span>
 ALTER TABLE <span class="s2">&quot;box_box&quot;</span> ALTER COLUMN <span class="s2">&quot;course_ptr_id&quot;</span> DROP DEFAULT<span class="p">;</span>
@@ -269,9 +269,9 @@ $ python manage.py makemigrations box
   &gt;&gt;&gt; -1
   You are trying to add a non-nullable field '</span>course_ptr<span class="s1">' to starbox without a default; we can'</span>t <span class="k">do</span> that <span class="o">(</span>the database needs something to populate existing rows<span class="o">)</span>.
   Please <span class="k">select</span> a fix:
-   1<span class="o">)</span> Provide a one-off default now <span class="o">(</span>will be <span class="nb">set</span> on all existing rows<span class="o">)</span>
-   2<span class="o">)</span> Quit, and <span class="nb">let</span> me add a default in models.py
-  Select an option: 1
+   <span class="m">1</span><span class="o">)</span> Provide a one-off default now <span class="o">(</span>will be <span class="nb">set</span> on all existing rows<span class="o">)</span>
+   <span class="m">2</span><span class="o">)</span> Quit, and <span class="nb">let</span> me add a default in models.py
+  Select an option: <span class="m">1</span>
   Please enter the default value now, as valid Python
   The datetime and django.utils.timezone modules are available, so you can <span class="k">do</span> e.g. timezone.now<span class="o">()</span>
   &gt;&gt;&gt; -1
