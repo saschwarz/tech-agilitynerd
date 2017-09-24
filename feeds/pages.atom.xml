@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd - pages</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:8000/feeds/pages.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2010-10-12T03:02:00-05:00</updated><entry><title>Not Found</title><link href="http://tech.agilitynerd.com/not-found.html" rel="alternate"></link><published>2010-10-12T03:02:00-05:00</published><updated>2010-10-12T03:02:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-10-12:/not-found.html</id><summary type="html">&lt;p&gt;The requested item could not be located. Perhaps you might want to check
+the &lt;a class="reference external" href="/archives.html"&gt;Archives&lt;/a&gt;.&lt;/p&gt;
+</summary><content type="html">&lt;p&gt;The requested item could not be located. Perhaps you might want to check
+the &lt;a class="reference external" href="/archives.html"&gt;Archives&lt;/a&gt;.&lt;/p&gt;
+</content></entry><entry><title>About</title><link href="http://tech.agilitynerd.com/about.html" rel="alternate"></link><published>2004-08-14T23:16:00-05:00</published><updated>2004-08-14T23:16:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2004-08-14:/about.html</id><summary type="html">&lt;p&gt;Steve Schwarz has been a professional software developer since 1991. He started working in a team developing a distributed 3-tier client-server architecture in C/C++ on Solaris for near real-time assembly line monitoring and equipment control at Panasonic Factory Automation. That product is still in operation today.&lt;/p&gt;
+&lt;p&gt;Steve joined a …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Steve Schwarz has been a professional software developer since 1991. He started working in a team developing a distributed 3-tier client-server architecture in C/C++ on Solaris for near real-time assembly line monitoring and equipment control at Panasonic Factory Automation. That product is still in operation today.&lt;/p&gt;
+&lt;p&gt;Steve joined a small start-up: Trading Technologies, writing C/C++ client and server APIs for automated futures/options trading products in Visual Studio on Windows. He is an inventor on patents for price distribution algorithms.&lt;/p&gt;
+&lt;p&gt;Steve began full stack web development in Python, JS, CSS, HTML, etc. at another start up: Textura LLC. Over nearly a decade he helped take their flagship product from a monolithic web app serving a dozen clients to a multi-service modern architecture serving tens of thousands of clients around the world. Textura was acquired by Oracle in 2016.&lt;/p&gt;
+&lt;p&gt;Currently, Steve is freelancing in full stack web and mobile development using a range of web technologies.&lt;/p&gt;
+&lt;p&gt;For fun Steve loves playing and competing in dog agility with his dogs Snap! and Flyer.&lt;/p&gt;
+&lt;p&gt;He can be reached at &lt;a class="reference external" href="mailto:steve&amp;#64;agilitynerd.com"&gt;steve&amp;#64;agilitynerd.com&lt;/a&gt;&lt;/p&gt;
+&lt;div class="section" id="this-website"&gt;
+&lt;h2&gt;This Website&lt;/h2&gt;
+&lt;p&gt;Started in 2004 as a locally hosted flat file web site using a Perl CGI script (Blosxom). Then migrated to posterous.com. Currently flat files authored in reStructured Text and statically generated using &lt;a class="reference external" href="http://docs.getpelican.com/"&gt;Pelican&lt;/a&gt;. Comments via Disqus and search by Google Custom Search Engine.&lt;/p&gt;
+&lt;p&gt;The &lt;a class="reference external" href="https://github.com/saschwarz/tech-agilitynerd"&gt;content of this blog&lt;/a&gt; and my &lt;a class="reference external" href="https://github.com/saschwarz/pelican-bootstrap-responsive-theme"&gt;edits to the responsive theme&lt;/a&gt; are available on GitHub.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class="section" id="my-other-web-sites-and-projects"&gt;
+&lt;h2&gt;My Other Web Sites and Projects&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p class="first"&gt;The first/longest running dog agility blog: &lt;a class="reference external" href="http://agilitynerd.com"&gt;AgilityNerd&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Perl, Python, Mongodb, Bootstrap, JavaScript, jQuery, Disqus, AddThis.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;&lt;a class="reference external" href="https://agilitycoursemaster.com"&gt;Agility Course Master&lt;/a&gt;, AC Master, an offline-first dog agility course map storing and set up mobile application for Android and iOS.&lt;/p&gt;
+&lt;p&gt;Ionic, Typescript, Angular (2+), PouchDB, Auth0, Sass.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;Dog agility community search: &lt;a class="reference external" href="http://googility.com"&gt;Googility&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Python, Django, Haystack, Whoosh, Google custom search, Google mapping API, jQuery, JavaScript.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;Dog agility course generators: &lt;a class="reference external" href="http://agilitycourses.com"&gt;agilitycourses.com&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Python, Django, Bootstrap, Bootcards, ReactJS, ReportLab (PDF generation), Rosetta (internationalization), SVG, Compass, Sass, jQuery, JavaScript, Disqus, AddThis.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;Dog agility store: &lt;a class="reference external" href="http://store.agilitynerd.com"&gt;AgilityNerd Store&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Pelican, Zazzle.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;Organizer of quarterly Dog Agility Blogger Action Days/Events and maintain &lt;a class="reference external" href="http://dogagilityblogevents.wordpress.com/"&gt;group blog&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Wordpress, Google docs, JavaScript.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p class="first"&gt;&lt;a class="reference external" href="http://agilitynerd.com/blog/static/about.html"&gt;Teaching, training, and competing in Dog Agility since 1999&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</content></entry></feed>
