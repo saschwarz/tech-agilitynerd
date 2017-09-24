@@ -11,7 +11,7 @@
     <title>tech.agilitynerd</title>
     <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
     <meta name="description" content="">
-    <meta name="author" content="Steve Schwarz">      <!-- <link href="http://127.0.0.1:5500/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" /> -->
+    <meta name="author" content="Steve Schwarz">      <!-- <link href="http://127.0.0.1:8000/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" /> -->
     <link href="http://feeds.feedburner.com/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" />       <!-- Le styles -->
     <link href="http://tech.agilitynerd.com/theme/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
@@ -42,6 +42,12 @@
   var disqus_shortname = "techagilitynerd"; // required: replace example with your forum shortname
   var disqus_developer = 1;
   
+  var disqus_identifier = "drafts/ionic-rollbar-integration.html";
+  (function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
 
   (function () {
   var s = document.createElement('script'); s.async = true;
@@ -70,7 +76,7 @@
 	  <li ><a href="http://tech.agilitynerd.com/category/misc.html">misc</a></li>
 	  <li ><a href="http://tech.agilitynerd.com/category/programming.html">programming</a></li>
 	  <li ><a href="http://tech.agilitynerd.com/category/python.html">python</a></li>
-	  <li ><a href="http://tech.agilitynerd.com/category/webdev.html">webdev</a></li>
+	  <li class="active"><a href="http://tech.agilitynerd.com/category/webdev.html">webdev</a></li>
 	</ul>
 	<p class="navbar-text pull-right">
 	  <a class="navbar-link" href="http://tech.agilitynerd.com/archives.html">[archives]</a>
@@ -86,46 +92,81 @@
             <div class="span10">
                 <div class="row-fluid">
                     <div class="span9">
- 	<div class='page'>
-		<div class="page-header"><h1>About</h1></div>
-		<div><p>Steve Schwarz has been a professional software developer since 1991. He started working in a team developing a distributed 3-tier client-server architecture in C/C++ on Solaris for near real-time assembly line monitoring and equipment control at Panasonic Factory Automation. That product is still in operation today.</p>
-<p>Steve joined a small start-up: Trading Technologies, writing C/C++ client and server APIs for automated futures/options trading products in Visual Studio on Windows. He is an inventor on patents for price distribution algorithms.</p>
-<p>Steve began full stack web development in Python, JS, CSS, HTML, etc. at another start up: Textura LLC. Over nearly a decade he helped take their flagship product from a monolithic web app serving a dozen clients to a multi-service modern architecture serving tens of thousands of clients around the world. Textura was acquired by Oracle in 2016.</p>
-<p>Currently, Steve is freelancing in full stack web and mobile development using a range of web technologies.</p>
-<p>For fun Steve loves playing and competing in dog agility with his dogs Snap! and Flyer.</p>
-<p>He can be reached at <a class="reference external" href="mailto:steve&#64;agilitynerd.com">steve&#64;agilitynerd.com</a></p>
-<div class="section" id="this-website">
-<h2>This Website</h2>
-<p>Started in 2004 as a locally hosted flat file web site using a Perl CGI script (Blosxom). Then migrated to posterous.com. Currently flat files authored in reStructured Text and statically generated using <a class="reference external" href="http://docs.getpelican.com/">Pelican</a>. Comments via Disqus and search by Google Custom Search Engine.</p>
-<p>The <a class="reference external" href="https://github.com/saschwarz/tech-agilitynerd">content of this blog</a> and my <a class="reference external" href="https://github.com/saschwarz/pelican-bootstrap-responsive-theme">edits to the responsive theme</a> are available on GitHub.</p>
+ <div class='article'>
+  <div class="page-header"><h1>Ionic Rollbar Integration</h1></div>
+  <div class="well small"><a class="more" href="http://tech.agilitynerd.com/drafts/ionic-rollbar-integration.html">On 14 Jul 2017 at 1300</a>
+by <a class="url fn" href="http://tech.agilitynerd.com/author/steve-schwarz.html">Steve Schwarz</a> in <a href="http://tech.agilitynerd.com/category/webdev.html">webdev</a>
+ | <a href="http://tech.agilitynerd.com/drafts/ionic-rollbar-integration.html#disqus_thread">Comments</a></div>
+  <div><p>To use <a class="reference external" href="https://ionicframework.com/docs/v2/native/rollbar/">Ionic Native Rollbar</a> to integrate Rollbar with the native &quot;side&quot; of your Ionic application.</p>
+<p>But you don't want to use the version of the plugin currently recommended on the Ionic Native page:</p>
+<pre class="literal-block">
+ionic plugin add resgrid-cordova-plugins-rollbar --variable ROLLBAR_ACCESS_TOKEN=&quot;POST_CLIENT_ACCESS_TOKEN&quot; --variable ROLLBAR_ENVIRONMENT=&quot;ENVIRONMENT_NAME&quot; --save
+</pre>
+<p>Instead you want to use this fork which allows you to also track:</p>
+<pre class="literal-block">
+ionic plugin add https://github.com/emilyemorehouse/cordova-plugins-rollbar.git--variable ROLLBAR_ACCESS_TOKEN=&quot;POST_CLIENT_ACCESS_TOKEN&quot; --variable ROLLBAR_ENVIRONMENT=&quot;ENVIRONMENT_NAME&quot; --save
+</pre>
+<p>In <cite>app.component.ts</cite>:</p>
+<pre class="literal-block">
+import { Rollbar } from 'ionic-native';
+
+platformReady() {
+    // Call any initial plugins when ready
+    this.platform.ready().then(() =&gt; {
+    Rollbar.init();
+    });
+}
+</pre>
+<p>Angular/TypeScript Integration</p>
+<p>npm install &#64;types/requirejs --save</p>
+<p>cd src</p>
+<p>From: <a class="reference external" href="https://github.com/rollbar/rollbar.js/tree/master/examples/webpack">https://github.com/rollbar/rollbar.js/tree/master/examples/webpack</a>
+wget <a class="reference external" href="https://raw.githubusercontent.com/rollbar/rollbar.js/master/dist/rollbar.umd.nojson.min.js">https://raw.githubusercontent.com/rollbar/rollbar.js/master/dist/rollbar.umd.nojson.min.js</a></p>
+<p>Create <cite>rollbar.ts</cite> file:</p>
+<pre class="literal-block">
+import { ErrorHandler } from '&#64;angular/core';
+
+// You could put this data in a configuration file for each environment that is imported at build time:
+var rollbarConfig = {
+    accessToken: 'POST_CLIENT_ACCESS_TOKEN',
+    captureUncaught: true,
+    payload: {
+        environment: 'ENVIRONMENT_NAME',
+    }
+};
+export let Rollbar = require('../rollbar.umd.nojson.min.js').init(rollbarConfig);
+
+export class RollbarErrorHandler implements ErrorHandler {
+    handleError(err:any) : void {
+        Rollbar.error(err.originalError);
+    }
+}
+</pre>
+<p>Configure Angular error/exception handler to use the <cite>RollbarErrorHandler</cite>.</p>
+<p>This mechanism was taken from the Sentry Raven docs: <a class="reference external" href="https://docs.sentry.io/clients/javascript/integrations/angular2/#angular-cli">https://docs.sentry.io/clients/javascript/integrations/angular2/#angular-cli</a>:</p>
+<pre class="literal-block">
+import { RollbarErrorHandler } from '../rollbar';
+
+&#64;NgModule({
+  ...
+  providers: [ { provide: ErrorHandler, useClass: RollbarErrorHandler } ]
+});
+</pre>
+<p>In Ionic pages you can call Rollbar methods:</p>
+<pre class="literal-block">
+import { Rollbar } from '../../rollbar';
+...
+Rollbar.error('An Error');
+...
+</pre>
 </div>
-<div class="section" id="my-other-web-sites-and-projects">
-<h2>My Other Web Sites and Projects</h2>
-<ul>
-<li><p class="first">The first/longest running dog agility blog: <a class="reference external" href="http://agilitynerd.com">AgilityNerd</a></p>
-<p>Perl, Python, Mongodb, Bootstrap, JavaScript, jQuery, Disqus, AddThis.</p>
-</li>
-<li><p class="first"><a class="reference external" href="https://agilitycoursemaster.com">Agility Course Master</a>, AC Master, an offline-first dog agility course map storing and set up mobile application for Android and iOS.</p>
-<p>Ionic, Typescript, Angular (2+), PouchDB, Auth0, Sass.</p>
-</li>
-<li><p class="first">Dog agility community search: <a class="reference external" href="http://googility.com">Googility</a></p>
-<p>Python, Django, Haystack, Whoosh, Google custom search, Google mapping API, jQuery, JavaScript.</p>
-</li>
-<li><p class="first">Dog agility course generators: <a class="reference external" href="http://agilitycourses.com">agilitycourses.com</a></p>
-<p>Python, Django, Bootstrap, Bootcards, ReactJS, ReportLab (PDF generation), Rosetta (internationalization), SVG, Compass, Sass, jQuery, JavaScript, Disqus, AddThis.</p>
-</li>
-<li><p class="first">Dog agility store: <a class="reference external" href="http://store.agilitynerd.com">AgilityNerd Store</a></p>
-<p>Pelican, Zazzle.</p>
-</li>
-<li><p class="first">Organizer of quarterly Dog Agility Blogger Action Days/Events and maintain <a class="reference external" href="http://dogagilityblogevents.wordpress.com/">group blog</a>.</p>
-<p>Wordpress, Google docs, JavaScript.</p>
-</li>
-<li><p class="first"><a class="reference external" href="http://agilitynerd.com/blog/static/about.html">Teaching, training, and competing in Dog Agility since 1999</a></p>
-</li>
-</ul>
-</div>
-</div>
-	</div>
+  <div>
+    <h2>Comments</h2>
+    <div id="disqus_thread"></div>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  </div>
+</div>	
                     </div>
                     <!--/span-->
 
@@ -149,7 +190,8 @@
 <div class="author">
 <h4>About</h4>
 <div class="author-about">
-  <p class="about">I'm Steve Schwarz a Chicago software developer and dog agility enthusiast. <a href="/pages/about.html">more</a></p>
+  <p class="about">I'm Steve Schwarz a Chicago software developer and dog agility enthusiast.
+ <a href="/pages/about.html">more</a></p>
 </div>
 </div>
 <div class="well sidebar-nav">
@@ -178,7 +220,7 @@
 
         <footer>
             <p>Powered by <a href="http://blog.getpelican.com/">Pelican</a></p>
-            <p>&copy; Steve Schwarz 2016</p>
+            <p>&copy; Steve Schwarz 2017</p>
         </footer>
 
     </div>

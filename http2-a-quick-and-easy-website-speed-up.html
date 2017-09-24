@@ -11,7 +11,7 @@
     <title>tech.agilitynerd</title>
     <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
     <meta name="description" content="">
-    <meta name="author" content="Steve Schwarz">      <!-- <link href="http://127.0.0.1:5500/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" /> -->
+    <meta name="author" content="Steve Schwarz">      <!-- <link href="http://127.0.0.1:8000/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" /> -->
     <link href="http://feeds.feedburner.com/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" />       <!-- Le styles -->
     <link href="http://tech.agilitynerd.com/theme/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
@@ -102,7 +102,7 @@ by <a class="url fn" href="http://tech.agilitynerd.com/author/steve-schwarz.html
 <p>The primary goals for HTTP/2 are to reduce latency by enabling full request and response multiplexing, minimize protocol overhead via efficient compression of HTTP header fields, and add support for request prioritization and server push.</p>
 <p class="attribution">&mdash;<a class="reference external" href="https://hpbn.co/http2/">High Performance Browser Networking - O'Reilly</a>:</p>
 </blockquote>
-<p>It turns out all browsers that support HTTP/2 <a class="reference external" href="http://caniuse.com/#feat=http2">also require TLS (HTTPS)</a>. So my first step was <a class="reference external" href="http://tech.agilitynerd.com/nginx-https-lets-encrypt-and-django.html">adding HTTPS support to agilitycourses.com</a> which also provides a backbone on which I'll implement secure user profiles. Then I wanted to enable HTTP/2 to see if it improved the speed of pages served to end users.</p>
+<p>It turns out all browsers that support HTTP/2 <a class="reference external" href="http://caniuse.com/#feat=http2">also require TLS (HTTPS)</a>. So my first step was <a class="reference external" href="{filename}/nginx-django-https.rst">adding HTTPS support to agilitycourses.com</a> which also provides a backbone on which I'll implement secure user profiles. Then I wanted to enable HTTP/2 to see if it improved the speed of pages served to end users.</p>
 <div class="section" id="but-first-an-os-upgrade">
 <h2>But First an OS Upgrade</h2>
 <p>After a little research I found that recent releases of <a class="reference external" href="https://nginx.org/en/">NGINX</a> support HTTP/2 and those versions are packaged with Ubuntu 16.04 LTS. That made upgrading to this latest long term support OS version a better approach than just upgrading NGINX on my older OS. I basically went through the <a class="reference external" href="https://www.digitalocean.com/community/tutorials/how-to-upgrade-to-ubuntu-16-04-lts">standard upgrade process</a>.</p>
@@ -189,7 +189,8 @@ server {
 <div class="author">
 <h4>About</h4>
 <div class="author-about">
-  <p class="about">I'm Steve Schwarz a Chicago software developer and dog agility enthusiast. <a href="/pages/about.html">more</a></p>
+  <p class="about">I'm Steve Schwarz a Chicago software developer and dog agility enthusiast.
+ <a href="/pages/about.html">more</a></p>
 </div>
 </div>
 <div class="well sidebar-nav">
@@ -218,7 +219,7 @@ server {
 
         <footer>
             <p>Powered by <a href="http://blog.getpelican.com/">Pelican</a></p>
-            <p>&copy; Steve Schwarz 2016</p>
+            <p>&copy; Steve Schwarz 2017</p>
         </footer>
 
     </div>
