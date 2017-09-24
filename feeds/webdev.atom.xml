@@ -18,7 +18,7 @@ some time to modernize the &lt;tt class="docutils literal"&gt;&lt;span class="pr
 &lt;/pre&gt;
 &lt;p&gt;You can the template tag in action on this &lt;a class="reference external" href="https://www.googility.com/django-stw/"&gt;demo page&lt;/a&gt; in a nicer &lt;a class="reference external" href="http://getbootstrap.com/"&gt;&amp;quot;Bootstrap-ified&amp;quot;&lt;/a&gt; UI:&lt;/p&gt;
 &lt;div class="thumbnail figure"&gt;
-&lt;img alt="Screenshot of first slide of my presentation" src="{filename}/images/DjangoSTWDemoScreenshot.png" /&gt;
+&lt;img alt="Screenshot of first slide of my presentation" src="http://tech.agilitynerd.com/images/DjangoSTWDemoScreenshot.png" /&gt;
 &lt;/div&gt;
 &lt;p&gt;The latest package is &lt;a class="reference external" href="http://pypi.python.org/pypi?:action=display&amp;amp;name=django-stw"&gt;available on PyPi&lt;/a&gt;:&lt;/p&gt;
 &lt;pre class="code python literal-block"&gt;
@@ -33,7 +33,7 @@ for a lightning talk at the December &lt;a class="reference external" href="http
 I found the code sections just weren't large enough. So I threw together a little JavaScript to add &amp;quot;+&amp;quot; and &amp;quot;-&amp;quot;
 buttons next to each code section that maximizes/restores the code blocks for easier viewing during the presentation:&lt;/p&gt;
 &lt;div class="thumbnail figure"&gt;
-&lt;img alt="Screenshot of slide showing plus sign to right of code section" src="{filename}/images/max-min-screenshot.png" /&gt;
+&lt;img alt="Screenshot of slide showing plus sign to right of code section" src="http://tech.agilitynerd.com/images/max-min-screenshot.png" /&gt;
 &lt;/div&gt;
 &lt;p&gt;Just copy/paste the following into your &lt;tt class="docutils literal"&gt;index.html&lt;/tt&gt; file:&lt;/p&gt;
 &lt;script src="https://gist.github.com/saschwarz/ee02786cd1a64c33611fafd70c0df900.js"&gt;&lt;/script&gt;</content><category term="webdev"></category><category term="CSS"></category><category term="JavaScript"></category></entry><entry><title>Pelican For Fast Site/Project Development</title><link href="http://tech.agilitynerd.com/pelican-for-fast-siteproject-development.html" rel="alternate"></link><published>2016-11-08T13:00:00-06:00</published><updated>2016-11-08T13:00:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2016-11-08:/pelican-for-fast-siteproject-development.html</id><summary type="html">&lt;p&gt;I was working on a simple single page website for &lt;a class="reference external" href="http://www.agilitynerd.com/jumpheights/"&gt;calculating dog agility jump heights&lt;/a&gt; and was really missing the tool chain I normally use in Flask and Django web sites for bundling, compressing, and versioning CSS and JS files and a mechanism for putting the bundled/versioned file names …&lt;/p&gt;</summary><content type="html">&lt;p&gt;I was working on a simple single page website for &lt;a class="reference external" href="http://www.agilitynerd.com/jumpheights/"&gt;calculating dog agility jump heights&lt;/a&gt; and was really missing the tool chain I normally use in Flask and Django web sites for bundling, compressing, and versioning CSS and JS files and a mechanism for putting the bundled/versioned file names in the HTML files. I was searching for what I needed and was about to write a little script to do it and then it occurred to me that &lt;a class="reference external" href="http://getpelican.com"&gt;Pelican&lt;/a&gt; already has just what I needed!&lt;/p&gt;

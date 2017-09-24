@@ -256,7 +256,7 @@ rm -rf output
 &lt;/pre&gt;
 &lt;p&gt;Get the URL by clicking on the Settings tab for the GitHub repository:&lt;/p&gt;
 &lt;div class="thumbnail figure"&gt;
-&lt;img alt="Screenshot of GitHub settings showing URL for GitHub pages" src="{filename}/images/github-pages-url.png" /&gt;
+&lt;img alt="Screenshot of GitHub settings showing URL for GitHub pages" src="http://tech.agilitynerd.com/images/github-pages-url.png" /&gt;
 &lt;/div&gt;
 &lt;p&gt;Now that the &lt;tt class="docutils literal"&gt;master&lt;/tt&gt; branch is set up I checked in and commited the changes:&lt;/p&gt;
 &lt;pre class="code bash literal-block"&gt;

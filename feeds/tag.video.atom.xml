@@ -2,13 +2,13 @@
 <feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd - video</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:8000/feeds/tag.video.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2016-12-14T14:00:00-06:00</updated><entry><title>Using Gestures in Angular 2 with TypeScript Lightning Talk</title><link href="http://tech.agilitynerd.com/using-gestures-in-angular-2-with-typescript-lightning-talk.html" rel="alternate"></link><published>2016-12-14T14:00:00-06:00</published><updated>2016-12-14T14:00:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2016-12-14:/using-gestures-in-angular-2-with-typescript-lightning-talk.html</id><summary type="html">&lt;p&gt;Here are my &lt;a class="reference external" href="https://saschwarz.github.io/angular2-gestures-slides/#/"&gt;slides on Using Gestures in Angular 2 with TypeScript&lt;/a&gt;
 for a lightning talk that I gave at the December &lt;a class="reference external" href="https://www.meetup.com/Northwest-Chicago-JavaScript/"&gt;Northwest Chicago JavaScript&lt;/a&gt; meetup.&lt;/p&gt;
 &lt;div class="thumbnail figure"&gt;
-&lt;img alt="Screenshot of first slide of my presentation" src="{filename}/images/GesturesAngularTypeScriptSlides.png" /&gt;
+&lt;img alt="Screenshot of first slide of my presentation" src="http://tech.agilitynerd.com/images/GesturesAngularTypeScriptSlides.png" /&gt;
 &lt;/div&gt;
 &lt;p&gt;I converted the &lt;a class="reference external" href="http://lab.hakim.se/reveal-js/#/"&gt;Reveal.js&lt;/a&gt; slides checkout to use the
 &lt;a class="reference external" href="https://cli.angular.io/"&gt;Angular 2 CLI&lt;/a&gt;. That let me include two small Angular 2 components within the …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Here are my &lt;a class="reference external" href="https://saschwarz.github.io/angular2-gestures-slides/#/"&gt;slides on Using Gestures in Angular 2 with TypeScript&lt;/a&gt;
 for a lightning talk that I gave at the December &lt;a class="reference external" href="https://www.meetup.com/Northwest-Chicago-JavaScript/"&gt;Northwest Chicago JavaScript&lt;/a&gt; meetup.&lt;/p&gt;
 &lt;div class="thumbnail figure"&gt;
-&lt;img alt="Screenshot of first slide of my presentation" src="{filename}/images/GesturesAngularTypeScriptSlides.png" /&gt;
+&lt;img alt="Screenshot of first slide of my presentation" src="http://tech.agilitynerd.com/images/GesturesAngularTypeScriptSlides.png" /&gt;
 &lt;/div&gt;
 &lt;p&gt;I converted the &lt;a class="reference external" href="http://lab.hakim.se/reveal-js/#/"&gt;Reveal.js&lt;/a&gt; slides checkout to use the
 &lt;a class="reference external" href="https://cli.angular.io/"&gt;Angular 2 CLI&lt;/a&gt;. That let me include two small Angular 2 components within the slides themselves.

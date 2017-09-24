@@ -18,7 +18,7 @@ some time to modernize the &lt;tt class="docutils literal"&gt;&lt;span class="pr
 &lt;/pre&gt;
 &lt;p&gt;You can the template tag in action on this &lt;a class="reference external" href="https://www.googility.com/django-stw/"&gt;demo page&lt;/a&gt; in a nicer &lt;a class="reference external" href="http://getbootstrap.com/"&gt;&amp;quot;Bootstrap-ified&amp;quot;&lt;/a&gt; UI:&lt;/p&gt;
 &lt;div class="thumbnail figure"&gt;
-&lt;img alt="Screenshot of first slide of my presentation" src="{filename}/images/DjangoSTWDemoScreenshot.png" /&gt;
+&lt;img alt="Screenshot of first slide of my presentation" src="http://tech.agilitynerd.com/images/DjangoSTWDemoScreenshot.png" /&gt;
 &lt;/div&gt;
 &lt;p&gt;The latest package is &lt;a class="reference external" href="http://pypi.python.org/pypi?:action=display&amp;amp;name=django-stw"&gt;available on PyPi&lt;/a&gt;:&lt;/p&gt;
 &lt;pre class="code python literal-block"&gt;
