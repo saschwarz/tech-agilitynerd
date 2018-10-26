@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd - comments</title><link href="http://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:8000/feeds/tag.comments.atom.xml" rel="self"></link><id>http://tech.agilitynerd.com/</id><updated>2010-11-23T05:00:00-06:00</updated><entry><title>Blosxom Plugin for Generating Facebook Comment xids</title><link href="http://tech.agilitynerd.com/blosxom-plugin-for-generating-facebook-commen.html" rel="alternate"></link><published>2010-11-23T05:00:00-06:00</published><updated>2010-11-23T05:00:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-11-23:/blosxom-plugin-for-generating-facebook-commen.html</id><summary type="html">&lt;p&gt;I've been using &lt;a class="reference external" href="http://www.blosxom.com/"&gt;Blosxom&lt;/a&gt; to power my dog agility blog for over 6
+<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd - comments</title><link href="https://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:8000/feeds/tag.comments.atom.xml" rel="self"></link><id>https://tech.agilitynerd.com/</id><updated>2010-11-23T05:00:00-06:00</updated><entry><title>Blosxom Plugin for Generating Facebook Comment xids</title><link href="https://tech.agilitynerd.com/blosxom-plugin-for-generating-facebook-commen.html" rel="alternate"></link><published>2010-11-23T05:00:00-06:00</published><updated>2010-11-23T05:00:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-11-23:/blosxom-plugin-for-generating-facebook-commen.html</id><summary type="html">&lt;p&gt;I've been using &lt;a class="reference external" href="http://www.blosxom.com/"&gt;Blosxom&lt;/a&gt; to power my dog agility blog for over 6
 years. In the past year or so I've enabled &lt;a class="reference external" href="http://developers.facebook.com/docs/reference/plugins/comments"&gt;Facebook comments&lt;/a&gt; in
 addition to my site's own comment plugin. I ran into a problem using
 Facebook's comments: if the user enters a comment on a page and …&lt;/p&gt;</summary><content type="html">&lt;p&gt;I've been using &lt;a class="reference external" href="http://www.blosxom.com/"&gt;Blosxom&lt;/a&gt; to power my dog agility blog for over 6
@@ -28,15 +28,15 @@ encoded URL can be placed in the story.html template:&lt;/p&gt;
 &lt;span class="c1"&gt;# into $urlencode::url without any params# use this in fb.comments xid to give the same xid&lt;/span&gt;
 &lt;span class="c1"&gt;# even when query params are provided&lt;/span&gt;
 &lt;span class="c1"&gt;# -------------------&lt;/span&gt;
-&lt;span class="k"&gt;use&lt;/span&gt; &lt;span class="nn"&gt;CGI&lt;/span&gt; &lt;span class="sx"&gt;qw/:standard/&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-&lt;span class="k"&gt;use&lt;/span&gt; &lt;span class="nn"&gt;URI::Escape&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;use&lt;/span&gt; &lt;span class="n"&gt;CGI&lt;/span&gt; &lt;span class="sx"&gt;qw/:standard/&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;use&lt;/span&gt; &lt;span class="n"&gt;&lt;/span&gt;&lt;span class="nn"&gt;URI::&lt;/span&gt;&lt;span class="n"&gt;Escape&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 
-&lt;span class="k"&gt;sub&lt;/span&gt; &lt;span class="nf"&gt;start&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="k"&gt;sub &lt;/span&gt;&lt;span class="nf"&gt;start&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
 &lt;span class="nv"&gt;$url&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;''&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 
-&lt;span class="k"&gt;sub&lt;/span&gt; &lt;span class="nf"&gt;story&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="k"&gt;sub &lt;/span&gt;&lt;span class="nf"&gt;story&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
     &lt;span class="k"&gt;my&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;$pkg&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nv"&gt;$path&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nv"&gt;$filename&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nv"&gt;$story_ref&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nv"&gt;$title_ref&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nv"&gt;$body_ref&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nv"&gt;&amp;#64;_&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
     &lt;span class="nv"&gt;$&lt;/span&gt;&lt;span class="nn"&gt;urlencode::&lt;/span&gt;&lt;span class="nv"&gt;url&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;uri_escape&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;$blosxom::url/${blosxom::path_info}&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
