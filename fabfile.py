@@ -3,7 +3,10 @@ import fabric.contrib.project as project
 import os
 import shutil
 import sys
-import SocketServer
+try:
+    import socketserver
+except ImportError:
+    import SocketServer as socketserver
 
 from pelican.server import ComplexHTTPRequestHandler
 
@@ -12,16 +15,16 @@ env.deploy_path = 'output'
 DEPLOY_PATH = env.deploy_path
 
 # Remote server configuration
-production = 'root@localhost:22'
-dest_path = '/var/www'
+production = '$ssh_user@$ssh_host:$ssh_port'
+dest_path = '$ssh_target_dir'
 
 # Rackspace Cloud Files configuration settings
-env.cloudfiles_username = 'my_rackspace_username'
-env.cloudfiles_api_key = 'my_rackspace_api_key'
-env.cloudfiles_container = 'my_cloudfiles_container'
+env.cloudfiles_username = '$cloudfiles_username'
+env.cloudfiles_api_key = '$cloudfiles_api_key'
+env.cloudfiles_container = '$cloudfiles_container'
 
 # Github Pages configuration
-env.github_pages_branch = "gh-pages"
+env.github_pages_branch = "$github_pages_branch"
 
 # Port for `serve`
 PORT = 8000
@@ -37,9 +40,8 @@ def build():
     local('pelican -s pelicanconf.py')
 
 def rebuild():
-    """`clean` then `build`"""
-    clean()
-    build()
+    """`build` with the delete switch"""
+    local('pelican -d -s pelicanconf.py')
 
 def regenerate():
     """Automatically regenerate site upon file modification"""
@@ -49,7 +51,7 @@ def serve():
     """Serve site at http://localhost:8000/"""
     os.chdir(env.deploy_path)
 
-    class AddressReuseTCPServer(SocketServer.TCPServer):
+    class AddressReuseTCPServer(socketserver.TCPServer):
         allow_reuse_address = True
 
     server = AddressReuseTCPServer(('', PORT), ComplexHTTPRequestHandler)
@@ -89,6 +91,6 @@ def publish():
 
 def gh_pages():
     """Publish to GitHub Pages"""
-    rebuild()
-    local("ghp-import -b {github_pages_branch} {deploy_path}".format(**env))
-    local("git push origin {github_pages_branch}".format(**env))
+    # rebuild()
+    local('pelican -s publishconf.py content')
+    local("ghp-import -p {deploy_path}".format(**env))
