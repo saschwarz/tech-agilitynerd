@@ -1,5 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd - Steve Schwarz</title><link href="https://tech.agilitynerd.com/" rel="alternate"></link><link href="http://127.0.0.1:8000/feeds/steve-schwarz.atom.xml" rel="self"></link><id>https://tech.agilitynerd.com/</id><updated>2017-01-10T13:00:00-06:00</updated><entry><title>Django Shrink The Web django-stw 1.0 Released</title><link href="https://tech.agilitynerd.com/django-shrink-the-web-10-released.html" rel="alternate"></link><published>2017-01-10T13:00:00-06:00</published><updated>2017-01-10T13:00:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2017-01-10:/django-shrink-the-web-10-released.html</id><summary type="html">&lt;p&gt;It has been several years since I've worked on my &lt;a class="reference external" href="https://www.djangoproject.com/"&gt;Django&lt;/a&gt; driven website that uses &lt;a class="reference external" href="http://www.shrinktheweb.com/"&gt;Shrink The Web&lt;/a&gt; (STW) screen shots.
+<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd - Steve Schwarz</title><link href="https://tech.agilitynerd.com/" rel="alternate"></link><link href="https://tech.agilitynerd.com/feeds/steve-schwarz.atom.xml" rel="self"></link><id>https://tech.agilitynerd.com/</id><updated>2018-10-28T08:00:00-05:00</updated><entry><title>Build In Customer Support to Your Mobile/Web App/PWA</title><link href="https://tech.agilitynerd.com/build-in-customer-support-to-your-mobileweb-apppwa.html" rel="alternate"></link><published>2018-10-28T08:00:00-05:00</published><updated>2018-10-28T08:00:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2018-10-28:/build-in-customer-support-to-your-mobileweb-apppwa.html</id><summary type="html">&lt;p&gt;Here are my &lt;a class="reference external" href="https://docs.google.com/presentation/d/1JgU1WHvVzlit0eM0a4D0Jy6dyfoOPwa5tUkPhfcIS78/edit?usp=sharing"&gt;slides on Build in Customer Support: Simplify support of your mobile/web applications&lt;/a&gt;
+for a &amp;quot;lightning talk&amp;quot; that I gave at the October &lt;a class="reference external" href="https://www.meetup.com/Northwest-Chicago-JavaScript/"&gt;Northwest Chicago JavaScript&lt;/a&gt; meetup.&lt;/p&gt;
+&lt;div class="thumbnail figure"&gt;
+&lt;img alt="Screenshot of first slide of my presentation" src="https://tech.agilitynerd.com/images/BuildInCustomerSupport.png" /&gt;
+&lt;/div&gt;
+&lt;p&gt;I've been a developer for a while and have worked in organizations who have been focused on the customer (really …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Here are my &lt;a class="reference external" href="https://docs.google.com/presentation/d/1JgU1WHvVzlit0eM0a4D0Jy6dyfoOPwa5tUkPhfcIS78/edit?usp=sharing"&gt;slides on Build in Customer Support: Simplify support of your mobile/web applications&lt;/a&gt;
+for a &amp;quot;lightning talk&amp;quot; that I gave at the October &lt;a class="reference external" href="https://www.meetup.com/Northwest-Chicago-JavaScript/"&gt;Northwest Chicago JavaScript&lt;/a&gt; meetup.&lt;/p&gt;
+&lt;div class="thumbnail figure"&gt;
+&lt;img alt="Screenshot of first slide of my presentation" src="https://tech.agilitynerd.com/images/BuildInCustomerSupport.png" /&gt;
+&lt;/div&gt;
+&lt;p&gt;I've been a developer for a while and have worked in organizations who have been focused on the customer (really!).
+So I've always been interested in helping support folk and developers build and improve the product.
+There is a lot of discussion on design to help products meet customer needs and improve usability/interaction.
+But I hadn't found any discussions on how to build your product so you can provide your customers with better support.&lt;/p&gt;
+&lt;p&gt;So I put together this talk on what I've learned.
+I focus on tools/techniques for web/mobile apps and support for small groups/single developers.
+Here's the outline:&lt;/p&gt;
+&lt;ul class="simple"&gt;
+&lt;li&gt;Overview support options and choose channels that fit your customers.&lt;/li&gt;
+&lt;li&gt;Demonstrate some tools for those channels that are helpful for startups/side projects.&lt;/li&gt;
+&lt;li&gt;Can you avoid support?&lt;/li&gt;
+&lt;li&gt;Find/fix bugs before they are detected by customers.&lt;/li&gt;
+&lt;li&gt;Acting as the customer&lt;/li&gt;
+&lt;li&gt;Reproducing bugs&lt;/li&gt;
+&lt;li&gt;Acting on and Documenting issues&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;There is also video of my talk:&lt;/p&gt;
+&lt;div class="embed-video"&gt;
+    &lt;iframe src="https://www.youtube.com/embed/kZkkUAQ7FSs" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen&gt;&lt;/iframe&gt;
+&lt;/div&gt;</content><category term="talks"></category><category term="javascript"></category><category term="video"></category><category term="mobile"></category><category term="sideprojects"></category></entry><entry><title>Django Shrink The Web django-stw 1.0 Released</title><link href="https://tech.agilitynerd.com/django-shrink-the-web-10-released.html" rel="alternate"></link><published>2017-01-10T13:00:00-06:00</published><updated>2017-01-10T13:00:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2017-01-10:/django-shrink-the-web-10-released.html</id><summary type="html">&lt;p&gt;It has been several years since I've worked on my &lt;a class="reference external" href="https://www.djangoproject.com/"&gt;Django&lt;/a&gt; driven website that uses &lt;a class="reference external" href="http://www.shrinktheweb.com/"&gt;Shrink The Web&lt;/a&gt; (STW) screen shots.
 During that time STW has simplified their feature set and their API.&lt;/p&gt;
 &lt;p&gt;As I upgraded my site (&lt;a class="reference external" href="https://www.googility.com/"&gt;Googility.com&lt;/a&gt;) I took
 some time to modernize the &lt;tt class="docutils literal"&gt;&lt;span class="pre"&gt;django-stw&lt;/span&gt;&lt;/tt&gt; template tag …&lt;/p&gt;</summary><content type="html">&lt;p&gt;It has been several years since I've worked on my &lt;a class="reference external" href="https://www.djangoproject.com/"&gt;Django&lt;/a&gt; driven website that uses &lt;a class="reference external" href="http://www.shrinktheweb.com/"&gt;Shrink The Web&lt;/a&gt; (STW) screen shots.
