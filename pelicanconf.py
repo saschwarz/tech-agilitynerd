@@ -10,10 +10,12 @@ TIMEZONE = 'America/Chicago'
 DEFAULT_LANG = u'en'
 
 # Blogroll
-LINKS = (('agilitynerd.com', 'https://agilitynerd.com/blog/'),
-         ('agilitycourses.com', 'https://agilitycourses.com/'),
-         ('googility.com', 'https://googility.com/'),
-         )
+LINKS = (
+    ('agilitycoursemaster.com', 'https://agilitycoursemaster.com'),
+    ('agilitynerd.com', 'https://agilitynerd.com/blog/'),
+    ('agilitycourses.com', 'https://agilitycourses.com/'),
+    ('googility.com', 'https://googility.com/'),
+)
 
 # Social widget
 SOCIAL = (('Linked in', 'https://www.linkedin.com/profile/view?id=10135443'),
@@ -33,7 +35,7 @@ SUMMARY_MAX_LENGTH = 50
 AUTHOR_ABOUT = """<p class="about">I'm Steve Schwarz a Chicago software developer and dog agility enthusiast.
  <a href="/pages/about.html">more</a></p>"""
 
-COPYRIGHT_DATE = "2017"
+COPYRIGHT_DATE = "2018"
 
 # TEMPLATE_PAGES = {"/Users/saschwarz/dev/tech-agilitynerd/content/about.html":
 #                   "/Users/saschwarz/dev/tech-agilitynerd/output/about.html", }
