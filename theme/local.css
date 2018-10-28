@@ -34,8 +34,8 @@ div.highlight pre {
 
 /* responsive video element */
 .embed-video {
-    margin-top: 16px;
-    margin-bottom: 16px;
+    margin-top: 2em;
+    margin-bottom: 2em;
 }
 
 .embed-video {
@@ -261,4 +261,8 @@ footer,
 
 .search .gsc-search-box-tools .gsc-search-box .gsc-input {
     padding-right: 2px;
+}
+
+.thumbnail {
+    margin: 2em 1em;
 }
