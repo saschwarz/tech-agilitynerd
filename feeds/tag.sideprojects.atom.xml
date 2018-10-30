@@ -46,4 +46,22 @@ The thorough and well written documentation together with their online support f
 &lt;p&gt;So I put together this talk on what I've learned. Here is video of my talk:&lt;/p&gt;
 &lt;div class="embed-video"&gt;
    &lt;iframe src="https://www.youtube.com/embed/LFUm9qV_Gjo" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen&gt;&lt;/iframe&gt;
-&lt;/div&gt;</content><category term="talks"></category><category term="javascript"></category><category term="video"></category><category term="mobile"></category><category term="sideprojects"></category><category term="testing"></category></entry></feed>
+&lt;/div&gt;</content><category term="talks"></category><category term="javascript"></category><category term="video"></category><category term="mobile"></category><category term="sideprojects"></category><category term="testing"></category></entry><entry><title>Using the Ionic Framework for Mobile and Web Development</title><link href="https://tech.agilitynerd.com/using-the-ionic-framework-for-mobile-and-web-development.html" rel="alternate"></link><published>2017-07-20T08:00:00-05:00</published><updated>2017-07-20T08:00:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2017-07-20:/using-the-ionic-framework-for-mobile-and-web-development.html</id><summary type="html">&lt;p&gt;Here are my &lt;a class="reference external" href="https://docs.google.com/presentation/d/1OmABc2JcqsPP3i6Q2EfYat-F6GKqGHjiUE2ywPcB09Q/edit?usp=sharing"&gt;slides on Using the Ionic Framework for Mobile and Web Development&lt;/a&gt;
+for a talk that I gave at the July &lt;a class="reference external" href="https://www.meetup.com/Northwest-Chicago-JavaScript/"&gt;Northwest Chicago JavaScript&lt;/a&gt; meetup.&lt;/p&gt;
+&lt;div class="thumbnail figure"&gt;
+&lt;img alt="Screenshot of first slide of my presentation" src="https://tech.agilitynerd.com/images/UsingIonicMobileWeb.png" /&gt;
+&lt;/div&gt;
+&lt;p&gt;I've been using &lt;a class="reference external" href="https://https://ionicframework.com"&gt;Ionic&lt;/a&gt; since early 2017.
+I was drawn to it because it allowed a single code base to create native applications …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Here are my &lt;a class="reference external" href="https://docs.google.com/presentation/d/1OmABc2JcqsPP3i6Q2EfYat-F6GKqGHjiUE2ywPcB09Q/edit?usp=sharing"&gt;slides on Using the Ionic Framework for Mobile and Web Development&lt;/a&gt;
+for a talk that I gave at the July &lt;a class="reference external" href="https://www.meetup.com/Northwest-Chicago-JavaScript/"&gt;Northwest Chicago JavaScript&lt;/a&gt; meetup.&lt;/p&gt;
+&lt;div class="thumbnail figure"&gt;
+&lt;img alt="Screenshot of first slide of my presentation" src="https://tech.agilitynerd.com/images/UsingIonicMobileWeb.png" /&gt;
+&lt;/div&gt;
+&lt;p&gt;I've been using &lt;a class="reference external" href="https://https://ionicframework.com"&gt;Ionic&lt;/a&gt; since early 2017.
+I was drawn to it because it allowed a single code base to create native applications for both iOS and Android (with &lt;a class="reference external" href="https://cordova.apache.org/"&gt;Cordova&lt;/a&gt; providing the abstraction on top of the mobile platforms).
+Ionic provides a set of platform styled widgets, integration and tooling to make it work together easily.
+Their use of Typescript/Angular also meant I could create a purely web version of the application also using the same code.&lt;/p&gt;
+&lt;p&gt;Here is a video of my talk:&lt;/p&gt;
+&lt;div class="embed-video"&gt;
+    &lt;iframe src="https://www.youtube.com/embed/fT8S_WuqcnQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;
+&lt;/div&gt;</content><category term="talks"></category><category term="javascript"></category><category term="video"></category><category term="mobile"></category><category term="sideprojects"></category><category term="ionic"></category><category term="typescript"></category><category term="angular"></category></entry></feed>
