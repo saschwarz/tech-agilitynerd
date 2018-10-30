@@ -15,11 +15,11 @@ I've made the following enhancements:
 -  Added Quick Links to the right hand navigation to allow folks to get
    to the three main Agility sections of the website without going to the
    `Navigate`_ page.
-   Used the [[Blosxom]] `file plugin`_\ to include the new HTML in all
+   Used the [[Blosxom]] `file plugin`_ to include the new HTML in all
    pages.
 -  Changed my `AgilityGlossary`_ page to have a preface with an
    alphabetical listing ofdefinitions. I ended up using three new
-   Blosxom plugins to make thiswork: `config`_,\ `postheadprefoot`_\ and
+   Blosxom plugins to make thiswork: `config`_, `postheadprefoot`_ and
    `sort_order`_.
 
 For other Blosxom users I've updated my `site pluginspage`_ with the

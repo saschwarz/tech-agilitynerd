@@ -29,7 +29,7 @@ system.
 
    </div>
 
-I'm using a `FIGLet based ASCII CAPTCHA`_\ on my websites since it was
+I'm using a `FIGLet based ASCII CAPTCHA`_ on my websites since it was
 easy to integrate into the `Blosxom`_ writeback plugin. But I wanted to
 give reCAPTCHA a try while converting my `Googility`_ site to `Django`_.
 `John DeRosa`_ made my job trivial by `writing up the steps with a clear example`_.

@@ -15,10 +15,10 @@ I could have hard-coded the box position; but decided that I wanted
 to have the main body remain centered regardless of browser size.
 That would complicate the positioning of the menu box (which is it's
 own div not contained with the main page). Once again `A List Apart`_ had
-a good `article`_\ describing how they got their CSS centering to work.
+a good `article`_ describing how they got their CSS centering to work.
 
 The ALA article had links to these two pages describing the methods
-I used: `Auto Width Margins`_\ and `NegativeMargins`_.
+I used: `Auto Width Margins`_ and `NegativeMargins`_.
 
 The AgilityNerd site has two main divs: #page for the main body
 and#sidebar for the box containing the menu. I used the Auto Width

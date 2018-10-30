@@ -6,7 +6,7 @@ Confidently Refactoring Django URLs, Views, and Templates
 :tags: django, googility, python, tdd, testing
 :slug: confidently-refactoring-django-urls-views-and
 
-`Googility.com`_\ is my first Django website and under the covers the
+`Googility.com`_ is my first Django website and under the covers the
 oldest code looked like it. I had originally written it with the sole
 intent of allowing people to enter dog agility businesses and websites
 into a database that I could use to create a Dog Agility `Google Custom

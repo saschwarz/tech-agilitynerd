@@ -60,7 +60,7 @@ photographer `ijsendoorn`_. There are thousands of interesting photos
 suitable for use in blogs hosted on Stock.XCHNG, it is a great resource
 and I heartily thank the photographers who post their work.
 
-I then used the free `Gimp`_\ image editing software to select a section
+I then used the free `Gimp`_ image editing software to select a section
 of the appropriate size for the header of my site. The Gimp is easy to
 use and there is a fair amount of online help available if you are doing
 something tricky. Of course you can use Photoshop or a similar program
@@ -149,7 +149,7 @@ pretty happy with the cool, blue-ish, wintry theme I've created:
 
    </div>
 
-Take a look at `AgilityNerd`_\ to see it in action or, depending on when
+Take a look at `AgilityNerd`_ to see it in action or, depending on when
 you read this, to see my next seasonal theme. I hope some of these tips
 might be helpful for helping you create your next theme.
 
