@@ -42,6 +42,12 @@
   var disqus_shortname = "techagilitynerd"; // required: replace example with your forum shortname
   var disqus_developer = 1;
 
+  var disqus_identifier = "pouchdb-and-couchbase-replication-for-the-offline-first-web.html";
+  (function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
 
   (function () {
   var s = document.createElement('script'); s.async = true;
@@ -70,7 +76,7 @@
 	  <li ><a href="https://tech.agilitynerd.com/category/misc.html">misc</a></li>
 	  <li ><a href="https://tech.agilitynerd.com/category/programming.html">programming</a></li>
 	  <li ><a href="https://tech.agilitynerd.com/category/python.html">python</a></li>
-	  <li ><a href="https://tech.agilitynerd.com/category/webdev.html">webdev</a></li>
+	  <li class="active"><a href="https://tech.agilitynerd.com/category/webdev.html">webdev</a></li>
 	</ul>
 	<p class="navbar-text pull-right">
 	  <a class="navbar-link" href="https://tech.agilitynerd.com/archives.html">[archives]</a>
@@ -86,13 +92,27 @@
             <div class="span10">
                 <div class="row-fluid">
                     <div class="span9">
-                        <div class="page-header">
-                            <h1>tech.agilitynerd - Authors</h1>
-                        </div>
-     <h1>Authors on tech.agilitynerd</h1>
-
-    <ul>        <li><a href="https://tech.agilitynerd.com/author/steve-schwarz.html">Steve Schwarz</a> (77)</li>
-    </ul>
+ <div class='article'>
+  <div class="page-header"><h1>PouchDB and Couchbase Replication for the Offline-First Web</h1></div>
+  <div class="well small"><a class="more" href="https://tech.agilitynerd.com/pouchdb-and-couchbase-replication-for-the-offline-first-web.html">On 21 Sep 2017 at 0800</a>
+by <a class="url fn" href="https://tech.agilitynerd.com/author/steve-schwarz.html">Steve Schwarz</a> in <a href="https://tech.agilitynerd.com/category/webdev.html">webdev</a>
+ | <a href="https://tech.agilitynerd.com/pouchdb-and-couchbase-replication-for-the-offline-first-web.html#disqus_thread">Comments</a></div>
+  <div><p>I gave a short talk on 'PouchDB and Couchbase Replication for the Offline-First Web' at the September <a class="reference external" href="https://www.meetup.com/Northwest-Chicago-JavaScript/">Northwest Chicago JavaScript</a> meetup.</p>
+<p>It builds on Peter Mbanugo's blog post:
+<a class="reference external" href="https://www.codementor.io/pmbanugo/using-pouchdb-and-couchbase-in-an-offline-first-application-5pw2sxs6o">Using PouchDB and Couchbase in an Offline-First Application</a>
+by using the <a class="reference external" href="https://pouchdb.com/">PouchDB API</a> in place of the <a class="reference external" href="http://hood.ie/">Hoodie API</a> Peter used.</p>
+<p>My source code is in this <a class="reference external" href="https://github.com/saschwarz/couchbase-phonebook">GitHub repository</a>.</p>
+<p>Here is a video of my talk:</p>
+<div class="embed-video">
+    <iframe src="https://www.youtube.com/embed/ZQ8YzXo0dWQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div></div>
+  <div>
+    <h2>Comments</h2>
+    <div id="disqus_thread"></div>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  </div>
+</div>	
                     </div>
                     <!--/span-->
 
