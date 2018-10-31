@@ -46,7 +46,25 @@ The thorough and well written documentation together with their online support f
 &lt;p&gt;So I put together this talk on what I've learned. Here is video of my talk:&lt;/p&gt;
 &lt;div class="embed-video"&gt;
    &lt;iframe src="https://www.youtube.com/embed/LFUm9qV_Gjo" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen&gt;&lt;/iframe&gt;
-&lt;/div&gt;</content><category term="talks"></category><category term="javascript"></category><category term="video"></category><category term="mobile"></category><category term="sideprojects"></category><category term="testing"></category></entry><entry><title>Using the Ionic Framework for Mobile and Web Development</title><link href="https://tech.agilitynerd.com/using-the-ionic-framework-for-mobile-and-web-development.html" rel="alternate"></link><published>2017-07-20T08:00:00-05:00</published><updated>2017-07-20T08:00:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2017-07-20:/using-the-ionic-framework-for-mobile-and-web-development.html</id><summary type="html">&lt;p&gt;Here are my &lt;a class="reference external" href="https://docs.google.com/presentation/d/1OmABc2JcqsPP3i6Q2EfYat-F6GKqGHjiUE2ywPcB09Q/edit?usp=sharing"&gt;slides on Using the Ionic Framework for Mobile and Web Development&lt;/a&gt;
+&lt;/div&gt;</content><category term="talks"></category><category term="javascript"></category><category term="video"></category><category term="mobile"></category><category term="sideprojects"></category><category term="testing"></category></entry><entry><title>PouchDB and Couchbase Replication for the Offline-First Web</title><link href="https://tech.agilitynerd.com/pouchdb-and-couchbase-replication-for-the-offline-first-web.html" rel="alternate"></link><published>2017-09-21T08:00:00-05:00</published><updated>2017-09-21T08:00:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2017-09-21:/pouchdb-and-couchbase-replication-for-the-offline-first-web.html</id><summary type="html">&lt;p&gt;Here are my &lt;a class="reference external" href="https://docs.google.com/presentation/d/1OmABc2JcqsPP3i6Q2EfYat-F6GKqGHjiUE2ywPcB09Q/edit?usp=sharing"&gt;slides on Using the Ionic Framework for Mobile and Web Development&lt;/a&gt;
+for a talk that I gave at the September &lt;a class="reference external" href="https://www.meetup.com/Northwest-Chicago-JavaScript/"&gt;Northwest Chicago JavaScript&lt;/a&gt; meetup.&lt;/p&gt;
+&lt;div class="thumbnail figure"&gt;
+&lt;img alt="Screenshot of first slide of my presentation" src="https://tech.agilitynerd.com/images/UsingIonicMobileWeb.png" /&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://github.com/saschwarz/couchbase-phonebook"&gt;https://github.com/saschwarz/couchbase-phonebook&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Here is a video of my talk:&lt;/p&gt;
+&lt;div class="embed-video"&gt;
+    &lt;iframe src="https://www.youtube.com/embed/ZQ8YzXo0dWQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;
+&lt;/div&gt;</summary><content type="html">&lt;p&gt;Here are my &lt;a class="reference external" href="https://docs.google.com/presentation/d/1OmABc2JcqsPP3i6Q2EfYat-F6GKqGHjiUE2ywPcB09Q/edit?usp=sharing"&gt;slides on Using the Ionic Framework for Mobile and Web Development&lt;/a&gt;
+for a talk that I gave at the September &lt;a class="reference external" href="https://www.meetup.com/Northwest-Chicago-JavaScript/"&gt;Northwest Chicago JavaScript&lt;/a&gt; meetup.&lt;/p&gt;
+&lt;div class="thumbnail figure"&gt;
+&lt;img alt="Screenshot of first slide of my presentation" src="https://tech.agilitynerd.com/images/UsingIonicMobileWeb.png" /&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;a class="reference external" href="https://github.com/saschwarz/couchbase-phonebook"&gt;https://github.com/saschwarz/couchbase-phonebook&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Here is a video of my talk:&lt;/p&gt;
+&lt;div class="embed-video"&gt;
+    &lt;iframe src="https://www.youtube.com/embed/ZQ8YzXo0dWQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen&gt;&lt;/iframe&gt;
+&lt;/div&gt;</content><category term="talks"></category><category term="javascript"></category><category term="video"></category><category term="mobile"></category><category term="pouchdb"></category><category term="nosql"></category><category term="couchbase"></category><category term="couchdb"></category></entry><entry><title>Using the Ionic Framework for Mobile and Web Development</title><link href="https://tech.agilitynerd.com/using-the-ionic-framework-for-mobile-and-web-development.html" rel="alternate"></link><published>2017-07-20T08:00:00-05:00</published><updated>2017-07-20T08:00:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2017-07-20:/using-the-ionic-framework-for-mobile-and-web-development.html</id><summary type="html">&lt;p&gt;Here are my &lt;a class="reference external" href="https://docs.google.com/presentation/d/1OmABc2JcqsPP3i6Q2EfYat-F6GKqGHjiUE2ywPcB09Q/edit?usp=sharing"&gt;slides on Using the Ionic Framework for Mobile and Web Development&lt;/a&gt;
 for a talk that I gave at the July &lt;a class="reference external" href="https://www.meetup.com/Northwest-Chicago-JavaScript/"&gt;Northwest Chicago JavaScript&lt;/a&gt; meetup.&lt;/p&gt;
 &lt;div class="thumbnail figure"&gt;
 &lt;img alt="Screenshot of first slide of my presentation" src="https://tech.agilitynerd.com/images/UsingIonicMobileWeb.png" /&gt;
@@ -1666,10 +1684,10 @@ Debugging is twice as hard as writing the code in the first place.
 Therefore, if you write the code as cleverly as possible, you are,
 by definition, not smart enough to debug it. - Brian W. Kernighan&lt;/blockquote&gt;
 &lt;p&gt;Kernighan had it right all those years ago.&lt;/p&gt;
-</content></entry><entry><title>Confidently Refactoring Django URLs, Views, and Templates</title><link href="https://tech.agilitynerd.com/confidently-refactoring-django-urls-views-and.html" rel="alternate"></link><published>2010-08-22T05:12:00-05:00</published><updated>2010-08-22T05:12:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-08-22:/confidently-refactoring-django-urls-views-and.html</id><summary type="html">&lt;p&gt;&lt;a class="reference external" href="http://googility.com/"&gt;Googility.com&lt;/a&gt;is my first Django website and under the covers the
+</content></entry><entry><title>Confidently Refactoring Django URLs, Views, and Templates</title><link href="https://tech.agilitynerd.com/confidently-refactoring-django-urls-views-and.html" rel="alternate"></link><published>2010-08-22T05:12:00-05:00</published><updated>2010-08-22T05:12:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-08-22:/confidently-refactoring-django-urls-views-and.html</id><summary type="html">&lt;p&gt;&lt;a class="reference external" href="http://googility.com/"&gt;Googility.com&lt;/a&gt; is my first Django website and under the covers the
 oldest code looked like it. I had originally written it with the sole
 intent of allowing people to enter dog agility businesses and websites
-into a database that I could use to create a Dog Agility &lt;a class="reference external" href="http://www.google.com/cse/"&gt;Google Custom …&lt;/a&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;a class="reference external" href="http://googility.com/"&gt;Googility.com&lt;/a&gt;is my first Django website and under the covers the
+into a database that I could use to create a Dog Agility &lt;a class="reference external" href="http://www.google.com/cse/"&gt;Google Custom …&lt;/a&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;a class="reference external" href="http://googility.com/"&gt;Googility.com&lt;/a&gt; is my first Django website and under the covers the
 oldest code looked like it. I had originally written it with the sole
 intent of allowing people to enter dog agility businesses and websites
 into a database that I could use to create a Dog Agility &lt;a class="reference external" href="http://www.google.com/cse/"&gt;Google Custom
@@ -2286,7 +2304,7 @@ millions of unrecognized words. It is a very clever human &amp;quot;cloud
 computing&amp;quot; system using only seconds of human effort for each use of the
 system.&lt;/p&gt;
 &lt;div class="thumbnail" style="float:right;"&gt;&lt;p&gt;&lt;img alt="recaptchalogo" src="/images/2009/11/5014940-media_httpdataagilitynerdcomimagesrecaptchalogogif_IkgnpackrkjkaCy.gif" /&gt;&lt;/p&gt;
-&lt;/div&gt;&lt;p&gt;I'm using a &lt;a class="reference external" href="/comment-spam-and-wbcaptcha-plugin-enhancement-1.html"&gt;FIGLet based ASCII CAPTCHA&lt;/a&gt;on my websites since it was
+&lt;/div&gt;&lt;p&gt;I'm using a &lt;a class="reference external" href="/comment-spam-and-wbcaptcha-plugin-enhancement-1.html"&gt;FIGLet based ASCII CAPTCHA&lt;/a&gt; on my websites since it was
 easy to integrate into the &lt;a class="reference external" href="http://blosxom.sourceforge.net/"&gt;Blosxom&lt;/a&gt; writeback plugin. But I wanted to
 give reCAPTCHA a try while converting my &lt;a class="reference external" href="http://googility.com/"&gt;Googility&lt;/a&gt; site to &lt;a class="reference external" href="http://www.djangoproject.com/"&gt;Django&lt;/a&gt;.
 &lt;a class="reference external" href="http://seeknuance.com/"&gt;John DeRosa&lt;/a&gt; made my job trivial by &lt;a class="reference external" href="http://seeknuance.com/2008/03/18/integrating-recaptcha-with-django/"&gt;writing up the steps with a clear example&lt;/a&gt;.&lt;/p&gt;
@@ -2457,7 +2475,7 @@ to &lt;a class="reference external" href="http://www.sxc.hu/"&gt;StockXCHNG&lt;/
 photographer &lt;a class="reference external" href="http://www.sxc.hu/profile/ijsendoorn"&gt;ijsendoorn&lt;/a&gt;. There are thousands of interesting photos
 suitable for use in blogs hosted on Stock.XCHNG, it is a great resource
 and I heartily thank the photographers who post their work.&lt;/p&gt;
-&lt;p&gt;I then used the free &lt;a class="reference external" href="http://www.gimp.org/"&gt;Gimp&lt;/a&gt;image editing software to select a section
+&lt;p&gt;I then used the free &lt;a class="reference external" href="http://www.gimp.org/"&gt;Gimp&lt;/a&gt; image editing software to select a section
 of the appropriate size for the header of my site. The Gimp is easy to
 use and there is a fair amount of online help available if you are doing
 something tricky. Of course you can use Photoshop or a similar program
@@ -2511,7 +2529,7 @@ write as #bec7d0 in the style sheet.&lt;/p&gt;
 &lt;p&gt;While there are an many additional changes to my theme I could make I am
 pretty happy with the cool, blue-ish, wintry theme I've created:&lt;/p&gt;
 &lt;div class="thumbnail"&gt;&lt;p&gt;&lt;img alt="image5" src="http://data.agilitynerd.com/images/blog_snow_theme_thumb.jpg" /&gt;&lt;/p&gt;
-&lt;/div&gt;&lt;p&gt;Take a look at &lt;a class="reference external" href="http://agilitynerd.com/blog/"&gt;AgilityNerd&lt;/a&gt;to see it in action or, depending on when
+&lt;/div&gt;&lt;p&gt;Take a look at &lt;a class="reference external" href="http://agilitynerd.com/blog/"&gt;AgilityNerd&lt;/a&gt; to see it in action or, depending on when
 you read this, to see my next seasonal theme. I hope some of these tips
 might be helpful for helping you create your next theme.&lt;/p&gt;
 &lt;/div&gt;
@@ -3329,11 +3347,11 @@ often more fun to play around with the technology than it is to do
 &lt;li&gt;Added Quick Links to the right hand navigation to allow folks to get
 to the three main Agility sections of the website without going to the
 &lt;a class="reference external" href="http://agilitynerd.com/blog/navigate"&gt;Navigate&lt;/a&gt; page.
-Used the [[Blosxom]] &lt;a class="reference external" href="http://www.blosxom.com/plugins/include/file.htm"&gt;file plugin&lt;/a&gt;to include the new HTML in all
+Used the [[Blosxom]] &lt;a class="reference external" href="http://www.blosxom.com/plugins/include/file.htm"&gt;file plugin&lt;/a&gt; to include the new HTML in all
 pages.&lt;/li&gt;
 &lt;li&gt;Changed my &lt;a class="reference external" href="http://agilitynerd.com/blog/agility/handling/glossary"&gt;AgilityGlossary&lt;/a&gt; page to have a preface with an
 alphabetical listing ofdefinitions. I ended up using three new
-Blosxom plugins to make thiswork: &lt;a class="reference external" href="http://www.blosxom.com/plugins/general/config.htm"&gt;config&lt;/a&gt;,&lt;a class="reference external" href="http://www.blosxom.com/plugins/display/postheadprefoot.htm"&gt;postheadprefoot&lt;/a&gt;and
+Blosxom plugins to make thiswork: &lt;a class="reference external" href="http://www.blosxom.com/plugins/general/config.htm"&gt;config&lt;/a&gt;, &lt;a class="reference external" href="http://www.blosxom.com/plugins/display/postheadprefoot.htm"&gt;postheadprefoot&lt;/a&gt; and
 &lt;a class="reference external" href="http://blosxom.ookee.com/blosxom/plugins/v2/sort_order-v0i85"&gt;sort_order&lt;/a&gt;.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;For other Blosxom users I've updated my &lt;a class="reference external" href="http://tech.agilitynerd.com/site_plugins.html"&gt;site pluginspage&lt;/a&gt; with the
@@ -3491,9 +3509,9 @@ decided to move the menu box to the right of the main body of the page.&lt;/p&gt
 to have the main body remain centered regardless of browser size.
 That would complicate the positioning of the menu box (which is it's
 own div not contained with the main page). Once again &lt;a class="reference external" href="http://www.alistapart.com"&gt;A List Apart&lt;/a&gt; had
-a good &lt;a class="reference external" href="http://www.alistapart.com/articles/journey/"&gt;article&lt;/a&gt;describing how they got their CSS centering to work.&lt;/p&gt;
+a good &lt;a class="reference external" href="http://www.alistapart.com/articles/journey/"&gt;article&lt;/a&gt; describing how they got their CSS centering to work.&lt;/p&gt;
 &lt;p&gt;The ALA article had links to these two pages describing the methods
-I used: &lt;a class="reference external" href="http://bluerobot.com/web/css/center1.html"&gt;Auto Width Margins&lt;/a&gt;and &lt;a class="reference external" href="http://bluerobot.com/web/css/center2.html"&gt;NegativeMargins&lt;/a&gt;.&lt;/p&gt;
+I used: &lt;a class="reference external" href="http://bluerobot.com/web/css/center1.html"&gt;Auto Width Margins&lt;/a&gt; and &lt;a class="reference external" href="http://bluerobot.com/web/css/center2.html"&gt;NegativeMargins&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;The AgilityNerd site has two main divs: #page for the main body
 and#sidebar for the box containing the menu. I used the Auto Width
 Margins method to center the main body:&lt;/p&gt;

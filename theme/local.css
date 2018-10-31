@@ -266,3 +266,8 @@ footer,
 .thumbnail {
     margin: 2em 1em;
 }
+
+.gsc-search-button.gsc-search-button-v2 {
+    line-height: 1px;
+    padding-bottom: 4px;
+}

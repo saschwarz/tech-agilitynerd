@@ -322,9 +322,9 @@ decided to move the menu box to the right of the main body of the page.&lt;/p&gt
 to have the main body remain centered regardless of browser size.
 That would complicate the positioning of the menu box (which is it's
 own div not contained with the main page). Once again &lt;a class="reference external" href="http://www.alistapart.com"&gt;A List Apart&lt;/a&gt; had
-a good &lt;a class="reference external" href="http://www.alistapart.com/articles/journey/"&gt;article&lt;/a&gt;describing how they got their CSS centering to work.&lt;/p&gt;
+a good &lt;a class="reference external" href="http://www.alistapart.com/articles/journey/"&gt;article&lt;/a&gt; describing how they got their CSS centering to work.&lt;/p&gt;
 &lt;p&gt;The ALA article had links to these two pages describing the methods
-I used: &lt;a class="reference external" href="http://bluerobot.com/web/css/center1.html"&gt;Auto Width Margins&lt;/a&gt;and &lt;a class="reference external" href="http://bluerobot.com/web/css/center2.html"&gt;NegativeMargins&lt;/a&gt;.&lt;/p&gt;
+I used: &lt;a class="reference external" href="http://bluerobot.com/web/css/center1.html"&gt;Auto Width Margins&lt;/a&gt; and &lt;a class="reference external" href="http://bluerobot.com/web/css/center2.html"&gt;NegativeMargins&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;The AgilityNerd site has two main divs: #page for the main body
 and#sidebar for the box containing the menu. I used the Auto Width
 Margins method to center the main body:&lt;/p&gt;

@@ -16,7 +16,7 @@ millions of unrecognized words. It is a very clever human &amp;quot;cloud
 computing&amp;quot; system using only seconds of human effort for each use of the
 system.&lt;/p&gt;
 &lt;div class="thumbnail" style="float:right;"&gt;&lt;p&gt;&lt;img alt="recaptchalogo" src="/images/2009/11/5014940-media_httpdataagilitynerdcomimagesrecaptchalogogif_IkgnpackrkjkaCy.gif" /&gt;&lt;/p&gt;
-&lt;/div&gt;&lt;p&gt;I'm using a &lt;a class="reference external" href="/comment-spam-and-wbcaptcha-plugin-enhancement-1.html"&gt;FIGLet based ASCII CAPTCHA&lt;/a&gt;on my websites since it was
+&lt;/div&gt;&lt;p&gt;I'm using a &lt;a class="reference external" href="/comment-spam-and-wbcaptcha-plugin-enhancement-1.html"&gt;FIGLet based ASCII CAPTCHA&lt;/a&gt; on my websites since it was
 easy to integrate into the &lt;a class="reference external" href="http://blosxom.sourceforge.net/"&gt;Blosxom&lt;/a&gt; writeback plugin. But I wanted to
 give reCAPTCHA a try while converting my &lt;a class="reference external" href="http://googility.com/"&gt;Googility&lt;/a&gt; site to &lt;a class="reference external" href="http://www.djangoproject.com/"&gt;Django&lt;/a&gt;.
 &lt;a class="reference external" href="http://seeknuance.com/"&gt;John DeRosa&lt;/a&gt; made my job trivial by &lt;a class="reference external" href="http://seeknuance.com/2008/03/18/integrating-recaptcha-with-django/"&gt;writing up the steps with a clear example&lt;/a&gt;.&lt;/p&gt;

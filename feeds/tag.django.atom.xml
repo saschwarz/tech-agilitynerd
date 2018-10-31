@@ -761,10 +761,10 @@ $ sudo sv status myapp
 run: myapp: (pid 7540) 1s
 &lt;/pre&gt;
 &lt;/div&gt;
-</content><category term="apache"></category><category term="django"></category><category term="gunicorn"></category><category term="runit"></category><category term="ubuntu"></category><category term="virtualenv"></category></entry><entry><title>Confidently Refactoring Django URLs, Views, and Templates</title><link href="https://tech.agilitynerd.com/confidently-refactoring-django-urls-views-and.html" rel="alternate"></link><published>2010-08-22T05:12:00-05:00</published><updated>2010-08-22T05:12:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-08-22:/confidently-refactoring-django-urls-views-and.html</id><summary type="html">&lt;p&gt;&lt;a class="reference external" href="http://googility.com/"&gt;Googility.com&lt;/a&gt;is my first Django website and under the covers the
+</content><category term="apache"></category><category term="django"></category><category term="gunicorn"></category><category term="runit"></category><category term="ubuntu"></category><category term="virtualenv"></category></entry><entry><title>Confidently Refactoring Django URLs, Views, and Templates</title><link href="https://tech.agilitynerd.com/confidently-refactoring-django-urls-views-and.html" rel="alternate"></link><published>2010-08-22T05:12:00-05:00</published><updated>2010-08-22T05:12:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2010-08-22:/confidently-refactoring-django-urls-views-and.html</id><summary type="html">&lt;p&gt;&lt;a class="reference external" href="http://googility.com/"&gt;Googility.com&lt;/a&gt; is my first Django website and under the covers the
 oldest code looked like it. I had originally written it with the sole
 intent of allowing people to enter dog agility businesses and websites
-into a database that I could use to create a Dog Agility &lt;a class="reference external" href="http://www.google.com/cse/"&gt;Google Custom …&lt;/a&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;a class="reference external" href="http://googility.com/"&gt;Googility.com&lt;/a&gt;is my first Django website and under the covers the
+into a database that I could use to create a Dog Agility &lt;a class="reference external" href="http://www.google.com/cse/"&gt;Google Custom …&lt;/a&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;a class="reference external" href="http://googility.com/"&gt;Googility.com&lt;/a&gt; is my first Django website and under the covers the
 oldest code looked like it. I had originally written it with the sole
 intent of allowing people to enter dog agility businesses and websites
 into a database that I could use to create a Dog Agility &lt;a class="reference external" href="http://www.google.com/cse/"&gt;Google Custom
@@ -1125,7 +1125,7 @@ millions of unrecognized words. It is a very clever human &amp;quot;cloud
 computing&amp;quot; system using only seconds of human effort for each use of the
 system.&lt;/p&gt;
 &lt;div class="thumbnail" style="float:right;"&gt;&lt;p&gt;&lt;img alt="recaptchalogo" src="/images/2009/11/5014940-media_httpdataagilitynerdcomimagesrecaptchalogogif_IkgnpackrkjkaCy.gif" /&gt;&lt;/p&gt;
-&lt;/div&gt;&lt;p&gt;I'm using a &lt;a class="reference external" href="/comment-spam-and-wbcaptcha-plugin-enhancement-1.html"&gt;FIGLet based ASCII CAPTCHA&lt;/a&gt;on my websites since it was
+&lt;/div&gt;&lt;p&gt;I'm using a &lt;a class="reference external" href="/comment-spam-and-wbcaptcha-plugin-enhancement-1.html"&gt;FIGLet based ASCII CAPTCHA&lt;/a&gt; on my websites since it was
 easy to integrate into the &lt;a class="reference external" href="http://blosxom.sourceforge.net/"&gt;Blosxom&lt;/a&gt; writeback plugin. But I wanted to
 give reCAPTCHA a try while converting my &lt;a class="reference external" href="http://googility.com/"&gt;Googility&lt;/a&gt; site to &lt;a class="reference external" href="http://www.djangoproject.com/"&gt;Django&lt;/a&gt;.
 &lt;a class="reference external" href="http://seeknuance.com/"&gt;John DeRosa&lt;/a&gt; made my job trivial by &lt;a class="reference external" href="http://seeknuance.com/2008/03/18/integrating-recaptcha-with-django/"&gt;writing up the steps with a clear example&lt;/a&gt;.&lt;/p&gt;
