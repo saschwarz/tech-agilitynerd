@@ -12,7 +12,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
     <meta name="description" content="">
     <meta name="author" content="Steve Schwarz">      <!-- <link href="https://tech.agilitynerd.com/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" /> -->
-    <link href="https://feeds.feedburner.com/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" />       <!-- Le styles -->
+    <link href="https://feeds.feedburner.com/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" />   
+    <link href="https://tech.agilitynerd.com/feeds/tag.vuejs.atom.xml" type="application/atom+xml" rel="alternate" title="tech.agilitynerd vuejs tag Atom Feed" />
+    <!-- Le styles -->
     <link href="https://tech.agilitynerd.com/theme/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
         body {
@@ -42,12 +44,6 @@
   var disqus_shortname = "techagilitynerd"; // required: replace example with your forum shortname
   var disqus_developer = 1;
 
-  var disqus_identifier = "using-django-sitemap-with-django-tagging.html";
-  (function() {
-  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-  dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
-  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-  })();
 
   (function () {
   var s = document.createElement('script'); s.async = true;
@@ -76,7 +72,7 @@
 	  <li ><a href="https://tech.agilitynerd.com/category/misc.html">misc</a></li>
 	  <li ><a href="https://tech.agilitynerd.com/category/programming.html">programming</a></li>
 	  <li ><a href="https://tech.agilitynerd.com/category/python.html">python</a></li>
-	  <li class="active"><a href="https://tech.agilitynerd.com/category/webdev.html">webdev</a></li>
+	  <li ><a href="https://tech.agilitynerd.com/category/webdev.html">webdev</a></li>
 	</ul>
 	<p class="navbar-text pull-right">
 	  <a class="navbar-link" href="https://tech.agilitynerd.com/archives.html">[archives]</a>
@@ -92,65 +88,21 @@
             <div class="span10">
                 <div class="row-fluid">
                     <div class="span9">
- <div class='article'>
-  <div class="page-header"><h1>Using django-sitemap with django-tagging</h1></div>
-  <div class="well small"><a class="more" href="https://tech.agilitynerd.com/using-django-sitemap-with-django-tagging.html">On 27 Nov 2009 at 1733</a>
+                        <div class="page-header">
+                            <h1>tech.agilitynerd <small>vuejs</small></h1>
+                        </div>
+ 
+<div class='article'>
+  <h2><a href="https://tech.agilitynerd.com/disabling-rollbar-and-enabling-logging-during-vuejs-development.html">Disabling Rollbar and Enabling Logging During Vue.js Development</a></h2>
+  <div class="well small"><a class="more" href="https://tech.agilitynerd.com/disabling-rollbar-and-enabling-logging-during-vuejs-development.html">On 30 Mar 2019 at 0800</a>
 by <a class="url fn" href="https://tech.agilitynerd.com/author/steve-schwarz.html">Steve Schwarz</a> in <a href="https://tech.agilitynerd.com/category/webdev.html">webdev</a>
- | <a href="https://tech.agilitynerd.com/using-django-sitemap-with-django-tagging.html#disqus_thread">Comments</a></div>
-  <div><p>I was adding <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/sitemaps/">django-sitemap</a> to <a class="reference external" href="http://googility.com/">googility.com</a> yesterday and found
-that Tags don't implement <tt class="docutils literal">get_absolute_url()</tt>. Which makes sense since
-the site developer would want to decide how to expose them in the URL
-space.</p>
-<p>It is also arguable that links to pages displaying the tag view already
-exist in the page for models that are already in the sitemap so they
-don't need to be put in the sitemap explicitly. For example, a page for
-an Article might be at <tt class="docutils literal"><span class="pre">/article/django-11-release</span></tt> and that page would
-contain the links to pages linked with the tags for that article e.g.
-<tt class="docutils literal">/tag/django/</tt> and <tt class="docutils literal">/tag/python/</tt></p>
-<p>But I figured having the tag pages indexed by Google would be useful. It
-also allows a different priority to be specified for the pages. So I
-made a little class that derives from <tt class="docutils literal">GenericSitemap</tt> that allows the url
-and suffix for the Tag name to be specified:</p>
-<pre class="literal-block">
-class SlugSitemap(GenericSitemap):
-&quot;&quot;&quot;Use for objects that don't implement get_absolute_url
-   but have a slug field used in creating their url&quot;&quot;&quot;
+ | <a href="https://tech.agilitynerd.com/disabling-rollbar-and-enabling-logging-during-vuejs-development.html#disqus_thread">Comments</a></div>
+  <div class="summary"><p>I was adding <a class="reference external" href="https://rollbar.com">Rollbar</a> support to a <a class="reference external" href="https://vuejs.org">Vue.js</a> application and ran into an issue that made it inconvenient for use in development environments:</p>
+<p>Captured exceptions and <tt class="docutils literal"><span class="pre">rollbar.error|warning|log|...</span></tt> calls are always sent and logged in the Rollbar dashboard.</p>
+<p>You could configure different a Rollbar <tt class="docutils literal">environment</tt> for development …</p></div>
+<div class="tags">Tagged as: <a href="https://tech.agilitynerd.com/tag/javascript.html">javascript</a> <a href="https://tech.agilitynerd.com/tag/vuejs.html">vuejs</a> </div></div>
 
-def __init__(self, info_dict, priority=None, changefreq=None):
-    GenericSitemap.__init__(self, info_dict,
-                            priority=priority,
-                            changefreq=changefreq)
-    self.url = info_dict.get('url', '/')
-    self.slugfield = info_dict['slugfield']
-    self.suffix = info_dict.get('suffix', '')
 
-def location(self, obj):
-    return &quot;%s%s%s&quot; % (self.url,
-                       getattr(obj, self.slugfield),
-                       self.suffix)
-</pre>
-<p>Here's how I use it:</p>
-<pre class="literal-block">
-sitemaps = {'tag_detail': SlugSitemap({'queryset':Tag.objects,
-                                       'url':'/tag/',
-                                       'slugfield':'name',
-                                       'suffix':'/'},
-                                       changefreq='monthly',
-                                       priority='0.5'),
-}
-</pre>
-<p>The urls for tags are at /tag/<em>slugname</em>/ where /tag/ is prepended to
-tag.name and / is appended to the end</p>
-<p>This class can be used to create sitemap entries for any url
-parameterized on a single field of an instance returned by the QuerySet.</p>
-</div>
-  <div>
-    <h2>Comments</h2>
-    <div id="disqus_thread"></div>
-    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-  </div>
-</div>	
                     </div>
                     <!--/span-->
 
