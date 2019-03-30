@@ -2,8 +2,8 @@ Disabling Rollbar and Enabling Logging During Vue.js Development
 ################################################################
 :date: 2019-03-30 8:00
 :author: Steve Schwarz
-:category: webdev
-:tags: javascript, vuejs
+:category: javascript
+:tags: javascript, vuejs, rollbar
 
 I was adding `Rollbar <https://rollbar.com>`_ support to a `Vue.js <https://vuejs.org>`_ application and ran into an issue that made it inconvenient for use in development environments:
 
