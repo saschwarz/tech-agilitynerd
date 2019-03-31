@@ -78,7 +78,7 @@ RewriteRule .\*.(jpg\|jpeg\|gif\|png\|bmp)$ /images/nodirectlink.g [L,NC]
 &lt;/div&gt;
 &lt;div class="section" id="redirected-image"&gt;
 &lt;h2&gt;Redirected Image&lt;/h2&gt;
-&lt;div class="p_embed p_image_embed"&gt;&lt;p&gt;&lt;img alt="image0" src="http://data.agilitynerd.com/images/nodirectlink.g" /&gt;&lt;/p&gt;
+&lt;div class="p_embed p_image_embed"&gt;&lt;p&gt;&lt;img alt="image0" src="https://data.agilitynerd.com/images/nodirectlink.g" /&gt;&lt;/p&gt;
 &lt;/div&gt;&lt;p&gt;Don't use the same filename suffix as one of the real image filenames
 you use or you'll loop the rewrite engine.&lt;/p&gt;
 &lt;p&gt;I had forgotten about images direct linked by RSS feed readers that

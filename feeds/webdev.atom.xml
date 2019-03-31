@@ -1775,10 +1775,10 @@ colors in the image as its palette of colors. So I took my snow scene
 section and had Gliftex sample it. I pressed the Form and Interpretation
 buttons a number of times and after a while came up with these
 understated and simple tileable images:&lt;/p&gt;
-&lt;div class="thumbnail"&gt;&lt;p&gt;&lt;img alt="image0" src="http://data.agilitynerd.com/images/bluebg05.png" /&gt;
-&lt;img alt="image1" src="http://data.agilitynerd.com/images/bluebg03.png" /&gt;
-&lt;img alt="image2" src="http://data.agilitynerd.com/images/bluebg02.png" /&gt;
-&lt;img alt="image3" src="http://data.agilitynerd.com/images/bluebg01.png" /&gt;&lt;/p&gt;
+&lt;div class="thumbnail"&gt;&lt;p&gt;&lt;img alt="image0" src="https://data.agilitynerd.com/images/bluebg05.png" /&gt;
+&lt;img alt="image1" src="https://data.agilitynerd.com/images/bluebg03.png" /&gt;
+&lt;img alt="image2" src="https://data.agilitynerd.com/images/bluebg02.png" /&gt;
+&lt;img alt="image3" src="https://data.agilitynerd.com/images/bluebg01.png" /&gt;&lt;/p&gt;
 &lt;/div&gt;&lt;p&gt;As far as I'm concerned the $ 50 US for the Gliftex Home download was a
 great investment. They have a free demo version available for download
 if you want to play around before you buy.&lt;/p&gt;
@@ -1796,13 +1796,13 @@ clicked on interesting colors in my image to obtain a color value that I
 could type into my theme's style sheet for the background colors. In the
 picture below you can see the color value is &amp;quot;bec7d0&amp;quot; which you would
 write as #bec7d0 in the style sheet.&lt;/p&gt;
-&lt;div class="thumbnail"&gt;&lt;p&gt;&lt;img alt="image4" src="http://data.agilitynerd.com/images/GimpColorPicker.jpg" /&gt;&lt;/p&gt;
+&lt;div class="thumbnail"&gt;&lt;p&gt;&lt;img alt="image4" src="https://data.agilitynerd.com/images/GimpColorPicker.jpg" /&gt;&lt;/p&gt;
 &lt;/div&gt;&lt;/div&gt;
 &lt;div class="section" id="results"&gt;
 &lt;h2&gt;Results&lt;/h2&gt;
 &lt;p&gt;While there are an many additional changes to my theme I could make I am
 pretty happy with the cool, blue-ish, wintry theme I've created:&lt;/p&gt;
-&lt;div class="thumbnail"&gt;&lt;p&gt;&lt;img alt="image5" src="http://data.agilitynerd.com/images/blog_snow_theme_thumb.jpg" /&gt;&lt;/p&gt;
+&lt;div class="thumbnail"&gt;&lt;p&gt;&lt;img alt="image5" src="https://data.agilitynerd.com/images/blog_snow_theme_thumb.jpg" /&gt;&lt;/p&gt;
 &lt;/div&gt;&lt;p&gt;Take a look at &lt;a class="reference external" href="http://agilitynerd.com/blog/"&gt;AgilityNerd&lt;/a&gt; to see it in action or, depending on when
 you read this, to see my next seasonal theme. I hope some of these tips
 might be helpful for helping you create your next theme.&lt;/p&gt;
@@ -2250,7 +2250,7 @@ RewriteRule .\*.(jpg\|jpeg\|gif\|png\|bmp)$ /images/nodirectlink.g [L,NC]
 &lt;/div&gt;
 &lt;div class="section" id="redirected-image"&gt;
 &lt;h2&gt;Redirected Image&lt;/h2&gt;
-&lt;div class="p_embed p_image_embed"&gt;&lt;p&gt;&lt;img alt="image0" src="http://data.agilitynerd.com/images/nodirectlink.g" /&gt;&lt;/p&gt;
+&lt;div class="p_embed p_image_embed"&gt;&lt;p&gt;&lt;img alt="image0" src="https://data.agilitynerd.com/images/nodirectlink.g" /&gt;&lt;/p&gt;
 &lt;/div&gt;&lt;p&gt;Don't use the same filename suffix as one of the real image filenames
 you use or you'll loop the rewrite engine.&lt;/p&gt;
 &lt;p&gt;I had forgotten about images direct linked by RSS feed readers that
@@ -2572,7 +2572,7 @@ $numpagelinks = 10;$textlinks = 1;                # set to 1 to enable text link
 $imagelinks = 0;        # set to 1 to enable image links 0 to disable
 &lt;/pre&gt;
 &lt;p&gt;A screenshot of the HTML generated when the fifth page is selected:&lt;/p&gt;
-&lt;div class="thumbnail"&gt;&lt;p&gt;&lt;img alt="image0" src="http://data.agilitynerd.com/images/moreentries_pagelink_1.jpg" /&gt;&lt;/p&gt;
+&lt;div class="thumbnail"&gt;&lt;p&gt;&lt;img alt="image0" src="https://data.agilitynerd.com/images/moreentries_pagelink_1.jpg" /&gt;&lt;/p&gt;
 &lt;/div&gt;&lt;p&gt;With these settings:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
 $numpagelinks = 10;
@@ -2583,7 +2583,7 @@ $nextlinkimage = &amp;quot;/images/right.gif&amp;quot;;
 $currentpageimage = &amp;quot;/images/ball.red.gif&amp;quot;;&amp;#64;pageimages = qw( /images/ball.gray.gif );
 &lt;/pre&gt;
 &lt;/div&gt;&lt;p&gt;A screenshot of the HTML generated when the fifth page is selected:&lt;/p&gt;
-&lt;div class="thumbnail"&gt;&lt;p&gt;&lt;img alt="image1" src="http://data.agilitynerd.com//images/moreentries_pagelink_6.jpg" /&gt;&lt;/p&gt;
+&lt;div class="thumbnail"&gt;&lt;p&gt;&lt;img alt="image1" src="https://data.agilitynerd.com//images/moreentries_pagelink_6.jpg" /&gt;&lt;/p&gt;
 &lt;/div&gt;&lt;p&gt;With these settings:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
 $numpagelinks = 10;
@@ -2594,7 +2594,7 @@ $nextlinkimage = &amp;quot;/images/right.gif&amp;quot;;
 $currentpageimage = &amp;quot;/images/text.gif&amp;quot;;&amp;#64;pageimages = qw( /images/ball.gray.gif /images/ball.red.gif );
 &lt;/pre&gt;
 &lt;p&gt;A screenshot of the HTML generated when the fifth page is selected:&lt;/p&gt;
-&lt;div class="thumbnail"&gt;&lt;p&gt;&lt;img alt="image2" src="http://data.agilitynerd.com//images/moreentries_pagelink_4.jpg" /&gt;&lt;/p&gt;
+&lt;div class="thumbnail"&gt;&lt;p&gt;&lt;img alt="image2" src="https://data.agilitynerd.com//images/moreentries_pagelink_4.jpg" /&gt;&lt;/p&gt;
 &lt;/div&gt;&lt;p&gt;Thanks again to Jason for creating this plugin. It was fun to modify and
 I hope it is useful for other Blosxom webloggers.&lt;/p&gt;
 </content></entry><entry><title>See More... Added to Article Display on Index Pages</title><link href="https://tech.agilitynerd.com/see-more-added-to-article-display-on-index-pa-1.html" rel="alternate"></link><published>2004-09-26T19:00:00-05:00</published><updated>2004-09-26T19:00:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2004-09-26:/see-more-added-to-article-display-on-index-pa-1.html</id><summary type="html">&lt;p&gt;I know my Agility readers will give me a hard time about this
