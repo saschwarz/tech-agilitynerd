@@ -78,7 +78,7 @@
   <div class="page-header"><h1>Django Migrating Models from an Abstract Base Class to a Concrete Base Class</h1></div>
   <div class="well small"><a class="more" href="https://tech.agilitynerd.com/django-migrate-abstract-concrete-base-class.html">On 15 Nov 2015 at 0500</a>
 by <a class="url fn" href="https://tech.agilitynerd.com/author/steve-schwarz.html">Steve Schwarz</a> in <a href="https://tech.agilitynerd.com/category/webdev.html">webdev</a>
- | <a href="https://tech.agilitynerd.com/django-migrate-abstract-concrete-base-class.html#disqus_thread">Comments</a></div>
+ | <a href="https://tech.agilitynerd.com/django-migrate-abstract-concrete-base-class.html#disqus_thread" data-disqus-identifier="django-migrate-abstract-concrete-base-class.html">Comments</a></div>
   <div><p>On my <a class="reference external" href="http://agilitycourses.com">agilitycourses.com</a> I had been modeling three types of dog agility courses using an abstract base class <tt class="docutils literal">Course</tt> with three child classes: <tt class="docutils literal">Box</tt>, <tt class="docutils literal">StarBox</tt>, and <tt class="docutils literal">DoubleBox</tt>. This created three tables in the database prepended with the <a class="reference external" href="http://djangoproject.com">Django</a> application name <tt class="docutils literal">box</tt>: <tt class="docutils literal">box_box</tt>, <tt class="docutils literal">box_starbox</tt>, and <tt class="docutils literal">box_doublebox</tt>. I needed to add a relationship to all three classes from a new table and, rather than creating three separate tables relating to each child table, I decided to convert the <tt class="docutils literal">Course</tt> class to a concrete class/table and relate the new class/table to it instead of each child class. For my purposes the extra join to the child class won't impact performance significantly (if it does I'd move the identity of the type of subclass into a column in the parent <tt class="docutils literal">Course</tt> table and delete the child tables/models).</p>
 <p>I didn't find any examples of this type of migration online so I thought I write down my notes in case they are useful to others.</p>
 <p>This ends up being a schema migration to put columns in place for inserting data into the parent table, a data migration to populate that table and the new many-to-many table(s), and then another schema migration to remove the temporary columns.</p>
@@ -323,7 +323,7 @@ $ python ./manage.py migrate box
       })();
     </script>
   </div>
-</div>	
+</div>
                     </div>
                     <!--/span-->
 
