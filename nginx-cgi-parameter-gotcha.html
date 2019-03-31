@@ -114,7 +114,7 @@ Cannot get script name, are DOCUMENT_ROOT and SCRIPT_NAME (or SCRIPT_FILENAME) s
 This inconsistency and unpredictability means that you cannot and should not rely on the backend to correctly interpret your intentions when setting the same parameter more than one time. The only safe solution is to only declare each parameter once. This also means that there is no such thing as safely overriding a default value with the fastcgi_param directive.</blockquote>
 <p>So in my case I commented out <tt class="docutils literal">DOCUMENT_ROOT</tt> and <tt class="docutils literal">SCRIPT_FILENAME</tt> in the <tt class="docutils literal">/etc/nginx/fastcgi_params</tt> file, reloaded nginx, and voila! Everything worked. Hope this helps you if you run in to the same problem.</p>
 </div>
-  <div>
+<div class="tags">Tagged as: <a href="https://tech.agilitynerd.com/tag/nginx.html">nginx</a> <a href="https://tech.agilitynerd.com/tag/cgi.html">cgi</a> <a href="https://tech.agilitynerd.com/tag/fcgiwrap.html">fcgiwrap</a> <a href="https://tech.agilitynerd.com/tag/ubuntu.html">ubuntu</a> <a href="https://tech.agilitynerd.com/tag/apache.html">apache</a> </div>  <div>
     <h2>Comments</h2>
     <div id="disqus_thread"></div>
     <script type="text/javascript">
