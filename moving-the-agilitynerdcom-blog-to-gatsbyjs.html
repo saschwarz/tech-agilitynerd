@@ -12,9 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
     <meta name="description" content="">
     <meta name="author" content="Steve Schwarz">      <!-- <link href="https://tech.agilitynerd.com/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" /> -->
-    <link href="https://feeds.feedburner.com/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" />   
-    <link href="https://tech.agilitynerd.com/feeds/webdev.atom.xml" type="application/atom+xml" rel="alternate" title="tech.agilitynerd webdev category Atom Feed" />
-    <!-- Le styles -->
+    <link href="https://feeds.feedburner.com/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" />       <!-- Le styles -->
     <link href="https://tech.agilitynerd.com/theme/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
         body {
@@ -76,46 +74,53 @@
             <div class="span10">
                 <div class="row-fluid">
                     <div class="span9">
-                        <div class="page-header">
-                            <h1>tech.agilitynerd <small>webdev</small></h1>
-                        </div>
- 
-<div class='article'>
-  <h2><a href="https://tech.agilitynerd.com/css-for-print-media-1.html">CSS for Print Media</a></h2>
-  <div class="well small"><a class="more" href="https://tech.agilitynerd.com/css-for-print-media-1.html">On 14 Aug 2004 at 2316</a>
+ <div class='article'>
+  <div class="page-header"><h1>Moving the AgilityNerd.com Blog to GatsbyJS</h1></div>
+  <div class="well small"><a class="more" href="https://tech.agilitynerd.com/moving-the-agilitynerdcom-blog-to-gatsbyjs.html">On 28 Nov 2019 at 0800</a>
 by <a class="url fn" href="https://tech.agilitynerd.com/author/steve-schwarz.html">Steve Schwarz</a> in <a href="https://tech.agilitynerd.com/category/webdev.html">webdev</a>
- | <a href="https://tech.agilitynerd.com/css-for-print-media-1.html#disqus_thread" data-disqus-identifier="css-for-print-media-1.html">Comments</a></div>
-  <div class="summary"><p>In keeping with my desire to have this site's layout be easy to read,I
-wanted it to look good in print too. The layout uses <a class="reference external" href="http://www.w3.org/Style/CSS/">CSS</a> instead
-of HTML tables. This lets me position the divscontaining various text for
-the screen and it allows me to positionand hide text …</p></div>
+ | <a href="https://tech.agilitynerd.com/moving-the-agilitynerdcom-blog-to-gatsbyjs.html#disqus_thread" data-disqus-identifier="moving-the-agilitynerdcom-blog-to-gatsbyjs.html">Comments</a></div>
+  <div><p>As a software developer, one of the ways I learn about new web technology is by attending the monthly <a class="reference external" href="https://www.meetup.com/Northwest-Chicago-JavaScript/">Northwest Chicago JavaScript meetup</a>.
+It's a supportive and enthusiastic group of folks interested in continuing to learn more about software development in JavaScript.
+Every month there are one or more informal presentations by members of the group with questions and discussions.</p>
+<p>This past week I gave a talk titled: &quot;Moving the AgilityNerd Blog to GatsbyJS&quot;.
+I started my dog agility blog <a class="reference external" href="https://agilitynerd.com">AgilityNerd</a> in 2004 using the now defunct, Perl-based, flat file CGI site generator, <a class="reference external" href="http://blosxom.sourceforge.net/">blosxom</a>.
+Over the years I wrote, enhanced, and fixed a number of plugins to the Blosxom project.
+Though it worked well, technology has long since moved passed Blosxom's humble beginnings.</p>
+<p>The costly hosting requirements for Blosxom at the AgilityNerd's site size (with over 800 source pages generating 1,500 pages dynamically), authoring in HTML, lack of preview, and enhancing a nearly 20 year old code base became so onerous that I decided to extract the content and move to a more modern static site generator.</p>
+<p>This site, tech.agilitynerd.com, uses the Python powered <a class="reference external" href="https://blog.getpelican.com/">Pelican static generator</a> and deploys to GitHub pages.
+It is simple to author, deploy, and free to host.
+But I was looking for a static site generator that would make it easy to integrate custom web components, provide image processing, dynamic image/content loading, and integrate 3rd party plugins like: <a class="reference external" href="https://analytics.google.com/">Google Analytics</a>, <a class="reference external" href="https://rollbar.com/">Rollbar</a> error tracking, and advanced search (<a class="reference external" href="https://www.algolia.com/">Algolia</a>).</p>
+<p>My search boiled down to React-based <a class="reference external" href="https://www.gatsbyjs.org/">GatsbyJS</a> and Vue-based <a class="reference external" href="https://gridsome.org/">Gridsome</a>.
+I've been using Vue daily at work for almost two years, but Gridssome isn't as far along in its development as Gatsby.
+It has been a while since I did any serious React development so I decided to go with the more popular GatsbyJS as a reason to get my skills on React more up to date.</p>
+<p>Gatsby's offering an easy &quot;GitOps&quot; continuous deployment model hosted (for free) on <a class="reference external" href="https://www.netlify.com/">Netlify</a> was just icing on the cake.</p>
+<p>Here's <a class="reference external" href="https://nwcjs-gatsby.netlify.com/">a link to my slides</a>.
+Interestingly, the slides are written using <a class="reference external" href="https://mdx-deck.jxnblk.com/">MDX Deck</a> which is itself built on top of Gatsby.
+Of course I used that functionality to deploy the slide deck to Netlify too.</p>
+<p>Here's the video of my presentation which goes into a lot more detail on my reasoning for choosing Gatsby, setting it up, how it works, how plugins work, and deploying a Gatsby site:</p>
+<div class="embed-video">
+<iframe src="https://www.youtube.com/embed/bL_QNj_AdWE" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div><p>Since this presentation, I've started using Gatsby Cloud's build service to get faster builds and then have it upload the assets to Netlify for hosting.</p>
 </div>
-<div class='article'>
-  <h2><a href="https://tech.agilitynerd.com/agilitynerd-blosxom-plugins-1.html">AgilityNerd Blosxom Plugins</a></h2>
-  <div class="well small"><a class="more" href="https://tech.agilitynerd.com/agilitynerd-blosxom-plugins-1.html">On 10 Aug 2004 at 1900</a>
-by <a class="url fn" href="https://tech.agilitynerd.com/author/steve-schwarz.html">Steve Schwarz</a> in <a href="https://tech.agilitynerd.com/category/webdev.html">webdev</a>
- | <a href="https://tech.agilitynerd.com/agilitynerd-blosxom-plugins-1.html#disqus_thread" data-disqus-identifier="agilitynerd-blosxom-plugins-1.html">Comments</a></div>
-  <div class="summary"><p><strong>Updated 20-Jun-08 for addition of storytitle</strong></p>
-<p>I'm really impressed with the <a class="reference external" href="http://blosxom.sourceforge.net/">Blosxom</a> <a class="reference external" href="http://blosxom.com/documentation/users/plugins.html">plugin</a> mechanism. <a class="reference external" href="http://www.raelity.org/">Rael
-Dornfest</a>, author of Blosxom, put hooks at strategic points in the page
-generation process. At each hook point the main script iterates all the
-plugins present in the plugin directory. Plugins that implement the hook …</p></div>
-<div class="tags">Tagged as: <a href="https://tech.agilitynerd.com/tag/blosxom.html">blosxom</a> <a href="https://tech.agilitynerd.com/tag/perl.html">perl</a> <a href="https://tech.agilitynerd.com/tag/plugin.html">plugin</a> </div></div>
-
-<div class="pagination">
-<ul>
-		<li class="prev"><a href="https://tech.agilitynerd.com/category/webdev6.html">&larr; Previous</a></li>
-		<li class=""><a href="https://tech.agilitynerd.com/category/webdev.html">1</a></li>
-		<li class=""><a href="https://tech.agilitynerd.com/category/webdev2.html">2</a></li>
-		<li class=""><a href="https://tech.agilitynerd.com/category/webdev3.html">3</a></li>
-		<li class=""><a href="https://tech.agilitynerd.com/category/webdev4.html">4</a></li>
-		<li class=""><a href="https://tech.agilitynerd.com/category/webdev5.html">5</a></li>
-		<li class=""><a href="https://tech.agilitynerd.com/category/webdev6.html">6</a></li>
-		<li class="active"><a href="https://tech.agilitynerd.com/category/webdev7.html">7</a></li>
-		<li class="next disabled"><a href="#">&rarr; Next</a></li>
-</ul>
+<div class="tags">Tagged as: <a href="https://tech.agilitynerd.com/tag/talks.html">talks</a> <a href="https://tech.agilitynerd.com/tag/javascript.html">javascript</a> <a href="https://tech.agilitynerd.com/tag/video.html">video</a> <a href="https://tech.agilitynerd.com/tag/sideprojects.html">sideprojects</a> <a href="https://tech.agilitynerd.com/tag/gatsbyjs.html">gatsbyjs</a> </div>  <div>
+    <h2>Comments</h2>
+    <div>
+      <div id="disqus_thread"></div>
+    </div>
+    <script type="text/javascript">
+      var disqus_shortname = 'techagilitynerd';
+      var disqus_identifier = 'moving-the-agilitynerdcom-blog-to-gatsbyjs.html';
+      var disqus_url = 'https://tech.agilitynerd.com/moving-the-agilitynerdcom-blog-to-gatsbyjs.html';
+      (function () {
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//techagilitynerd.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+  </div>
 </div>
-
                     </div>
                     <!--/span-->
 
