@@ -162,9 +162,9 @@ might be helpful for helping you create your next theme.
 .. _Here is a good overview: http://graphicssoft.about.com/od/productreviews/l/aaglifticintro.htm
 .. _AgilityNerd: http://agilitynerd.com/blog/
 
-.. |image0| image:: http://data.agilitynerd.com/images/bluebg05.png
-.. |image1| image:: http://data.agilitynerd.com/images/bluebg03.png
-.. |image2| image:: http://data.agilitynerd.com/images/bluebg02.png
-.. |image3| image:: http://data.agilitynerd.com/images/bluebg01.png
-.. |image4| image:: http://data.agilitynerd.com/images/GimpColorPicker.jpg
-.. |image5| image:: http://data.agilitynerd.com/images/blog_snow_theme_thumb.jpg
+.. |image0| image:: https://data.agilitynerd.com/images/bluebg05.png
+.. |image1| image:: https://data.agilitynerd.com/images/bluebg03.png
+.. |image2| image:: https://data.agilitynerd.com/images/bluebg02.png
+.. |image3| image:: https://data.agilitynerd.com/images/bluebg01.png
+.. |image4| image:: https://data.agilitynerd.com/images/GimpColorPicker.jpg
+.. |image5| image:: https://data.agilitynerd.com/images/blog_snow_theme_thumb.jpg

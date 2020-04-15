@@ -140,4 +140,4 @@ I'm still disappointed I was forced to resort to this change.
 .. _altlab.com article: http://altlab.com/htaccess_tutorial.html
 .. _Apache URL Rewriting Guide: http://httpd.apache.org/docs/1.3/misc/rewriteguide.html
 
-.. |image0| image:: http://data.agilitynerd.com/images/nodirectlink.g
+.. |image0| image:: https://data.agilitynerd.com/images/nodirectlink.g

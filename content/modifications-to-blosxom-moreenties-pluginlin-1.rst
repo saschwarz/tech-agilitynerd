@@ -106,6 +106,6 @@ I hope it is useful for other Blosxom webloggers.
 .. _AgilityNerd: http://agilitynerd.com/blog/
 .. _here: http://data.agilitynerd.com/downloads/moreentries.zip
 
-.. |image0| image:: http://data.agilitynerd.com/images/moreentries_pagelink_1.jpg
-.. |image1| image:: http://data.agilitynerd.com//images/moreentries_pagelink_6.jpg
-.. |image2| image:: http://data.agilitynerd.com//images/moreentries_pagelink_4.jpg
+.. |image0| image:: https://data.agilitynerd.com/images/moreentries_pagelink_1.jpg
+.. |image1| image:: https://data.agilitynerd.com//images/moreentries_pagelink_6.jpg
+.. |image2| image:: https://data.agilitynerd.com//images/moreentries_pagelink_4.jpg

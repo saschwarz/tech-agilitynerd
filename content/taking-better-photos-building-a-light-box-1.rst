@@ -50,4 +50,4 @@ my photos look nicer.
 .. _Bill Huber's great directions for building your own Light Box: http://www.pbase.com/wlhuber/light_box_light_tent
 .. _PVC Cutter: http://agilitynerd.com/blog/agility/equipment/PVCCutter.html
 
-.. |image0| image:: http://data.agilitynerd.com/images/LightBox.jpg
+.. |image0| image:: https://data.agilitynerd.com/images/LightBox.jpg

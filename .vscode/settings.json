@@ -1,3 +1,8 @@
 {
-  "restructuredtext.confPath": ""
+  "restructuredtext.confPath": "",
+  "cSpell.ignoreWords": [
+    "devserver",
+    "publishconf",
+    "virtualenvs"
+  ]
 }

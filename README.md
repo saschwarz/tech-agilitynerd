@@ -2,10 +2,11 @@
 
 tech.agilitynerd.com pelican driven content
 
-
 ## Develop
 
-workon pelican
+source ~/.virtualenvs/pelican-new/bin/activate
+
+make devserver
 
 cd output && python -m SimpleHTTPServer&
 
