@@ -35,6 +35,11 @@ SOCIAL = (
 
 DEFAULT_PAGINATION = 10
 
+STATIC_PATHS = ["images", "extra/CNAME"]
+EXTRA_PATH_METADATA = {
+    "extra/CNAME": {"path": "CNAME"},
+}
+
 # Uncomment following line if you want document-relative URLs when developing
 # RELATIVE_URLS = True
 THEME = "./themes/pelican-bootstrap-responsive-theme"
@@ -47,6 +52,11 @@ AUTHOR_ABOUT = """<p class="about">I'm Steve Schwarz a Chicago software develope
  <a href="/pages/about.html">more</a></p>"""
 
 COPYRIGHT_DATE = "2020"
+
+FEED_DOMAIN = SITEURL
+# FEED_ALL_RSS = 'feeds/all.rss' # input to feedburner
+FEED_ALL_ATOM = "TechAgilityNerd"  # output from feedburner
+
 GOOGLE_SEARCH = "001042720131993941673:szhtogqckem"
 
 PLUGIN_PATHS = ["/Users/saschwarz/dev/pelican-plugins"]
