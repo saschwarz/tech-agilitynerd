@@ -11,8 +11,8 @@
     <title>tech.agilitynerd</title>
     <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
     <meta name="description" content="">
-    <meta name="author" content="Steve Schwarz">      <!-- <link href="https://tech.agilitynerd.com/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" /> -->
-    <link href="https://feeds.feedburner.com/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" />       <!-- Le styles -->
+    <meta name="author" content="Steve Schwarz">      <!-- <link href="https://tech.agilitynerd.com/feeds/all-en.atom.xml" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" /> -->
+    <link href="https://feeds.feedburner.com/feeds/all-en.atom.xml" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" />       <!-- Le styles -->
     <link href="https://tech.agilitynerd.com/theme/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
         body {
@@ -30,6 +30,7 @@
                 border-top: 1px solid #e3e3e3;
                 padding-top: 1em;
             }
+
             .sidebar .search {
                 margin-bottom: 0;
             }
@@ -76,9 +77,9 @@
                     <div class="span9">
  <div class='article'>
   <div class="page-header"><h1>ReactJS SVG Path Player Component</h1></div>
-  <div class="well small"><a class="more" href="https://tech.agilitynerd.com/reactjs-svg-path-player-component.html">On 24 Jan 2016 at 1200</a>
+  <div class="well small"><a class="more" href="https://tech.agilitynerd.com/reactjs-svg-path-player-component.html">24 Jan 2016</a>
 by <a class="url fn" href="https://tech.agilitynerd.com/author/steve-schwarz.html">Steve Schwarz</a> in <a href="https://tech.agilitynerd.com/category/javascript.html">javascript</a>
- | <a href="https://tech.agilitynerd.com/reactjs-svg-path-player-component.html#disqus_thread" data-disqus-identifier="reactjs-svg-path-player-component.html">Comments</a></div>
+| <a href="https://tech.agilitynerd.com/reactjs-svg-path-player-component.html#disqus_thread" data-disqus-identifier="reactjs-svg-path-player-component.html">Comments</a></div>
   <div><p>I've been a big fan of <a class="reference external" href="https://en.wikipedia.org/wiki/Scalable_Vector_Graphics">SVG</a> images for many years for their light weight and resolution independence. I started playing with them back when most browsers needed a plugin to render them; which kept me from using them in web sites. Within the past few years SVG has become natively supported by almost all browsers and mobile devices so I could finally use them on my <a class="reference external" href="http://agilitycourses.com/">agilitycourses.com</a> website to display dog agility obstacles and the sequences through them.</p>
 <p>My next enhancement to the site was to animate the shortest/fastest paths dogs could take through the obstacles. I had found the <a class="reference external" href="http://snapsvg.io/">Snap.svg</a> JavaScript library which is light weight, resonably well supported and, to make it even easier, I found a <a class="reference external" href="http://icanbecreative.com/article/animate-element-along-svg-path/">great example of animating a path and a marker along the path</a> using it.</p>
 <p>I decided to make a &quot;media player component&quot; that I could instantiate in multiple places in the site and realized if I generalized the component a little it might be useful for others.</p>
@@ -93,7 +94,7 @@ by <a class="url fn" href="https://tech.agilitynerd.com/author/steve-schwarz.htm
 <p>I won't walk through the code, <a class="reference external" href="http://saschwarz.github.io/react-svgpathplayer/">it's all on GitHub</a>, but I'll give you some pointers and links to articles/videos I found useful.</p>
 <p>The <tt class="docutils literal">SVGPathPlayer</tt> component itself renders the UI and provides the button's callback methods that call to a Snap.svg element that &quot;owns&quot; the SVG image it controls. The <tt class="docutils literal">componentDidMount</tt> method uses Snap.svg to load the SVG image and select the path(s), and optional marker within it. Within the <tt class="docutils literal">render</tt> method the element into which the SVG image is rendered is a React <a class="reference external" href="https://facebook.github.io/react/docs/more-about-refs.html#the-ref-callback-attribute">ref</a> child element:</p>
 <pre class="code javascript literal-block">
-<span class="o">&lt;</span><span class="nx">div</span> <span class="nx">className</span><span class="o">=</span><span class="s2">&quot;svg-container svg-container-box&quot;</span> <span class="nx">ref</span><span class="o">=</span><span class="p">{(</span><span class="nx">ref</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">svgImage</span> <span class="o">=</span> <span class="nx">ref</span><span class="p">}</span><span class="o">&gt;&lt;</span><span class="err">/div&gt;</span>
+<span class="o">&lt;</span><span class="nx">div</span> <span class="nx">className</span><span class="o">=</span><span class="s2">&quot;svg-container svg-container-box&quot;</span> <span class="nx">ref</span><span class="o">=</span><span class="p">{(</span><span class="nx">ref</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">svgImage</span> <span class="o">=</span> <span class="nx">ref</span><span class="p">}</span><span class="o">&gt;&lt;</span><span class="err">/div&gt;</span>
 </pre>
 <p>I chose to store the <tt class="docutils literal">ref</tt> on <tt class="docutils literal">this</tt> and not in the state of the component since it doesn't impact the component state; it is a data member used only by Snap.</p>
 <p>Once loaded the <tt class="docutils literal">render</tt> method uses a <tt class="docutils literal">Controls</tt> component to show the animation status and allow the user to start, stop and step forward/backward within the animation. The <tt class="docutils literal">Controls</tt> component is a &quot;stateless&quot; or <a class="reference external" href="https://medium.com/&#64;dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0#.qqffkj3iv">&quot;dumb&quot; compone t</a>; it's buttons invoke callbacks provided via it's <tt class="docutils literal">props</tt> by it's parent &quot;smart component&quot;: <tt class="docutils literal">SVGPathPlayer</tt>.</p>
@@ -105,7 +106,7 @@ by <a class="url fn" href="https://tech.agilitynerd.com/author/steve-schwarz.htm
 <p>If you are looking to make your own redistributable React components I strongly recommend reviewing both of those resources and looking through the configuration of my component. I hope to write up the details after I find some time to migrate the webpack tooling to the latest versions.</p>
 </div>
 </div>
-<div class="tags">Tagged as: <a href="https://tech.agilitynerd.com/tag/reactjs.html">reactjs</a> <a href="https://tech.agilitynerd.com/tag/javascript.html">javascript</a> <a href="https://tech.agilitynerd.com/tag/svg.html">SVG</a> </div>  <div>
+<div class="tags"><label>Tags:</label> <a href="https://tech.agilitynerd.com/tag/reactjs.html">reactjs</a> <a href="https://tech.agilitynerd.com/tag/javascript.html">javascript</a> <a href="https://tech.agilitynerd.com/tag/svg.html">SVG</a> </div>  <div>
     <h2>Comments</h2>
     <div>
       <div id="disqus_thread"></div>
@@ -177,8 +178,8 @@ by <a class="url fn" href="https://tech.agilitynerd.com/author/steve-schwarz.htm
         <hr>
 
         <footer>
-            <p>Powered by <a href="http://blog.getpelican.com/">Pelican</a></p>
-            <p>&copy; Steve Schwarz 2019</p>
+            <span>Powered by <a href="http://blog.getpelican.com/">Pelican</a></span>
+            <span class="pull-right">&copy; Steve Schwarz 2020</span>
         </footer>
 
     </div>

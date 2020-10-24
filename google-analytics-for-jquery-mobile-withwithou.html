@@ -11,8 +11,8 @@
     <title>tech.agilitynerd</title>
     <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
     <meta name="description" content="">
-    <meta name="author" content="Steve Schwarz">      <!-- <link href="https://tech.agilitynerd.com/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" /> -->
-    <link href="https://feeds.feedburner.com/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" />       <!-- Le styles -->
+    <meta name="author" content="Steve Schwarz">      <!-- <link href="https://tech.agilitynerd.com/feeds/all-en.atom.xml" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" /> -->
+    <link href="https://feeds.feedburner.com/feeds/all-en.atom.xml" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" />       <!-- Le styles -->
     <link href="https://tech.agilitynerd.com/theme/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
         body {
@@ -30,6 +30,7 @@
                 border-top: 1px solid #e3e3e3;
                 padding-top: 1em;
             }
+
             .sidebar .search {
                 margin-bottom: 0;
             }
@@ -76,9 +77,9 @@
                     <div class="span9">
  <div class='article'>
   <div class="page-header"><h1>Google Analytics for JQuery Mobile With Internal and AJAX Pages</h1></div>
-  <div class="well small"><a class="more" href="https://tech.agilitynerd.com/google-analytics-for-jquery-mobile-withwithou.html">On 21 Jan 2013 at 0200</a>
+  <div class="well small"><a class="more" href="https://tech.agilitynerd.com/google-analytics-for-jquery-mobile-withwithou.html">21 Jan 2013</a>
 by <a class="url fn" href="https://tech.agilitynerd.com/author/steve-schwarz.html">Steve Schwarz</a> in <a href="https://tech.agilitynerd.com/category/webdev.html">webdev</a>
- | <a href="https://tech.agilitynerd.com/google-analytics-for-jquery-mobile-withwithou.html#disqus_thread" data-disqus-identifier="google-analytics-for-jquery-mobile-withwithou.html">Comments</a></div>
+| <a href="https://tech.agilitynerd.com/google-analytics-for-jquery-mobile-withwithou.html#disqus_thread" data-disqus-identifier="google-analytics-for-jquery-mobile-withwithou.html">Comments</a></div>
   <div><p>I added google analytics to my <a class="reference external" href="http://agilitycourses.com">agilitycourses.com</a>&nbsp;website and was
 having problems getting the mobile version of the site to log analytics
 data after the first page. Google found this very helpful blog
@@ -95,14 +96,14 @@ I'm using:</p>
     <span class="kd">var</span> <span class="nx">hash</span><span class="p">;</span>
     <span class="k">try</span> <span class="p">{</span>
       <span class="cm">/* urls begin with locale but track urls independent of locale: strip off leading locale */</span>
-      <span class="nx">url</span> <span class="o">=</span> <span class="nx">location</span><span class="p">.</span><span class="nx">pathname</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^/</span><span class="p">[</span><span class="o">-</span><span class="nx">a</span><span class="o">-</span><span class="nx">zA</span><span class="o">-</span><span class="nx">Z_</span><span class="p">]{</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">}</span><span class="c1">//, '');
+      <span class="nx">url</span> <span class="o">=</span> <span class="nx">location</span><span class="p">.</span><span class="nx">pathname</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/^/</span><span class="p">[</span><span class="o">-</span><span class="nx">a</span><span class="o">-</span><span class="nx">zA</span><span class="o">-</span><span class="nx">Z_</span><span class="p">]{</span><span class="mf">2</span><span class="p">,</span><span class="mf">5</span><span class="p">}</span><span class="c1">//, '');
 </span>      <span class="nx">hash</span> <span class="o">=</span> <span class="nx">location</span><span class="p">.</span><span class="nx">hash</span><span class="p">;</span>
       <span class="k">if</span> <span class="p">(</span><span class="nx">hash</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">url</span> <span class="o">=</span> <span class="s1">'/'</span> <span class="o">+</span> <span class="nx">hash</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="cm">/* strip # from hash */</span>
+        <span class="nx">url</span> <span class="o">=</span> <span class="s1">'/'</span> <span class="o">+</span> <span class="nx">hash</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="mf">1</span><span class="p">);</span> <span class="cm">/* strip # from hash */</span>
       <span class="p">}</span>
       <span class="nx">_gaq</span><span class="p">.</span><span class="nx">push</span><span class="p">([</span><span class="s1">'_setAccount'</span><span class="p">,</span> <span class="s1">'UA-XXXXXXX-X'</span><span class="p">],</span>
                 <span class="p">[</span><span class="s1">'_setDomainName'</span><span class="p">,</span> <span class="s1">'example.com'</span><span class="p">],</span>
-                <span class="p">[</span><span class="s1">'_setSiteSpeedSampleRate'</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span>
+                <span class="p">[</span><span class="s1">'_setSiteSpeedSampleRate'</span><span class="p">,</span> <span class="mf">100</span><span class="p">],</span>
                 <span class="p">[</span><span class="s1">'_trackPageLoadTime'</span><span class="p">],</span>
                 <span class="p">[</span><span class="s1">'_trackPageview'</span><span class="p">,</span> <span class="nx">url</span><span class="p">]);</span>
     <span class="p">}</span> <span class="k">catch</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{}</span>
@@ -124,7 +125,7 @@ name. I also enabled client side page load and site speed settings.</p>
 pages and the code snippet above in the foot of the pages.</p>
 <p>Hope this is helpful for others.</p>
 </div>
-<div class="tags">Tagged as: <a href="https://tech.agilitynerd.com/tag/ajax.html">ajax</a> <a href="https://tech.agilitynerd.com/tag/googleanalytics.html">googleanalytics</a> <a href="https://tech.agilitynerd.com/tag/jquery.html">jquery</a> <a href="https://tech.agilitynerd.com/tag/jquerymobile.html">jquerymobile</a> </div>  <div>
+<div class="tags"><label>Tags:</label> <a href="https://tech.agilitynerd.com/tag/ajax.html">ajax</a> <a href="https://tech.agilitynerd.com/tag/googleanalytics.html">googleanalytics</a> <a href="https://tech.agilitynerd.com/tag/jquery.html">jquery</a> <a href="https://tech.agilitynerd.com/tag/jquerymobile.html">jquerymobile</a> </div>  <div>
     <h2>Comments</h2>
     <div>
       <div id="disqus_thread"></div>
@@ -196,8 +197,8 @@ pages and the code snippet above in the foot of the pages.</p>
         <hr>
 
         <footer>
-            <p>Powered by <a href="http://blog.getpelican.com/">Pelican</a></p>
-            <p>&copy; Steve Schwarz 2019</p>
+            <span>Powered by <a href="http://blog.getpelican.com/">Pelican</a></span>
+            <span class="pull-right">&copy; Steve Schwarz 2020</span>
         </footer>
 
     </div>

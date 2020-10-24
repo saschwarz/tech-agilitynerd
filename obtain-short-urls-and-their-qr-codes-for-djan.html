@@ -11,8 +11,8 @@
     <title>tech.agilitynerd</title>
     <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
     <meta name="description" content="">
-    <meta name="author" content="Steve Schwarz">      <!-- <link href="https://tech.agilitynerd.com/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" /> -->
-    <link href="https://feeds.feedburner.com/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" />       <!-- Le styles -->
+    <meta name="author" content="Steve Schwarz">      <!-- <link href="https://tech.agilitynerd.com/feeds/all-en.atom.xml" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" /> -->
+    <link href="https://feeds.feedburner.com/feeds/all-en.atom.xml" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" />       <!-- Le styles -->
     <link href="https://tech.agilitynerd.com/theme/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
         body {
@@ -30,6 +30,7 @@
                 border-top: 1px solid #e3e3e3;
                 padding-top: 1em;
             }
+
             .sidebar .search {
                 margin-bottom: 0;
             }
@@ -76,9 +77,9 @@
                     <div class="span9">
  <div class='article'>
   <div class="page-header"><h1>Obtain Short URLs and QR-Codes for Django Apps</h1></div>
-  <div class="well small"><a class="more" href="https://tech.agilitynerd.com/obtain-short-urls-and-their-qr-codes-for-djan.html">On 22 Oct 2010 at 0400</a>
+  <div class="well small"><a class="more" href="https://tech.agilitynerd.com/obtain-short-urls-and-their-qr-codes-for-djan.html">22 Oct 2010</a>
 by <a class="url fn" href="https://tech.agilitynerd.com/author/steve-schwarz.html">Steve Schwarz</a> in <a href="https://tech.agilitynerd.com/category/webdev.html">webdev</a>
- | <a href="https://tech.agilitynerd.com/obtain-short-urls-and-their-qr-codes-for-djan.html#disqus_thread" data-disqus-identifier="obtain-short-urls-and-their-qr-codes-for-djan.html">Comments</a></div>
+| <a href="https://tech.agilitynerd.com/obtain-short-urls-and-their-qr-codes-for-djan.html#disqus_thread" data-disqus-identifier="obtain-short-urls-and-their-qr-codes-for-djan.html">Comments</a></div>
   <div><p>Lately I've been interested in improving the interaction of my
 <a class="reference external" href="http://agilitycourses.com">agilitycourses</a> website for mobile users. One such improvement is to add
 <a class="reference external" href="http://en.wikipedia.org/wiki/QR_Code">QR Codes</a> (aka 2D barcodes) representing the page URLs to the printed
@@ -93,7 +94,7 @@ representations for my printed documents.</p>
 easy to shorten a long URL, obtain the QR Code PNG and store it using
 <a class="reference external" href="http://docs.djangoproject.com/en/dev/topics/files/">Django's Storage functionality</a>:</p>
 <pre class="code python literal-block">
-<span class="kn">import</span> <span class="nn">osimport</span> <span class="nn">urllib</span>
+<span class="kn">import</span> <span class="nn">osimport</span> <span class="n">urllib</span>
 <span class="kn">from</span> <span class="nn">django.utils</span> <span class="kn">import</span> <span class="n">simplejson</span>
 
 <span class="k">def</span> <span class="nf">googl_shorten_url</span><span class="p">(</span><span class="n">long_url</span><span class="p">):</span>
@@ -103,7 +104,7 @@ easy to shorten a long URL, obtain the QR Code PNG and store it using
     Parameters:
     - `long_url`: the url to supply to goo.gl to be shortened.
     &quot;&quot;&quot;</span>
-    <span class="n">params</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">urlencode</span><span class="p">({</span><span class="s1">'security_token'</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span> <span class="s1">'url'</span><span class="p">:</span> <span class="n">long_url</span><span class="p">})</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">urlencode</span><span class="p">({</span><span class="s1">'security_token'</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">'url'</span><span class="p">:</span> <span class="n">long_url</span><span class="p">})</span>
     <span class="n">f</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="s1">'http://goo.gl/api/shorten'</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">simplejson</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())[</span><span class="s1">'short_url'</span><span class="p">]</span>
 
@@ -138,8 +139,8 @@ easy to shorten a long URL, obtain the QR Code PNG and store it using
             <span class="n">qr_buffer</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">googl_qrcode</span><span class="p">(</span><span class="n">googl_url</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
             <span class="n">qr_buffer</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
     <span class="k">except</span><span class="p">:</span>
-        <span class="n">googl_url</span> <span class="o">=</span> <span class="bp">None</span>
-        <span class="n">qr_code_name</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">googl_url</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">qr_code_name</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">return</span> <span class="n">googl_url</span><span class="p">,</span> <span class="n">qr_code_name</span>
 </pre>
 <p>Yes, it has a nasty bare try/except. For my uses this is optional
@@ -153,13 +154,13 @@ of its use (assuming you save the code in googl.py):</p>
 <span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">django.core.files.storage</span> <span class="kn">import</span> <span class="n">default_storage</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">short_url</span><span class="p">,</span> <span class="n">qr_code_storage_name</span> <span class="o">=</span> <span class="n">googl</span><span class="o">.</span><span class="n">get_url_qr_code_image</span><span class="p">(</span><span class="s1">'http://google.com'</span><span class="p">,</span> <span class="n">default_storage</span><span class="p">)</span><span class="o">&gt;&gt;&gt;</span> <span class="n">short_urlu</span><span class="s1">'http://goo.gl/mR2d'</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">qr_code_storage_nameu</span><span class="s1">'mR2d.qr'</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">default_storage</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="n">qr_code_storage_name</span><span class="p">)</span><span class="s1">u'/home/dev/agilitycourses/static/mR2d.qr'</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">default_storage</span><span class="o">.</span><span class="n">url</span><span class="p">(</span><span class="n">qr_code_storage_name</span><span class="p">)</span><span class="s1">u'mR2d.qr'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">default_storage</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="n">qr_code_storage_name</span><span class="p">)</span><span class="sa">u</span><span class="s1">'/home/dev/agilitycourses/static/mR2d.qr'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">default_storage</span><span class="o">.</span><span class="n">url</span><span class="p">(</span><span class="n">qr_code_storage_name</span><span class="p">)</span><span class="sa">u</span><span class="s1">'mR2d.qr'</span>
 <span class="o">&gt;&gt;&gt;</span>
 </pre>
 <p>Hope you find this useful.</p>
 </div>
-<div class="tags">Tagged as: <a href="https://tech.agilitynerd.com/tag/django.html">django</a> <a href="https://tech.agilitynerd.com/tag/googl.html">googl</a> <a href="https://tech.agilitynerd.com/tag/python.html">python</a> <a href="https://tech.agilitynerd.com/tag/qrcode.html">qrcode</a> </div>  <div>
+<div class="tags"><label>Tags:</label> <a href="https://tech.agilitynerd.com/tag/django.html">django</a> <a href="https://tech.agilitynerd.com/tag/googl.html">googl</a> <a href="https://tech.agilitynerd.com/tag/python.html">python</a> <a href="https://tech.agilitynerd.com/tag/qrcode.html">qrcode</a> </div>  <div>
     <h2>Comments</h2>
     <div>
       <div id="disqus_thread"></div>
@@ -231,8 +232,8 @@ of its use (assuming you save the code in googl.py):</p>
         <hr>
 
         <footer>
-            <p>Powered by <a href="http://blog.getpelican.com/">Pelican</a></p>
-            <p>&copy; Steve Schwarz 2019</p>
+            <span>Powered by <a href="http://blog.getpelican.com/">Pelican</a></span>
+            <span class="pull-right">&copy; Steve Schwarz 2020</span>
         </footer>
 
     </div>

@@ -12,8 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
     <meta name="description" content="">
     <meta name="author" content="Steve Schwarz">      <!-- <link href="https://tech.agilitynerd.com/feeds/all-en.atom.xml" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" /> -->
-    <link href="https://feeds.feedburner.com/feeds/all-en.atom.xml" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" />   
-    <!-- Le styles -->
+    <link href="https://feeds.feedburner.com/feeds/all-en.atom.xml" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" />       <!-- Le styles -->
     <link href="https://tech.agilitynerd.com/theme/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
         body {
@@ -76,23 +75,72 @@
             <div class="span10">
                 <div class="row-fluid">
                     <div class="span9">
-                        <div class="page-header">
-                            <h1>tech.agilitynerd <small>nosql</small></h1>
-                        </div>
- 
-<div class='article'>
-  <h2><a href="https://tech.agilitynerd.com/pouchdb-and-couchbase-replication-for-the-offline-first-web.html">PouchDB and Couchbase Replication for the Offline-First Web</a></h2>
-  <div class="well small"><a class="more" href="https://tech.agilitynerd.com/pouchdb-and-couchbase-replication-for-the-offline-first-web.html">21 Sep 2017</a>
-by <a class="url fn" href="https://tech.agilitynerd.com/author/steve-schwarz.html">Steve Schwarz</a> in <a href="https://tech.agilitynerd.com/category/webdev.html">webdev</a>
-| <a href="https://tech.agilitynerd.com/pouchdb-and-couchbase-replication-for-the-offline-first-web.html#disqus_thread" data-disqus-identifier="pouchdb-and-couchbase-replication-for-the-offline-first-web.html">Comments</a></div>
-  <div class="summary"><p>I gave a short talk on 'PouchDB and Couchbase Replication for the Offline-First Web' at the September <a class="reference external" href="https://www.meetup.com/Northwest-Chicago-JavaScript/">Northwest Chicago JavaScript</a> meetup.</p>
-<p>It builds on Peter Mbanugo's blog post:
-<a class="reference external" href="https://www.codementor.io/pmbanugo/using-pouchdb-and-couchbase-in-an-offline-first-application-5pw2sxs6o">Using PouchDB and Couchbase in an Offline-First Application</a>
-by using the <a class="reference external" href="https://pouchdb.com/">PouchDB API</a> in place of the <a class="reference external" href="http://hood.ie/">Hoodie API</a> Peter used.</p>
-<p>My …</p></div>
-<div class="tags"><label>Tags:</label> <a href="https://tech.agilitynerd.com/tag/talks.html">talks</a> <a href="https://tech.agilitynerd.com/tag/javascript.html">javascript</a> <a href="https://tech.agilitynerd.com/tag/video.html">video</a> <a href="https://tech.agilitynerd.com/tag/mobile.html">mobile</a> <a href="https://tech.agilitynerd.com/tag/pouchdb.html">pouchdb</a> <a href="https://tech.agilitynerd.com/tag/nosql.html">nosql</a> <a href="https://tech.agilitynerd.com/tag/couchbase.html">couchbase</a> <a href="https://tech.agilitynerd.com/tag/couchdb.html">couchdb</a> <a href="https://tech.agilitynerd.com/tag/offline.html">offline</a> </div></div>
+ 	<div class='page'>
+		<div class="page-header"><h1>Ionic Rollbar Integration</h1></div>
+		<div><p>To use <a class="reference external" href="https://ionicframework.com/docs/v2/native/rollbar/">Ionic Native Rollbar</a> to integrate Rollbar with the native &quot;side&quot; of your Ionic application.</p>
+<p>But you don't want to use the version of the plugin currently recommended on the Ionic Native page:</p>
+<pre class="literal-block">
+ionic plugin add resgrid-cordova-plugins-rollbar --variable ROLLBAR_ACCESS_TOKEN=&quot;POST_CLIENT_ACCESS_TOKEN&quot; --variable ROLLBAR_ENVIRONMENT=&quot;ENVIRONMENT_NAME&quot; --save
+</pre>
+<p>Instead you want to use this fork which allows you to also track:</p>
+<pre class="literal-block">
+ionic plugin add https://github.com/emilyemorehouse/cordova-plugins-rollbar.git--variable ROLLBAR_ACCESS_TOKEN=&quot;POST_CLIENT_ACCESS_TOKEN&quot; --variable ROLLBAR_ENVIRONMENT=&quot;ENVIRONMENT_NAME&quot; --save
+</pre>
+<p>In <cite>app.component.ts</cite>:</p>
+<pre class="literal-block">
+import { Rollbar } from 'ionic-native';
 
+platformReady() {
+    // Call any initial plugins when ready
+    this.platform.ready().then(() =&gt; {
+    Rollbar.init();
+    });
+}
+</pre>
+<p>Angular/TypeScript Integration</p>
+<p>npm install &#64;types/requirejs --save</p>
+<p>cd src</p>
+<p>From: <a class="reference external" href="https://github.com/rollbar/rollbar.js/tree/master/examples/webpack">https://github.com/rollbar/rollbar.js/tree/master/examples/webpack</a>
+wget <a class="reference external" href="https://raw.githubusercontent.com/rollbar/rollbar.js/master/dist/rollbar.umd.nojson.min.js">https://raw.githubusercontent.com/rollbar/rollbar.js/master/dist/rollbar.umd.nojson.min.js</a></p>
+<p>Create <cite>rollbar.ts</cite> file:</p>
+<pre class="literal-block">
+import { ErrorHandler } from '&#64;angular/core';
 
+// You could put this data in a configuration file for each environment that is imported at build time:
+var rollbarConfig = {
+    accessToken: 'POST_CLIENT_ACCESS_TOKEN',
+    captureUncaught: true,
+    payload: {
+        environment: 'ENVIRONMENT_NAME',
+    }
+};
+export let Rollbar = require('../rollbar.umd.nojson.min.js').init(rollbarConfig);
+
+export class RollbarErrorHandler implements ErrorHandler {
+    handleError(err:any) : void {
+        Rollbar.error(err.originalError);
+    }
+}
+</pre>
+<p>Configure Angular error/exception handler to use the <cite>RollbarErrorHandler</cite>.</p>
+<p>This mechanism was taken from the Sentry Raven docs: <a class="reference external" href="https://docs.sentry.io/clients/javascript/integrations/angular2/#angular-cli">https://docs.sentry.io/clients/javascript/integrations/angular2/#angular-cli</a>:</p>
+<pre class="literal-block">
+import { RollbarErrorHandler } from '../rollbar';
+
+&#64;NgModule({
+  ...
+  providers: [ { provide: ErrorHandler, useClass: RollbarErrorHandler } ]
+});
+</pre>
+<p>In Ionic pages you can call Rollbar methods:</p>
+<pre class="literal-block">
+import { Rollbar } from '../../rollbar';
+...
+Rollbar.error('An Error');
+...
+</pre>
+</div>
+	</div>
                     </div>
                     <!--/span-->
 

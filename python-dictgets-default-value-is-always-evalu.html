@@ -11,8 +11,8 @@
     <title>tech.agilitynerd</title>
     <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
     <meta name="description" content="">
-    <meta name="author" content="Steve Schwarz">      <!-- <link href="https://tech.agilitynerd.com/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" /> -->
-    <link href="https://feeds.feedburner.com/TechAgilityNerd" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" />       <!-- Le styles -->
+    <meta name="author" content="Steve Schwarz">      <!-- <link href="https://tech.agilitynerd.com/feeds/all-en.atom.xml" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" /> -->
+    <link href="https://feeds.feedburner.com/feeds/all-en.atom.xml" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" />       <!-- Le styles -->
     <link href="https://tech.agilitynerd.com/theme/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
         body {
@@ -30,6 +30,7 @@
                 border-top: 1px solid #e3e3e3;
                 padding-top: 1em;
             }
+
             .sidebar .search {
                 margin-bottom: 0;
             }
@@ -76,9 +77,9 @@
                     <div class="span9">
  <div class='article'>
   <div class="page-header"><h1>Python dict.get's Default Value is Always Evaluated</h1></div>
-  <div class="well small"><a class="more" href="https://tech.agilitynerd.com/python-dictgets-default-value-is-always-evalu.html">On 05 Apr 2011 at 1716</a>
+  <div class="well small"><a class="more" href="https://tech.agilitynerd.com/python-dictgets-default-value-is-always-evalu.html">05 Apr 2011</a>
 by <a class="url fn" href="https://tech.agilitynerd.com/author/steve-schwarz.html">Steve Schwarz</a> in <a href="https://tech.agilitynerd.com/category/programming.html">programming</a>
- | <a href="https://tech.agilitynerd.com/python-dictgets-default-value-is-always-evalu.html#disqus_thread" data-disqus-identifier="python-dictgets-default-value-is-always-evalu.html">Comments</a></div>
+| <a href="https://tech.agilitynerd.com/python-dictgets-default-value-is-always-evalu.html#disqus_thread" data-disqus-identifier="python-dictgets-default-value-is-always-evalu.html">Comments</a></div>
   <div><p>This is a gotcha I ran across in some production code that is obvious in
 retrospect.&nbsp;I was profiling the code to find places where we were
 calling <tt class="docutils literal">an_expensive_database_function</tt> and came across code like
@@ -98,9 +99,9 @@ value of <tt class="docutils literal">an_expensive_database_function</tt> was al
 <pre class="code python literal-block">
 <span class="k">def</span> <span class="nf">doit</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="n">value</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'key'</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
          <span class="c1"># assuming default value None isn't a valid value</span>
-         <span class="n">value</span> <span class="o">=</span> <span class="n">an_expensive_database_function</span><span class="p">()</span><span class="sb">``</span>
+         <span class="n">value</span> <span class="o">=</span> <span class="n">an_expensive_database_function</span><span class="p">()</span><span class="err">``</span>
 </pre>
 <p>Here is the &quot;easier to ask forgiveness than permission&quot; solution:</p>
 <pre class="code python literal-block">
@@ -108,10 +109,10 @@ value of <tt class="docutils literal">an_expensive_database_function</tt> was al
     <span class="k">try</span><span class="p">:</span>
         <span class="n">value</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">'key'</span><span class="p">]</span>
     <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="n">an_expensive_database_function</span><span class="p">()</span><span class="sb">``</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">an_expensive_database_function</span><span class="p">()</span><span class="err">``</span>
 </pre>
 </div>
-<div class="tags">Tagged as: <a href="https://tech.agilitynerd.com/tag/python.html">python</a> </div>  <div>
+<div class="tags"><label>Tags:</label> <a href="https://tech.agilitynerd.com/tag/python.html">python</a> </div>  <div>
     <h2>Comments</h2>
     <div>
       <div id="disqus_thread"></div>
@@ -183,8 +184,8 @@ value of <tt class="docutils literal">an_expensive_database_function</tt> was al
         <hr>
 
         <footer>
-            <p>Powered by <a href="http://blog.getpelican.com/">Pelican</a></p>
-            <p>&copy; Steve Schwarz 2019</p>
+            <span>Powered by <a href="http://blog.getpelican.com/">Pelican</a></span>
+            <span class="pull-right">&copy; Steve Schwarz 2020</span>
         </footer>
 
     </div>

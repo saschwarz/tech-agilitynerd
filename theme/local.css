@@ -32,6 +32,15 @@ div.highlight pre {
     font-size: 11px;
 }
 
+blockquote {
+    margin: 2em;
+}
+blockquote p {
+    font-size: 1em;
+    line-height: 1.7em;
+    margin-bottom: 1em;
+}
+
 /* responsive video element */
 .embed-video {
     margin-top: 2em;
@@ -167,13 +176,20 @@ body {
     line-height: 1.6em;
 }
 
-.article li {
+.article li, .article pre {
     line-height: 1.6em;
+    margin-bottom: 1em;
 }
 
 .well,
 .nav-header {
     font-size: 0.8em;
+}
+.sidebar-nav {
+    overflow-wrap: break-word;
+}
+.sidebar-nav>.nav.nav-list.social>.nav-header {
+    margin-top: 20px;
 }
 
 .navbar .nav,
@@ -187,6 +203,7 @@ h1 {
 
 h2 {
     font-size: 1.5em;
+    margin-top: 1em;
 }
 
 h3 {
@@ -203,6 +220,10 @@ h3 {
     margin-bottom: 1em;
     font-weight: bold;
 }
+.tags label {
+    display: inline;
+    font-size: 1em;
+}
 
 a {
     color: rgb(23, 135, 190);
@@ -215,6 +236,7 @@ footer,
 
 .pagination {
     text-align: center;
+    margin-top: 4em;
 }
 
 .align-center,
@@ -237,23 +259,6 @@ footer,
 }
 
 
-/* fix up nav on mobile */
-
-@media (max-width: 767px) {
-    .navbar-fixed-top,
-    .navbar-fixed-bottom {
-        margin-right: 0px;
-        margin-left: 0px;
-    }
-}
-
-@media (max-width: 979px) {
-    /* remove extra top space at small sizes */
-    .navbar-fixed-top {
-        position: absolute;
-    }
-}
-
 .docutils.literal {
     font-size: 18px;
 }
@@ -272,5 +277,45 @@ footer,
 
 .gsc-search-button.gsc-search-button-v2 {
     line-height: 1px;
-    padding-bottom: 4px;
+    padding: 7px 20px;
+}
+
+.archive__month {
+    margin-left: 20px;
+}
+
+.archive__month__articles li {
+    margin-left: 40px;
+    margin-bottom: 1em;
+}
+
+p {
+    margin-bottom: 1em;
+}
+
+/* fix up nav on mobile */
+
+@media (max-width: 767px) {
+    .navbar-fixed-top,
+    .navbar-fixed-bottom {
+        margin-right: 0px;
+        margin-left: 0px;
+    }
+}
+
+@media (max-width: 979px) {
+    /* remove extra top space at small sizes */
+    .navbar-fixed-top {
+        position: absolute;
+    }
+}
+
+
+/* limit width on very large screens */
+@media (min-width: 1400px) {
+    body > .container-fluid {
+        width: 1370px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
 }
