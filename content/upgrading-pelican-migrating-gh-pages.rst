@@ -56,7 +56,7 @@ to this (which includes adding a missing ``alt`` tag):
 .. code::
 
   .. class:: thumbnail
-  .. figure:: {filename}/images/myimage.png
+  .. figure:: {static}/images/myimage.png
      :alt: Clever alt image text goes here
 
 Those changes were mostly mechanical and using ``figure::`` in place of ``raw::`` also cleaned up the mark up. I tested the changes locally and confirmed all modified pages where displaying correctly.
@@ -92,7 +92,7 @@ to it's location on GitHub Pages:
 Get the URL by clicking on the Settings tab for the GitHub repository:
 
 .. class:: thumbnail
-.. figure:: {filename}/images/github-pages-url.png
+.. figure:: {static}/images/github-pages-url.png
    :alt: Screenshot of GitHub settings showing URL for GitHub pages
 
 Now that the ``master`` branch is set up I checked in and commited the changes:

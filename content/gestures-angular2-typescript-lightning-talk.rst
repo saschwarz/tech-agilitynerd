@@ -9,7 +9,7 @@ Here are my `slides on Using Gestures in Angular 2 with TypeScript <https://sasc
 for a lightning talk that I gave at the December `Northwest Chicago JavaScript <https://www.meetup.com/Northwest-Chicago-JavaScript/>`_ meetup.
 
 .. class:: thumbnail
-.. figure:: {filename}/images/GesturesAngularTypeScriptSlides.png
+.. figure:: {static}/images/GesturesAngularTypeScriptSlides.png
     :alt: Screenshot of first slide of my presentation
 
 I converted the `Reveal.js <http://lab.hakim.se/reveal-js/#/>`_ slides checkout to use the

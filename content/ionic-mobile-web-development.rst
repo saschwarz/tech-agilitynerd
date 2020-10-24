@@ -9,7 +9,7 @@ Here are my `slides on Using the Ionic Framework for Mobile and Web Development 
 for a talk that I gave at the July `Northwest Chicago JavaScript <https://www.meetup.com/Northwest-Chicago-JavaScript/>`_ meetup.
 
 .. class:: thumbnail
-.. figure:: {filename}/images/UsingIonicMobileWeb.png
+.. figure:: {static}/images/UsingIonicMobileWeb.png
     :alt: Screenshot of first slide of my presentation
 
 I've been using `Ionic <https://https://ionicframework.com>`_ since early 2017.

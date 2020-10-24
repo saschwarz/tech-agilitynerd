@@ -1,13 +1,22 @@
-# -*- coding: utf-8 -*- #
+#!/usr/bin/env python
 
-AUTHOR = u"Steve Schwarz"
-SITENAME = u"tech.agilitynerd"
-SITESUBTITLE = u"scratching that itch"
-SITEURL = "http://127.0.0.1:8000"  # 'http://127.0.0.1:5500'
+AUTHOR = "Steve Schwarz"
+SITENAME = "tech.agilitynerd"
+SITESUBTITLE = "scratching that itch"
+SITEURL = "http://127.0.0.1:8000"
+
+PATH = "content"
 
 TIMEZONE = "America/Chicago"
 
-DEFAULT_LANG = u"en"
+DEFAULT_LANG = "en"
+
+# Feed generation is usually not desired when developing
+FEED_ALL_ATOM = None
+CATEGORY_FEED_ATOM = None
+TRANSLATION_FEED_ATOM = None
+AUTHOR_FEED_ATOM = None
+AUTHOR_FEED_RSS = None
 
 # Blogroll
 LINKS = (
@@ -26,32 +35,18 @@ SOCIAL = (
 
 DEFAULT_PAGINATION = 10
 
-STATIC_PATHS = ["images", "extra/CNAME"]
-EXTRA_PATH_METADATA = {
-    "extra/CNAME": {"path": "CNAME"},
-}
-
+# Uncomment following line if you want document-relative URLs when developing
+# RELATIVE_URLS = True
 THEME = "./themes/pelican-bootstrap-responsive-theme"
 
 SUMMARY_MAX_LENGTH = 50
+
+DEFAULT_DATE_FORMAT = "%d %b %Y"
 
 AUTHOR_ABOUT = """<p class="about">I'm Steve Schwarz a Chicago software developer and dog agility enthusiast.
  <a href="/pages/about.html">more</a></p>"""
 
 COPYRIGHT_DATE = "2020"
-
-# TEMPLATE_PAGES = {"/Users/saschwarz/dev/tech-agilitynerd/content/about.html":
-#                   "/Users/saschwarz/dev/tech-agilitynerd/output/about.html", }
-
-FEED_DOMAIN = SITEURL
-# FEED_ALL_RSS = 'feeds/all.rss' # input to feedburner
-FEED_ALL_ATOM = "TechAgilityNerd"  # output from feedburner
-CATEGORY_FEED_ATOM = "feeds/%s.atom.xml"
-# CATEGORY_FEED_RSS = 'feeds/%s.rss.xml'
-TAG_FEED_ATOM = "feeds/tag.%s.atom.xml"
-# TAG_FEED_RSS = 'feeds/tag.%s.rss.xml'
-
-# GOOGLE_SEARCH = '001042720131993941673:rqdekl8sewe'
 GOOGLE_SEARCH = "001042720131993941673:szhtogqckem"
 
 PLUGIN_PATHS = ["/Users/saschwarz/dev/pelican-plugins"]

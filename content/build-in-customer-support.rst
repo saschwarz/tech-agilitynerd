@@ -9,7 +9,7 @@ Here are my `slides on Build in Customer Support: Simplify support of your mobil
 for a "lightning talk" that I gave at the October `Northwest Chicago JavaScript <https://www.meetup.com/Northwest-Chicago-JavaScript/>`_ meetup.
 
 .. class:: thumbnail
-.. figure:: {filename}/images/BuildInCustomerSupport.png
+.. figure:: {static}/images/BuildInCustomerSupport.png
     :alt: Screenshot of first slide of my presentation
 
 I've been a developer for a while and have worked in organizations who have been focused on the customer (really!).

@@ -4,11 +4,22 @@ tech.agilitynerd.com pelican driven content
 
 ## Develop
 
-source ~/.virtualenvs/pelican-new/bin/activate
+```
+wd tech
+
+# or manually
+pyenv activate pelican
 
 make devserver
 
+# old
+~~source ~/.virtualenvs/pelican-new/bin/activate~~
+```
 
 ## Deploy
 
 make github
+
+# Created virtualenv:
+
+pyenv virtualenv 2.7.16 pelican

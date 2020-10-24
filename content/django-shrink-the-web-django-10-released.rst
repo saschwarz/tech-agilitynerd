@@ -26,7 +26,7 @@ Here are the changes (from the `CHANGELOG.txt`_)::
 You can the template tag in action on this `demo page`_ in a nicer `"Bootstrap-ified"`_ UI:
 
 .. class:: thumbnail
-.. figure:: {filename}/images/DjangoSTWDemoScreenshot.png
+.. figure:: {static}/images/DjangoSTWDemoScreenshot.png
     :alt: Screenshot of first slide of my presentation
 
 The latest package is `available on PyPi`_:

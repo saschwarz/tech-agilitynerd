@@ -9,7 +9,7 @@ Here are my `slides on Cypress E2E Testing <https://docs.google.com/presentation
 for a talk that I gave at the June `Northwest Chicago JavaScript <https://www.meetup.com/Northwest-Chicago-JavaScript/>`_ meetup.
 
 .. class:: thumbnail
-.. figure:: {filename}/images/CypressE2ETesting.png
+.. figure:: {static}/images/CypressE2ETesting.png
     :alt: Screenshot of first slide of my presentation
 
 I first tried `Cypress <https://www.cypress.io/>`_ when testing my `Agility Course Master <https://agilitycoursemaster.com>`_ hybrid mobile (`Ionic <https://ionicframework.com/>`_) application/website.

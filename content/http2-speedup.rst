@@ -16,7 +16,7 @@ I always want my websites to be secure and fast. `HTTP/2 <https://http2.github.i
 
     -- `High Performance Browser Networking - O'Reilly <https://hpbn.co/http2/>`_:
 
-It turns out all browsers that support HTTP/2 `also require TLS (HTTPS) <http://caniuse.com/#feat=http2>`_. So my first step was `adding HTTPS support to agilitycourses.com <{filename}/nginx-django-https.rst>`_ which also provides a backbone on which I'll implement secure user profiles. Then I wanted to enable HTTP/2 to see if it improved the speed of pages served to end users.
+It turns out all browsers that support HTTP/2 `also require TLS (HTTPS) <http://caniuse.com/#feat=http2>`_. So my first step was `adding HTTPS support to agilitycourses.com <{static}/nginx-django-https.rst>`_ which also provides a backbone on which I'll implement secure user profiles. Then I wanted to enable HTTP/2 to see if it improved the speed of pages served to end users.
 
 
 But First an OS Upgrade

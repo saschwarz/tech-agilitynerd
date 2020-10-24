@@ -17,7 +17,7 @@ I also decided to use React to create it. React has a well defined component app
 Here's what the SVG Path Player component looks like in action:
 
 .. class:: thumbnail
-.. figure:: {filename}/images/ac-dog-path-animation.gif
+.. figure:: {static}/images/ac-dog-path-animation.gif
    :alt: Animated SVG Path Player in Action
    :align: center
 

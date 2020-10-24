@@ -5,6 +5,9 @@ About
 :status: hidden
 :slug: about
 
+.. raw:: html
+
+  <div style="margin-top: 1em;"></div>
 
 Steve Schwarz has been a professional software developer since 1991. He started working in a team developing a distributed 3-tier client-server architecture in C/C++ on Solaris for near real-time assembly line monitoring and equipment control at Panasonic Factory Automation. That product is still in operation today.
 

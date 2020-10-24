@@ -13,7 +13,7 @@ I found the code sections just weren't large enough. So I threw together a littl
 buttons next to each code section that maximizes/restores the code blocks for easier viewing during the presentation:
 
 .. class:: thumbnail
-.. figure:: {filename}/images/max-min-screenshot.png
+.. figure:: {static}/images/max-min-screenshot.png
     :alt: Screenshot of slide showing plus sign to right of code section
 
 Just copy/paste the following into your ``index.html`` file:
