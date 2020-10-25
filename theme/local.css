@@ -10,14 +10,16 @@ li p {
     line-height: 26px;
 }
 
-div.article {
+.article {
     padding-top: 20px;
 }
 
-div.article h2 {
+.article h2 {
     padding-bottom: 10px;
 }
-
+.article p img {
+    margin: 1em 0;
+}
 div.highlight pre {
     background-color: #fefbf3;
     margin: 0 0 10px;
