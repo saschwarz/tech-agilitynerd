@@ -49,7 +49,7 @@ SUMMARY_MAX_LENGTH = 50
 DEFAULT_DATE_FORMAT = "%d %b %Y"
 
 AUTHOR_ABOUT = """<p class="about">I'm Steve Schwarz a Chicago software developer and dog agility enthusiast.
- <a href="/pages/about.html">more</a></p>"""
+ <a href="/pages/about.html">More about me</a></p>"""
 
 COPYRIGHT_DATE = "2020"
 
