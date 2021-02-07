@@ -55,3 +55,8 @@ When you are ready to build/deploy:
 ```bash
 npm run prod
 ```
+
+Once the script is done the `www` directory contains only the artifacts you need to deploy your site (no JS source map files).
+In my case I deploy to firebase via:
+
+`firebase deploy`

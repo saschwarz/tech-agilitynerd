@@ -1,3 +1,4 @@
+pelicanconf.py
 *.pid
 output
 themes
