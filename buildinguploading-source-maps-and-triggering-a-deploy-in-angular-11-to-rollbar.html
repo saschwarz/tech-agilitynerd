@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <title>tech.agilitynerd</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Steve Schwarz">      <!-- <link href="https://tech.agilitynerd.com/feeds/all-en.atom.xml" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" /> -->
+    <link href="https://feeds.feedburner.com/feeds/all-en.atom.xml" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" />       <!-- Le styles -->
+    <link href="https://tech.agilitynerd.com/theme/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+        body {
+            padding-top: 60px;
+            padding-bottom: 40px;
+        }
+
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+
+        @media (max-width: 767px) {
+            .sidebar {
+                margin-top: 2em;
+                border-top: 1px solid #e3e3e3;
+                padding-top: 1em;
+            }
+
+            .sidebar .search {
+                margin-bottom: 0;
+            }
+        }
+    </style>
+    <link href="https://tech.agilitynerd.com/theme/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="https://tech.agilitynerd.com/theme/local.css" rel="stylesheet">
+    <link href="https://tech.agilitynerd.com/theme/pygments.css" rel="stylesheet"> <script>var _gaq=[['_setAccount','UA-1127677-3'],['_trackPageview']];(function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.src='//www.google-analytics.com/ga.js';s.parentNode.insertBefore(g,s)}(document,'script'))</script>
+</head>
+
+<body>
+    <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+  <div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container-fluid">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+      </a>
+      <a class="brand" href="https://tech.agilitynerd.com/index.html">tech.agilitynerd</a>
+      <div class="nav-collapse collapse">
+	<ul class="nav">
+	  <li ><a href="https://tech.agilitynerd.com/category/devops.html">devops</a></li>
+	  <li ><a href="https://tech.agilitynerd.com/category/javascript.html">javascript</a></li>
+	  <li ><a href="https://tech.agilitynerd.com/category/misc.html">misc</a></li>
+	  <li ><a href="https://tech.agilitynerd.com/category/programming.html">programming</a></li>
+	  <li ><a href="https://tech.agilitynerd.com/category/python.html">python</a></li>
+	  <li class="active"><a href="https://tech.agilitynerd.com/category/webdev.html">webdev</a></li>
+	</ul>
+	<p class="navbar-text pull-right">
+	  <a class="navbar-link" href="https://tech.agilitynerd.com/archives.html">[archives]</a>
+	  <a class="navbar-link" href="https://tech.agilitynerd.com/tags.html">[tags]</a>
+	</p>
+      </div><!--/.nav-collapse -->
+    </div>
+  </div>
+</div>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <div class="span1">&nbsp;</div>
+            <div class="span10">
+                <div class="row-fluid">
+                    <div class="span9">
+ <div class='article'>
+  <div class="page-header"><h1>Building/Uploading Source Maps and Triggering a Deploy in Angular 11 to Rollbar</h1></div>
+  <div class="well small"><a class="more" href="https://tech.agilitynerd.com/buildinguploading-source-maps-and-triggering-a-deploy-in-angular-11-to-rollbar.html">07 Feb 2021</a>
+by <a class="url fn" href="https://tech.agilitynerd.com/author/steve-schwarz.html">Steve Schwarz</a> in <a href="https://tech.agilitynerd.com/category/webdev.html">webdev</a>
+| <a href="https://tech.agilitynerd.com/buildinguploading-source-maps-and-triggering-a-deploy-in-angular-11-to-rollbar.html#disqus_thread" data-disqus-identifier="buildinguploading-source-maps-and-triggering-a-deploy-in-angular-11-to-rollbar.html">Comments</a></div>
+  <div><p>I recently updated my <a href="https://agilitycoursemaster.com/">Agility Course Master</a> Ionic PWA to Angular 11 and wanted to fully automate generating and uploading of source map files to <a href="https://rollbar.com">Rollbar</a>.
+I found an existing project that almost did everything I needed: <a href="https://github.com/lucasklaassen/angular-rollbar-source-maps">angular-rollbar-source-maps</a>.
+It was missing triggering Rollbar's <code>deploy</code> endpoint to indicate that a new release had been deployed.</p>
+<p>So I took a little time to add that feature and I also changed the scripts so only <code>node</code> was needed to generate the Git SHA revision and to perform the upload/deploy HTTP POSTs to Rollbar.</p>
+<h2>Overview</h2>
+<p>During the build the file <code>src/environments/version.ts</code> is automatically generated containing the definition of the current Git revision:</p>
+<div class="highlight"><pre><span></span><span class="o">//</span> <span class="n">this</span> <span class="n">file</span> <span class="k">is</span> <span class="n">automatically</span> <span class="n">generated</span> <span class="n">by</span> <span class="n">git</span><span class="o">-</span><span class="n">version</span><span class="o">.</span><span class="n">js</span> <span class="n">script</span>
+<span class="k">export</span> <span class="k">const</span> <span class="n">version</span> <span class="o">=</span> <span class="p">{</span><span class="n">revision</span><span class="p">:</span> <span class="s1">&#39;12f54f9&#39;</span><span class="p">};</span>
+</pre></div>
+
+
+<p>Import that <code>version.ts</code> file into the file where you create your <code>Rollbar.Configuration</code> and use it to set your <code>code_version</code> Rollbar parameter.</p>
+<p>The same version is used when uploading the source maps and informing Rollbar of the deploy.</p>
+<p>The entire process is initiated by a single command:</p>
+<p><code>npm run prod</code></p>
+<h3>Installation</h3>
+<ol>
+<li>
+<p>Edit <code>package.json</code> and add the <code>prod</code> target line to the <code>scripts</code> section. This generates and uploads the source maps and then deletes them from the <code>www</code> directory so they aren't uploaded to your site.</p>
+<div class="gist">
+    <script src='https://gist.github.com/1debf7be659005d8226a0db78b88476c.js?file=package.json'></script>
+    <noscript>
+        <pre><code>{
+  ... 
+  "scripts": {
+    "start": "ng serve",
+    "build": "ng build",
+    ... ADD:
+    "prod": "node git-version.js && ng build --prod --source-map && node rollbar-deploy.js"
+  },
+...
+}</code></pre>
+    </noscript>
+</div>
+</li>
+<li>
+<p>Create a <code>.env</code> file with values populated for your site (you probably want to add <code>.env</code> to your <code>.gitignore</code> file also):</p>
+<div class="gist">
+    <script src='https://gist.github.com/1debf7be659005d8226a0db78b88476c.js?file=.env'></script>
+    <noscript>
+        <pre><code>ROLLBAR_WRITE_ACCESS_TOKEN=
+MAIN_APP_URL='https://...'
+ROLLBAR_USERNAME=
+</code></pre>
+    </noscript>
+</div>
+</li>
+<li>
+<p><code>npm install dotenv</code></p>
+</li>
+<li>
+<p>Copy <code>git-version.js</code> and <code>rollbar-deploy.js</code> (below) into the same directory as your <code>package.json</code></p>
+<div class="gist">
+    <script src='https://gist.github.com/1debf7be659005d8226a0db78b88476c.js?file=git-version.js'></script>
+    <noscript>
+        <pre><code>const fs = require('fs');
+
+const commitHash = require('child_process')
+  .execSync('git rev-parse --short HEAD')
+  .toString()
+  .trim();
+
+const content =
+  '// this file is automatically generated by git-version.js script\n' +
+  `export const version = {revision: '${commitHash}'};`;
+fs.writeFileSync('./src/environments/version.ts', content, {
+  encoding: 'utf8',
+});
+</code></pre>
+    </noscript>
+</div>
+<div class="gist">
+    <script src='https://gist.github.com/1debf7be659005d8226a0db78b88476c.js?file=rollbar-deploy.js'></script>
+    <noscript>
+        <pre><code>require('dotenv').config();
+
+const childProcess = require('child_process');
+const fs = require('fs');
+const process = require('process');
+const request = require('request');
+
+const sendFile = function (file) {
+  request(
+    {
+      url: 'https://api.rollbar.com/api/1/sourcemap',
+      headers: {
+        'content-type': 'multipart/form-data',
+      },
+      method: 'POST',
+      multipart: [
+        {
+          'Content-Disposition': 'form-data; name="access_token"',
+          body: process.env.ROLLBAR_WRITE_ACCESS_TOKEN,
+        },
+        {
+          'Content-Disposition': 'form-data; name="version"',
+          // The version number cannot contain any whitespace or it will break
+          body: commitHash,
+        },
+        {
+          'Content-Disposition': 'form-data; name="minified_url"',
+          body: `${process.env.MAIN_APP_URL}/${file}`,
+        },
+        {
+          'Content-Disposition': `form-data; name="source_map"; filename="${file}.map"`,
+          body: fs.readFileSync(`./www/${file}.map`),
+        },
+      ],
+    },
+    function (err, response, body) {
+      if (err) {
+        console.log('Could not send file', err);
+      } else {
+        console.log(body);
+      }
+    }
+  );
+};
+
+const cleanUpMapFile = function (file) {
+  fs.unlink(`./www/${file}.map`, function (err) {
+    if (err && err.code == 'ENOENT') {
+      console.info("File doesn't exist, won't remove it.");
+    } else if (err) {
+      console.error('Error occurred while trying to remove file');
+    } else {
+      console.info(`Removed ./www/${file}.map`);
+    }
+  });
+};
+
+const commitHash = childProcess
+  .execSync('git rev-parse --short HEAD')
+  .toString()
+  .trim();
+
+fs.readdir('./www/', function (err, files) {
+  if (err) {
+    console.error('Could not list the directory.', err);
+    process.exit(1);
+  }
+  files.forEach(function (file, index) {
+    if (file.endsWith('.js') && fs.existsSync(`./www/${file}.map`)) {
+      sendFile(file);
+      cleanUpMapFile(file);
+    }
+  });
+});
+
+request(
+  {
+    url: 'https://api.rollbar.com/api/1/deploy',
+    headers: {
+      'X-Rollbar-Access-Token': process.env.ROLLBAR_WRITE_ACCESS_TOKEN,
+    },
+    method: 'POST',
+    json: {
+      environment: 'prod',
+      revision: commitHash,
+      rollbar_username: process.env.ROLLBAR_USERNAME,
+    },
+  },
+  function (err, response, body) {
+    if (err) {
+      console.log('Could not deploy new version ', err);
+    } else {
+      console.log(body);
+    }
+  }
+);
+</code></pre>
+    </noscript>
+</div>
+</li>
+<li>
+<p>Edit <code>rollbar.ts</code> to import the <code>environment/version.ts</code> file and set the <code>version</code> in the Rollbar configuration.</p>
+<div class="gist">
+    <script src='https://gist.github.com/1debf7be659005d8226a0db78b88476c.js?file=rollbar.ts'></script>
+    <noscript>
+        <pre><code>import * as Rollbar from 'rollbar';
+import {
+  Injectable,
+  Inject,
+  InjectionToken,
+  ErrorHandler,
+} from '@angular/core';
+import { environment } from '../environments/environment';
+import { version } from '../environments/version';  // <== ADD
+
+const rollbarConfig: Rollbar.Configuration = {
+  accessToken: environment.rollbarAccessToken,
+  captureUncaught: true,
+  captureUnhandledRejections: true,
+  nodeSourceMaps: false,
+  inspectAnonymousErrors: true,
+  ignoreDuplicateErrors: true,
+  wrapGlobalEventHandlers: false,
+  scrubRequestBody: true,
+  exitOnUncaughtException: false,
+  stackTraceLimit: 20,
+  enabled: environment.env !== 'dev',
+  environment: environment.env,
+  },
+  payload: {
+    environment: environment.env,
+    client: {
+      javascript: {
+        code_version: version,  // <== ADD
+        // Optionally have Rollbar guess which frames the error was thrown from
+        // when the browser does not provide line and column numbers.
+        guess_uncaught_frames: true,
+      },
+...</code></pre>
+    </noscript>
+</div>
+</li>
+</ol>
+<h3>Building and Deploying</h3>
+<p>When you are ready to build/deploy:</p>
+<div class="highlight"><pre><span></span>npm run prod
+</pre></div></div>
+<div class="tags"><label>Tags:</label> <a href="https://tech.agilitynerd.com/tag/javascript.html">javascript</a> <a href="https://tech.agilitynerd.com/tag/rollbar.html">rollbar</a> <a href="https://tech.agilitynerd.com/tag/angular.html">angular</a> </div>  <div>
+    <h2>Comments</h2>
+    <div>
+      <div id="disqus_thread"></div>
+    </div>
+    <script type="text/javascript">
+      var disqus_shortname = 'techagilitynerd';
+      var disqus_identifier = 'buildinguploading-source-maps-and-triggering-a-deploy-in-angular-11-to-rollbar.html';
+      var disqus_url = 'https://tech.agilitynerd.com/buildinguploading-source-maps-and-triggering-a-deploy-in-angular-11-to-rollbar.html';
+      (function () {
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//techagilitynerd.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+  </div>
+</div>
+                    </div>
+                    <!--/span-->
+
+                    <div class="span3 sidebar">
+ <script>
+  (function() {
+    var cx = '001042720131993941673:szhtogqckem';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+        '//www.google.com/cse/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+<div class="search">
+    <gcse:search></gcse:search>
+</div>
+ <hr>
+<div class="author">
+<h4>About</h4>
+<div class="author-about">
+  <p class="about">I'm Steve Schwarz a Chicago software developer and dog agility enthusiast.
+ <a href="/pages/about.html">More about me</a></p>
+</div>
+</div>
+<div class="well sidebar-nav">
+  <ul class="nav nav-list">
+    <li class="nav-header">Blogroll</li>
+    <li><a href="https://agilitycoursemaster.com">agilitycoursemaster.com</a></li>
+    <li><a href="https://agilitynerd.com/blog/">agilitynerd.com</a></li>
+    <li><a href="https://agilitycourses.com/">agilitycourses.com</a></li>
+    <li><a href="https://googility.com/">googility.com</a></li>
+  </ul>
+  <ul class="nav nav-list social">
+    <li class="nav-header">Elsewhere</li>
+    <li><a href="https://www.linkedin.com/profile/view?id=10135443">Linked in</a></li>
+    <li><a href="https://github.com/saschwarz">GitHub</a></li>
+    <li><a href="https://twitter.com/steveaschwarz">Twitter</a></li>
+  </ul>
+</div><!--/.well -->
+                    </div>
+                    <!--/span-->
+
+                </div>
+            </div>
+        </div>
+        <!--/row-->
+
+        <hr>
+
+        <footer>
+            <span>Powered by <a href="http://blog.getpelican.com/">Pelican</a></span>
+            <span class="pull-right">&copy; Steve Schwarz 2021</span>
+        </footer>
+
+    </div>
+    <!--/.fluid-container-->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script>
+        window.jQuery || document.write('<script src="https://tech.agilitynerd.com/theme/js/jquery-1.7.2.min.js"><\/script>')
+    </script>
+    <script src="https://tech.agilitynerd.com/theme/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://tech.agilitynerd.com/theme/js/modernizr-2.5.3-respond-1.1.0.min.js"></script>
+<script type="text/javascript">
+    var disqus_shortname = 'techagilitynerd';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+</body>
+
+</html>

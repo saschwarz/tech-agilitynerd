@@ -1,5 +1,227 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd</title><link href="https://tech.agilitynerd.com/" rel="alternate"></link><link href="https://tech.agilitynerd.com/feeds/all-en.atom.xml" rel="self"></link><id>https://tech.agilitynerd.com/</id><updated>2020-10-24T20:00:00-05:00</updated><subtitle>scratching that itch</subtitle><entry><title>Lightning Talk: StorybookJS Streamlines UI Component Development</title><link href="https://tech.agilitynerd.com/lightning-talk-storybookjs-streamlines-ui-component-development.html" rel="alternate"></link><published>2020-10-24T20:00:00-05:00</published><updated>2020-10-24T20:00:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2020-10-24:/lightning-talk-storybookjs-streamlines-ui-component-development.html</id><summary type="html">&lt;p&gt;I became interested in &lt;a href="https://storybook.js.org/"&gt;Storybook.js&lt;/a&gt; when I was creating a new UI component and wanted a way to quickly iterate on the design and be able to demo the different ways it could be used to my team members.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd</title><link href="https://tech.agilitynerd.com/" rel="alternate"></link><link href="https://tech.agilitynerd.com/feeds/all-en.atom.xml" rel="self"></link><id>https://tech.agilitynerd.com/</id><updated>2021-02-07T13:00:00-06:00</updated><subtitle>scratching that itch</subtitle><entry><title>Building/Uploading Source Maps and Triggering a Deploy in Angular 11 to Rollbar</title><link href="https://tech.agilitynerd.com/buildinguploading-source-maps-and-triggering-a-deploy-in-angular-11-to-rollbar.html" rel="alternate"></link><published>2021-02-07T13:00:00-06:00</published><updated>2021-02-07T13:00:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2021-02-07:/buildinguploading-source-maps-and-triggering-a-deploy-in-angular-11-to-rollbar.html</id><summary type="html">&lt;p&gt;I recently updated my &lt;a href="https://agilitycoursemaster.com/"&gt;Agility Course Master&lt;/a&gt; Ionic PWA to Angular 11 and wanted to fully automate generating and uploading of source map files to &lt;a href="https://rollbar.com"&gt;Rollbar&lt;/a&gt;.
+I found an existing project that almost did everything I needed: &lt;a href="https://github.com/lucasklaassen/angular-rollbar-source-maps"&gt;angular-rollbar-source-maps&lt;/a&gt;.
+It was missing triggering Rollbar's &lt;code&gt;deploy&lt;/code&gt; endpoint to indicate that a new …&lt;/p&gt;</summary><content type="html">&lt;p&gt;I recently updated my &lt;a href="https://agilitycoursemaster.com/"&gt;Agility Course Master&lt;/a&gt; Ionic PWA to Angular 11 and wanted to fully automate generating and uploading of source map files to &lt;a href="https://rollbar.com"&gt;Rollbar&lt;/a&gt;.
+I found an existing project that almost did everything I needed: &lt;a href="https://github.com/lucasklaassen/angular-rollbar-source-maps"&gt;angular-rollbar-source-maps&lt;/a&gt;.
+It was missing triggering Rollbar's &lt;code&gt;deploy&lt;/code&gt; endpoint to indicate that a new release had been deployed.&lt;/p&gt;
+&lt;p&gt;So I took a little time to add that feature and I also changed the scripts so only &lt;code&gt;node&lt;/code&gt; was needed to generate the Git SHA revision and to perform the upload/deploy HTTP POSTs to Rollbar.&lt;/p&gt;
+&lt;h2&gt;Overview&lt;/h2&gt;
+&lt;p&gt;During the build the file &lt;code&gt;src/environments/version.ts&lt;/code&gt; is automatically generated containing the definition of the current Git revision:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt; &lt;span class="n"&gt;this&lt;/span&gt; &lt;span class="n"&gt;file&lt;/span&gt; &lt;span class="k"&gt;is&lt;/span&gt; &lt;span class="n"&gt;automatically&lt;/span&gt; &lt;span class="n"&gt;generated&lt;/span&gt; &lt;span class="n"&gt;by&lt;/span&gt; &lt;span class="n"&gt;git&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;version&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;js&lt;/span&gt; &lt;span class="n"&gt;script&lt;/span&gt;
+&lt;span class="k"&gt;export&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="n"&gt;version&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;revision&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;12f54f9&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Import that &lt;code&gt;version.ts&lt;/code&gt; file into the file where you create your &lt;code&gt;Rollbar.Configuration&lt;/code&gt; and use it to set your &lt;code&gt;code_version&lt;/code&gt; Rollbar parameter.&lt;/p&gt;
+&lt;p&gt;The same version is used when uploading the source maps and informing Rollbar of the deploy.&lt;/p&gt;
+&lt;p&gt;The entire process is initiated by a single command:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;npm run prod&lt;/code&gt;&lt;/p&gt;
+&lt;h3&gt;Installation&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Edit &lt;code&gt;package.json&lt;/code&gt; and add the &lt;code&gt;prod&lt;/code&gt; target line to the &lt;code&gt;scripts&lt;/code&gt; section. This generates and uploads the source maps and then deletes them from the &lt;code&gt;www&lt;/code&gt; directory so they aren't uploaded to your site.&lt;/p&gt;
+&lt;div class="gist"&gt;
+    &lt;script src='https://gist.github.com/1debf7be659005d8226a0db78b88476c.js?file=package.json'&gt;&lt;/script&gt;
+    &lt;noscript&gt;
+        &lt;pre&gt;&lt;code&gt;{
+  ... 
+  "scripts": {
+    "start": "ng serve",
+    "build": "ng build",
+    ... ADD:
+    "prod": "node git-version.js &amp;&amp; ng build --prod --source-map &amp;&amp; node rollbar-deploy.js"
+  },
+...
+}&lt;/code&gt;&lt;/pre&gt;
+    &lt;/noscript&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Create a &lt;code&gt;.env&lt;/code&gt; file with values populated for your site (you probably want to add &lt;code&gt;.env&lt;/code&gt; to your &lt;code&gt;.gitignore&lt;/code&gt; file also):&lt;/p&gt;
+&lt;div class="gist"&gt;
+    &lt;script src='https://gist.github.com/1debf7be659005d8226a0db78b88476c.js?file=.env'&gt;&lt;/script&gt;
+    &lt;noscript&gt;
+        &lt;pre&gt;&lt;code&gt;ROLLBAR_WRITE_ACCESS_TOKEN=
+MAIN_APP_URL='https://...'
+ROLLBAR_USERNAME=
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/noscript&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;npm install dotenv&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Copy &lt;code&gt;git-version.js&lt;/code&gt; and &lt;code&gt;rollbar-deploy.js&lt;/code&gt; (below) into the same directory as your &lt;code&gt;package.json&lt;/code&gt;&lt;/p&gt;
+&lt;div class="gist"&gt;
+    &lt;script src='https://gist.github.com/1debf7be659005d8226a0db78b88476c.js?file=git-version.js'&gt;&lt;/script&gt;
+    &lt;noscript&gt;
+        &lt;pre&gt;&lt;code&gt;const fs = require('fs');
+
+const commitHash = require('child_process')
+  .execSync('git rev-parse --short HEAD')
+  .toString()
+  .trim();
+
+const content =
+  '// this file is automatically generated by git-version.js script\n' +
+  `export const version = {revision: '${commitHash}'};`;
+fs.writeFileSync('./src/environments/version.ts', content, {
+  encoding: 'utf8',
+});
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/noscript&gt;
+&lt;/div&gt;
+&lt;div class="gist"&gt;
+    &lt;script src='https://gist.github.com/1debf7be659005d8226a0db78b88476c.js?file=rollbar-deploy.js'&gt;&lt;/script&gt;
+    &lt;noscript&gt;
+        &lt;pre&gt;&lt;code&gt;require('dotenv').config();
+
+const childProcess = require('child_process');
+const fs = require('fs');
+const process = require('process');
+const request = require('request');
+
+const sendFile = function (file) {
+  request(
+    {
+      url: 'https://api.rollbar.com/api/1/sourcemap',
+      headers: {
+        'content-type': 'multipart/form-data',
+      },
+      method: 'POST',
+      multipart: [
+        {
+          'Content-Disposition': 'form-data; name="access_token"',
+          body: process.env.ROLLBAR_WRITE_ACCESS_TOKEN,
+        },
+        {
+          'Content-Disposition': 'form-data; name="version"',
+          // The version number cannot contain any whitespace or it will break
+          body: commitHash,
+        },
+        {
+          'Content-Disposition': 'form-data; name="minified_url"',
+          body: `${process.env.MAIN_APP_URL}/${file}`,
+        },
+        {
+          'Content-Disposition': `form-data; name="source_map"; filename="${file}.map"`,
+          body: fs.readFileSync(`./www/${file}.map`),
+        },
+      ],
+    },
+    function (err, response, body) {
+      if (err) {
+        console.log('Could not send file', err);
+      } else {
+        console.log(body);
+      }
+    }
+  );
+};
+
+const cleanUpMapFile = function (file) {
+  fs.unlink(`./www/${file}.map`, function (err) {
+    if (err &amp;&amp; err.code == 'ENOENT') {
+      console.info("File doesn't exist, won't remove it.");
+    } else if (err) {
+      console.error('Error occurred while trying to remove file');
+    } else {
+      console.info(`Removed ./www/${file}.map`);
+    }
+  });
+};
+
+const commitHash = childProcess
+  .execSync('git rev-parse --short HEAD')
+  .toString()
+  .trim();
+
+fs.readdir('./www/', function (err, files) {
+  if (err) {
+    console.error('Could not list the directory.', err);
+    process.exit(1);
+  }
+  files.forEach(function (file, index) {
+    if (file.endsWith('.js') &amp;&amp; fs.existsSync(`./www/${file}.map`)) {
+      sendFile(file);
+      cleanUpMapFile(file);
+    }
+  });
+});
+
+request(
+  {
+    url: 'https://api.rollbar.com/api/1/deploy',
+    headers: {
+      'X-Rollbar-Access-Token': process.env.ROLLBAR_WRITE_ACCESS_TOKEN,
+    },
+    method: 'POST',
+    json: {
+      environment: 'prod',
+      revision: commitHash,
+      rollbar_username: process.env.ROLLBAR_USERNAME,
+    },
+  },
+  function (err, response, body) {
+    if (err) {
+      console.log('Could not deploy new version ', err);
+    } else {
+      console.log(body);
+    }
+  }
+);
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/noscript&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Edit &lt;code&gt;rollbar.ts&lt;/code&gt; to import the &lt;code&gt;environment/version.ts&lt;/code&gt; file and set the &lt;code&gt;version&lt;/code&gt; in the Rollbar configuration.&lt;/p&gt;
+&lt;div class="gist"&gt;
+    &lt;script src='https://gist.github.com/1debf7be659005d8226a0db78b88476c.js?file=rollbar.ts'&gt;&lt;/script&gt;
+    &lt;noscript&gt;
+        &lt;pre&gt;&lt;code&gt;import * as Rollbar from 'rollbar';
+import {
+  Injectable,
+  Inject,
+  InjectionToken,
+  ErrorHandler,
+} from '@angular/core';
+import { environment } from '../environments/environment';
+import { version } from '../environments/version';  // &lt;== ADD
+
+const rollbarConfig: Rollbar.Configuration = {
+  accessToken: environment.rollbarAccessToken,
+  captureUncaught: true,
+  captureUnhandledRejections: true,
+  nodeSourceMaps: false,
+  inspectAnonymousErrors: true,
+  ignoreDuplicateErrors: true,
+  wrapGlobalEventHandlers: false,
+  scrubRequestBody: true,
+  exitOnUncaughtException: false,
+  stackTraceLimit: 20,
+  enabled: environment.env !== 'dev',
+  environment: environment.env,
+  },
+  payload: {
+    environment: environment.env,
+    client: {
+      javascript: {
+        code_version: version,  // &lt;== ADD
+        // Optionally have Rollbar guess which frames the error was thrown from
+        // when the browser does not provide line and column numbers.
+        guess_uncaught_frames: true,
+      },
+...&lt;/code&gt;&lt;/pre&gt;
+    &lt;/noscript&gt;
+&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3&gt;Building and Deploying&lt;/h3&gt;
+&lt;p&gt;When you are ready to build/deploy:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;npm run prod
+&lt;/pre&gt;&lt;/div&gt;</content><category term="webdev"></category><category term="javascript"></category><category term="rollbar"></category><category term="angular"></category></entry><entry><title>Lightning Talk: StorybookJS Streamlines UI Component Development</title><link href="https://tech.agilitynerd.com/lightning-talk-storybookjs-streamlines-ui-component-development.html" rel="alternate"></link><published>2020-10-24T20:00:00-05:00</published><updated>2020-10-24T20:00:00-05:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2020-10-24:/lightning-talk-storybookjs-streamlines-ui-component-development.html</id><summary type="html">&lt;p&gt;I became interested in &lt;a href="https://storybook.js.org/"&gt;Storybook.js&lt;/a&gt; when I was creating a new UI component and wanted a way to quickly iterate on the design and be able to demo the different ways it could be used to my team members.&lt;/p&gt;
 &lt;p&gt;In the past I would temporarily add a page to …&lt;/p&gt;</summary><content type="html">&lt;p&gt;I became interested in &lt;a href="https://storybook.js.org/"&gt;Storybook.js&lt;/a&gt; when I was creating a new UI component and wanted a way to quickly iterate on the design and be able to demo the different ways it could be used to my team members.&lt;/p&gt;
 &lt;p&gt;In the past I would temporarily add a page to our application, add multiple versions of the component, configure them for each variation, and then demo it.
 Then repeat as we refined the design.
