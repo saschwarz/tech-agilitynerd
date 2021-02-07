@@ -300,7 +300,12 @@ const rollbarConfig: Rollbar.Configuration = {
 <h3>Building and Deploying</h3>
 <p>When you are ready to build/deploy:</p>
 <div class="highlight"><pre><span></span>npm run prod
-</pre></div></div>
+</pre></div>
+
+
+<p>Once the script is done the <code>www</code> directory contains only the artifacts you need to deploy your site (no JS source map files).
+In my case I deploy to firebase via:</p>
+<p><code>firebase deploy</code></p></div>
 <div class="tags"><label>Tags:</label> <a href="https://tech.agilitynerd.com/tag/javascript.html">javascript</a> <a href="https://tech.agilitynerd.com/tag/rollbar.html">rollbar</a> <a href="https://tech.agilitynerd.com/tag/angular.html">angular</a> </div>  <div>
     <h2>Comments</h2>
     <div>
