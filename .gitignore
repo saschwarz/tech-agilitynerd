@@ -3,3 +3,4 @@ pelicanconf.py
 output
 themes
 .DS_Store
+.python-version
