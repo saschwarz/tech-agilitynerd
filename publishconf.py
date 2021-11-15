@@ -20,4 +20,5 @@ FEED_ALL_ATOM = "feeds/all-en.atom.xml"
 DELETE_OUTPUT_DIRECTORY = True
 
 DISQUS_SITENAME = "techagilitynerd"
-GOOGLE_ANALYTICS = "UA-1127677-3"
+# GOOGLE_ANALYTICS = "UA-1127677-3"
+MANUAL_ANALYTICS = '''<script async defer data-website-id="cca63deb-7286-45cf-9476-1325f1e3c49d" src="https://umami.agilitynerd.com/umami.js"></script>'''
