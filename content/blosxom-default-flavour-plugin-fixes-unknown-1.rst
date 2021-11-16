@@ -27,5 +27,5 @@ No configuration of the plugin is required. Just copy it into the plugin
 directory.
 
 .. _blogged a solution: /blosxom-removing-the-unknown-flavour-error-1.html
-.. _Blosxom: http://blosxom.sourceforge.net/
-.. _here: http://data.agilitynerd.com/downloads/defaultflavour_0.1.tar
+.. _Blosxom: https://blosxom.sourceforge.net/
+.. _here: https://data.agilitynerd.com/downloads/defaultflavour_0.1.tar
