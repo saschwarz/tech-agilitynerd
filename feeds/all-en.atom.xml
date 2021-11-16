@@ -3087,12 +3087,12 @@ plugin using a flavour that inserted itself into the Blosxom template
 hash table without corresponding flavour file(s) probably didn't work
 correctly after my modification.&lt;/p&gt;
 &lt;p&gt;While investigating a fix for that bug I noticed that a better solution
-would be to override the &lt;a class="reference external" href="http://blosxom.sourceforge.net/"&gt;Blosxom&lt;/a&gt; template subroutine. So I created
+would be to override the &lt;a class="reference external" href="https://blosxom.sourceforge.net/"&gt;Blosxom&lt;/a&gt; template subroutine. So I created
 the defaultflavour plugin. This plugin fixes the bug by first applying
 any registered flavour templates if the requested template files are not
 found. If that registered flavour templates don't exist the plugin
 finally applies the default flavour template files.&lt;/p&gt;
-&lt;p&gt;Download version 0.1 of the defaultflavour plugin &lt;a class="reference external" href="http://data.agilitynerd.com/downloads/defaultflavour_0.1.tar"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Download version 0.1 of the defaultflavour plugin &lt;a class="reference external" href="https://data.agilitynerd.com/downloads/defaultflavour_0.1.tar"&gt;here&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;No configuration of the plugin is required. Just copy it into the plugin
 directory.&lt;/p&gt;
 </content><category term="webdev"></category><category term="blosxom"></category><category term="plugin"></category></entry><entry><title>Blosxom - Hit Counter and Favorites Plugins</title><link href="https://tech.agilitynerd.com/blosxom-hit-counter-and-favorites-plugins-1.html" rel="alternate"></link><published>2007-12-29T23:16:00-06:00</published><updated>2007-12-29T23:16:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2007-12-29:/blosxom-hit-counter-and-favorites-plugins-1.html</id><summary type="html">&lt;p&gt;I added a &lt;a class="reference external" href="http://agilitynerd.com/static/Favorites.html"&gt;Favorites page&lt;/a&gt; to the side menu of my AgilityNerd site.

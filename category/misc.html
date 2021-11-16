@@ -7,43 +7,44 @@
 <!--<![endif]-->
 
 <head>
-    <meta charset="utf-8">
-    <title>tech.agilitynerd</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="Steve Schwarz">      <!-- <link href="https://tech.agilitynerd.com/feeds/all-en.atom.xml" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" /> -->
-    <link href="https://feeds.feedburner.com/feeds/all-en.atom.xml" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" />   
-    <!-- Le styles -->
-    <link href="https://tech.agilitynerd.com/theme/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <style type="text/css">
-        body {
-            padding-top: 60px;
-            padding-bottom: 40px;
-        }
+  <meta charset="utf-8">
+  <title>tech.agilitynerd</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Steve Schwarz">    <!-- <link href="https://tech.agilitynerd.com/feeds/all-en.atom.xml" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" /> -->
+  <link href="https://feeds.feedburner.com/feeds/all-en.atom.xml" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" />   
+  <!-- Le styles -->
+  <link href="https://tech.agilitynerd.com/theme/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <style type="text/css">
+    body {
+      padding-top: 60px;
+      padding-bottom: 40px;
+    }
 
-        .sidebar-nav {
-            padding: 9px 0;
-        }
+    .sidebar-nav {
+      padding: 9px 0;
+    }
 
-        @media (max-width: 767px) {
-            .sidebar {
-                margin-top: 2em;
-                border-top: 1px solid #e3e3e3;
-                padding-top: 1em;
-            }
+    @media (max-width: 767px) {
+      .sidebar {
+        margin-top: 2em;
+        border-top: 1px solid #e3e3e3;
+        padding-top: 1em;
+      }
 
-            .sidebar .search {
-                margin-bottom: 0;
-            }
-        }
-    </style>
-    <link href="https://tech.agilitynerd.com/theme/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
-    <link href="https://tech.agilitynerd.com/theme/local.css" rel="stylesheet">
-    <link href="https://tech.agilitynerd.com/theme/pygments.css" rel="stylesheet"> <script async defer data-website-id="cca63deb-7286-45cf-9476-1325f1e3c49d" src="https://umami.agilitynerd.com/umami.js"></script>
+      .sidebar .search {
+        margin-bottom: 0;
+      }
+    }
+  </style>
+  <link href="https://tech.agilitynerd.com/theme/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+  <link href="https://tech.agilitynerd.com/theme/local.css" rel="stylesheet">
+  <link href="https://tech.agilitynerd.com/theme/pygments.css" rel="stylesheet">
+<script async defer data-website-id="cca63deb-7286-45cf-9476-1325f1e3c49d" src="https://umami.agilitynerd.com/umami.js"></script>
 </head>
 
 <body>
-    <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+  <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
   <div class="navbar navbar-inverse navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container-fluid">
@@ -70,15 +71,15 @@
     </div>
   </div>
 </div>
-    <div class="container-fluid">
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span1">&nbsp;</div>
+      <div class="span10">
         <div class="row-fluid">
-            <div class="span1">&nbsp;</div>
-            <div class="span10">
-                <div class="row-fluid">
-                    <div class="span9">
-                        <div class="page-header">
-                            <h1>tech.agilitynerd <small>misc</small></h1>
-                        </div>
+          <div class="span9">
+            <div class="page-header">
+              <h1>tech.agilitynerd <small>misc</small></h1>
+            </div>
  
 <div class='article'>
   <h2><a href="https://tech.agilitynerd.com/taking-better-photos-building-a-light-box-1.html">Taking Better Photos - Building a Light Box</a></h2>
@@ -93,25 +94,87 @@ Huber's …</a></p></div>
 <div class="tags"><label>Tags:</label> <a href="https://tech.agilitynerd.com/tag/project.html">project</a> </div></div>
 
 
-                    </div>
-                    <!--/span-->
+          </div>
+          <!--/span-->
 
-                    <div class="span3 sidebar">
- <script>
-  (function() {
-    var cx = '001042720131993941673:szhtogqckem';
-    var gcse = document.createElement('script');
-    gcse.type = 'text/javascript';
-    gcse.async = true;
-    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
-        '//www.google.com/cse/cse.js?cx=' + cx;
-    var s = document.getElementsByTagName('script')[0];
-    s.parentNode.insertBefore(gcse, s);
-  })();
+          <div class="span3 sidebar">
+
+<div id="searchbox"></div>
+<div id="hits"></div>
+<div id="algolia"></div>
+<!-- Include AlgoliaSearch JS Client and autocomplete.js library -->
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.css@7.3.1/themes/reset-min.css" integrity="sha256-t2ATOGCtAIZNnzER679jwcFcKYfLlw01gli6F6oszk8=" crossorigin="anonymous"> -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.css@7.4.5/themes/satellite-min.css" integrity="sha256-TehzF/2QvNKhGQrrNpoOb2Ck4iGZ1J/DI4pkd2oUsBc=" crossorigin="anonymous">
+<style>
+  #searchbox {
+    margin-top: 1.5em
+  }
+
+  .ais-SearchBox,
+  .ais-SearchBox-input,
+  .ais-SearchBox-form {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  .ais-SearchBox-form:before {
+    margin-top: -0.7rem;
+    left: auto;
+    right: 1rem;
+  }
+
+  #algolia {
+    margin-top: 12px;
+  }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js" integrity="sha256-EXPXz4W6pQgfYY3yTpnDa3OH8/EPn16ciVsPQ/ypsjk=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.8.3/dist/instantsearch.production.min.js" integrity="sha256-LAGhRRdtVoD6RLo2qDQsU2mp+XVSciKRC8XPOBWmofM=" crossorigin="anonymous"></script>
+<!-- Initialize autocomplete menu -->
+<script>
+  const searchClient = algoliasearch("2E3DM6BSS0", "4079d62cdb7e20149b0bb83b331959ab");
+  const search = instantsearch({
+    indexName: 'main',
+    searchClient,
+    searchFunction: function (helper) {
+      var hits = document.getElementById('hits');
+      if (helper.state.query === '') {
+        hits.style.display = 'none';
+        return;
+      }
+      helper.search();
+      hits.style.display = 'block';
+    }
+  });
+
+  search.addWidgets([
+    instantsearch.widgets.searchBox({
+      container: '#searchbox',
+      placeholder: 'Search articles...',
+      autofocus: false,
+      poweredBy: true,
+    }),
+
+    instantsearch.widgets.hits({
+      container: '#hits',
+      templates: {
+        item(hit) {
+          return `
+          <article>
+            <div><a href="/${hit.url}"><strong>${instantsearch.highlight({ attribute: 'title', highlightedTagName: 'mark', hit })}</strong></a></div>
+          </article>
+        `;
+        }
+      }
+    }),
+
+    instantsearch.widgets.poweredBy({
+      container: '#algolia',
+    })
+
+  ]);
+
+  search.start();
 </script>
-<div class="search">
-    <gcse:search></gcse:search>
-</div>
  <hr>
 <div class="author">
 <h4>About</h4>
@@ -130,34 +193,34 @@ Huber's …</a></p></div>
   </ul>
   <ul class="nav nav-list social">
     <li class="nav-header">Elsewhere</li>
-    <li><a href="https://www.linkedin.com/profile/view?id=10135443">Linked in</a></li>
+    <li><a href="www.linkedin.com/in/steve-schwarz-5034893">Linked in</a></li>
     <li><a href="https://github.com/saschwarz">GitHub</a></li>
     <li><a href="https://twitter.com/steveaschwarz">Twitter</a></li>
   </ul>
 </div><!--/.well -->
-                    </div>
-                    <!--/span-->
+          </div>
+          <!--/span-->
 
-                </div>
-            </div>
         </div>
-        <!--/row-->
-
-        <hr>
-
-        <footer>
-            <span>Powered by <a href="http://blog.getpelican.com/">Pelican</a></span>
-            <span class="pull-right">&copy; Steve Schwarz 2021</span>
-        </footer>
-
+      </div>
     </div>
-    <!--/.fluid-container-->
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-    <script>
-        window.jQuery || document.write('<script src="https://tech.agilitynerd.com/theme/js/jquery-1.7.2.min.js"><\/script>')
-    </script>
-    <script src="https://tech.agilitynerd.com/theme/bootstrap/js/bootstrap.min.js"></script>
-    <script src="https://tech.agilitynerd.com/theme/js/modernizr-2.5.3-respond-1.1.0.min.js"></script>
+    <!--/row-->
+
+    <hr>
+
+    <footer>
+      <span>Powered by <a href="http://blog.getpelican.com/">Pelican</a></span>
+      <span class="pull-right">&copy; Steve Schwarz 2021</span>
+    </footer>
+
+  </div>
+  <!--/.fluid-container-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script>
+    window.jQuery || document.write('<script src="https://tech.agilitynerd.com/theme/js/jquery-1.7.2.min.js"><\/script>')
+  </script>
+  <script src="https://tech.agilitynerd.com/theme/bootstrap/js/bootstrap.min.js"></script>
+  <!-- <script src="https://tech.agilitynerd.com/theme/js/modernizr-2.5.3-respond-1.1.0.min.js"></script> -->
 <script type="text/javascript">
     var disqus_shortname = 'techagilitynerd';
     (function () {
