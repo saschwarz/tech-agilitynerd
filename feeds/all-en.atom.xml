@@ -1,5 +1,193 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd</title><link href="https://tech.agilitynerd.com/" rel="alternate"></link><link href="https://tech.agilitynerd.com/feeds/all-en.atom.xml" rel="self"></link><id>https://tech.agilitynerd.com/</id><updated>2021-02-07T13:00:00-06:00</updated><subtitle>scratching that itch</subtitle><entry><title>Building/Uploading Source Maps and Triggering a Deploy in Angular 11 to Rollbar</title><link href="https://tech.agilitynerd.com/buildinguploading-source-maps-and-triggering-a-deploy-in-angular-11-to-rollbar.html" rel="alternate"></link><published>2021-02-07T13:00:00-06:00</published><updated>2021-02-07T13:00:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2021-02-07:/buildinguploading-source-maps-and-triggering-a-deploy-in-angular-11-to-rollbar.html</id><summary type="html">&lt;p&gt;I recently updated my &lt;a href="https://agilitycoursemaster.com/"&gt;Agility Course Master&lt;/a&gt; Ionic PWA to Angular 11 and wanted to fully automate generating and uploading of source map files to &lt;a href="https://rollbar.com"&gt;Rollbar&lt;/a&gt;.
+<feed xmlns="http://www.w3.org/2005/Atom"><title>tech.agilitynerd</title><link href="https://tech.agilitynerd.com/" rel="alternate"></link><link href="https://tech.agilitynerd.com/feeds/all-en.atom.xml" rel="self"></link><id>https://tech.agilitynerd.com/</id><updated>2023-01-01T16:00:00-06:00</updated><subtitle>scratching that itch</subtitle><entry><title>Running Django Management Commands Periodically in Docker</title><link href="https://tech.agilitynerd.com/running-django-management-commands-periodically-in-docker.html" rel="alternate"></link><published>2023-01-01T16:00:00-06:00</published><updated>2023-01-01T16:00:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2023-01-01:/running-django-management-commands-periodically-in-docker.html</id><summary type="html">&lt;p&gt;This past week I updated my &lt;a href="https://agilitycoursemaster.com/"&gt;Agility Course Master&lt;/a&gt; API to &lt;a href="https://www.djangoproject.com"&gt;Django&lt;/a&gt; version 4.1.4 and &lt;a href="https://www.python.org"&gt;Python&lt;/a&gt; version 3.11.
+I noticed that I hadn't run some of the database cleanup management commands (i.e. &lt;a href="https://docs.djangoproject.com/en/4.1/ref/django-admin/#clearsessions"&gt;clearsessions&lt;/a&gt; ) that I should have been running periodically.
+So I started investigating how to …&lt;/p&gt;</summary><content type="html">&lt;p&gt;This past week I updated my &lt;a href="https://agilitycoursemaster.com/"&gt;Agility Course Master&lt;/a&gt; API to &lt;a href="https://www.djangoproject.com"&gt;Django&lt;/a&gt; version 4.1.4 and &lt;a href="https://www.python.org"&gt;Python&lt;/a&gt; version 3.11.
+I noticed that I hadn't run some of the database cleanup management commands (i.e. &lt;a href="https://docs.djangoproject.com/en/4.1/ref/django-admin/#clearsessions"&gt;clearsessions&lt;/a&gt; ) that I should have been running periodically.
+So I started investigating how to run them automatically.&lt;/p&gt;
+&lt;h2&gt;Overview&lt;/h2&gt;
+&lt;p&gt;First, I started investigating how to run &lt;a href="https://en.wikipedia.org/wiki/Cron"&gt;cron&lt;/a&gt;-like jobs in Django.
+There are a &lt;a href="https://djangopackages.org/grids/g/cron/"&gt;number of django packages&lt;/a&gt; that support importing/running Django application code in &lt;code&gt;cron&lt;/code&gt; jobs.
+In all my Django projects I used &lt;a href="https://django-extensions.readthedocs.io/en/latest/"&gt;django-extensions&lt;/a&gt; which contains a simple &lt;code&gt;Job&lt;/code&gt; model for defining tasks which are then run by its &lt;code&gt;runjobs&lt;/code&gt; management command.
+So that was my choice.&lt;/p&gt;
+&lt;p&gt;You don't strictly need a separate package, you could just invoke &lt;code&gt;python&lt;/code&gt; in your virtualenv with a script that &lt;code&gt;import&lt;/code&gt;s the necessary packages, connects to the db, etc.
+But, these packages/apps take care of that boilerplate for you and you can use familiar Django idioms.&lt;/p&gt;
+&lt;p&gt;But, none of these apps/packages can run simultaneously in the same &lt;a href="https://www.docker.com/"&gt;Docker&lt;/a&gt; container that serves the Django webapp/API.
+So you need to run some sort of &lt;code&gt;cron&lt;/code&gt; process to control running the scripts.&lt;/p&gt;
+&lt;p&gt;After much searching, I figured out that I wanted to create and run a new container; based on my Django API image that runs &lt;code&gt;cron&lt;/code&gt; in the foreground.
+That way, it has the same configuration and code as my API container and can run any Python code/Django management commands I want.&lt;/p&gt;
+&lt;p&gt;Here are some articles I found helpful:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://blog.thesparktree.com/cron-in-docker"&gt;Running Cron in Docker&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://devtron.ai/blog/running-a-cronjob-inside-docker-container-in-5-steps/"&gt;Running A Cronjob Inside Docker Container In 5 Steps&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://stackoverflow.com/questions/12534135/crontab-not-executing-a-python-script"&gt;Crontab not executing a python script&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://stackoverflow.com/a/69803971/457935"&gt;Sharing an image across multiple containers&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Details&lt;/h2&gt;
+&lt;p&gt;Some of my &lt;code&gt;cron&lt;/code&gt; configuration is specific to the &lt;a href="https://github.com/docker-library/repo-info/blob/master/repos/debian/local/buster-slim.md"&gt;Debian &lt;code&gt;slim-buster&lt;/code&gt;&lt;/a&gt; image upon which I base my Django API container.
+But, it should be similar enough to other Linux containers to get you started.&lt;/p&gt;
+&lt;p&gt;1. Install &lt;code&gt;cron&lt;/code&gt; in your &lt;code&gt;Dockerfile&lt;/code&gt; if it isn't already part of your Docker image:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;RUN apt-get update &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; apt-get -y upgrade &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; apt-get install --no-install-recommends -y &amp;lt;your packages here&amp;gt; cron
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;2. Install &lt;code&gt;django-extensions&lt;/code&gt; and follow it's instructions for creating your job file(s) that will be run by &lt;code&gt;cron&lt;/code&gt;.
+Unlike, their examples of crontab files, Debian uses a different format:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# run daily at 7:07 UTC&lt;/span&gt;
+&lt;span class="c1"&gt;# has no environment and needs to redirect to stdout so docker can see results&lt;/span&gt;
+&lt;span class="m"&gt;7&lt;/span&gt; &lt;span class="m"&gt;7&lt;/span&gt; * * * root &lt;span class="nb"&gt;source&lt;/span&gt; /etc/environment&lt;span class="p"&gt;;&lt;/span&gt; /app/manage.py runjobs daily &amp;gt;/proc/1/fd/1 &lt;span class="m"&gt;2&lt;/span&gt;&amp;gt;/proc/1/fd/2
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Notes:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;I'm running the &lt;code&gt;runjobs daily&lt;/code&gt; management command at 7:07 UTC everyday as &lt;code&gt;root&lt;/code&gt;. Create as many entries/crontab files as you need.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;I put the above file named &lt;code&gt;djangocrondaily&lt;/code&gt; in the root of my repo in a &lt;code&gt;crontab&lt;/code&gt; directory.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;I found out the hard way that &lt;code&gt;cron&lt;/code&gt; jobs don't inherit any environment. In my containers I don't hard code any values into the &lt;code&gt;settings.py&lt;/code&gt; file, they are all read from the container's environment variables. That's why I had to &lt;code&gt;source /etc/environment&lt;/code&gt; which is populated in the &lt;code&gt;entrypoint.sh&lt;/code&gt; below.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;You can test running your script with no environment within your Docker container by running &lt;code&gt;env -i /bin/sh scriptname&lt;/code&gt; or &lt;code&gt;env -i /bin/bash scriptname&lt;/code&gt; as appropriate.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;In order to get the output of the &lt;code&gt;cron&lt;/code&gt; jobs in &lt;code&gt;docker logs&lt;/code&gt; you need to redirect their output to &lt;code&gt;stdout&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;3. &lt;code&gt;entrypoint.sh&lt;/code&gt; shared by my Django and &lt;code&gt;cron&lt;/code&gt; containers&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="ch"&gt;#!/bin/sh&lt;/span&gt;
+
+&lt;span class="c1"&gt;# store environment variables in a file so cron can source them&lt;/span&gt;
+env &amp;gt;&amp;gt; /etc/environment
+
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Waiting for &lt;/span&gt;&lt;span class="nv"&gt;$SQL_DATABASE&lt;/span&gt;&lt;span class="s2"&gt; database...&amp;quot;&lt;/span&gt;
+
+&lt;span class="k"&gt;while&lt;/span&gt; ! nc -z &lt;span class="nv"&gt;$SQL_HOST&lt;/span&gt; &lt;span class="nv"&gt;$SQL_PORT&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+  sleep &lt;span class="m"&gt;1&lt;/span&gt;
+&lt;span class="k"&gt;done&lt;/span&gt;
+
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$SQL_DATABASE&lt;/span&gt;&lt;span class="s2"&gt; ready!&amp;quot;&lt;/span&gt;
+
+&lt;span class="c1"&gt;# production/staging environments&lt;/span&gt;
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$1&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;gunicorn&amp;quot;&lt;/span&gt; &lt;span class="o"&gt;]&lt;/span&gt;
+&lt;span class="k"&gt;then&lt;/span&gt;
+  mkdir -p staticfiles
+  python manage.py collectstatic --noinput
+  python manage.py migrate
+&lt;span class="k"&gt;fi&lt;/span&gt;
+
+&lt;span class="nb"&gt;exec&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$@&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Notes:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;This writes the environment variables into &lt;code&gt;/etc/environment&lt;/code&gt; at runtime so that file can be &lt;code&gt;source&lt;/code&gt;'d by each crontab entry.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;The final &lt;code&gt;exec "$@"&lt;/code&gt; executes the &lt;code&gt;CMD&lt;/code&gt; for each of the &lt;code&gt;docker-compose.yml&lt;/code&gt; services.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;4. Install &lt;code&gt;crontab&lt;/code&gt; used by &lt;code&gt;cron&lt;/code&gt; in the final build stage of the &lt;code&gt;Dockerfile&lt;/code&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;FROM python:3.11-slim-bullseye as base&lt;/span&gt;
+
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;ENV PYTHONFAULTHANDLER=1 \&lt;/span&gt;
+  &lt;span class="l l-Scalar l-Scalar-Plain"&gt;PYTHONHASHSEED=random \&lt;/span&gt;
+  &lt;span class="l l-Scalar l-Scalar-Plain"&gt;PYTHONUNBUFFERED=1 \&lt;/span&gt;
+  &lt;span class="l l-Scalar l-Scalar-Plain"&gt;PYTHONDONTWRITEBYTECODE=1&lt;/span&gt;
+
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;ENV VIRTUAL_ENV=/venv&lt;/span&gt;
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;RUN python3 -m venv $VIRTUAL_ENV&lt;/span&gt;
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;ENV PATH=&amp;quot;$VIRTUAL_ENV/bin:$PATH&amp;quot;&lt;/span&gt;
+
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;WORKDIR /app&lt;/span&gt;
+
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;######################&lt;/span&gt;
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;FROM base as builder&lt;/span&gt;
+
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;ENV VIRTUAL_ENV=/venv&lt;/span&gt;
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;ENV PATH=&amp;quot;$VIRTUAL_ENV/bin:$PATH&amp;quot;&lt;/span&gt;
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;ENV PIP_DEFAULT_TIMEOUT=100 \&lt;/span&gt;
+  &lt;span class="l l-Scalar l-Scalar-Plain"&gt;PIP_DISABLE_PIP_VERSION_CHECK=1 \&lt;/span&gt;
+  &lt;span class="l l-Scalar l-Scalar-Plain"&gt;PIP_NO_CACHE_DIR=1&lt;/span&gt;
+
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;RUN apt-get update &amp;amp;&amp;amp; apt-get install --no-install-recommends -y git curl netcat build-essential libpq-dev libjpeg-dev zlib1g-dev libffi-dev&lt;/span&gt;
+
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;RUN curl -sSL https://install.python-poetry.org | python3 -&lt;/span&gt;
+
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;COPY pyproject.toml poetry.lock ./&lt;/span&gt;
+
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;# Only non dev dependencies&lt;/span&gt;
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;RUN $HOME/.local/bin/poetry install --no-dev&lt;/span&gt;
+
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;#####################&lt;/span&gt;
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;FROM base as final&lt;/span&gt;
+
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;COPY --from=builder /venv /venv&lt;/span&gt;
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;COPY --from=builder /root/.local /root/.local&lt;/span&gt;
+
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;# install runtime dependencies&lt;/span&gt;
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;RUN apt-get update &amp;amp;&amp;amp; apt-get -y upgrade &amp;amp;&amp;amp; apt-get install --no-install-recommends -y libffi-dev libpq-dev libjpeg-dev memcached libmemcached-tools netcat cron&lt;/span&gt;
+
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;# copy project&lt;/span&gt;
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;COPY . /app/&lt;/span&gt;
+
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;# install crontab to run django_extensions runscript - it is only run in the cron container&lt;/span&gt;
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;COPY crontab/djangocrondaily /etc/cron.d/djangocrondaily&lt;/span&gt;
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;RUN chmod 0644 /etc/cron.d/djangocrondaily&lt;/span&gt;
+
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;EXPOSE 8000&lt;/span&gt;
+
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;# run entrypoint.sh&lt;/span&gt;
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;ENTRYPOINT [&amp;quot;/app/entrypoint.sh&amp;quot;]&lt;/span&gt;
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;# entrypoint.sh gets CMD as arguments&lt;/span&gt;
+&lt;span class="l l-Scalar l-Scalar-Plain"&gt;CMD [&amp;quot;gunicorn&amp;quot;, &amp;quot;api.wsgi:app&amp;quot;, &amp;quot;--bind&amp;quot;, &amp;quot;0.0.0.0:8000&amp;quot;, &amp;quot;--log-level=info&amp;quot;, &amp;quot;--access-logfile=-&amp;quot;, &amp;quot;--error-logfile=-&amp;quot;, &amp;quot;--workers=2&amp;quot;, &amp;quot;--threads=4&amp;quot;, &amp;quot;--worker-class=gthread&amp;quot;, &amp;quot;--worker-tmp-dir=/dev/shm&amp;quot;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Notes:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;the default &lt;code&gt;CMD&lt;/code&gt; starts &lt;code&gt;gunicorn&lt;/code&gt; for my production and staging environments&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;5. Simplified &lt;code&gt;docker-compose&lt;/code&gt; file that starts my &lt;code&gt;django&lt;/code&gt; and &lt;code&gt;cron&lt;/code&gt; docker services:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nt"&gt;version&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;3.7&amp;#39;&lt;/span&gt;
+
+&lt;span class="nt"&gt;services&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+  &lt;span class="nt"&gt;django&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="nt"&gt;image&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;registry.xxx.com/yyy/zzz/api-django&lt;/span&gt;
+    &lt;span class="nt"&gt;build&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+      &lt;span class="nt"&gt;context&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;.&lt;/span&gt;
+      &lt;span class="nt"&gt;dockerfile&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;Dockerfile.prod&lt;/span&gt;
+    &lt;span class="nt"&gt;container_name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;api-django&lt;/span&gt;
+    &lt;span class="nt"&gt;ports&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+      &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;8000&lt;/span&gt;
+    &lt;span class="nt"&gt;env_file&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+      &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;./env.prod&lt;/span&gt;
+    &lt;span class="nt"&gt;depends_on&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+      &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;db&lt;/span&gt;
+
+  &lt;span class="nt"&gt;cron&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="nt"&gt;image&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;registry.xxx.com/yyy/zzz/api-django&lt;/span&gt;
+    &lt;span class="nt"&gt;build&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+      &lt;span class="nt"&gt;context&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;.&lt;/span&gt;
+      &lt;span class="nt"&gt;dockerfile&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;Dockerfile.prod&lt;/span&gt;
+    &lt;span class="nt"&gt;container_name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;api-cron&lt;/span&gt;
+    &lt;span class="nt"&gt;env_file&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+      &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;./env.prod&lt;/span&gt;
+    &lt;span class="nt"&gt;command&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p p-Indicator"&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class="no"&gt;cron -f -L 15&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Notes:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;both services use the same &lt;code&gt;dockerfile&lt;/code&gt;, &lt;code&gt;image&lt;/code&gt;, &lt;code&gt;context&lt;/code&gt;, and &lt;code&gt;env_files&lt;/code&gt; settings.&lt;/li&gt;
+&lt;li&gt;the &lt;code&gt;cron&lt;/code&gt; service overrides the &lt;code&gt;CMD&lt;/code&gt;/&lt;code&gt;command&lt;/code&gt; to run &lt;code&gt;cron&lt;/code&gt; in the foreground instead of the default &lt;code&gt;gunicorn&lt;/code&gt; process.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I hope you find this helpful if you need to run &lt;code&gt;cron&lt;/code&gt; to execute periodic Django tasks.&lt;/p&gt;</content><category term="devops"></category><category term="django"></category><category term="webdevelopment"></category><category term="docker"></category><category term="python"></category></entry><entry><title>Building/Uploading Source Maps and Triggering a Deploy in Angular 11 to Rollbar</title><link href="https://tech.agilitynerd.com/buildinguploading-source-maps-and-triggering-a-deploy-in-angular-11-to-rollbar.html" rel="alternate"></link><published>2021-02-07T13:00:00-06:00</published><updated>2021-02-07T13:00:00-06:00</updated><author><name>Steve Schwarz</name></author><id>tag:tech.agilitynerd.com,2021-02-07:/buildinguploading-source-maps-and-triggering-a-deploy-in-angular-11-to-rollbar.html</id><summary type="html">&lt;p&gt;I recently updated my &lt;a href="https://agilitycoursemaster.com/"&gt;Agility Course Master&lt;/a&gt; Ionic PWA to Angular 11 and wanted to fully automate generating and uploading of source map files to &lt;a href="https://rollbar.com"&gt;Rollbar&lt;/a&gt;.
 I found an existing project that almost did everything I needed: &lt;a href="https://github.com/lucasklaassen/angular-rollbar-source-maps"&gt;angular-rollbar-source-maps&lt;/a&gt;.
 It was missing triggering Rollbar's &lt;code&gt;deploy&lt;/code&gt; endpoint to indicate that a new …&lt;/p&gt;</summary><content type="html">&lt;p&gt;I recently updated my &lt;a href="https://agilitycoursemaster.com/"&gt;Agility Course Master&lt;/a&gt; Ionic PWA to Angular 11 and wanted to fully automate generating and uploading of source map files to &lt;a href="https://rollbar.com"&gt;Rollbar&lt;/a&gt;.
 I found an existing project that almost did everything I needed: &lt;a href="https://github.com/lucasklaassen/angular-rollbar-source-maps"&gt;angular-rollbar-source-maps&lt;/a&gt;.

@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+
+<head>
+  <meta charset="utf-8">
+  <title>tech.agilitynerd</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Steve Schwarz">    <!-- <link href="https://tech.agilitynerd.com/feeds/all-en.atom.xml" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" /> -->
+  <link href="https://feeds.feedburner.com/feeds/all-en.atom.xml" type="application/atom+xml" rel="alternate" title="tech.agilitynerd Atom Feed" />     <!-- Le styles -->
+  <link href="https://tech.agilitynerd.com/theme/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <style type="text/css">
+    body {
+      padding-top: 60px;
+      padding-bottom: 40px;
+    }
+
+    .sidebar-nav {
+      padding: 9px 0;
+    }
+
+    @media (max-width: 767px) {
+      .sidebar {
+        margin-top: 2em;
+        border-top: 1px solid #e3e3e3;
+        padding-top: 1em;
+      }
+
+      .sidebar .search {
+        margin-bottom: 0;
+      }
+    }
+  </style>
+  <link href="https://tech.agilitynerd.com/theme/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+  <link href="https://tech.agilitynerd.com/theme/local.css" rel="stylesheet">
+  <link href="https://tech.agilitynerd.com/theme/pygments.css" rel="stylesheet">
+<script async defer data-website-id="cca63deb-7286-45cf-9476-1325f1e3c49d" src="https://umami.agilitynerd.com/umami.js"></script>
+</head>
+
+<body>
+  <!--[if lt IE 7]><p class=chromeframe>Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.</p><![endif]-->
+  <div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container-fluid">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+      </a>
+      <a class="brand" href="https://tech.agilitynerd.com/index.html">tech.agilitynerd</a>
+      <div class="nav-collapse collapse">
+	<ul class="nav">
+	  <li class="active"><a href="https://tech.agilitynerd.com/category/devops.html">devops</a></li>
+	  <li ><a href="https://tech.agilitynerd.com/category/javascript.html">javascript</a></li>
+	  <li ><a href="https://tech.agilitynerd.com/category/misc.html">misc</a></li>
+	  <li ><a href="https://tech.agilitynerd.com/category/programming.html">programming</a></li>
+	  <li ><a href="https://tech.agilitynerd.com/category/python.html">python</a></li>
+	  <li ><a href="https://tech.agilitynerd.com/category/webdev.html">webdev</a></li>
+	</ul>
+	<p class="navbar-text pull-right">
+	  <a class="navbar-link" href="https://tech.agilitynerd.com/archives.html">[archives]</a>
+	  <a class="navbar-link" href="https://tech.agilitynerd.com/tags.html">[tags]</a>
+	</p>
+      </div><!--/.nav-collapse -->
+    </div>
+  </div>
+</div>
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span1">&nbsp;</div>
+      <div class="span10">
+        <div class="row-fluid">
+          <div class="span9">
+ <div class='article'>
+  <div class="page-header"><h1>Running Django Management Commands Periodically in Docker</h1></div>
+  <div class="well small"><a class="more" href="https://tech.agilitynerd.com/running-django-management-commands-periodically-in-docker.html">01 Jan 2023</a>
+by <a class="url fn" href="https://tech.agilitynerd.com/author/steve-schwarz.html">Steve Schwarz</a> in <a href="https://tech.agilitynerd.com/category/devops.html">devops</a>
+| <a href="https://tech.agilitynerd.com/running-django-management-commands-periodically-in-docker.html#disqus_thread" data-disqus-identifier="running-django-management-commands-periodically-in-docker.html">Comments</a></div>
+  <div><p>This past week I updated my <a href="https://agilitycoursemaster.com/">Agility Course Master</a> API to <a href="https://www.djangoproject.com">Django</a> version 4.1.4 and <a href="https://www.python.org">Python</a> version 3.11.
+I noticed that I hadn't run some of the database cleanup management commands (i.e. <a href="https://docs.djangoproject.com/en/4.1/ref/django-admin/#clearsessions">clearsessions</a> ) that I should have been running periodically.
+So I started investigating how to run them automatically.</p>
+<h2>Overview</h2>
+<p>First, I started investigating how to run <a href="https://en.wikipedia.org/wiki/Cron">cron</a>-like jobs in Django.
+There are a <a href="https://djangopackages.org/grids/g/cron/">number of django packages</a> that support importing/running Django application code in <code>cron</code> jobs.
+In all my Django projects I used <a href="https://django-extensions.readthedocs.io/en/latest/">django-extensions</a> which contains a simple <code>Job</code> model for defining tasks which are then run by its <code>runjobs</code> management command.
+So that was my choice.</p>
+<p>You don't strictly need a separate package, you could just invoke <code>python</code> in your virtualenv with a script that <code>import</code>s the necessary packages, connects to the db, etc.
+But, these packages/apps take care of that boilerplate for you and you can use familiar Django idioms.</p>
+<p>But, none of these apps/packages can run simultaneously in the same <a href="https://www.docker.com/">Docker</a> container that serves the Django webapp/API.
+So you need to run some sort of <code>cron</code> process to control running the scripts.</p>
+<p>After much searching, I figured out that I wanted to create and run a new container; based on my Django API image that runs <code>cron</code> in the foreground.
+That way, it has the same configuration and code as my API container and can run any Python code/Django management commands I want.</p>
+<p>Here are some articles I found helpful:</p>
+<ul>
+<li><a href="https://blog.thesparktree.com/cron-in-docker">Running Cron in Docker</a></li>
+<li><a href="https://devtron.ai/blog/running-a-cronjob-inside-docker-container-in-5-steps/">Running A Cronjob Inside Docker Container In 5 Steps</a></li>
+<li><a href="https://stackoverflow.com/questions/12534135/crontab-not-executing-a-python-script">Crontab not executing a python script</a></li>
+<li><a href="https://stackoverflow.com/a/69803971/457935">Sharing an image across multiple containers</a></li>
+</ul>
+<h2>Details</h2>
+<p>Some of my <code>cron</code> configuration is specific to the <a href="https://github.com/docker-library/repo-info/blob/master/repos/debian/local/buster-slim.md">Debian <code>slim-buster</code></a> image upon which I base my Django API container.
+But, it should be similar enough to other Linux containers to get you started.</p>
+<p>1. Install <code>cron</code> in your <code>Dockerfile</code> if it isn't already part of your Docker image:</p>
+<div class="highlight"><pre><span></span>RUN apt-get update <span class="o">&amp;&amp;</span> apt-get -y upgrade <span class="o">&amp;&amp;</span> apt-get install --no-install-recommends -y &lt;your packages here&gt; cron
+</pre></div>
+
+
+<p>2. Install <code>django-extensions</code> and follow it's instructions for creating your job file(s) that will be run by <code>cron</code>.
+Unlike, their examples of crontab files, Debian uses a different format:</p>
+<div class="highlight"><pre><span></span><span class="c1"># run daily at 7:07 UTC</span>
+<span class="c1"># has no environment and needs to redirect to stdout so docker can see results</span>
+<span class="m">7</span> <span class="m">7</span> * * * root <span class="nb">source</span> /etc/environment<span class="p">;</span> /app/manage.py runjobs daily &gt;/proc/1/fd/1 <span class="m">2</span>&gt;/proc/1/fd/2
+</pre></div>
+
+
+<p>Notes:</p>
+<ul>
+<li>
+<p>I'm running the <code>runjobs daily</code> management command at 7:07 UTC everyday as <code>root</code>. Create as many entries/crontab files as you need.</p>
+</li>
+<li>
+<p>I put the above file named <code>djangocrondaily</code> in the root of my repo in a <code>crontab</code> directory.</p>
+</li>
+<li>
+<p>I found out the hard way that <code>cron</code> jobs don't inherit any environment. In my containers I don't hard code any values into the <code>settings.py</code> file, they are all read from the container's environment variables. That's why I had to <code>source /etc/environment</code> which is populated in the <code>entrypoint.sh</code> below.</p>
+</li>
+<li>
+<p>You can test running your script with no environment within your Docker container by running <code>env -i /bin/sh scriptname</code> or <code>env -i /bin/bash scriptname</code> as appropriate.</p>
+</li>
+<li>
+<p>In order to get the output of the <code>cron</code> jobs in <code>docker logs</code> you need to redirect their output to <code>stdout</code>.</p>
+</li>
+</ul>
+<p>3. <code>entrypoint.sh</code> shared by my Django and <code>cron</code> containers</p>
+<div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
+
+<span class="c1"># store environment variables in a file so cron can source them</span>
+env &gt;&gt; /etc/environment
+
+<span class="nb">echo</span> <span class="s2">&quot;Waiting for </span><span class="nv">$SQL_DATABASE</span><span class="s2"> database...&quot;</span>
+
+<span class="k">while</span> ! nc -z <span class="nv">$SQL_HOST</span> <span class="nv">$SQL_PORT</span><span class="p">;</span> <span class="k">do</span>
+  sleep <span class="m">1</span>
+<span class="k">done</span>
+
+<span class="nb">echo</span> <span class="s2">&quot;</span><span class="nv">$SQL_DATABASE</span><span class="s2"> ready!&quot;</span>
+
+<span class="c1"># production/staging environments</span>
+<span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span> <span class="o">=</span> <span class="s2">&quot;gunicorn&quot;</span> <span class="o">]</span>
+<span class="k">then</span>
+  mkdir -p staticfiles
+  python manage.py collectstatic --noinput
+  python manage.py migrate
+<span class="k">fi</span>
+
+<span class="nb">exec</span> <span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span>
+</pre></div>
+
+
+<p>Notes:</p>
+<ul>
+<li>
+<p>This writes the environment variables into <code>/etc/environment</code> at runtime so that file can be <code>source</code>'d by each crontab entry.</p>
+</li>
+<li>
+<p>The final <code>exec "$@"</code> executes the <code>CMD</code> for each of the <code>docker-compose.yml</code> services.</p>
+</li>
+</ul>
+<p>4. Install <code>crontab</code> used by <code>cron</code> in the final build stage of the <code>Dockerfile</code></p>
+<div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">FROM python:3.11-slim-bullseye as base</span>
+
+<span class="l l-Scalar l-Scalar-Plain">ENV PYTHONFAULTHANDLER=1 \</span>
+  <span class="l l-Scalar l-Scalar-Plain">PYTHONHASHSEED=random \</span>
+  <span class="l l-Scalar l-Scalar-Plain">PYTHONUNBUFFERED=1 \</span>
+  <span class="l l-Scalar l-Scalar-Plain">PYTHONDONTWRITEBYTECODE=1</span>
+
+<span class="l l-Scalar l-Scalar-Plain">ENV VIRTUAL_ENV=/venv</span>
+<span class="l l-Scalar l-Scalar-Plain">RUN python3 -m venv $VIRTUAL_ENV</span>
+<span class="l l-Scalar l-Scalar-Plain">ENV PATH=&quot;$VIRTUAL_ENV/bin:$PATH&quot;</span>
+
+<span class="l l-Scalar l-Scalar-Plain">WORKDIR /app</span>
+
+<span class="l l-Scalar l-Scalar-Plain">######################</span>
+<span class="l l-Scalar l-Scalar-Plain">FROM base as builder</span>
+
+<span class="l l-Scalar l-Scalar-Plain">ENV VIRTUAL_ENV=/venv</span>
+<span class="l l-Scalar l-Scalar-Plain">ENV PATH=&quot;$VIRTUAL_ENV/bin:$PATH&quot;</span>
+<span class="l l-Scalar l-Scalar-Plain">ENV PIP_DEFAULT_TIMEOUT=100 \</span>
+  <span class="l l-Scalar l-Scalar-Plain">PIP_DISABLE_PIP_VERSION_CHECK=1 \</span>
+  <span class="l l-Scalar l-Scalar-Plain">PIP_NO_CACHE_DIR=1</span>
+
+<span class="l l-Scalar l-Scalar-Plain">RUN apt-get update &amp;&amp; apt-get install --no-install-recommends -y git curl netcat build-essential libpq-dev libjpeg-dev zlib1g-dev libffi-dev</span>
+
+<span class="l l-Scalar l-Scalar-Plain">RUN curl -sSL https://install.python-poetry.org | python3 -</span>
+
+<span class="l l-Scalar l-Scalar-Plain">COPY pyproject.toml poetry.lock ./</span>
+
+<span class="l l-Scalar l-Scalar-Plain"># Only non dev dependencies</span>
+<span class="l l-Scalar l-Scalar-Plain">RUN $HOME/.local/bin/poetry install --no-dev</span>
+
+<span class="l l-Scalar l-Scalar-Plain">#####################</span>
+<span class="l l-Scalar l-Scalar-Plain">FROM base as final</span>
+
+<span class="l l-Scalar l-Scalar-Plain">COPY --from=builder /venv /venv</span>
+<span class="l l-Scalar l-Scalar-Plain">COPY --from=builder /root/.local /root/.local</span>
+
+<span class="l l-Scalar l-Scalar-Plain"># install runtime dependencies</span>
+<span class="l l-Scalar l-Scalar-Plain">RUN apt-get update &amp;&amp; apt-get -y upgrade &amp;&amp; apt-get install --no-install-recommends -y libffi-dev libpq-dev libjpeg-dev memcached libmemcached-tools netcat cron</span>
+
+<span class="l l-Scalar l-Scalar-Plain"># copy project</span>
+<span class="l l-Scalar l-Scalar-Plain">COPY . /app/</span>
+
+<span class="l l-Scalar l-Scalar-Plain"># install crontab to run django_extensions runscript - it is only run in the cron container</span>
+<span class="l l-Scalar l-Scalar-Plain">COPY crontab/djangocrondaily /etc/cron.d/djangocrondaily</span>
+<span class="l l-Scalar l-Scalar-Plain">RUN chmod 0644 /etc/cron.d/djangocrondaily</span>
+
+<span class="l l-Scalar l-Scalar-Plain">EXPOSE 8000</span>
+
+<span class="l l-Scalar l-Scalar-Plain"># run entrypoint.sh</span>
+<span class="l l-Scalar l-Scalar-Plain">ENTRYPOINT [&quot;/app/entrypoint.sh&quot;]</span>
+<span class="l l-Scalar l-Scalar-Plain"># entrypoint.sh gets CMD as arguments</span>
+<span class="l l-Scalar l-Scalar-Plain">CMD [&quot;gunicorn&quot;, &quot;api.wsgi:app&quot;, &quot;--bind&quot;, &quot;0.0.0.0:8000&quot;, &quot;--log-level=info&quot;, &quot;--access-logfile=-&quot;, &quot;--error-logfile=-&quot;, &quot;--workers=2&quot;, &quot;--threads=4&quot;, &quot;--worker-class=gthread&quot;, &quot;--worker-tmp-dir=/dev/shm&quot;]</span>
+</pre></div>
+
+
+<p>Notes:</p>
+<ul>
+<li>the default <code>CMD</code> starts <code>gunicorn</code> for my production and staging environments</li>
+</ul>
+<p>5. Simplified <code>docker-compose</code> file that starts my <code>django</code> and <code>cron</code> docker services:</p>
+<div class="highlight"><pre><span></span><span class="nt">version</span><span class="p">:</span> <span class="s">&#39;3.7&#39;</span>
+
+<span class="nt">services</span><span class="p">:</span>
+  <span class="nt">django</span><span class="p">:</span>
+    <span class="nt">image</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">registry.xxx.com/yyy/zzz/api-django</span>
+    <span class="nt">build</span><span class="p">:</span>
+      <span class="nt">context</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">.</span>
+      <span class="nt">dockerfile</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Dockerfile.prod</span>
+    <span class="nt">container_name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">api-django</span>
+    <span class="nt">ports</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">8000</span>
+    <span class="nt">env_file</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">./env.prod</span>
+    <span class="nt">depends_on</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">db</span>
+
+  <span class="nt">cron</span><span class="p">:</span>
+    <span class="nt">image</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">registry.xxx.com/yyy/zzz/api-django</span>
+    <span class="nt">build</span><span class="p">:</span>
+      <span class="nt">context</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">.</span>
+      <span class="nt">dockerfile</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">Dockerfile.prod</span>
+    <span class="nt">container_name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">api-cron</span>
+    <span class="nt">env_file</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">./env.prod</span>
+    <span class="nt">command</span><span class="p">:</span> <span class="p p-Indicator">&gt;</span>
+      <span class="no">cron -f -L 15</span>
+</pre></div>
+
+
+<p>Notes:</p>
+<ul>
+<li>both services use the same <code>dockerfile</code>, <code>image</code>, <code>context</code>, and <code>env_files</code> settings.</li>
+<li>the <code>cron</code> service overrides the <code>CMD</code>/<code>command</code> to run <code>cron</code> in the foreground instead of the default <code>gunicorn</code> process.</li>
+</ul>
+<p>I hope you find this helpful if you need to run <code>cron</code> to execute periodic Django tasks.</p></div>
+<div class="tags"><label>Tags:</label> <a href="https://tech.agilitynerd.com/tag/django.html">django</a> <a href="https://tech.agilitynerd.com/tag/webdevelopment.html">webdevelopment</a> <a href="https://tech.agilitynerd.com/tag/docker.html">docker</a> <a href="https://tech.agilitynerd.com/tag/python.html">python</a> </div>  <div>
+    <h2>Comments</h2>
+    <div>
+      <div id="disqus_thread"></div>
+    </div>
+    <script type="text/javascript">
+      var disqus_shortname = 'techagilitynerd';
+      var disqus_identifier = 'running-django-management-commands-periodically-in-docker.html';
+      var disqus_url = 'https://tech.agilitynerd.com/running-django-management-commands-periodically-in-docker.html';
+      (function () {
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//techagilitynerd.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+    </script>
+  </div>
+</div>
+          </div>
+          <!--/span-->
+
+          <div class="span3 sidebar">
+
+<div id="searchbox"></div>
+<div id="hits"></div>
+<div id="algolia"></div>
+<!-- Include AlgoliaSearch JS Client and autocomplete.js library -->
+<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.css@7.3.1/themes/reset-min.css" integrity="sha256-t2ATOGCtAIZNnzER679jwcFcKYfLlw01gli6F6oszk8=" crossorigin="anonymous"> -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.css@7.4.5/themes/satellite-min.css" integrity="sha256-TehzF/2QvNKhGQrrNpoOb2Ck4iGZ1J/DI4pkd2oUsBc=" crossorigin="anonymous">
+<style>
+  #searchbox {
+    margin-top: 1.5em
+  }
+
+  .ais-SearchBox,
+  .ais-SearchBox-input,
+  .ais-SearchBox-form {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  .ais-SearchBox-form:before {
+    margin-top: -0.7rem;
+    left: auto;
+    right: 1rem;
+  }
+
+  #algolia {
+    margin-top: 12px;
+  }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.5.1/dist/algoliasearch-lite.umd.js" integrity="sha256-EXPXz4W6pQgfYY3yTpnDa3OH8/EPn16ciVsPQ/ypsjk=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.8.3/dist/instantsearch.production.min.js" integrity="sha256-LAGhRRdtVoD6RLo2qDQsU2mp+XVSciKRC8XPOBWmofM=" crossorigin="anonymous"></script>
+<!-- Initialize autocomplete menu -->
+<script>
+  const searchClient = algoliasearch("2E3DM6BSS0", "4079d62cdb7e20149b0bb83b331959ab");
+  const search = instantsearch({
+    indexName: 'main',
+    searchClient,
+    searchFunction: function (helper) {
+      var hits = document.getElementById('hits');
+      if (helper.state.query === '') {
+        hits.style.display = 'none';
+        return;
+      }
+      helper.search();
+      hits.style.display = 'block';
+    }
+  });
+
+  search.addWidgets([
+    instantsearch.widgets.searchBox({
+      container: '#searchbox',
+      placeholder: 'Search articles...',
+      autofocus: false,
+      poweredBy: true,
+    }),
+
+    instantsearch.widgets.hits({
+      container: '#hits',
+      templates: {
+        item(hit) {
+          return `
+          <article>
+            <div><a href="/${hit.url}"><strong>${instantsearch.highlight({ attribute: 'title', highlightedTagName: 'mark', hit })}</strong></a></div>
+          </article>
+        `;
+        }
+      }
+    }),
+
+    instantsearch.widgets.poweredBy({
+      container: '#algolia',
+    })
+
+  ]);
+
+  search.start();
+</script>
+ <hr>
+<div class="author">
+<h4>About</h4>
+<div class="author-about">
+  <p class="about">I'm Steve Schwarz a Chicago software developer and dog agility enthusiast.
+ <a href="/pages/about.html">More about me</a></p>
+</div>
+</div>
+<div class="well sidebar-nav">
+  <ul class="nav nav-list">
+    <li class="nav-header">Blogroll</li>
+    <li><a href="https://agilitycoursemaster.com">agilitycoursemaster.com</a></li>
+    <li><a href="https://agilitynerd.com/blog/">agilitynerd.com</a></li>
+    <li><a href="https://agilitycourses.com/">agilitycourses.com</a></li>
+    <li><a href="https://googility.com/">googility.com</a></li>
+  </ul>
+  <ul class="nav nav-list social">
+    <li class="nav-header">Elsewhere</li>
+    <li><a href="www.linkedin.com/in/steve-schwarz-5034893">Linked in</a></li>
+    <li><a href="https://github.com/saschwarz">GitHub</a></li>
+    <li><a href="https://twitter.com/steveaschwarz">Twitter</a></li>
+  </ul>
+</div><!--/.well -->
+          </div>
+          <!--/span-->
+
+        </div>
+      </div>
+    </div>
+    <!--/row-->
+
+    <hr>
+
+    <footer>
+      <span>Powered by <a href="http://blog.getpelican.com/">Pelican</a></span>
+      <span class="pull-right">&copy; Steve Schwarz 2021</span>
+    </footer>
+
+  </div>
+  <!--/.fluid-container-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script>
+    window.jQuery || document.write('<script src="https://tech.agilitynerd.com/theme/js/jquery-1.7.2.min.js"><\/script>')
+  </script>
+  <script src="https://tech.agilitynerd.com/theme/bootstrap/js/bootstrap.min.js"></script>
+  <!-- <script src="https://tech.agilitynerd.com/theme/js/modernizr-2.5.3-respond-1.1.0.min.js"></script> -->
+<script type="text/javascript">
+    var disqus_shortname = 'techagilitynerd';
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'https://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+</body>
+
+</html>

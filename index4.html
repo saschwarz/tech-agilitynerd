@@ -81,6 +81,21 @@
             </div>
  
 <div class='article'>
+  <h2><a href="https://tech.agilitynerd.com/python-dictgets-default-value-is-always-evalu.html">Python dict.get's Default Value is Always Evaluated</a></h2>
+  <div class="well small"><a class="more" href="https://tech.agilitynerd.com/python-dictgets-default-value-is-always-evalu.html">05 Apr 2011</a>
+by <a class="url fn" href="https://tech.agilitynerd.com/author/steve-schwarz.html">Steve Schwarz</a> in <a href="https://tech.agilitynerd.com/category/programming.html">programming</a>
+| <a href="https://tech.agilitynerd.com/python-dictgets-default-value-is-always-evalu.html#disqus_thread" data-disqus-identifier="python-dictgets-default-value-is-always-evalu.html">Comments</a></div>
+  <div class="summary"><p>This is a gotcha I ran across in some production code that is obvious in
+retrospect.&nbsp;I was profiling the code to find places where we were
+calling <tt class="docutils literal">an_expensive_database_function</tt> and came across code like
+this:</p>
+<pre class="code python literal-block">
+<span class="k">def</span> <span class="nf">doit</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+     <span class="n">value</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'key'</span><span class="p">,</span> <span class="n">an_expensive_database_function</span><span class="p">())</span>
+</pre>
+<p>The original author probably assumed that …</p></div>
+<div class="tags"><label>Tags:</label> <a href="https://tech.agilitynerd.com/tag/python.html">python</a> </div></div>
+<div class='article'>
   <h2><a href="https://tech.agilitynerd.com/blosxom-plugin-for-generating-facebook-commen.html">Blosxom Plugin for Generating Facebook Comment xids</a></h2>
   <div class="well small"><a class="more" href="https://tech.agilitynerd.com/blosxom-plugin-for-generating-facebook-commen.html">23 Nov 2010</a>
 by <a class="url fn" href="https://tech.agilitynerd.com/author/steve-schwarz.html">Steve Schwarz</a> in <a href="https://tech.agilitynerd.com/category/webdev.html">webdev</a>
@@ -180,18 +195,6 @@ had two undesirable&nbsp; behaviors:</p>
 <ol class="arabic simple">
 <li>The …</li></ol></div>
 <div class="tags"><label>Tags:</label> <a href="https://tech.agilitynerd.com/tag/django.html">django</a> <a href="https://tech.agilitynerd.com/tag/haystack.html">haystack</a> <a href="https://tech.agilitynerd.com/tag/search.html">search</a> <a href="https://tech.agilitynerd.com/tag/whoosh.html">whoosh</a> </div></div>
-<div class='article'>
-  <h2><a href="https://tech.agilitynerd.com/improving-google-ads-and-google-search-descri.html">Improving Google Ads and Google Search Descriptions</a></h2>
-  <div class="well small"><a class="more" href="https://tech.agilitynerd.com/improving-google-ads-and-google-search-descri.html">03 Aug 2010</a>
-by <a class="url fn" href="https://tech.agilitynerd.com/author/steve-schwarz.html">Steve Schwarz</a> in <a href="https://tech.agilitynerd.com/category/webdev.html">webdev</a>
-| <a href="https://tech.agilitynerd.com/improving-google-ads-and-google-search-descri.html#disqus_thread" data-disqus-identifier="improving-google-ads-and-google-search-descri.html">Comments</a></div>
-  <div class="summary"><p>I was looking at the google search results for my <a class="reference external" href="http://googility.com/">Googility web site</a>
-and noticed that the descriptions shown underneath the title often
-contained text from my navigation links instead of content from the body
-of the page:</p>
-<div class="thumbnail"><p><img alt="Google_description" src="/images/2010/08/13127405-google_description.jpg" /></p>
-</div><p>I did some searching and found the Google Webmaster blog post about …</p></div>
-<div class="tags"><label>Tags:</label> <a href="https://tech.agilitynerd.com/tag/adsense.html">adsense</a> <a href="https://tech.agilitynerd.com/tag/django.html">django</a> <a href="https://tech.agilitynerd.com/tag/google.html">google</a> <a href="https://tech.agilitynerd.com/tag/search.html">search</a> <a href="https://tech.agilitynerd.com/tag/webdevelopment.html">webdevelopment</a> </div></div>
 
 <div class="pagination">
 <ul>
